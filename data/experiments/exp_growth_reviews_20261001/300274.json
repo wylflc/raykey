@@ -1,0 +1,174 @@
+{
+ "security_code": "300274",
+ "security_name": "阳光电源",
+ "research_nopat_yi": 106.5,
+ "research_range_yi": [
+  88.2,
+  131.3
+ ],
+ "research_evidence_date": "2026-08-29",
+ "research_falsifier": "2026、2027年报模型口径NOPAT均值不在88–131亿，或储能毛利率连续两个半年度≥34%或≤26%",
+ "research_source": "分部直接推到模型口径NOPAT（不经股权桥），现有产能口径取2026年量。依据：2026半年报（公告日2026-08-29）与业绩会记录（2026-08-28）：逆变器等123.88亿、毛利率42.72%；储能154.56亿、32.43%（业绩会称Q2约35%）；新能源开发12.58亿、亏损3.8亿；期间费用49.74亿；H1模型口径EBIT 57.32亿（利润总额63.41+财务费用3.68−非权益法投资收益3.08−公允价值变动6.69）。正常化：储能收入380亿（2025年372.9亿、TTM 349.4亿、公司2026年发货目标60GWh以上）×毛利率30%（2023–2025年一致口径32.6/36.7/36.5%，26H1 32.43%，管理层称稳中有降；宁德储能23.96%、特斯拉能源Q2 20.4%、上能储能27.05%，按约10%品牌溢价）=114.0亿；逆变器等260亿（2025年311.4亿、26H1同比−19%）×37%（2023–2025年32.8/30.9/34.7%，26H1 42.7%系国内占比骤降，管理层称约35%上下）=96.2亿；新能源开发、电站发电与其他毛利15亿（26H1 8.0亿）；减期间费用104亿（26H1 49.74亿、2025年107.2亿含激励基金）、税金及附加3.5亿、信用与资产减值13亿（2023–2025年20.3/17.8/21.9亿，含开发业务），加其他收益6亿、权益法0.5亿，EBIT 111.2亿×(1−16.77%)=92.5亿；加研发资本化（5年摊销）14亿（2026E研发43亿−摊销25.3亿=17.7亿税后14.7亿，2027E 12.0亿）=106.5亿。低88.2亿：储能370亿×27%、逆变器等255亿×35%、其他14亿；高131.3亿：储能400亿×33%、逆变器等265亿×40%、其他16亿、减值12亿（约等于中报后一致预期2026E折模型口径）。折归母约97.6亿（EBIT+净金融收益8.5亿后税后×(1−0.0202)）；若按股权桥反解：97.6÷(1−0.0202)+(149.40−135.33)=113.7亿（研究口径P/V 1.005），差额7.2亿主要来自2025年研发加回19.3亿高于2026E约14.7亿，故不用桥。对照：TTM模型口径NOPAT约119亿，Q2年化约114亿，2025年149.40亿，模型锚175.14亿（差距64%）。",
+ "equity_bridge": {
+  "parent_yi": 97.6,
+  "minority_share": 0.0202,
+  "annual_nopat_yi": 149.4,
+  "annual_net_profit_yi": 135.33
+ },
+ "research_v": 77.24,
+ "research_pv": 1.068,
+ "price_for_pv_1": 77.5,
+ "replicability": {
+  "judgment": "易复制",
+  "confidence": "中",
+  "evidence": "按2025年毛利主导项储能（毛利136亿，逆变器等108亿）判，储能三项易复制证据齐备：①同业大规模扩产——2026年底储能电芯建成产能1.2–1.5TWh、规划超2TWh（第一财经2026-09-07），BNEF预计2026年全球装机459GWh；比亚迪2026H1储能系统出货全球第一（InfoLink，比亚迪半年报），签Masdar 11.275GWh；宁德储能电池系统H1收入532.6亿（+87.5%）。②价格战——特斯拉能源Q2毛利率20.4%（上年30.3%，10-Q称Megapack单价下降）；Fluence Q3（2026-06季）毛利率5.1%；国内储能毛利个位数、公司主动放弃；电池出口退税2026-04-01由9%降至6%、2027-01-01取消。③毛利率被压回——公司储能2025年36.49%→2026H1 32.43%（−7.49pp），2025Q4约24%，管理层称不可能一直有40%、稳中有降。溢价仍在：高于宁德储能（23.96%）8.5pp、上能储能（27.05%）5.4pp，公司称较友商约10%品牌溢价；Wood Mackenzie 2025年BESS集成商综合排名第一。逆变器难复制：2024年全球出货份额25.2%对第二名24.8%（F&S），毛利率2024年30.9%→2025年34.7%→2026H1 42.7%逆势升；锦浪并网逆变器30.45%、上能光伏逆变器23.27%；11家逆变器储能企业H1归母109.07亿中阳光、德业、思格占95.4%。把握为中：若储能毛利率连续两个半年度≥34%，改回难复制。登记的可证伪条件（储能毛利率<25%）尚未触发。"
+ },
+ "demand_runway": {
+  "judgment": "结构扩张",
+  "driver": "储能：BNEF（2026-05）2025年全球新增112GW/307GWh，预计2026年158GW/459GWh（+41%）；F&S（H股资料2026-04）锂电储能新增装机2025–2030年CAGR 29.2%至1,164.7GWh；公司称2026H1全球140GWh（+30%）、欧洲+70–80%、未来三年年增30–50%；中国十五五规划2030年新型储能300GW；AIDC配储。光伏为存量波动：SPE预计2026年全球612GW（−8%，中国−24%），2027年恢复、2030年约864GW。",
+  "falsifier": "2027年全球储能新增装机（BNEF或CNESA口径）同比<15%，或公司2027年储能发货量低于2026年"
+ },
+ "price_decline_reason": "股价自2025-11-06高点209.88元跌至2026-09-30的82.49元（−61%）。主要因素：①美国政策——FCC于2026-07-28把境外产联网逆变器列入受管制清单（新型号不获授权，08-20再扩），EO 14420（2026-08-26，后编号14421）授权能源部禁止或附条件限制69kV以上大电网设备含储能与并网逆变器，细则2026-12-24前出台；公司称美国业务将逐步萎缩、不在美建厂，2025年美国子公司营收172.47亿（占19.3%）；2026-07-01（−13.9%，欧美融资限制传闻）、08-27（−12.2%，EO次日）两日大跌。②欧盟公共资金不支持使用高风险国家逆变器的项目（公司称约占欧洲20%）。③中报下滑：营收−28.99%、归母−32.01%、扣非−42.96%，国内光伏装机受136号文−66%、中东大项目高基数−91%，储能毛利率−7.49pp（碳酸锂涨价、竞争、人民币升值）。④2025年下半年储能与AIDC行情的估值回落。性质：行业政策与储能毛利正常化，非治理或财务恶化——经营现金流+8.75%、净现金约280亿、Q2归母环比+29.5%；汇兑损失约5.9亿与公允价值变动+6.7亿属金融项目，不进模型NOPAT；中报无追溯调整或重述。美国政策属§7.4产业政策重大变化。",
+ "conclusion": "不适用",
+ "conclusion_reason": "研究口径P/V 1.068（V 77.24）高于买入线1.0034，按规则填不适用；按股权桥反解（113.7亿）P/V 1.005，仍在买入线之上。生产带P/V 0.656来自过时的模型锚（2024年回报37.0%×已增约40%的经营账面），不是真实折价；也不是盈利崩塌式的价值陷阱（Q2扣非环比+10%、现金流增、净现金充足、逆变器毛利升），现价约等于Q2年化盈利（约114亿）下的公允价。建议：§9.3.6重点复核记「不通过」；可复制性改判易复制（储能），类别改为可复制成长型；登记研究数后与模型锚差距64%，按§7.3入队并冻结新增买入，差距复核建议采用研究数。改判为可买的条件：股价≤77.50元；或储能毛利率连续两个半年度≥32%且逆变器等≥38%（研究数升至≥113.9亿）；或2026年报模型口径NOPAT≥125亿且2027H1不回落；或EO 14420细则豁免既有产品与项目。反向：储能毛利率≤26%、美国收入明显萎缩或新能源开发继续亏损，研究数下修至约88亿（V 65.2）。",
+ "key_risks": [
+  "美国：EO 14420细则（2026-12-24前）可能禁止或附条件限制新增与已装储能、大电网逆变器；FCC停发新型号授权；安全港项目2028年后结束需满足非PFE；2025年美国子公司营收172.47亿（占19.3%）",
+  "储能价格战：2026年底电芯产能1.2–1.5TWh远超需求，比亚迪、宁德向系统集成延伸，特斯拉能源毛利率降至20.4%；电池出口退税2027年取消",
+  "碳酸锂价格波动（2026年13–16万元/吨）对存量固定价订单毛利的滞后冲击；欧元美元贬值带来汇兑损失（26H1约5.9亿）",
+  "国内光伏受136号文压制（26H1装机−66%），新能源开发亏损（26H1 −3.8亿）且电站开发存货增加10亿以上，存在减值风险",
+  "上行风险：若储能Q2约35%毛利与欧洲+50%需求延续、AIDC配储与SST在2027–2028年放量，正常化盈利可达2026E一致预期（模型口径约127亿），研究数偏低",
+  "模型层面：研究数未登记前，生产带P/V 0.656会让扫描持续把阳光电源列为低P/V候选（2026-09-28扫描P/V前十）"
+ ],
+ "sources": [
+  {
+   "title": "阳光电源2026年半年度报告",
+   "date": "2026-08-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-29/1225526948.PDF"
+  },
+  {
+   "title": "阳光电源投资者关系活动记录表20260828（中报业绩会）",
+   "date": "2026-08-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-29/1225534111.PDF"
+  },
+  {
+   "title": "阳光电源投资者关系活动记录表20260427（一季报）",
+   "date": "2026-04-28",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-28/1225223135.PDF"
+  },
+  {
+   "title": "阳光电源投资者关系活动记录表20260331（年报，Q4毛利率与2026年储能目标）",
+   "date": "2026-04-01",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-01/1225069456.PDF"
+  },
+  {
+   "title": "阳光电源投资者关系活动记录表20260701（美国安全港与欧盟融资限制）",
+   "date": "2026-07-02",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-02/1225404460.PDF"
+  },
+  {
+   "title": "阳光电源2026年一季度报告",
+   "date": "2026-04-28",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-28/1225208062.PDF"
+  },
+  {
+   "title": "阳光电源2025年年度报告（分部、季度、发货量）",
+   "date": "2026-04-01",
+   "url_or_path": "data/raw/annual_reports/300274/2025.pdf"
+  },
+  {
+   "title": "关于为子公司提供2026年度担保额度预计及对外担保的公告（美国阳光2025年经审计营收172.47亿）",
+   "date": "2026-04-01",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-01/1225066691.PDF"
+  },
+  {
+   "title": "阳光电源H股申请资料（更新版，英文；F&S份额、一致口径分部毛利率、储能CAGR）",
+   "date": "2026-04-24",
+   "url_or_path": "https://www1.hkexnews.hk/app/sehk/2026/108461/documents/sehk26042400514.pdf"
+  },
+  {
+   "title": "宁德时代2026年半年度报告（储能电池系统收入532.6亿、毛利率23.96%）",
+   "date": "2026-07-25",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-25/1225441586.PDF"
+  },
+  {
+   "title": "比亚迪2026年半年度报告（2026H1储能系统出货全球第一，Masdar 11.275GWh）",
+   "date": "2026-08-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-29/1225531835.PDF"
+  },
+  {
+   "title": "上能电气2026年半年度报告（储能变流器及集成毛利率27.05%）",
+   "date": "2026-08-27",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-27/1225509319.PDF"
+  },
+  {
+   "title": "锦浪科技2026年半年度报告（并网逆变器−41.99%、毛利率30.45%）",
+   "date": "2026-08-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-29/1225527766.PDF"
+  },
+  {
+   "title": "Tesla Form 10-Q, quarter ended 2026-06-30（能源毛利率20.4%对30.3%）",
+   "date": "2026-07-22",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001318605/000162828026049270/tsla-20260630.htm"
+  },
+  {
+   "title": "Fluence Energy Q3 FY2026 results（GAAP毛利率5.1%）",
+   "date": "2026-08-05",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001868941/000186894126000028/flncq3fy26earningspressrel.htm"
+  },
+  {
+   "title": "BloombergNEF Energy Storage Market Outlook 1H 2026（ess-news转述）",
+   "date": "2026-05-11",
+   "url_or_path": "https://www.ess-news.com/2026/05/11/bloombergnef-confirms-energy-storage-has-reached-the-100-gw-era/"
+  },
+  {
+   "title": "SolarPower Europe Global Market Outlook 2026-2030新闻稿",
+   "date": "2026-06-22",
+   "url_or_path": "https://www.solarpowereurope.org/press-releases/new-report-global-solar-market-hits-new-record-of-664-gw-installation-in-2025-as-global-solar-fleet-passes-3-tw"
+  },
+  {
+   "title": "pv magazine: Chinese inverter and BESS makers stress compliance as US restrictions widen（FCC 07-28、EO 14420）",
+   "date": "2026-09-03",
+   "url_or_path": "https://www.pv-magazine.com/2026/09/03/chinese-inverter-and-bess-makers-stress-compliance-as-us-restrictions-widen/"
+  },
+  {
+   "title": "Davis Wright Tremaine: EO 14420 bulk-power system equipment（细则2026-12-24前）",
+   "date": "2026-08-31",
+   "url_or_path": "https://www.dwt.com/blogs/energy--environmental-law-blog/2026/08/eo-14420-bulk-power-system-equipment"
+  },
+  {
+   "title": "财政部 税务总局公告2026年第2号（电池出口退税9%→6%，2027年取消）",
+   "date": "2026-01-10",
+   "url_or_path": "https://cn.chinadaily.com.cn/a/202601/10/WS69618e43a310942cc499ac4e.html"
+  },
+  {
+   "title": "第一财经：储能电芯结构性过剩风险（2026年底产能1.2–1.5TWh）",
+   "date": "2026-09-07",
+   "url_or_path": "https://www.yicai.com/news/103354684.html"
+  },
+  {
+   "title": "第一财经：11家逆变器储能企业上半年利润集中于阳光、德业、思格",
+   "date": "2026-09-04",
+   "url_or_path": "https://www.yicai.com/news/103347223.html"
+  },
+  {
+   "title": "中报后券商研报（国金08-30、东吴08-31、开源09-01、中邮09-05、华鑫09-27），东财reportapi只读",
+   "date": "2026-09-27",
+   "url_or_path": "https://reportapi.eastmoney.com/report/list?qType=0&code=300274；PDF：https://pdf.dfcfw.com/pdf/H3_AP202608301828731422_1.pdf 等"
+  },
+  {
+   "title": "SolarQuarter: Sungrow ranked first in Wood Mackenzie 2025 Global BESS Integrator and Solar Inverter comprehensive rankings",
+   "date": "2026-08-04",
+   "url_or_path": "https://solarquarter.com/2026/08/04/sungrow-tops-wood-mackenzie-global-rankings-for-bess-integrators-and-solar-inverter-manufacturers/"
+  },
+  {
+   "title": "仓库逐季面板、三大报表与生产池带",
+   "date": "2026-09-30",
+   "url_or_path": "data/raw/financials/2025-*.csv、2026-*.csv；data/raw/financials_statements/income.csv；data/processed/a_share_pool_model_bands_adopted.csv；data/experiments/exp_growth_reviews_20261001/inputs.json"
+  },
+  {
+   "title": "研究口径估值计算（本目录除权还原版 research_grid；research_grid.py 对已除权带拒算）",
+   "date": "2026-10-01",
+   "url_or_path": "data/experiments/exp_growth_reviews_20261001/research_grid_exright.py 300274:106.5,88.2,131.3"
+  }
+ ]
+}

@@ -1,0 +1,154 @@
+{
+ "security_code": "688278",
+ "security_name": "特宝生物",
+ "research_nopat_yi": 14.25,
+ "research_range_yi": [
+  13.35,
+  15.25
+ ],
+ "research_evidence_date": "2026-09-03",
+ "research_falsifier": "2026年报归母净利剔除ACT580首付款后低于10.9亿，或2027年上半年营收同比增速低于10%",
+ "research_source": "2026年半年报（公告日2026-08-19）：上半年归母4.77亿（Q1 1.645、Q2 3.12，Q2同比+27.0%），毛利率88.94%，销售费用率36.4%；增值税自2026-01-01由3%简易征收改13%一般计税（财税2026年第10号），与广东22省联盟集采价667.38元/支（2025-12-31起）、特尔津国采、益佩生医保支付标准853.20元/5mg均已在2026年数内。下半年归母按2025年同期6.03亿+16%≈7.0亿（收入+20%、毛利率88.5%、销售费用率35.5%、管理费用率10.1%、研发费用率10.3%、营业外−0.45亿、税率11%），2026E归母（剔除ACT580首付款2,500万美元，研发10年资本化口径下不进当期）11.8亿；÷(1−生产带minority_share 0.0000)+2.45亿（2025年报NOPAT 12.77−合并净利10.31，本目录annual_nopat.py研发10年资本化口径）=14.25亿。区间13.35～15.25亿对应归母10.9～12.8亿（下半年同比+2%～+33%）。同一产能口径：派格宾2025年产能443.30万支、产量477.57万支（利用率107.7%），2026H1库存商品0.47→0.81亿，未见产能卡量；不计可转债募投益佩生新线（2032年达产）。交叉核对（中报后）：国金08-19 26E归母12.41亿（含首付款费用化）、中国银河08-20 11.82亿、东海09-01 13.48亿（维持4月预测）、中信建投09-03 11.81亿，中位12.12亿；东财近六月平均26E EPS 3.026（约12.35亿）。",
+ "equity_bridge": {
+  "parent_yi": 11.8,
+  "minority_share": 0.0,
+  "annual_nopat_yi": 12.77,
+  "annual_net_profit_yi": 10.31
+ },
+ "research_v": 61.99,
+ "research_pv": 0.853,
+ "price_for_pv_1": 62.2,
+ "replicability": {
+  "judgment": "难复制",
+  "confidence": "中",
+  "evidence": "同类PEG-IFN：凯因科技培集成干扰素α-2注射液2026-01撤回上市申请，三元基因PEG集成干扰素突变体在II期（可转债上市公告书2026-08-11）；2025年1-3季度派格宾占国内PEG-IFN市场98.56%（米内网，罗氏约1.4%）；Y型40kD PEG修饰位点控制工艺与2025-10获批的HBsAg持续清除（临床治愈）确证性适应症构成壁垒，两年内无同类获批。价格由集采决定而非同业压价：均价707.64（2023）→624.55（2024）→600.04元/支（2025），22省联盟价667.38元/支。替代威胁：GSK bepirovirsen在华上市申请2026-03-30受理（2021年获突破性治疗），B-Well HBsAg≤3000功能性治愈19～20%、≤1000为25～28%（24周，无干扰素不良反应），预计2027年前后在华获批、最早约2028年进医保；浩博AHB-137自2025-07在国内III期。风险在2028年后的份额分流，而非两年内扩产压价，故维持难复制、把握中。"
+ },
+ "demand_runway": {
+  "judgment": "结构扩张",
+  "driver": "约7,500万HBV感染者、慢乙肝患者2,000～3,000万，诊断率22%、治疗率15%，《中国防治病毒性肝炎行动计划（2025—2030年）》目标2030年诊断率与新报告患者治疗率均≥80%；2024年PEG-IFN使用者不足10万人（<1%）；派格宾2025-10获批临床治愈适应症，APASL 2026指南列为一线（A1）并推荐核苷经治、HBsAg<1500者加用；派格宾销量2023→2025年252.91→515.18万支。生长激素为价格下行市场（长春高新2026H1归母−51.64%，金赛增执行医保价），益佩生只作补充。",
+  "falsifier": "2026年报产销量表抗病毒用药销量低于574万支（2025年521.41万支+10%），或bepirovirsen在华获批并进入国家医保目录"
+ },
+ "price_decline_reason": "2025-12-31收83.68→2026-09-30收52.89（−37%，期间派息0.62）。①增值税3%简易改13%一般计税（2026-01-01起，财税2026年第10号，01-30发文），同含税价净收入−8.85%，2026Q1归母−9.7%、H1毛利率−4.04pp，估算H1税前少1.3～1.6亿；②GSK bepirovirsen III期阳性（顶线2026-01-06、在华上市申请03-30受理、FDA优先审评PDUFA 2026-10-26、NEJM/EASL 05-28），削弱派格宾「唯一临床治愈药」溢价；③广东22省联盟集采667.38元/支、特尔津国采、益佩生医保降价；④可转债15.33亿（转股价58.56，全转摊薄6.4%）与ACT580首付款费用化，中报后一致预期26E由约12.9亿降至12.1亿。经营未恶化：H1含税口径营收约+33%，Q2归母+27%、扣非+33%。属§7.4所列产业政策与竞争格局变化，非公司经营恶化。",
+ "conclusion": "可买",
+ "conclusion_reason": "研究口径V 61.99、P/V 0.853（≤1.0034），与模型锚13.87亿差2.7%，不触发§7.3差距复核；利润放缓可归因于一次性税制下移与ACT580首付款，Q2已恢复+27%；两年内无同类PEG-IFN获批；现价对应研究数约12.45亿（介于新税制TTM约11.9亿与2025年报NOPAT 12.77亿之间），不含2026年增长；管理层2026-04～08回购1,082万股约6.1亿元（第二期52.62～57.20元）。改判条件（任一出现即改不可买并重做复核）：2026年报归母（剔除首付款）<10.9亿；年报抗病毒用药销量<574万支；bepirovirsen在华获批并进医保，或PEG-IFN国采/谈判降价>20%；2027H1营收同比<10%；股价>62.20即越过买入线。下行情景：增长在2028年后被新机制药打断，零增长EPV约36元。结论由用户按§9.3.6裁定。",
+ "key_risks": [
+  "替代：GSK bepirovirsen在华上市申请2026-03-30受理（突破性治疗），同一核苷经治低表面抗原人群24周功能性治愈19～28%，获批并进医保后分流派格宾；浩博AHB-137国内III期",
+  "单品依赖：派格宾约占收入80%，集采/医保继续降价（均价2023→2025年−15%，22省联盟价667.38元/支）",
+  "新税制下利润中枢下移（H1毛利率88.94%、净利率25.9%），高新技术企业15%税率等税收优惠变化",
+  "益佩生所在生长激素市场价格下行（长春高新2026H1归母−51.64%），可转债募投益佩生新线540万支/年的消化风险",
+  "销售费用率36～39%与《医药代表管理办法》（2026-05）下的合规风险；应收账款2025年末10.69亿（同比+39%），2026H1库存商品+72%",
+  "研发与引进投入上升：ACT580监管里程碑≤8,500万美元、销售里程碑≤3.35亿美元；可转债全额转股摊薄6.4%"
+ ],
+ "sources": [
+  {
+   "title": "特宝生物2026年半年度报告",
+   "date": "2026-08-19",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-19/1225480751.PDF"
+  },
+  {
+   "title": "特宝生物2026年第一季度报告",
+   "date": "2026-04-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-29/1225227422.PDF"
+  },
+  {
+   "title": "特宝生物2025年年度报告（分产品收入毛利、产销量、中标价）",
+   "date": "2026-03-27",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225038165.PDF"
+  },
+  {
+   "title": "向不特定对象发行可转债募集说明书（派格宾量价、产能利用率、竞争格局）",
+   "date": "2026-07-24",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-24/1225439631.PDF"
+  },
+  {
+   "title": "可转债审核问询函回复（22省联盟集采价、PEG-IFN份额、益佩生医保价与产能）",
+   "date": "2026-05-07",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-05-07/1225280720.PDF"
+  },
+  {
+   "title": "可转债上市公告书（凯因撤回上市申请、三元II期）",
+   "date": "2026-08-11",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-11/1225466479.PDF"
+  },
+  {
+   "title": "关于签署许可协议的公告（ACT580/ALG-000184）",
+   "date": "2026-04-17",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-17/1225112194.PDF"
+  },
+  {
+   "title": "提质增效重回报行动方案半年度评估报告（ACT201首例给药）",
+   "date": "2026-08-19",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-19/1225480762.PDF"
+  },
+  {
+   "title": "关于股份回购进展公告",
+   "date": "2026-09-02",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-09-02/1225540597.PDF"
+  },
+  {
+   "title": "2025年年度权益分派实施公告（每股0.62元）",
+   "date": "2026-05-23",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-05-23/1225327484.PDF"
+  },
+  {
+   "title": "财政部 税务总局关于增值税法施行后增值税优惠政策衔接事项的公告（2026年第10号）",
+   "date": "2026-01-30",
+   "url_or_path": "https://jiangsu.chinatax.gov.cn/art/2026/1/30/art_23636_12061.html"
+  },
+  {
+   "title": "GSK: Bepirovirsen accepted for regulatory review in China",
+   "date": "2026-03-30",
+   "url_or_path": "https://www.gsk.com/media/q3alopt2/china-nmp-file-acceptance.pdf"
+  },
+  {
+   "title": "Ionis/GSK: positive topline results from B-Well 1 and B-Well 2",
+   "date": "2026-01-06",
+   "url_or_path": "https://www.businesswire.com/news/home/20260106121974/en"
+  },
+  {
+   "title": "Ionis/GSK: bepirovirsen FDA Priority Review, PDUFA 2026-10-26",
+   "date": "2026-04-27",
+   "url_or_path": "https://www.businesswire.com/news/home/20260427721143/en"
+  },
+  {
+   "title": "AJMC: Bepirovirsen achieves clinically meaningful functional cure rates (EASL 2026/NEJM)",
+   "date": "2026-05-28",
+   "url_or_path": "https://www.ajmc.com/view/bepirovirsen-achieves-clinically-meaningful-functional-cure-rates-in-chronic-hepatitis-b"
+  },
+  {
+   "title": "新华网：浩博医药AHB-137 II期数据与III期进展",
+   "date": "2026-07-24",
+   "url_or_path": "https://www.news.cn/health/20260724/e0f798c59b1549c584d23a2972ffb0cf/c.html"
+  },
+  {
+   "title": "长春高新2026年半年度报告（金赛增执行医保价，归母−51.64%）",
+   "date": "2026-08-21",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-21/1225484232.PDF"
+  },
+  {
+   "title": "国金证券：益佩生商业化提速，二季度利润实现高增长",
+   "date": "2026-08-19",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608191828136626_1.pdf"
+  },
+  {
+   "title": "东海证券：核心产品放量，Q2业绩提速",
+   "date": "2026-09-01",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202609011828848267_1.pdf"
+  },
+  {
+   "title": "中信建投：核心产品持续放量 发行可转债注入发展新动能",
+   "date": "2026-09-03",
+   "url_or_path": "https://m.gelonghui.com/news/5305921"
+  },
+  {
+   "title": "东方财富F10盈利预测（中国银河08-20等机构明细、近六月平均）",
+   "date": "2026-10-01",
+   "url_or_path": "https://emweb.securities.eastmoney.com/PC_HSF10/ProfitForecast/PageAjax?code=SH688278"
+  },
+  {
+   "title": "仓库逐季面板与模型口径年度NOPAT",
+   "date": "2026-10-01",
+   "url_or_path": "data/raw/financials/2026-06-30.csv; data/experiments/exp_growth_reviews_20261001/annual_nopat.py; research_grid.py"
+  }
+ ]
+}

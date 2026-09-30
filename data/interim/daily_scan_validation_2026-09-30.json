@@ -1312,9 +1312,9 @@
   "source": "https://news.10jqka.com.cn/20260917/c680021075.shtml"
  },
  "rule_version": {
-  "workflow": "v4.225",
+  "workflow": "v4.228",
   "epoch": "E5",
-  "epoch_note": "策略纪元E5自2026-09-30起；E6自2026-10-08起（v4.224取消银行同尺系数、v4.225保险改按V_DDM×平滑银行G）"
+  "epoch_note": "策略纪元E5自2026-09-30起；E6自2026-10-08起（v4.224取消银行同尺系数、v4.225保险改按V_DDM×平滑银行G、v4.228成长股模块）"
  },
  "equity_bond": {
   "spread_pct": 6.37,
@@ -1339,7 +1339,9 @@
   "band_refresh_v4225": 27405148,
   "rescan_v4225": 27405149,
   "band_refresh_v4225_dossier_text": 27405521,
-  "rescan_v4225_dossier_text": 27405522
+  "rescan_v4225_dossier_text": 27405522,
+  "band_refresh_v4228": 27430686,
+  "rescan_v4228": 27430687
  },
  "resource_measurements": {
   "evidence_elapsed": "00:18:15",
@@ -1357,7 +1359,9 @@
   "band_refresh_v4224_elapsed": "00:03:12",
   "rescan_v4224_elapsed": "00:01:39",
   "band_refresh_v4225_elapsed": "00:03:24",
-  "rescan_v4225_elapsed": "00:02:07"
+  "rescan_v4225_elapsed": "00:02:07",
+  "band_refresh_v4228_elapsed": "00:05:13",
+  "rescan_v4228_elapsed": "00:01:52"
  },
  "known_limitations": [
   "行业高频与竞品数据部分缺失（动力煤价、煤炭固定资产投资、煤机招标、两轮车上险、空调排产）",
@@ -1367,5 +1371,26 @@
   "全市场收盘涨跌家数未取得",
   "10年国债与沪深300 PE的09-30观测截至扫描时未发布"
  ],
- "engine_cap_note": "OI-243：回测引擎单票上限余量以执行日净资产为分母，与§9.3.1及扫描器（信号日净资产）不一致；实盘清单不受影响，待用户裁定"
+ "engine_cap_note": "OI-243：回测引擎单票上限余量以执行日净资产为分母，与§9.3.1及扫描器（信号日净资产）不一致；实盘清单不受影响，待用户裁定",
+ "republish_v4228": {
+  "reason": "v4.226、v4.227 裁定后追加的决策日志行使发布凭据核验失败；v4.228 成长股模块、业务属性登记扩到173只与五只研究数／重点复核裁定",
+  "adopted_research": {
+   "300308": "V 98.33→311.12",
+   "300502": "V 68.05→174.01",
+   "300274": "V 125.78→77.24",
+   "605305": "V 45.35→41.24"
+  },
+  "growth_review_pass": [
+   "688278"
+  ],
+  "rejudged": {
+   "300274": "可复制成长型",
+   "605305": "稳定型"
+  },
+  "buy_line_count": "31→30",
+  "trend_qualified": 7,
+  "growth_gated": 0,
+  "plan": "空（可用资金为负）",
+  "verify": "通过"
+ }
 }

@@ -1,0 +1,184 @@
+{
+ "security_code": "300308",
+ "security_name": "中际旭创",
+ "research_nopat_yi": 195.66,
+ "research_range_yi": [
+  148.43,
+  252.65
+ ],
+ "research_evidence_date": "2026-09-28",
+ "research_falsifier": "2027年起任一季毛利率低于34%，或2028年报毛利率高于42%，或境外收入任一年同比降逾三成",
+ "research_source": "2026 年半年报（公告日 2026-08-22）减一季报：二季度营收 222.81 亿、毛利率 46.42%、归母 79.17 亿（扣非 73.74 亿，含上市供应链股权公允价值变动 5.37 亿与汇兑损失约 4 亿）；光模块上半年产能 2,215 万只、产量 1,886 万只，二季度产能 1,225.9 万只（年化约 4,900 万只）、利用率 84.3%；H 股招股书（2026-07-22）：高速产品毛利率 2023 年 37.5%、2024 年 35.8%、2025 年 43.3%、2026Q1 46.7%，硅光约占高速产品 70%，公司以约 80% 为目标利用率。同一产能口径：以二季度年化营收 891.3 亿为现有已投产产能基数，利用率 84.3%→80%，单位成本不变、价格回落到毛利率 38%（2023～2024 年高速产品 35.8%～37.5% 加硅光与 1.6T 先发约 1pp；二季度 46.4% 中约 8pp 视为 InP 激光器与 3nm DSP 紧缺带来的稀缺溢价，LightCounting 2026-04/07/08：紧缺可能延续到 2027 年中、缓解后降价加速、每家客户供应商由 2～3 家增到 5～7 家；野村 09-22 专家会：1.6T DSP 缺口至少到 2027 年下半年），营收约 731 亿；费用按上半年年化 45.0 亿（研发费用化）、减值 0.4%、其他收益与权益法收益 1.3 亿、净利息 1 亿、税率 14.5%、少数股东 7%（TeraHop 少数股东 33.69%），归母 184.5 亿；÷ (1 − 少数股东份额 0.0155) + 8.26 亿（2025 年报 NOPAT 124.06 − 合并净利 115.80，研发资本化口径）= 195.66 亿（§6.5.2.2 股权桥）。区间：毛利率 34%/利用率 75% → 归母 138.0 亿、148.43 亿；42%/85% → 240.6 亿、252.65 亿。对照：二季度年化归母 316.7 亿（扣非 294.8 亿）换算 329.9 亿，视为紧缺期峰值；中报后 4 家研报（开源 08-23、招银国际 08-24、交银国际 09-01、群益 09-23）归母 26E 323～360 亿、27E 547～726 亿，含未建成产能（27E 营收 1,568～2,206 亿）与现价毛利率 46.6%～48.5%，不作研究数；证据截至 2026-09-28（参议院法案）",
+ "equity_bridge": {
+  "parent_yi": 184.5,
+  "minority_share": 0.0155,
+  "annual_nopat_yi": 124.06,
+  "annual_net_profit_yi": 115.8
+ },
+ "research_v": 311.12,
+ "research_pv": 2.598,
+ "price_for_pv_1": 312.18,
+ "replicability": {
+  "judgment": "难复制",
+  "confidence": "中",
+  "evidence": "维持难复制，把握由高降为中。同业两年内能扩产：新易盛二季度营收环比 +51%；AAOI 800G/1.6T 月产能由约 20 万只增到 2026 年底约 65 万只（08-06）；Coherent 数据中心与通信分部营收同比 +58.6%（08-12）；英伟达 2026-03 各投 20 亿美元于 Coherent、Lumentum 锁定激光器产能；LightCounting 08-13：每家客户供应商由 2～3 家增到 5～7 家。紧缺缓解（2027 年中至下半年）后价格会被压，稀缺溢价约 8pp 已在研究数中剔除。难复制的是领先部分：头部毛利率领先二线国产厂商 10～20pp 已多年（2023 年起；2026H1 光迅 25.5%、剑桥 30.8%，AAOI 非 GAAP 29.8%），高速产品毛利率 2023～2024 年即达 35.8%～37.5%；云厂商 1.6T 份额仍给在位者（07-28、08-23 电话会）；2025 年高速数通份额 28.1%（CIC）。削弱因素：美国政策推动客户转向美国与盟友供应商；英伟达 CPO 供应链不含本公司"
+ },
+ "demand_runway": {
+  "judgment": "结构扩张",
+  "driver": "AI 资本开支：二季度四大云厂商资本开支 1,649 亿美元（+86%），Alphabet 2026 年指引上调到 1,950～2,050 亿美元并称 2027 年显著增加（07-22），Amazon 上调到约 2,200 亿美元；每颗 xPU 配光模块数上升，1.6T 向 2.4T、NPO（两家客户 2027 年下半年批量）升级；半年报引述全球光互连市场 2025 年 248 亿美元→2030 年 1,110 亿美元",
+  "falsifier": "北美四大云厂商次年资本开支指引低于当年，或光模块行业销售额连续两季同比下降"
+ },
+ "price_decline_reason": "06-22 收盘 1,382.33 元→09-30 808.44 元（−41.5%）：06-08 列入美国国防部 1260H 名单；07 月传二季度不及预期（07-10 −8.5%）与 1.6T 大幅降价（07-28 −15.7%），公司 07-12、07-28 否认；全球 AI 板块抛售；07-30 H 股以 980 港元上市，A 股当日 −9.15%；08-05 路透称 FCC 拟禁新型号中国光模块进口（−7.3%）；08-24 中报公布后首个交易日 −7.7%；09-28 参议院两党法案点名本公司（联邦国家安全系统采购，五年过渡），当日约 −9%；09-01～09-23 回购 49.97 亿元未止跌",
+ "conclusion": "不适用",
+ "conclusion_reason": "研究口径 V 311.12 元、P/V 2.598，高于买入线 1.0034；区间 P/V 1.93～3.57；即使按二季度年化 329.9 亿（紧缺期峰值）V 573.68 元、P/V 1.41 仍高于买入线；股价 ≤ 312.18 元时研究口径 P/V 才到 1.0034。计入 H 股发行与回购的粗略备考 V 约 336 元、P/V 约 2.4，结论不变",
+ "key_risks": [
+  "美国准入：06-08 列入 1260H；08-05 传 FCC 拟禁新型号中国光模块进口；09-28 参议院法案点名本公司；上半年境外收入占 94.8%、2026Q1 美国占 61.7%",
+  "稀缺溢价回吐：InP、DSP 紧缺 2027 年中至下半年缓解后降价加速，同业（新易盛、AAOI、Coherent、Lumentum、Fabrinet）2026～2027 年大幅扩产，每家客户供应商增到 5～7 家",
+  "周期修正：LightCounting 预计 2027 年资本开支增速由 70% 降到 30%，光模块销售额约领先资本开支半年转负；存货 198.26 亿、上半年经营现金流 18.00 亿，重复下单后有减值风险",
+  "技术路线：英伟达 Spectrum-X 共封装交换机 2026-08 全面量产，供应链不含本公司；NPO 2027 年下半年起量，份额未定",
+  "客户集中：前五大 2026Q1 占 81.9%，最大客户 25.1%",
+  "汇率与少数股东：美元资产汇兑损失上半年约 7 亿；TeraHop 少数股东 33.69%，上半年少数股东损益占 7.3%，高于生产带 minority_share 0.0155"
+ ],
+ "sources": [
+  {
+   "title": "中际旭创 2026 年半年度报告",
+   "date": "2026-08-22",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-22/1225491753.PDF"
+  },
+  {
+   "title": "中际旭创 2026 年第一季度报告",
+   "date": "2026-04-17",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-17/1225111941.PDF"
+  },
+  {
+   "title": "中际旭创 2025 年年度报告",
+   "date": "2026-03-31",
+   "url_or_path": "data/raw/annual_reports/300308/2025.txt.gz"
+  },
+  {
+   "title": "投资者关系活动记录表 20260823（中报电话会）",
+   "date": "2026-08-23",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-23/1225493952.PDF"
+  },
+  {
+   "title": "投资者关系活动记录表 20260728",
+   "date": "2026-07-28",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-28/1225445792.PDF"
+  },
+  {
+   "title": "投资者关系活动记录表 20260712",
+   "date": "2026-07-12",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-12/1225420582.PDF"
+  },
+  {
+   "title": "ZJ INNOLIGHT H 股招股章程（英文）",
+   "date": "2026-07-22",
+   "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0722/2026072200013.pdf"
+  },
+  {
+   "title": "关于悉数行使超额配售权的公告",
+   "date": "2026-08-27",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-27/1225515675.PDF"
+  },
+  {
+   "title": "关于股份回购结果暨股份变动公告",
+   "date": "2026-09-25",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-09-25/1225583167.PDF"
+  },
+  {
+   "title": "中报后券商预测（开源、招银国际、交银国际、群益；东财研报 API 与原文）",
+   "date": "2026-09-23",
+   "url_or_path": "data/experiments/exp_growth_reviews_20261001/300308_broker_forecasts.csv"
+  },
+  {
+   "title": "仓库面板：同业与本公司季度营收、归母、毛利率",
+   "date": "2026-08-30",
+   "url_or_path": "data/raw/financials/2026-06-30.csv"
+  },
+  {
+   "title": "模型口径逐年 NOPAT 与研究口径 V",
+   "date": "2026-10-01",
+   "url_or_path": "data/experiments/exp_growth_reviews_20261001/annual_nopat.py; research_grid.py"
+  },
+  {
+   "title": "LightCounting: Demand for optical connectivity continues to surprise",
+   "date": "2026-04",
+   "url_or_path": "https://www.lightcounting.com/newsletter/en/april-2026-market-forecast-379"
+  },
+  {
+   "title": "LightCounting: The industry supply chain remains red hot",
+   "date": "2026-07",
+   "url_or_path": "https://www.lightcounting.com/newsletter/en/july-2026-cloud-data-center-optics-385"
+  },
+  {
+   "title": "LightCounting: More Suppliers Switch to the Fast Lane as AI Boom Continues",
+   "date": "2026-08-13",
+   "url_or_path": "https://www.lightcounting.com/research-note/august-2026-more-suppliers-switch-to-the-fast-lane-as-ai-boom-continues-452"
+  },
+  {
+   "title": "野村光通信电芯片专家会纪要（新浪转载，下载后检索核对）",
+   "date": "2026-09-23",
+   "url_or_path": "https://finance.sina.cn/stock/jdts/2026-09-23/detail-inisvcqc5289959.d.html"
+  },
+  {
+   "title": "Coherent Q4 FY2026 results (8-K Ex.99.1)",
+   "date": "2026-08-12",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0000820318/000119312526346860/d128030dex991.htm"
+  },
+  {
+   "title": "Applied Optoelectronics Q2 2026 results (8-K Ex.99.1)",
+   "date": "2026-08-06",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001158114/000168316826006055/aaoi_ex9901.htm"
+  },
+  {
+   "title": "Fabrinet Q4 FY2026 results (8-K Ex.99.1)",
+   "date": "2026-08-17",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001408710/000140871026000026/fn-2026811xex991q426.htm"
+  },
+  {
+   "title": "Lumentum Q4 FY2026 results",
+   "date": "2026-08-11",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001633978/000162828026055726/lite_ex991xq4fy26.htm"
+  },
+  {
+   "title": "Nvidia to Invest $4 Billion in Data Center Optics Companies",
+   "date": "2026-03",
+   "url_or_path": "https://news.bloomberglaw.com/artificial-intelligence/nvidia-to-invest-4-billion-in-data-center-optics-companies-1"
+  },
+  {
+   "title": "Alphabet Q2 2026 earnings live coverage (CNBC)",
+   "date": "2026-07-22",
+   "url_or_path": "https://www.cnbc.com/2026/07/22/google-earnings-q2-goog-live-updates.html"
+  },
+  {
+   "title": "NVIDIA Spectrum-X Ethernet Photonics enters full production (StorageReview)",
+   "date": "2026-08-15",
+   "url_or_path": "https://www.storagereview.com/news/nvidia-spectrum-x-ethernet-photonics-enters-full-production-with-4x-fewer-lasers-and-a-five-vendor-cpo-supply-chain"
+  },
+  {
+   "title": "TrendForce: NVIDIA and Broadcom begin volume ramp of CPO switches",
+   "date": "2026-07-27",
+   "url_or_path": "https://www.trendforce.com/presscenter/news/20260727-13151.html"
+  },
+  {
+   "title": "Chinese Optical Module Stocks Fall After Report of Possible U.S. Import Ban (MarketScreener)",
+   "date": "2026-08-05",
+   "url_or_path": "https://www.marketscreener.com/news/chinese-optical-module-stocks-fall-after-report-of-possible-u-s-import-ban-ce7f50dfdd8bf427"
+  },
+  {
+   "title": "Senate bill seeks ban on Chinese optical transceivers from U.S. national security systems (ExecutiveGov)",
+   "date": "2026-09-28",
+   "url_or_path": "https://www.executivegov.com/articles/senate-bill-chinese-optical-transceivers-national-security-systems"
+  },
+  {
+   "title": "Pentagon adds 65 new entities to the 1260H list (WilmerHale)",
+   "date": "2026-06-11",
+   "url_or_path": "https://www.wilmerhale.com/en/insights/client-alerts/20260611-pentagon-adds-65-new-entities-to-the-1260h-list-of-chinese-military-companies"
+  },
+  {
+   "title": "仓库日线：股价与事件日涨跌",
+   "date": "2026-08-28",
+   "url_or_path": "data/raw/ohlcv/300308.csv; data/processed/daily_buy_candidates.csv（09-30 收盘）"
+  }
+ ]
+}

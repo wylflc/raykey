@@ -1,14 +1,15 @@
 {
   "as_of": "2026-09-30",
-  "generated_at_utc": "2026-09-30T12:51:02.111450+00:00",
-  "sha256": "b255641aa9d2910cf2a66bcd84b6458511f9f3771e6b5601a582dcb48a676b3c",
+  "generated_at_utc": "2026-09-30T21:31:01.937712+00:00",
+  "sha256": "85267fdcc6a11005b6e2d2f4542c045740e59a842e28b6f484f4d8499d4a6f2b",
   "inputs": {
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/a_share_earnings_forecasts.csv": "061ca950c944f282f39d58980482080f06ad1c7d896452dcc7fcecc883d94d56",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/a_share_report_disclosures.csv": "2e042fc78c69672f871767440938c09d295560ef80ae5b9383a4bbe970516378",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_attention_triage.csv": "40aeb91e690dee3a781597ba53b863a9578b8ef94b29df1fa1abc9fd5c6a3d67",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_watchlist_quality_tiers.csv": "d1c10250296b30cbb5a9ef3a75d08f61d59798be9db99d95c89c9ada7d3b9075",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_core_valuation_pool.csv": "8591e01ca3b4cdcd8538331cf6f77ee0004638b907a0ca5d9e1e54ebb6cf06e0",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_valuation_dossiers.csv": "73998063798a29bc44d7d65c60cabef7a5fc5001bb1ba76840d92ffbb0b7555c",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "82ee4a8fe73855357a8c809ae3c971254b3132c285cbb62c3edd7260920add28"
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_core_valuation_pool.csv": "40d4a8b5443a0b9084c397ab580087b230cfe9d82add38080f3595af9665aa11",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_valuation_dossiers.csv": "5fcf2c93f963a82c290b40e09f5520b937da43449ef13eec361c0dc9c0d3e8fa",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "161d460ca890f93222d00893cdfb74a3b6bf53b1d081902084a87de43da7dc70",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/structural_growth_review.csv": "0189901287f2c25368decefba19af8bc5e68cd0559f31cce9cb09f469de5a80b"
   }
 }

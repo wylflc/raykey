@@ -1,0 +1,62 @@
+{
+  "security_code": "300502",
+  "security_name": "新易盛",
+  "research_nopat_yi": 133.93,
+  "research_range_yi": [101.71, 175.97],
+  "research_evidence_date": "2026-09-29",
+  "research_falsifier": "2027年报毛利率≥46%（溢价持久，研究数偏低）或≤36%，或年报产量÷产能<75%（偏高）",
+  "research_source": "复核重述（2026-10-01，§6.5.2.2 同一产能口径；按经营口径直接推算，写法同亚钾国际）：2026 年半年报（公告日 2026-08-25）光互联产能 2,836 万只/年（2025 年报 1,747 万只）、上半年销量 1,119 万只、收入 208.83 亿、成本 107.64 亿（均价 1,866 元/只、单位成本 962 元/只、毛利率 48.46%），销售＋管理＋税金及附加年化 5.85 亿、研发年化 8.80 亿，所得税率 12.93%；汇兑损失 7.44 亿在财务费用内，模型口径剔除。常态化取毛利率 40%（2020、2022 年 400G 时代峰值 36.7% 加硅光／LPO／1.6T 先发约 3pp；2023 年 31.0%→2026H1 48.4% 的 17pp 抬升中约 8pp 视为稀缺溢价，按同业两年内扩产压回）与产能利用率 90%（2021～2025 年产量÷产能均值，含 2023 年 68%）。现有产能 2,836 万只 × 90% × 常态均价 1,603 元（962 ÷ 0.60，较上半年 −14%）= 收入 409.2 亿、毛利 163.7 亿，减销管税 5.85、研发 8.80、存货减值（收入 0.5%）2.05，加其他收益 0.35 → EBIT 147.3 亿 × (1 − 12.5%) = 128.9 亿，加研发资本化 (8.80 − 摊销 3.07) × 0.875 = 5.0 亿 → NOPAT 133.93 亿；区间 101.71 亿（毛利率 36.7%、利用率 80%）～175.97 亿（45%、95%）。股权桥交叉核对：归母当量 129.72 亿（常态经营利润加存款利息、零汇兑）÷ (1 − 0.0011) + 1.86 亿（2025 年报 NOPAT 97.39 − 合并净利 95.53）= 131.73 亿（−1.6%，差额主要是桥项扣掉了 2025 年 2.44 亿汇兑收益）。对照：2026Q2 年化模型 NOPAT 约 200 亿、TTM 约 133 亿（归母 131.19 亿过桥）；中报后 4 家研报（08-25～09-29，东财 API）归母中位 26E 197.5／27E 355.4／28E 541.6 亿，27–28E 以新增产能与激励目标（2027 年营收 ≥ 900 亿）为基础，按同一产能口径不进研究数。",
+  "equity_bridge": {"parent_yi": 129.72, "minority_share": 0.0011, "annual_nopat_yi": 97.39, "annual_net_profit_yi": 95.53},
+  "research_v": 174.01,
+  "research_pv": 2.236,
+  "price_for_pv_1": 174.60,
+  "replicability": {
+    "judgment": "难复制",
+    "confidence": "中",
+    "evidence": "维持登记，但只对份额与常态毛利成立，不对当前 48% 毛利成立。支持：①1.6T 须客户混插互通认证、周期长，新增供应商集中在 800G，1.6T 仅少数厂商能批量交付（旭创 IR 2026-07-28）；光博会与高盛调研（2026-09-14）称 800G 2027 年降价个位数、1.6T 维持 700 美元以上；②公司毛利率持续高于旭创（2026H1 48.44% 对 46.25%），来自硅光（Alpine）与 LPO 的物料路径差异；③公司为 LightCounting 2025 年全球第二、亚马逊 400G/800G 重要供应商（西南证券 2026-09-15 转引）。反对：①扩产不受资本约束——公司固定资产 41.09 亿即支撑 Q2 年化约 503 亿收入；旭创港股 IPO 基础募资约 534 亿港元（07-28 定价）并扩苏州／铜陵／成都／泰国，剑桥科技年化产能已达 600 万只、年内冲千万只，东山精密（索尔思）约 12 亿美元扩产（2026-06），Coherent 1.6T 由 2026 年约 200 万只增至 2027 年 700～800 万只（2026-09-15 调研）；②价格已松动：07-28 传部分厂商 1.6T 报 600 美元（现报价约 900～1,000 美元），公司 Q2 毛利率环比 −1.2pp（49.2%→48.0%）而旭创 +0.4pp，领先幅度由 3.1pp 收窄至 1.5pp；③2023→2026H1 毛利抬升为全行业同步（旭创 2024 年 33.8%→46.3%，上游源杰 2026H1 毛利率 80.4%），属短缺溢价特征；国产 200G EML 开始上量、东山已锁 2027 年 1,000 万颗 DSP，但高盛（09-14）认为 DSP 等物料仍可能限制 2027 年出货——溢价消退或慢于假设，对应区间上沿；④客户集中：2025 年前五大 72.3%、第一名 23.0%，大客户各新增 1～2 家备选。研究数已扣约 8pp 稀缺溢价；若 2027 年任两季毛利率 <38% 而行业需求仍增长，改判易复制。"
+  },
+  "demand_runway": {
+    "judgment": "结构扩张",
+    "driver": "AI 集群 scale-out／scale-up／scale-across 使每 GPU 光连接数上升，速率 800G→1.6T→3.2T 迭代：四大云厂二季度资本开支合计 1,701 亿美元，2026 年指引合计约 7,300 亿美元（亚马逊、Alphabet、Meta 于 7 月底上调；Alphabet 称 2027 年显著增加）；LightCounting（2026-07）以太网光模块 2026 年 +73% 并连续上修；高盛（2026-09-14）上调 2027／2028 年 800G+ 需求 39%／36% 至 1.44／1.71 亿只；scale-up 的 NPO 2027 年起批量、2028 年规模化（公司 IR 2026-09-11）",
+    "falsifier": "四大云厂 2027 年资本开支合计指引低于 2026 年实际，或主流机构下修 2027 年 800G+ 需求超 20%，或 2027 年 CPO 交换机出货超 15 万台（高盛预测 9.2 万）"
+  },
+  "price_decline_reason": "除权后高点 618.87 元（2026-07-01）→ 09-30 收盘 389 元（−37%），主因是市场重估稀缺溢价的持续性，而非需求下修：①07-28 传部分厂商 1.6T 报价降至 600 美元，旭创当日跌 15.69%，公司 07-27～07-30 由 491 元跌至 371 元（−24%）；②08-04 路透报道 FCC 起草禁止新型号中国光模块进口（9 月 FCC 定稿的设备授权新规未列入光模块，风险暂缓未消除）；③中报 Q2 毛利率环比 −1.2pp，上半年经营现金流 16.16 亿远低于净利 75.66 亿（存货增至 116.55 亿，其中原材料 54.04 亿）；④英伟达 Spectrum-X CPO 交换机开始出货并宣布量产（TrendForce 07-27、TechNews 08-15），替代担忧升温。同期四大云厂资本开支指引上调，公司称 2027 年需求已明确。",
+  "conclusion": "不适用",
+  "conclusion_reason": "研究口径 P/V 2.236（区间 3.054～1.634）高于买入线 1.0034，区间上沿 175.97 亿也不到买入线；P/V 降到 1.0034 需股价 ≤ 174.60 元。现价约为研究口径 V 的 2.2 倍，隐含市场按新增产能盈利（中报后研报 27E 归母中位 355 亿）或 48% 毛利长期维持定价，两者都超出同一产能口径的研究数。",
+  "key_risks": [
+    "稀缺溢价消退快于假设：旭创、剑桥、索尔思、Coherent 同步扩产，国产 200G EML 上量，1.6T 价格向 600～700 美元靠拢",
+    "CPO／NPO 替代：英伟达 Spectrum-X 与博通 Bailly CPO 交换机 2026 年进入量产，高盛预测 2026～2028 年 1 万／9.2 万／13.1 万台，按每台 64～128 个 800G 端口折算约为 2027 年 800G+ 需求的 4%～8%（本复核估算），2028 年起替代加深",
+    "美国监管：路透 08-04 报道的 FCC 新型号中国光模块禁令若恢复，份额可能转向 Coherent／Lumentum；公司 2026H1 境外收入占 97.9%",
+    "客户集中：2025 年前五大客户 72.3%、第一名 23.0%，大客户各新增 1～2 家备选供应商",
+    "资本开支周期：2023 年式消化期（产量÷产能 68%、毛利率 31.0%）；2026H1 存货 116.55 亿（原材料 54.04 亿）有跌价风险",
+    "汇率：美元收入为主，2026H1 汇兑损失 7.44 亿（不进 NOPAT，但影响股东回报与现金）"
+  ],
+  "sources": [
+    {"title": "新易盛 2026 年半年度报告（产能产量、分产品毛利、利润表、财务费用附注、存货附注）", "date": "2026-08-25", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-25/1225499406.PDF"},
+    {"title": "新易盛 2026 年第一季度报告（Q1 利润表，用于拆 Q2）", "date": "2026-04-24", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-24/1225172606.PDF"},
+    {"title": "新易盛 2025 年年度报告（产能 1,747 万只、前五大客户 72.34%、汇兑收益 2.44 亿）", "date": "2026-04-24", "url_or_path": "data/raw/annual_reports/300502/2025.txt.gz"},
+    {"title": "新易盛 2021～2024 年年度报告（历年产能、产量、销量、毛利率）", "date": "2022-04-22～2025-04-23", "url_or_path": "data/raw/annual_reports/300502/2021～2024.txt.gz"},
+    {"title": "新易盛 2026 年限制性股票激励计划（草案）：2026 年营收 ≥500 亿、2027 年 ≥900 亿", "date": "2026-08-21", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-21/1225486594.PDF"},
+    {"title": "新易盛投资者关系管理信息 20260911（半年度业绩说明会）", "date": "2026-09-12", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-09-12/1225562013.PDF"},
+    {"title": "新易盛投资者关系管理信息 20260719", "date": "2026-07-20", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-07-20/1225434243.PDF"},
+    {"title": "新易盛投资者关系管理信息 20260601", "date": "2026-06-02", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-06-02/1225346810.PDF"},
+    {"title": "仓库面板与三大报表（逐季归母、营收、毛利率；年度利润表）及 annual_nopat.py 模型口径 NOPAT", "date": "2026-09-30", "url_or_path": "data/raw/financials/2026-06-30.csv; data/raw/financials_statements/income.csv; data/experiments/exp_growth_reviews_20261001/annual_nopat.py"},
+    {"title": "开源证券：Q2 业绩亮眼，NPO 助力开启成长新曲线（26E/27E/28E 归母 193.24/351.39/536.50 亿）", "date": "2026-08-25", "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608251828397684_1.pdf"},
+    {"title": "国金证券：1.6T 光模块量价齐升（归母 228.29/541.61/610.12 亿，EPS 按旧股本 9.94 亿股）", "date": "2026-08-26", "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608261828447483_1.pdf"},
+    {"title": "西南证券：2026 年中报点评（归母 201.73/359.38/546.66 亿；LightCounting 2025 年排名、与旭创毛利对比）", "date": "2026-09-15", "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202609151829392357_1.pdf"},
+    {"title": "群益证券：NPO 产业发展加速（归母 179.61/331.14/524.91 亿）", "date": "2026-09-29", "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202609291829994966_1.pdf"},
+    {"title": "Coherent Q4 FY2026 results（GAAP 毛利率 38.5%，扩产）", "date": "2026-08-12", "url_or_path": "https://www.coherent.com/news/press-releases/fourth-quarter-and-fiscal-year-2026-results"},
+    {"title": "Motley Fool：四大云厂与甲骨文资本开支指引表（二季度后）", "date": "2026-08-03", "url_or_path": "https://www.fool.com/investing/2026/08/03/microsoft-and-amazon-won-the-ai-spending-week/"},
+    {"title": "Yahoo Finance：一季度后四大云厂 2026 年资本开支约 7,250 亿美元、Alphabet 称 2027 年显著增加", "date": "2026-04-30", "url_or_path": "https://finance.yahoo.com/markets/article/magnificent-7-earnings-rush-reveals-ai-spending-surge-with-hyperscaler-capex-set-to-reach-725-billion-in-2026-224901707.html"},
+    {"title": "财闻／同花顺：中际旭创回应 1.6T 价格传闻（新增供应商集中在 800G、订单到 2027 年、港股定价）", "date": "2026-07-29", "url_or_path": "https://stock.10jqka.com.cn/20260729/c678500267.shtml"},
+    {"title": "TechNews：中際旭創駁 1.6T 光模組 600 美元價格戰傳聞", "date": "2026-07-30", "url_or_path": "https://technews.tw/?p=1595569"},
+    {"title": "财闻／同花顺：高盛调研——800G 降价个位数、1.6T ≥700 美元、需求预测上调、CPO 交换机预测", "date": "2026-09-14", "url_or_path": "https://news.10jqka.com.cn/20260914/c679892072.shtml"},
+    {"title": "21 世纪经济报道：这一届光博会，光模块站到了「C 位」（剑桥科技、索尔思扩产，LightCounting 7 月预测）", "date": "2026-09-14", "url_or_path": "https://news.10jqka.com.cn/20260914/c679874039.shtml"},
+    {"title": "36 氪／格隆汇：Coherent 调研——2026／2027 年 800G、1.6T 出货与价格", "date": "2026-09-15", "url_or_path": "https://eu.36kr.com/en/p/3983266637118208"},
+    {"title": "TrendForce：NVIDIA 与 Broadcom CPO 交换机开始量产爬坡", "date": "2026-07-27", "url_or_path": "https://www.trendforce.com/presscenter/news/20260727-13151.html"},
+    {"title": "TechNews：輝達宣布 Spectrum-X 乙太網路矽光子交換機量產", "date": "2026-08-15", "url_or_path": "https://finance.technews.tw/2026/08/15/nvidia-announces-mass-production-of-spectrum-x-ethernet-silicon-photonics-switches/"},
+    {"title": "eWeek（转路透）：FCC 起草禁止新型号中国光模块进口", "date": "2026-08-05", "url_or_path": "https://www.eweek.com/news/fcc-chinese-optical-transceiver-ban-ai-data-centers/"},
+    {"title": "SCMP：FCC 设备授权新规定稿未列入光模块（具体日期未取到，页面 403，经搜索摘要）", "date": "2026-09", "url_or_path": "https://www.scmp.com/tech/big-tech/article/3367219/chinese-optical-transceiver-makers-dodge-us-ban-now-fcc-updates-rules"},
+    {"title": "Lightwave：LightCounting Optics for AI Clusters（CPO 2028 年起量）", "date": "2026-03-10", "url_or_path": "https://www.lightwaveonline.com/home/article/55362899/ai-scale-up-raises-the-stakes-for-transceivers-and-cpo-adoption"}
+  ]
+}

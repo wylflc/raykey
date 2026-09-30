@@ -19,7 +19,7 @@ from a_share_quotes import fetch_spot_quotes
 from a_share_signal_dates import evidence_iso_for_signal
 from fetch_a_share_dividends import adjust_for_ex_dividend, fetch_ex_dividend_events
 from screen_daily_volume_price_signals import (DEFAULT_HOLD_BANDS, DEFAULT_MODEL_BANDS, SEC93_GAIN_SELL,
-                                               SEC93_SWAP_EXT_GAIN, SEC93_SWAP_EXT_MA20,
+                                               SEC93_GROWTH_TRIM_PV, SEC93_SWAP_EXT_GAIN, SEC93_SWAP_EXT_MA20,
                                                fetch_daily_rows, holding_trim_signal, is_bank, resolve_live_band,
                                                load_worth_attention_codes, load_model_bands)
 from workflow_decision_log import WORKFLOW_VERSION, append_decision_log
@@ -166,7 +166,8 @@ def resolve_prices(codes: list[str], as_of: date,
     return out, ma20s, ma60s, label
 
 
-def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeout: float, *, snapshots=None, hold_bands=None, candidate_bands=None, members=None) -> list[dict[str, object]]:
+def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeout: float, *, snapshots=None, hold_bands=None, candidate_bands=None, members=None, growth=None) -> list[dict[str, object]]:
+    # `growth`：§9.3.6 成长股状态（扫描器同一份）；成长股持仓的卖出按 §9.3.1 成长股卖出行说明
     # Tests may supply module fixtures; normal calls always resolve their own date.
     selected_hold = hold_bands if hold_bands is not None else MODEL_BANDS
     selected_candidate = candidate_bands if candidate_bands is not None else CAND_BANDS
@@ -229,7 +230,16 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
         ma20 = ma20s.get(code)
         trim_rule, trim_why = holding_trim_signal(close, ma20, cost)
         gain = (close / cost - 1.0) if (close is not None and cost is not None and cost > 0) else None
-        if trim_rule == "涨幅减持":
+        growth_holding = growth is not None and (code in growth.growth or code in growth.exiting)
+        if growth is not None and code in growth.exiting:
+            notes.append("**成长股复核改判**：每日减一档直至清空，期间不买入（§9.3.1 成长股卖出行）")
+        elif growth_holding:
+            trim_rule = ""
+            if pv is not None and pv >= SEC93_GROWTH_TRIM_PV:
+                notes.append(f"**成长股估值减持一档**：持仓侧 `P/V` {pv:.2f} ≥ {SEC93_GROWTH_TRIM_PV:.1f}（§9.3.1 成长股卖出行）")
+            else:
+                notes.append(f"成长股（§9.3.6）：不做涨幅减持、不作换仓让位来源；持仓侧 `P/V` ≥ {SEC93_GROWTH_TRIM_PV:.1f} 时减一档")
+        elif trim_rule == "涨幅减持":
             notes.append(f"**涨幅减持一档**：较持仓均价 {cost:g} 涨幅 {gain:.0%} ≥ {GAIN_SELL:.0%}（不看走势）"
                          f"（§9.3.1 涨幅行）；资金不足时优先作换仓卖出源（涨幅最大者先）")
         elif trim_why:
@@ -243,7 +253,7 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
         ma60 = ma60s.get(code)
         stop_hit, stop_line = "停用", None
         # §9.3.1 换仓行（v4.222）：盈利 ≥ 30% 且收盘 ≥ MA20 × 1.15 → 资金不足一档且有未持仓合格候选时作换仓卖出源
-        if (close is not None and cost is not None and cost > 0 and ma20 and trim_rule != "涨幅减持"
+        if (not growth_holding and close is not None and cost is not None and cost > 0 and ma20 and trim_rule != "涨幅减持"
                 and close >= cost * (1.0 + SEC93_SWAP_EXT_GAIN) and close >= ma20 * (1.0 + SEC93_SWAP_EXT_MA20)):
             notes.append(f"**满足换仓让位条件**：盈利 {gain:.0%} ≥ {SEC93_SWAP_EXT_GAIN:.0%} 且收盘为 MA20 的 {close / ma20:.2f} 倍 ≥ "
                          f"{1 + SEC93_SWAP_EXT_MA20:.2f}（§9.3.1 换仓行；资金不足一档且有未持仓合格候选时减一档让位）")
@@ -430,7 +440,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     as_of = date.fromisoformat(args.as_of)
-    rows = track(args.holdings, args.valuation_pool, as_of, args.symbols, args.timeout)
+    from growth_stocks import load_growth_state
+    growth = load_growth_state(bands=load_model_bands(DEFAULT_MODEL_BANDS, as_of=evidence_iso_for_signal(as_of)))
+    rows = track(args.holdings, args.valuation_pool, as_of, args.symbols, args.timeout, growth=growth)
 
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", newline="", encoding="utf-8") as handle:
@@ -441,6 +453,8 @@ def main() -> None:
 
     gain_trim = []
     for r in rows:
+        if r["security_code"] in growth.growth or r["security_code"] in growth.exiting:
+            continue                      # §9.3.1 成长股卖出行：成长股不做涨幅减持
         c, k = to_float(r.get("close")), to_float(r.get("cost_basis"))
         rule, _why = holding_trim_signal(c, to_float(r.get("ma20")), k)
         if rule == "涨幅减持":

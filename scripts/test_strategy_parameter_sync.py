@@ -35,6 +35,9 @@ class StrategyParameterSyncTest(unittest.TestCase):
                           daily_scan.SEC93_EQUITY_BOND_RELEASE_THRESHOLD), (0.03, 0.3, 0.035))
         self.assertEqual(daily_scan.SEC93_EQUITY_BOND_DATA, ROOT / "data/reference/equity_bond_csi300.csv")
         self.assertEqual(daily_scan.DEFAULT_HOLD_BANDS, ROOT / "data/processed/a_share_pool_model_bands_hold.csv")
+        # v4.228（§9.3.6）：成长股总额上限 20%（只挡买入）、成长股持仓侧 P/V ≥ 2.0 每日减一档；只在生产，不进回测 BASE
+        self.assertEqual((daily_scan.SEC93_GROWTH_CAP, daily_scan.SEC93_GROWTH_TRIM_PV), (0.20, 2.0))
+        self.assertNotIn("--growth-cap", sweep.BASE)
 
     def test_backtest_baseline_matches_production(self) -> None:
         args = shlex.split(sweep.BASE)
@@ -232,6 +235,11 @@ class StrategyParameterSyncTest(unittest.TestCase):
         self.assertIn("任何减档后的余仓不足一手时清空", workflow)
         self.assertTrue(daily_scan.SEC93_L3_TACTICAL_GATE)
         self.assertIn("| L3 战术闸门 | `quality_tier = L3` 且分层表 `tactical_thesis` 为空或判「无／暂无／不可买」者不进合格集", workflow)
+        # v4.228：成长股两行与 §9.3.6 模块，阈值只在 §9.3.1 成文
+        self.assertIn(f"| 成长股总额上限 | 成长股（§9.3.6）持仓市值合计 ÷ 当日净资产 `N` ≥ {daily_scan.SEC93_GROWTH_CAP:.0%} 时不再买入成长股", workflow)
+        self.assertIn(f"| 成长股卖出 | 成长股（§9.3.6）持仓不做涨幅减持、不作换仓卖出源；持仓侧 `P/V ≥ {daily_scan.SEC93_GROWTH_TRIM_PV:.1f}` 时每日减一档", workflow)
+        self.assertIn("#### 9.3.6 成长股模块（独立于回测）", workflow)
+        self.assertIn("4. 成长股（§9.3.6）无有效的重点复核「通过」记录，或复核改判后仍有持仓。", workflow)
 
     def test_l3_tactical_gate_reads_tiers(self) -> None:
         import csv, tempfile

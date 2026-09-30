@@ -27,6 +27,7 @@ from workflow_decision_log import DEFAULT_DECISION_LOG, WORKFLOW_VERSION, append
 from pv_ratio import trading_pv  # noqa: E402  v4.62 OI-091：P/V 唯一实现
 from lot_cooldown import (CooldownBook, Opportunities, cooldown_skips,
                           DEFAULT_STATE as DEFAULT_COOLDOWN_STATE)
+from growth_stocks import DEFAULT_BUSINESS, DEFAULT_DOSSIERS, GrowthState, load_growth_state
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -477,6 +478,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--holdings", type=Path, default=SEC93_HOLDINGS)
     parser.add_argument("--triage", type=Path, default=SEC93_TRIAGE,
                         help="三类表：持仓不在 worth_attention 者按 §9.3.2 第 4 步每日减一档")
+    parser.add_argument("--business", type=Path, default=DEFAULT_BUSINESS,
+                        help="业务属性登记表（个人投资体系第 5.12 节）：§9.3.6 成长股")
+    parser.add_argument("--dossiers", type=Path, default=DEFAULT_DOSSIERS,
+                        help="逐票档案：§9.3.6 成长股重点复核记录")
     return parser.parse_args()
 
 
@@ -536,6 +541,9 @@ SEC93_SWAP_EXT_GAIN = 0.30     # §9.3.1「换仓」（v4.222，用户 2026-09-3
 SEC93_SWAP_EXT_MA20 = 0.15     #   且 ≥ MA20 × 1.15 的持仓中收盘 ÷ MA20 最大者；不比 P/V 边际、不要求弱势（回测 `--swap-ext 0.30 0.15 0`）
 SEC93_BT_QUIET = 3             # §9.3.1「新建仓走势」（v4.222）：近 3 个交易日（含信号日）最低价未创 20 日新低，
 SEC93_BT_LOW_WINDOW = 20       #   且信号日收盘 > MA5、> MA20（回测 `--bt-quiet 3`）；20 日新低 = 当日最低价为含当日 20 个交易日最低价的最小值
+SEC93_GROWTH_CAP = 0.20        # §9.3.1「成长股总额上限」（v4.228，用户 2026-10-01 裁定）：成长股（§9.3.6）持仓市值合计 ÷ N，只挡买入
+SEC93_GROWTH_TRIM_PV = 2.0     # §9.3.1「成长股卖出」（v4.228）：成长股持仓侧 P/V ≥ 此值每日减一档；不做涨幅减持、不作换仓卖出源。
+                               # 两个成长股常量只在生产执行，回测不复现（成文差异，不进 BASE）
 # §9.3.1「走势条件·加仓」，v3.02：已有持仓只须 `MA20 > MA60`，不要求 `收盘 > MA20`。
 # 新建仓按上面的前低企稳条件（v4.222 前为 `收盘 > MA20 > MA60`）。两者的差别只对**在手持仓**生效，故本脚本必须读持仓。
 # §9.3.1「止损」（v4.222）：不设价格止损；持仓表的 entry_stop_price 列保留作历史记录，不进任何判定。
@@ -955,7 +963,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                              counters: dict[str, int] | None = None,
                              holding_rows: list[dict[str, object]] | None = None,
                              sell_counters: dict[str, int] | None = None,
-                             exposure_cap: float | None = None, cap_cash: float | None = None) -> dict[str, object]:
+                             exposure_cap: float | None = None, cap_cash: float | None = None,
+                             growth: GrowthState | None = None) -> dict[str, object]:
     """§9.3.2 全部六步：先卖后买。
 
     卖出侧（第 4 步）逐持仓判（v4.222 起不设价格止损）：
@@ -967,6 +976,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     `holding_rows`：不在输入池内的持仓行情（出名单／无法估值者），只进卖出侧。
     `exposure_cap`／`cap_cash`：§9.3.1 股债总仓位上限受限期间给（上限、现金 − 融资负债）；此时预算不含授信，
     常规卖出后按持仓市值比例减仓至上限，每笔买入以买后总仓位 ≤ 上限为限（与回测 enforce_equity_bond_cap／equity_bond_buy_shares 同序同式）。
+    `growth`：§9.3.6 成长股登记与重点复核状态（只在生产，回测不复现）。成长股持仓不做涨幅减持、不作换仓卖出源，
+    持仓侧 P/V ≥ SEC93_GROWTH_TRIM_PV 减一档；改判的持仓每日减一档；无有效「通过」记录的不进合格集；买入受成长股总额上限。
     """
     holdings = holdings or {}
     counters = counters if counters is not None else {}
@@ -974,6 +985,7 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     buy_opportunities, sell_opportunities = Opportunities(counters), Opportunities(sell_counters)
     blocked = blocked or set()
     tactical_gated = tactical_gated or set()
+    growth = growth or GrowthState()
     tranche = nav * SEC93_TRANCHE_PCT
     held_codes = set(holdings)
     by_code: dict[str, dict[str, object]] = {str(r["security_code"]).zfill(6): r for r in rows}
@@ -1052,6 +1064,18 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
             sold = reduce_one(code, r, "出名单", "已移出 worth_attention，每日减一档直至清空", price)
             cash += sold * price
             continue
+        # §9.3.1 成长股卖出行（§9.3.6）：改判的每日减一档直至清空；成长股不做涨幅减持，持仓侧 P/V ≥ 线减一档
+        if code in growth.exiting:
+            sold = reduce_one(code, r, "成长股改判", "由结构成长型改判（§9.3.6 第 5 条），每日减一档直至清空", price)
+            cash += sold * price
+            continue
+        if code in growth.growth:
+            hpv = hold_pv_of(r)
+            if hpv is not None and hpv >= SEC93_GROWTH_TRIM_PV:
+                cond = f"成长股持仓侧 P/V {hpv:.4f} ≥ {SEC93_GROWTH_TRIM_PV:.1f}（不做涨幅减持）"
+                sold = reduce_one(code, r, "成长股估值减持", cond, price)
+                cash += sold * price
+            continue
         # ① 涨幅减持：涨幅 ≥ 110%，不看走势
         rule, why = holding_trim_signal(price, ma20, h.get("cost"))
         if rule:
@@ -1105,12 +1129,21 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                     and isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE
                     and trend_ok(r)
                     and str(r["security_code"]).zfill(6) not in blocked]
+    # §10.1 第 4 条（§9.3.6）：成长股无有效重点复核「通过」记录的不进合格集（不论走势，报告全列，供当晚复核）；
+    # 改判后仍有持仓的清仓期不买入
+    growth_out = [r for r in rows
+                  if growth.gated(str(r["security_code"]).zfill(6))
+                  and isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE]
+    growth_trend_fail = {str(r["security_code"]).zfill(6) for r in growth_out if not trend_ok(r)}
+    growth_hold_exit = {c for c in growth.exiting if c in held_codes}
     eligible = [
         r for r in rows
         if isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE
         and trend_ok(r)
         and str(r["security_code"]).zfill(6) not in blocked
         and str(r["security_code"]).zfill(6) not in tactical_gated
+        and not growth.gated(str(r["security_code"]).zfill(6))
+        and str(r["security_code"]).zfill(6) not in growth_hold_exit
         and (members is None or str(r["security_code"]).zfill(6) in members)
     ]
     eligible.sort(key=lambda r: r["model_pv"])
@@ -1134,6 +1167,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
             for hcode, h in holdings.items():
                 if hcode in reduced_today or hcode in regular_sold or float(h["shares"]) <= 0:
                     continue                                   # 当日已换仓或已涨幅减持的持仓不再作卖出源
+                if hcode in growth.growth or hcode in growth.exiting:
+                    continue                                   # §9.3.1 成长股卖出行：成长股持仓不作换仓卖出源
                 hr = by_code.get(hcode)
                 hp, hm20 = to_float((hr or {}).get("close")), to_float((hr or {}).get("ma20"))
                 if hp is None or hr.get("tradable") is False:
@@ -1218,6 +1253,11 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     # ---------------- 买入
     plan, capped, cooled = [], [], []
     eb_capped: list[dict] = []
+    growth_capped: list[tuple[dict, float]] = []
+    # §9.3.1 成长股总额上限：换仓卖出后的成长股持仓市值（信号日收盘），每笔成长股买入后累加
+    growth_value = sum(float(h["shares"]) * (marks.get(c) or 0.0) for c, h in holdings.items()
+                       if c in growth.growth and float(h["shares"]) > 0)
+    growth_value0 = growth_value
     eb_stock = stock_value() if exposure_cap is not None and valuation_complete else 0.0     # 换仓卖出后的持仓市值；每笔买入后累加
     for cand in picked:
         if not valuation_complete:
@@ -1238,6 +1278,12 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                 eb_capped.append(cand)
                 continue
             budget = min(budget, eb_room)
+        if code in growth.growth and SEC93_GROWTH_CAP and nav > 0:
+            growth_room = nav * SEC93_GROWTH_CAP - growth_value
+            if growth_room < lot_amount:
+                growth_capped.append((cand, growth_value / nav))
+                continue
+            budget = min(budget, growth_room)
         held_value = float(holdings.get(code, {}).get("shares", 0.0) or 0.0) * price
         room = None
         if SEC93_POSITION_CAP and nav > 0:
@@ -1261,6 +1307,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
         amount = lots * lot_amount
         cash -= amount
         eb_stock += amount
+        if code in growth.growth:
+            growth_value += amount
         plan.append({
             "trade_date": "",
             "security_code": code,
@@ -1355,6 +1403,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
             "dropped": dropped, "corr_unknown": corr_unknown,
             "eligible": eligible, "capped": capped, "cooled": cooled,
             "frozen_out": frozen_out, "tactical_out": tactical_out,
+            "growth_out": growth_out, "growth_trend_fail": growth_trend_fail, "growth_capped": growth_capped, "growth": growth,
+            "growth_value_before": growth_value0, "growth_value_after": growth_value,
             "n_cheap": n_cheap, "cash": cash, "tranche": tranche,
             "funds0": funds0, "funds_given": funds is not None, "exposure_cap": exposure_cap, "eb_sells": eb_sells, "eb_capped": eb_capped,
             "valuation_complete": valuation_complete, "unvalued_holdings": unvalued,
@@ -1415,6 +1465,7 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
           f"**已持仓只须 `MA20>MA60`**，其中 {result['n_addon']} 只是收盘不高于 MA20 的回踩加仓）；"
           f"§7.5 冻结硬排除 {len(result.get('frozen_out') or [])} 只；"
           f"L3 战术闸门排除 {len(result.get('tactical_out') or [])} 只；"
+          f"成长股待重点复核排除 {len(result.get('growth_out') or [])} 只；"
           f"相关性只列报告不过滤（上限 {SEC93_MAX_CORR:g}，剔除 {len(dropped)} 只）")
     for r in result["eligible"]:
         print(f"     {r['security_code']} {str(r.get('security_name', '')):<9}｜P/V {r['model_pv']:.4f}"
@@ -1423,6 +1474,13 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
     for tg in result.get("tactical_out") or []:
         print(f"     [L3 战术闸门排除·§9.3.1] {tg.get('security_name','')} P/V {tg['model_pv']:.2f}"
               f"（分层表 tactical_thesis 为空或判「无」；补判为条件式战术理由后按当日名次重入）")
+    growth_state = result.get("growth") or GrowthState()
+    for gr in result.get("growth_out") or []:
+        gcode = str(gr["security_code"]).zfill(6)
+        _status, why = growth_state.reviews.get(gcode, ("missing", "无重点复核记录"))
+        print(f"     [成长股待重点复核·§9.3.6] {gr.get('security_name','')} P/V {gr['model_pv']:.4f}｜{why}"
+              + ("｜可复制性把握低，复核须重判" if gcode in growth_state.low_confidence else "")
+              + ("｜走势条件当日未满足" if gcode in (result.get("growth_trend_fail") or set()) else ""))
     for fz in result.get("frozen_out") or []:
         print(f"     [冻结排除·review_pending] {fz.get('security_name','')} P/V {fz['model_pv']:.2f}"
               f"（两闸已开，待 §6.7 重建解冻后按当日名次重入）")
@@ -1474,6 +1532,12 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
               f"｜投入 {invested / 1e4:,.1f} 万（仓位 {invested / nav * 100:.1f}%）｜余 {result['cash'] / 1e4:,.1f} 万")
     for cand in result.get("eb_capped") or []:
         print(f"     [股债总仓位上限挡下] {cand.get('security_name','')} P/V {cand['model_pv']:.2f}｜买后总仓位将超 {result['exposure_cap']:.0%}，不足一手余量")
+    if growth_state.growth:
+        print(f"     成长股（§9.3.6）持仓市值 {float(result.get('growth_value_before') or 0) / nav:.1%} 净资产"
+              f"｜总额上限 {SEC93_GROWTH_CAP:.0%}（只挡买入）")
+    for cand, w in result.get("growth_capped") or []:
+        print(f"     [成长股总额上限挡下] {cand.get('security_name','')} P/V {cand['model_pv']:.2f}"
+              f"｜成长股持仓已占净资产 {w:.1%}，不足一手余量")
     for cand, w in result["capped"]:
         print(f"     [单票上限挡下] {cand.get('security_name','')} P/V {cand['model_pv']:.2f}"
               f"｜现持仓已占净资产 {w:.1%}，已达/不足一手可补至 {SEC93_POSITION_CAP:.0%} 上限，不加仓")
@@ -1567,6 +1631,7 @@ def run_execution(args, publication):
     members = load_worth_attention_codes(args.triage)
     blocked = load_blocked_codes(args.review_queue)
     tactical = load_tactical_gate_codes(args.tiers)
+    growth = load_growth_state(getattr(args, "business", None), getattr(args, "dossiers", None), bands)
     book = CooldownBook.load(args.cooldown_state, args.as_of, args.cooldown_executions)
     if book.executions.exists():
         inputs[str(book.executions.resolve())] = book.executions_hash
@@ -1608,10 +1673,11 @@ def run_execution(args, publication):
     import track_holdings_daily as tracker
     tracked = tracker.track(args.holdings, args.input, date.fromisoformat(args.as_of), '', args.timeout,
                             snapshots={r['security_code']: r for r in all_rows},
-                            hold_bands=hold_bands, candidate_bands=bands, members=members)
+                            hold_bands=hold_bands, candidate_bands=bands, members=members, growth=growth)
     result = section93_execution_plan(rows, args.nav, args.funds, holdings, blocked, tactical,
                                      members, counters['buy'], extra, sell_counters=counters['sell'],
-                                     exposure_cap=eb_cap, cap_cash=cash_now - debt_now if eb_cap is not None else None)
+                                     exposure_cap=eb_cap, cap_cash=cash_now - debt_now if eb_cap is not None else None,
+                                     growth=growth)
     result['eb'] = (dict(spread=eb_signal.spread, observed_on=eb_signal.observed_on, cap=eb_cap,
                          cash=cash_now, debt=debt_now, source=cash_source) if eb_signal else None)
     staged = {p: publication.stage(p) for p in (args.output_csv, args.plan_out, args.sell_out,
@@ -1671,8 +1737,9 @@ def main() -> int:
     args.publication = args.publication or args.plan_out.with_name('daily_execution_publication.json')
     args.evidence_proof = args.evidence_proof or ROOT / f'data/interim/daily_evidence_{args.as_of}.json'
     outputs = [args.output_csv, args.plan_out, args.sell_out, args.cooldown_state, args.tracking_out, args.log_file]
+    growth_inputs = [p for p in (getattr(args, "business", None), getattr(args, "dossiers", None)) if p is not None]
     input_paths = {p.resolve() for p in (args.input, args.holdings, args.triage, args.tiers, args.model_bands,
-                                        args.hold_bands, args.review_queue, args.evidence_proof,
+                                        args.hold_bands, args.review_queue, args.evidence_proof, *growth_inputs,
                                         args.cooldown_executions or args.cooldown_state.with_name('cooldown_executions.csv'))}
     if any(p.resolve() in input_paths for p in outputs):
         print('输入与发布路径不得重叠', file=sys.stderr)

@@ -139,6 +139,9 @@ def validate_inputs(args):
     paths.update(Path(p) for p in proof['inputs'])
     if DEFAULT_LEDGER.exists():
         paths.add(DEFAULT_LEDGER)
+    for extra in (getattr(args, 'business', None), getattr(args, 'dossiers', None)):   # §9.3.6 成长股登记与重点复核记录
+        if extra is not None and Path(extra).exists():
+            paths.add(Path(extra))
     if args.cash is None or args.debt is None:
         s.account_cash_debt(args.as_of, args.cash, args.debt)
         paths.add(s.SEC93_ACCOUNT_SNAPSHOT)
