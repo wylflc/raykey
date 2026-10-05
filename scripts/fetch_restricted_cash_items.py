@@ -12,6 +12,12 @@
 * 附注三行（其他流动资产、一年内到期的非流动资产、其他非流动资产）只有 `cash_note_items.csv` 核定为现金的部分
   进了超额现金，计入额以该行核定现金为限；其余现金类行以报表行值为限。
 * 以当期应付票据封顶在 `roic_inputs` 里做（同一份报表），本表只给 `counted_yuan`。
+* 货币资金类行原因笼统时（OI-257，用户 2026-10-05 裁定），改读货币资金附注与「现金和现金等价物」附注列出的受限货币资金分项：
+  分项期末值之和须与该行受限额相符；分项名含票据类原因的计入 `fallback_yuan`（并入 `counted_yuan`），混有借款质押保证金的
+  先减 `data/reference/restricted_cash_manual.csv` 登记的余额（按筹资活动逐年增减累计人工核定）。
+* 财务公司存放中央银行的法定存款准备金（OI-257）记 `reserve_yuan`：取受限分项，没有分项时取货币资金附注写明的期末额，
+  不以受限资产表为前提；同一受限行另写票据类原因而整行计入的，先从该行拆出。`roic_inputs` 不计超额现金、不进营运资金。
+* 抽取范围另加报表有吸收存款、发放贷款或财务公司利息收入的年报（准备金不受应付票据门槛限制）。
 
     python3 scripts/fetch_restricted_cash_items.py --plan
     python3 scripts/fetch_restricted_cash_items.py --workers 24        # 定位、下载（与现金附注共用缓存）、解析写表
@@ -42,9 +48,15 @@ ROOT = cn.ROOT
 OUT = ROOT / "data/reference/restricted_cash_items.csv"
 CASH_NOTES = cn.OUT
 MATERIALITY = 0.02            # 应付票据 ≥ 归母权益 × 2% 才抽取（与现金附注同一门槛）
+MANUAL = ROOT / "data/reference/restricted_cash_manual.csv"
 FIELDS = ["security_code", "security_name", "fiscal_year", "report_date", "notes_payable", "restricted_total",
           "cash_like_yuan", "counted_yuan", "generic_yuan", "loan_only_yuan", "items", "source", "status",
+          "fallback_yuan", "reserve_yuan", "reserve_source", "breakdown_source", "breakdown_items", "loan_pledge_manual_yuan",
           "announcement_date", "title", "url", "extracted_at_utc"]
+# 有财务公司迹象的报表字段（OI-257：法定存款准备金不受应付票据门槛限制）
+FINANCE_BALANCE_FIELDS = ("ACCEPT_DEPOSIT_INTERBANK", "ACCEPT_DEPOSIT", "LOAN_ADVANCE")
+FINANCE_INCOME_FIELD = "INTEREST_INCOME"
+INCOME = cn.STMT.parent / "income.csv"
 HEADING = re.compile(r"(?:^|\n)[ \t]*(?:(\d{1,3})\s*[、．.]\s*|[（(](?:[一二三四五六七八九十百]+|\d{1,3})[)）]\s*)"
                      r"所\s*有\s*权\s*(?:或\s*使\s*用\s*权\s*)?受\s*(?:到\s*)?限\s*(?:制\s*)?(?:的\s*)?资\s*产")
 NONE_STATED = re.compile(r"不存在(?:主要)?资产(?:被查封、扣押、冻结或者?被抵押、质押等)?(?:权利)?受限|无(?:所有权或使用权)?受限(?:制)?(?:的)?资产|不存在所有权或使用权受(?:到)?限(?:制)?")
@@ -74,9 +86,25 @@ LOAN_REASON = re.compile(r"借款|贷款|授信|融资")
 TOLERANCE = 0.005
 
 
+def finance_income(codes: set[str] | None) -> set[tuple[str, int]]:
+    """利润表有财务公司利息收入（`INTEREST_INCOME` > 0）的 (代码, 财年)。"""
+    out = set()
+    if not INCOME.exists():
+        return out
+    with INCOME.open(encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            code = row["security_code"].zfill(6)
+            if row["REPORT_DATE"][:10].endswith("12-31") and (not codes or code in codes) \
+                    and cn._num(row.get(FINANCE_INCOME_FIELD)) > 0:
+                out.add((code, int(row["REPORT_DATE"][:4])))
+    return out
+
+
 def plan(codes: set[str] | None, years: set[int] | None) -> list[dict]:
-    """(代码, 财年) 清单：一般企业模板年报、应付票据 ≥ 归母权益 × MATERIALITY（应付票据空白即 0）。"""
+    """(代码, 财年) 清单：一般企业模板年报，应付票据 ≥ 归母权益 × MATERIALITY（应付票据空白即 0），
+    或有财务公司迹象（吸收存款、发放贷款或财务公司利息收入，OI-257 法定存款准备金）。"""
     out = []
+    finance = finance_income(codes)
     with cn.STMT.open(encoding="utf-8-sig") as handle:
         for row in csv.DictReader(handle):
             if row.get("org_table") != "RPT_F10_FINANCE_GBALANCE" or not row["REPORT_DATE"][:10].endswith("12-31"):
@@ -85,7 +113,8 @@ def plan(codes: set[str] | None, years: set[int] | None) -> list[dict]:
             if year < cn.FIRST_YEAR or (codes and code not in codes) or (years and year not in years):
                 continue
             eq, notes = cn._num(row.get("TOTAL_PARENT_EQUITY")), cn._num(row.get("NOTE_PAYABLE"))
-            if eq > 0 and notes >= MATERIALITY * eq:
+            finance_signal = (code, year) in finance or any(cn._num(row.get(f)) > 0 for f in FINANCE_BALANCE_FIELDS)
+            if eq > 0 and (notes >= MATERIALITY * eq or finance_signal):
                 balance = {f: cn._num(row.get(f)) for f in set(BALANCE_FIELD.values())}
                 out.append(dict(code=code, name=row.get("SECURITY_NAME_ABBR", ""), year=year,
                                 report_date=row["REPORT_DATE"][:10], notes_payable=notes, balance=balance))
@@ -292,9 +321,9 @@ def parse_section(body: str, cash_note: bool = False) -> dict:
 
 
 def classify(rows: list[dict], task: dict, note_cash: dict) -> dict:
-    """现金类行按原因分三类；附注三行以核定现金为限，报表行以行值为限。"""
+    """现金类行按原因分三类；附注三行以核定现金为限，报表行以行值为限。`rows` 另回逐行行名、计数值、类别与原因。"""
     cash_like = counted = generic = loan = 0.0
-    items = []
+    items, detail = [], []
     for r in rows:
         if r["label"] not in CASH_ITEMS or r["value"] <= 0:
             continue
@@ -310,10 +339,254 @@ def classify(rows: list[dict], task: dict, note_cash: dict) -> dict:
         generic += value if cat == "generic" else 0.0
         loan += value if cat == "loan" else 0.0
         items.append(f"{r['label']}:{value:.2f}:{cat}")
-    return dict(cash_like=cash_like, counted=counted, generic=generic, loan=loan, items=";".join(items))
+        detail.append(dict(label=r["label"], value=value, cat=cat, reason=r["reason"]))
+    return dict(cash_like=cash_like, counted=counted, generic=generic, loan=loan, items=";".join(items), rows=detail)
 
 
-def parse_task(task: dict, meta: dict, note_cash: dict) -> dict:
+# OI-257：货币资金类行原因笼统时读受限分项（货币资金附注、「现金和现金等价物」附注），与法定存款准备金
+MONEY_LABELS = {"货币资金", "其他货币资金", "银行存款", "保证金存款"}
+RESERVE = re.compile(r"(?<!超额)(?:法定(?:存款)?(?:准备金|保证金)|存款准备金)(?!率)")
+SUB_LOAN = re.compile(r"借款|贷款|融资")
+SUB_KEY = re.compile(r"保证金|准备金|存单|定期存款|冻结|受限|质押|专户|担保|基金|专项")
+SUB_TOTAL = re.compile(r"合计|小计|总额|使用受到限制|使用权受到限制|受限制的|限制使用|不属于现金|对使用有限制|其中受限制|主要包括")
+MONEY_HEAD = re.compile(r"(?:^|\n)[ \t]*(?:注\s*释\s*)?(?:\d{1,3}\s*[、．.]|[（(](?:[一二三四五六七八九十百]+|\d{1,3})[)）])\s*"
+                        r"货\s*币\s*资\s*金(?![\u4e00-\u9fa5])")
+# 「主要为银行承兑汇票保证金、保函保证金…等，其中受限制资金为 X 元」：泛称的受限资金取前一分句的构成作行名
+RESTRICTED_PHRASE = re.compile(r"^(?:其中)?(?:使用)?受(?:到)?限(?:制)?(?:的)?(?:资金|存款|货币资金)$")
+PROSE_RESERVE = re.compile(r"存放中央银行[^。；;\d]{0,20}?法定(?:存款)?准备金[^。；;\d]{0,12}?"
+                           r"(\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?|\d+\.\d{1,2})\s*(百万元|万元|千元|元)")
+NEXT_NOTE = re.compile(r"\n[ \t]*(?:\d{1,3}\s*[、．.]|[（(](?:[一二三四五六七八九十]+|\d{1,3})[)）])\s*"
+                       r"(?:交易性|以公允|衍生|应收票据|应收账款|应收款项融资|结算备付|拆出|预付|买入返售)")
+CCE_HEAD = re.compile(r"现\s*金\s*(?:和|及)\s*现\s*金\s*等\s*价\s*物\s*(?:的\s*)?构\s*成|"
+                      r"不\s*属\s*于\s*现\s*金\s*及\s*现\s*金\s*等\s*价\s*物\s*的\s*货\s*币\s*资\s*金")
+UNIT_SUFFIX = re.compile(r"\s*(百万元|万元|千元|元)")
+# 「现金和现金等价物」附注片段止于其后的受限资产表或外币项目（否则受限资产表本身的货币资金行会与受限额自相符）
+CCE_STOP = re.compile(r"所\s*有\s*权\s*或\s*使\s*用\s*权|使\s*用\s*权\s*受\s*(?:到\s*)?限\s*(?:制\s*)?的\s*资\s*产|外\s*币\s*货\s*币\s*性\s*项\s*目")
+UNITS = {"元": 1.0, "千元": 1e3, "万元": 1e4, "百万元": 1e6}
+SUB_TOLERANCE = 0.002        # 分项期末值之和与受限额的容差（或 1 元）
+
+
+def sub_category(label: str) -> str:
+    """受限分项：法定存款准备金 → reserve；含票据类原因 → notes（混写借款的整项计入，借款部分靠人工核定先减）；
+    只写借款／贷款／融资 → loan；其余（保证金、冻结、质押存单等）→ generic。"""
+    if RESERVE.search(label):
+        return "reserve"
+    if NOTES_REASON.search(label):
+        return "notes"
+    return "loan" if SUB_LOAN.search(label) else "generic"
+
+
+# 表头与原因列的固定词（「项目 期末余额 期初余额」「不属于现金及现金等价物的理由 … 使用权受限」）不是分项名
+HEADER_WORDS = re.compile(r"项目|(?:上年)?(?:期末|期初|年末|年初)(?:余额|数|账面价值)?|(?:本期|上期)(?:金额|发生额)|"
+                          r"(?:不|仍)属于现金及现金等价物的理由|理由|受限(?:原因|类型|情况)|账面(?:余额|价值)|使用权受限|"
+                          r"不可随时支取|单位|币种|人民币|千元|万元|金额|元")
+AMOUNT_MODES = {"decimal": (cn.AMOUNT, r"(?<=[\d,.])[ \t]*\n[ \t]*(?=[\d,.])"), "integer": (cn.INTEGER, r"(?<=,)[ \t]*\n[ \t]*(?=\d)")}
+
+
+def _scrub(region: str) -> str:
+    """去页眉页脚、页码行、脚注标记、附注引用与行首序号（千元表的整数模式下它们会被当成金额）。"""
+    text = _clean(region)
+    text = re.sub(r"(?m)^[ \t]*\d{1,4}[ \t]*$", "", text)
+    text = re.sub(r"【\s*注\s*\d*\s*】|\[\s*注\s*\d*\s*\]|[（(]\s*(?:注\s*\d*|[a-zA-Z]{1,2})\s*[)）]", "", text)
+    text = re.sub(r"附注[一二三四五六七八九十\d、（）()．.\s]*", "", text)
+    return re.sub(r"(?m)^[ \t]*(?:\d{1,2}\s*[、．.](?!\d)|[（(]\d{1,2}[)）]|[①-⑳])", "", text)
+
+
+def labeled_rows(region: str, mode: str | None = None) -> list[dict]:
+    """附注片段 → [行名, 金额列, 显式单位]：长数字断行先拼回，相邻金额归同一行（期末在前）；行名取上一金额之后
+    最后一个标点之后的文字，去掉表头词、序号、脚注标记、附注引用与「为」等连接词。`mode` 缺省按 `cn._pattern` 判金额格式。"""
+    text = _scrub(region)
+    pattern, join = AMOUNT_MODES[mode] if mode else cn._pattern(text)
+    joined = re.sub(join, "", text)
+    rows: list[dict] = []
+    last = 0
+    for m in pattern.finditer(joined):
+        gap = joined[last:m.start()]
+        after = UNIT_SUFFIX.match(joined, m.end())
+        last = after.end() if after else m.end()
+        value = float(m.group().replace(",", ""))
+        if rows and re.fullmatch(r"[\s|/—\-]*", gap):
+            rows[-1]["amounts"].append(value)
+            continue
+        parts = re.split(r"[，。；;,:：！!？?]", re.sub(r"\s+", "", gap))
+        label = parts[-1]
+        # 上一行以完整分项名收尾（「理由」列重复行名，兖矿 2023）时只取金额所在行的文字；跨行断开的行名（「借款质押\n保证金」）仍取整段
+        lines = [x for x in (HEADER_WORDS.sub("", re.split(r"[，。；;,:：！!？?]", re.sub(r"[ \t]+", "", y))[-1])
+                             for y in gap.split("\n")[-2:]) if x] if "\n" in gap else []
+        restricted_phrase = RESTRICTED_PHRASE.match(re.sub(r"(?:为|约|共计)+$", "", HEADER_WORDS.sub("", label)))
+        if len(parts) > 1 and restricted_phrase and (NOTES_REASON.search(parts[-2]) or RESERVE.search(parts[-2])):
+            label = parts[-2]
+        elif len(lines) == 2 and not restricted_phrase and re.search(r"(?:保证金|准备金|存单|存款|基金|资金|款项)$", lines[0]) \
+                and (SUB_KEY.search(lines[1]) or RESERVE.search(lines[1])):
+            label = lines[1]
+        label = re.split(r"项目(?=期末|期初|年末|年初|本期|上期|账面|金额)", label)[-1]   # 表头「项目 期末数 …」之前是表题
+        label = HEADER_WORDS.sub("", label)
+        label = re.split(r"明细|如下|包括", label)[-1] or label      # 表题（「受限制的货币资金明细」「主要包括」）不并入首行
+        label = re.sub(r"^[、]*(?:其中|减|加)?", "", label)
+        label = re.sub(r"(?:为|约|共计)+$", "", label)
+        rows.append(dict(label=label, amounts=[value], unit=UNITS[after.group(1)] if after else None))
+    return rows
+
+
+def find_breakdown(rows: list[dict], target: float, unit_hint: float | None) -> dict | None:
+    """连续受限分项行（各取期末值）之和与 target 相符（SUB_TOLERANCE 或 1 元）的最长窗口；合计类行跳过，
+    非分项行截断窗口。两列表里只有一个金额的行可能是期末空白（只剩期初），至多 3 行按 0 计再试。
+    表格行按提示单位（无则依次试元、万元、千元、百万元），散文行按其后写明的单位。"""
+    if target <= 0:
+        return None
+    kinds = ["total" if SUB_TOTAL.search(r["label"]) else "item" if SUB_KEY.search(r["label"]) or RESERVE.search(r["label"])
+             else "break" for r in rows]
+    tol = max(SUB_TOLERANCE * target, 1.0)
+    for unit in [u for u in dict.fromkeys([unit_hint, 1.0, 1e4, 1e3, 1e6]) if u]:
+        best: tuple[int, float, list[int], set[int]] | None = None      # (分项数, 偏差, 窗口, 按期末空白计 0 的行)
+        for i in range(len(rows)):
+            if kinds[i] != "item":
+                continue
+            picked: list[int] = []
+            for j in range(i, len(rows)):
+                if kinds[j] == "break":
+                    break
+                if kinds[j] == "total":
+                    continue
+                picked.append(j)
+                values = {k: rows[k]["amounts"][0] * (rows[k]["unit"] or unit) for k in picked}
+                two_col = any(len(rows[k]["amounts"]) >= 2 for k in picked)
+                single = [k for k in picked if len(rows[k]["amounts"]) == 1 and not rows[k]["unit"]] if two_col else []
+                diff, blank = min(((abs(sum(v for k, v in values.items() if k not in c) - target), set(c))
+                                   for size in range(0, min(3, len(single)) + 1) for c in combinations(single, size)),
+                                  key=lambda x: (x[0], len(x[1])))
+                if diff <= tol:
+                    key = (len(picked) - len(blank), -diff)
+                    if best is None or key > (best[0], -best[1]):
+                        best = (len(picked) - len(blank), diff, list(picked), blank)
+        if best:
+            _, _, picked, blank = best
+            return dict(unit=unit, items=[dict(label=rows[j]["label"], value=rows[j]["amounts"][0] * (rows[j]["unit"] or unit),
+                                               cat=sub_category(rows[j]["label"])) for j in picked if j not in blank])
+    return None
+
+
+def cash_note_region(text: str, monetary: float) -> tuple[str, float | None, str | None, bool] | None:
+    """货币资金附注（标题至下一报表项目附注）→ (片段, 单位, 金额格式, 是否经报表核对)。先找表内有金额与资产负债表货币资金相符
+    （1% 或 100 万元）的一处，以此认位置、单位与金额格式（千元表里夹汇率、利率等两位小数时 `cn._pattern` 会误判为小数格式，
+    两种都试）；报表行值已被其后年报重述（兖矿 2019、2022，中材国际 2020）而认不上时，退取附注正文起点后首个带表头的
+    货币资金附注，单位只认写明的「单位：」。"""
+    start = cn.notes_start(text)
+    heads = list(MONEY_HEAD.finditer(text, start)) or list(MONEY_HEAD.finditer(text))
+    bodies = []
+    for m in heads:
+        body = text[m.end():m.end() + 8000]
+        stop = NEXT_NOTE.search(body)
+        bodies.append(body[:stop.start()] if stop else body[:5000])
+    if monetary > 0:
+        for body in bodies:
+            head = _scrub(body[:3000])
+            for mode in ("decimal", "integer"):
+                pattern, join = AMOUNT_MODES[mode]
+                values = [float(x.replace(",", "")) for x in pattern.findall(re.sub(join, "", head))]
+                for unit in dict.fromkeys([cn._unit(body) or 1.0, 1.0, 1e3, 1e4, 1e6]):
+                    if any(abs(v * unit - monetary) <= max(0.01 * monetary, 1e6) for v in values):
+                        return body, unit, mode, True
+    for body in bodies:
+        if cn.HEADER.search(body[:300]):
+            return body, cn._unit(body), None, False
+    return None
+
+
+def standalone_reserve(regions: list[tuple], monetary: float, text: str = "") -> tuple[float, str]:
+    """货币资金附注或「现金和现金等价物」附注写明的法定存款准备金期末额（首个，散文按写明单位、表格按附注单位）；
+    附注位置认不出时，取附注正文起点之后首个「存放中央银行…法定存款准备金…X 元」散文。须为正且不超过资产负债表货币资金。"""
+    for source, body, unit, mode, validated in regions:
+        for r in labeled_rows(body, mode):
+            if RESERVE.search(r["label"]) and not SUB_TOTAL.search(r["label"]):
+                if not (r["unit"] or validated or cn._unit(body)):
+                    continue                                   # 单位不明（报表未核上、也没写「单位：」）不取
+                value = r["amounts"][0] * (r["unit"] or unit or 1.0)
+                if 0 < value <= monetary * 1.001:
+                    return value, source
+    if text:
+        flat = re.sub(r"\s+", "", text[cn.notes_start(text):])
+        m = PROSE_RESERVE.search(flat)
+        if m:
+            value = float(m.group(1).replace(",", "")) * UNITS[m.group(2)]
+            if 0 < value <= monetary * 1.001:
+                return value, "prose"
+    return 0.0, ""
+
+
+def cash_note_breakdown(text: str, task: dict, detail: list[dict], generic: float, manual_loan: float) -> dict:
+    """OI-257：受限资产表货币资金类行原因笼统时，按受限分项补计票据类保证金（先减人工核定的借款质押余额）；
+    法定存款准备金取分项，没有分项时取附注写明的期末额；整行计入的票据类行写明准备金时先拆出。"""
+    monetary = task["balance"].get("MONETARYFUNDS") or 0.0
+    money = [r for r in detail if r["label"] in MONEY_LABELS]
+    g_gen = sum(r["value"] for r in money if r["cat"] == "generic")
+    g_all = sum(r["value"] for r in money)
+    n_money = sum(r["value"] for r in money if r["cat"] == "notes")
+    notes_with_reserve = sum(r["value"] for r in money if r["cat"] == "notes" and RESERVE.search(r["reason"]))
+    generic_with_reserve = any(r["cat"] == "generic" and RESERVE.search(r["reason"]) for r in money)
+    regions: list[tuple] = []                             # (来源, 片段, 单位, 金额格式, 单位是否经报表核对)
+    note = cash_note_region(text, monetary)
+    if note:
+        regions.append(("cash_note", *note))
+    for m in CCE_HEAD.finditer(text):                   # 现金流量表附注可在报表项目注释起点之前（格力 2021、2022）
+        body = text[m.end():m.end() + 2500]
+        stop = CCE_STOP.search(body)
+        body = body[:stop.start()] if stop else body
+        regions.append(("cce", body, cn._unit(body) or (note[1] if note and note[3] else None), None, bool(note and note[3])))
+    out = dict(fallback=0.0, reserve=0.0, carve=0.0, manual=0.0, reserve_source="", breakdown_source="", breakdown_items="")
+    # 受限资产表货币资金类行的原因只写法定存款准备金（茅台 2021）：整行即准备金
+    reserve_rows = sum(r["value"] for r in money if r["cat"] == "generic" and RESERVE.search(r["reason"])
+                       and not re.search(r"保证金|质押|冻结|存单|定期|借款|贷款|融资|诉讼|其他", RESERVE.sub("", r["reason"])))
+    found = None
+    if g_gen > 0 or notes_with_reserve > 0:
+        for target, scope in ((g_gen, "generic"), (g_all, "all")):
+            # 各附注都相符时取泛称（generic）分项最少的一份
+            cands = [(source, scope, bd) for source, body, unit, mode, _ in regions
+                     if (bd := find_breakdown(labeled_rows(body, mode), target, cn._unit(body) or unit))]
+            if cands:
+                found = min(cands, key=lambda c: sum(i["value"] for i in c[2]["items"] if i["cat"] == "generic"))
+                break
+    if found:
+        source, scope, bd = found
+        notes_sum = sum(i["value"] for i in bd["items"] if i["cat"] == "notes")
+        out["manual"] = min(manual_loan, notes_sum)
+        notes_net = notes_sum - out["manual"]
+        out["fallback"] = notes_net if scope == "generic" else min(max(0.0, notes_net - n_money), g_gen)
+        reserve = sum(i["value"] for i in bd["items"] if i["cat"] == "reserve")
+        if reserve > 0:
+            out["reserve"], out["reserve_source"] = reserve, f"breakdown:{source}"
+        out["breakdown_source"] = f"{source}:{scope}"
+        out["breakdown_items"] = ";".join(f"{i['label']}:{i['value']:.2f}:{i['cat']}" for i in bd["items"])
+    if out["reserve"] <= 0 and reserve_rows > 0:
+        out["reserve"], out["reserve_source"] = reserve_rows, "restricted_table"
+    if out["reserve"] <= 0:
+        out["reserve"], out["reserve_source"] = standalone_reserve(regions, monetary, text)
+    if notes_with_reserve > 0 and out["reserve"] > 0 and not (found and found[1] == "generic"):
+        out["carve"] = min(out["reserve"], notes_with_reserve)
+    in_generic = (found and found[1] == "generic" and out["reserve_source"].startswith("breakdown")) or generic_with_reserve \
+        or out["reserve_source"] == "restricted_table"
+    out["generic"] = max(0.0, generic - out["fallback"] - (max(0.0, out["reserve"] - out["carve"]) if in_generic else 0.0))
+    return out
+
+
+def load_manual(path: Path | None = None) -> dict[tuple[str, int], float]:
+    """`restricted_cash_manual.csv` → {(代码, 财年): 混在票据类保证金里的借款质押保证金余额（元）}（OI-257 人工核定）。"""
+    path = path or MANUAL
+    out: dict[tuple[str, int], float] = {}
+    if path.exists():
+        with path.open(encoding="utf-8") as handle:
+            for r in csv.DictReader(handle):
+                out[(r["security_code"].zfill(6), int(r["fiscal_year"]))] = cn._num(r.get("loan_pledge_yuan"))
+    return out
+
+
+def _extra_fields(extra: dict) -> dict:
+    return dict(fallback_yuan=f"{extra['fallback']:.2f}", reserve_yuan=f"{extra['reserve']:.2f}",
+                reserve_source=extra["reserve_source"], breakdown_source=extra["breakdown_source"],
+                breakdown_items=extra["breakdown_items"], loan_pledge_manual_yuan=f"{extra['manual']:.2f}")
+
+
+def parse_task(task: dict, meta: dict, note_cash: dict, manual: dict | None = None) -> dict:
     stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
     day = re.search(r"finalpage/(\d{4}-\d{2}-\d{2})/", meta.get("url", ""))
     row = dict(security_code=task["code"], security_name=task["name"], fiscal_year=task["year"],
@@ -323,26 +596,32 @@ def parse_task(task: dict, meta: dict, note_cash: dict) -> dict:
     if meta.get("status") != "ok":
         return dict(row, status=meta.get("status", "missing"))
     text = gzip.decompress((cn.CACHE / task["code"] / f"{task['year']}.txt.gz").read_bytes()).decode("utf-8")
+    manual_loan = (manual or {}).get((task["code"], task["year"]), 0.0)
+
+    def reserve_only(**fields) -> dict:            # 受限资产表未核定：只取法定存款准备金（不以该表为前提）
+        return dict(row, **fields, **_extra_fields(cash_note_breakdown(text, task, [], 0.0, 0.0)))
+
+    def counted(c: dict, **fields) -> dict:
+        extra = cash_note_breakdown(text, task, c["rows"], c["generic"], manual_loan)
+        return dict(row, **fields, status="ok", cash_like_yuan=f"{c['cash_like']:.2f}",
+                    counted_yuan=f"{c['counted'] + extra['fallback'] - extra['carve']:.2f}",
+                    generic_yuan=f"{extra['generic']:.2f}", loan_only_yuan=f"{c['loan']:.2f}", items=c["items"],
+                    **_extra_fields(extra))
     found = find_section(text)
     if found is None:
         prose = prose_margins(text)
         if prose is not None:
-            c = classify(prose["rows"], task, note_cash)
-            return dict(row, source="cash_prose", status="ok", restricted_total=f"{prose['total']:.2f}",
-                        cash_like_yuan=f"{c['cash_like']:.2f}", counted_yuan=f"{c['counted']:.2f}",
-                        generic_yuan=f"{c['generic']:.2f}", loan_only_yuan=f"{c['loan']:.2f}", items=c["items"])
-        return dict(row, status="none_stated" if NONE_STATED.search(re.sub(r"\s+", "", text)) else "section_not_found")
+            return counted(classify(prose["rows"], task, note_cash), source="cash_prose", restricted_total=f"{prose['total']:.2f}")
+        return reserve_only(status="none_stated" if NONE_STATED.search(re.sub(r"\s+", "", text)) else "section_not_found")
     body, source = found
     if re.match(r"[:：]?(?:□适用)?√?不适用|[:：]?无[。；;]?(?:$|[^\u4e00-\u9fa5])", re.sub(r"\s+", "", body)):
-        return dict(row, source=source, status="none_stated")
+        return reserve_only(source=source, status="none_stated")
     parsed = parse_section(body, cash_note=source == "cash_note")
     if parsed["status"] != "ok":
-        return dict(row, source=source, status=parsed["status"],
-                    restricted_total=f"{parsed['total']:.2f}" if parsed.get("total") is not None else "")
-    c = classify(parsed["rows"], task, note_cash)
-    return dict(row, source=source + ("+rescue" if parsed.get("rescued") else ""), status="ok", restricted_total=f"{parsed['total']:.2f}",
-                cash_like_yuan=f"{c['cash_like']:.2f}", counted_yuan=f"{c['counted']:.2f}",
-                generic_yuan=f"{c['generic']:.2f}", loan_only_yuan=f"{c['loan']:.2f}", items=c["items"])
+        return reserve_only(source=source, status=parsed["status"],
+                            restricted_total=f"{parsed['total']:.2f}" if parsed.get("total") is not None else "")
+    return counted(classify(parsed["rows"], task, note_cash), source=source + ("+rescue" if parsed.get("rescued") else ""),
+                   restricted_total=f"{parsed['total']:.2f}")
 
 
 def load_existing() -> dict[tuple[str, int], dict]:
@@ -411,16 +690,19 @@ def main() -> int:
         path = cn.CACHE / t["code"] / f"{t['year']}.json"
         if (t["code"], t["year"]) not in metas:
             metas[(t["code"], t["year"])] = json.loads(path.read_text()) if path.exists() else dict(status="not_fetched")
-    note_cash = load_note_cash()
+    note_cash, manual = load_note_cash(), load_manual()
     results = {}
     for t in tasks:
         meta = metas[(t["code"], t["year"])]
-        results[(t["code"], t["year"])] = parse_task(t, meta, note_cash)
+        results[(t["code"], t["year"])] = parse_task(t, meta, note_cash, manual)
         if args.show and meta.get("status") == "ok":
             text = gzip.decompress((cn.CACHE / t["code"] / f"{t['year']}.txt.gz").read_bytes()).decode("utf-8")
             found = find_section(text)
             print(t["code"], t["year"], json.dumps(parse_section(found[0], found[1] == "cash_note") if found else None,
                                                    ensure_ascii=False, indent=1))
+            r = results[(t["code"], t["year"])]
+            print("  受限分项", {k: r.get(k) for k in ("counted_yuan", "fallback_yuan", "reserve_yuan", "reserve_source",
+                                                   "breakdown_source", "breakdown_items", "loan_pledge_manual_yuan")})
     merged = {**load_existing(), **results}
     write(merged)
     stats: dict[str, int] = {}
@@ -429,8 +711,12 @@ def main() -> int:
         stats[key] = stats.get(key, 0) + 1
     ok = [r for r in results.values() if r.get("status") == "ok"]
     print(f"状态：{stats}")
-    print(f"核定 {len(ok)} 份：计入 {sum(cn._num(r['counted_yuan']) for r in ok) / 1e8:.1f} 亿，"
+    print(f"核定 {len(ok)} 份：计入 {sum(cn._num(r['counted_yuan']) for r in ok) / 1e8:.1f} 亿"
+          f"（其中受限分项补计 {sum(cn._num(r.get('fallback_yuan')) for r in ok) / 1e8:.1f} 亿），"
           f"笼统原因 {sum(cn._num(r['generic_yuan']) for r in ok) / 1e8:.1f} 亿，只写借款 {sum(cn._num(r['loan_only_yuan']) for r in ok) / 1e8:.1f} 亿")
+    reserve = [r for r in results.values() if cn._num(r.get("reserve_yuan")) > 0]
+    print(f"法定存款准备金 {len(reserve)} 份（{len({r['security_code'] for r in reserve})} 家）"
+          f"{sum(cn._num(r['reserve_yuan']) for r in reserve) / 1e8:.1f} 亿")
     return 0
 
 

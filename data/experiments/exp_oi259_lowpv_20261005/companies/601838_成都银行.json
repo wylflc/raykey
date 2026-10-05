@@ -1,0 +1,202 @@
+{
+ "code": "601838",
+ "name": "成都银行",
+ "close": 19.31,
+ "model": {
+  "V": 24.57,
+  "pv": 0.786,
+  "path": "bank_divspread（V = V_DDM × G）",
+  "nopat_anchor_yi": null,
+  "g0": null,
+  "net_cash_ps": null,
+  "drivers": "V_DDM 37.21（BPS 21.76、roe0 17.81% 十年线性降到 12%、派息率 28.99%；衰减期股利现值 8.76 + 终值现值 28.93 − 09-18 中期息 0.489）× 截面 G 0.6603（41 家银行 ln(V_D0/V_DDM) 均值）；V_D0 = 0.921 ÷ (1.667% + 2%) − 1.41 = 23.71。带文件 g0 0.1265 不进 DDM。"
+ },
+ "why_low": [
+  "roe0 取三年中位 17.81%（λ=0：18.78%→17.81%→15.39%），比 TTM 加权 ROE 14.94% 高 2.9pp。只改成都时 V 22.28、P/V 0.867；全体银行同时改为 min(三年中位, TTM) 时 G 升到 0.804，成都 V 升到 27.14，但比招行、宁波少涨 6～10pp，偏差只体现在相对排序上",
+  "DDM 统一 COE 10%、终值 ROE 12%，BV 十年增到 2.68 倍：截面 V/B 对 ROE 的斜率 8.9，市场 P/B 只有 5.5（42 家，09-30），成都 ROE 最高，P/V 被压得最低",
+  "市场 P/B 0.887 落在同业 ROE 拟合线 0.905 上（残差 −0.02）：相对同业不便宜，低 P/V 主要来自模型口径"
+ ],
+ "computation_check": [
+  {
+   "item": "BPS 21.76、加权 ROE、普通股股本 42.38 亿",
+   "result": "ok",
+   "detail": "2026 半年报 p7–8；成银转债 2025-02-05 前全部转股 626,184,022 股、赎回面值 490.9 万元（p119）",
+   "v_impact_pct": null
+  },
+  {
+   "item": "FY2025 每股现金分红 0.921、2026 中期 0.489 及除息日",
+   "result": "ok",
+   "detail": "半年报 p54–55：2025 年度 39.04 亿（30.04%），07-13 除息；中期 20.73 亿（30.02%），09-18 除息",
+   "v_impact_pct": null
+  },
+  {
+   "item": "派息率 28.99%",
+   "result": "ok",
+   "detail": "FY2023–25 均只有年末一次分配：0.8968/3.01、0.891/3.28、0.921/3.07；FY2026 起有中期息，现行 payout_ratio 会漏计",
+   "v_impact_pct": null
+  },
+  {
+   "item": "roe0 17.81%（guarded λ=0）",
+   "result": "issue",
+   "detail": "公式执行正确；但三年窗口中两年是转股前的 ROE，2025 年 ROE 下降 2.42pp 主要来自转股和永续债带来的权益增加（年报 p16）；只改成都时 V +10.3%（G 不变），全体银行同时改时相对同业约 +6～10pp",
+   "v_impact_pct": 10.3
+  },
+  {
+   "item": "国债 1.667%（09-29 观测）与除息折算",
+   "result": "ok",
+   "detail": "V_D0 扣 07-13 的 0.921 与 09-18 的 0.489；V_DDM 扣 09-18 的 0.489",
+   "v_impact_pct": null
+  },
+  {
+   "item": "roic_bands FY2025 年报行 BPS",
+   "result": "issue",
+   "detail": "带行 23.4386 = 归母权益 993.43 亿（含 110 亿永续债）÷ 股本；普通股 BPS 为 20.84（年报 p16）。因一季报行同日（2026-04-23）可得，生产未用该行",
+   "v_impact_pct": 0.0
+  },
+  {
+   "item": "shares_est 43.27 亿 vs 实际 42.38 亿",
+   "result": "ok",
+   "detail": "由净利 ÷ EPS 反推，含永续债利息影响；DDM 只用 BPS，不受影响",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 108.2,
+   "base": 117.2,
+   "bull": 126.2
+  },
+  "net_cash_ps": {
+   "bear": null,
+   "base": null,
+   "bull": null
+  },
+  "growth_premium_ps": 0,
+  "V": {
+   "bear": 21.27,
+   "base": 26.0,
+   "bull": 31.2
+  },
+  "pv": {
+   "bear": 0.908,
+   "base": 0.743,
+   "bull": 0.619
+  },
+  "V_12pct_base": 23.63,
+  "method_note": "银行 P/B = (长期 ROE − 3%) ÷ (COE − 3%)；ROE {12%, 14%} × COE {10.5%, 12%} 四格，基准取均值 1.222，悲观／乐观取最小／最大；BPS = 6 月末 21.76 − 09-18 中期息 0.489 = 21.27。COE 比招行高 0.5～1pp，反映政府类贷款 49%、前十大客户占资本净额 45%、成都地区 74%、CET1 8.97%。正常化利润 = ROE × 普通股权益 901 亿（悲观／基准／乐观分别为 12%／13%／14%）。不适用净现金。V_12pct_base 为 ROE 13%、COE 12%。"
+ },
+ "model_vs_independent_pct": -5.5,
+ "undervaluation_view": "小幅低估",
+ "trap_risk": "政府类贷款占 49%（租赁商务 3,320.9 亿 + 水利公共设施 1,123.6 亿），化债期间收益率下行，后续投放受限；零售不良升到 1.38%（年初 1.11%），关注类 37.5 亿（半年 +8.3 亿），关注迁徙率 39.66%，逾期 1–90 天半年 +39%；CET1 8.97%，若增长持续需要折价融资。可证伪条件：关注率 > 0.6% 或不良率 > 0.9%；年化 ROE < 12%；CET1 < 8.5% 或公告普通股融资；政府类贷款出现成批展期降息或不良。陷阱情景（ROE 10%、COE 12%）：P/B 0.78、V 16.5、P/V 1.17。",
+ "model_flaws": [
+  {
+   "title": "派息率只计 12-31 报告期的分红，漏计中期息",
+   "mechanism": "build_historical_valuation_bands.payout_ratio 只累加 report_date 等于年报期末的现金分红；中期（06-30）与三季（09-30）分配不计",
+   "evidence": "全池 47 家银行保险中 38 家低估 > 2pp（平安 25.5% vs 40.3%，招行 29.3% vs 35.2%，工行 21.7% vs 31.2%）；成都 FY2026 起有中期息 0.489",
+   "affected_field": "roic_bands.payout（DDM 派息率、权益路径 g0 = roe0 × (1 − payout)）",
+   "v_impact_pct": -0.2,
+   "likely_affected_peers": [
+    "中国平安",
+    "招商银行",
+    "宁波银行",
+    "工商银行",
+    "建设银行",
+    "江苏银行",
+    "南京银行",
+    "杭州银行"
+   ],
+   "proposed_fix": "按财年合计所有报告期的现金分红，与 divspread_dividend.annual_dividend 同口径"
+  },
+  {
+   "title": "λ=0 的 ROE 锚对结构性下行与转股台阶滞后",
+   "mechanism": "连续两年下行时 roe0 取三年中位；银行不走外生权益 E_op 口径，转股带来的 ROE 台阶被前两年的高 ROE 撑住",
+   "evidence": "成都 roe0 17.81% vs TTM 14.94%；6.26 亿股按约 12.2～12.8 元转股，低于当时 BPS 17～19 元，BPS 较不转股情形约低 6%；全体银行同时改为 min(三年中位, TTM)：G 0.660→0.804，成都 V +10.5%、宁波 +20.7%、招行 +16.6%、兴业 −7.2%",
+   "affected_field": "roic_bands.roe0（bank_divspread）",
+   "v_impact_pct": 10.3,
+   "likely_affected_peers": [
+    "招商银行",
+    "兴业银行",
+    "北京银行",
+    "光大银行",
+    "交通银行",
+    "邮储银行",
+    "南京银行",
+    "苏州银行",
+    "江阴银行",
+    "杭州银行",
+    "浙商银行",
+    "贵阳银行",
+    "紫金银行",
+    "民生银行",
+    "郑州银行"
+   ],
+   "proposed_fix": "银行下行时锚取 min(三年中位, TTM)；或把转股、配股形成的权益按外生权益剔出 ROE 窗口，预登记检验后由用户裁定"
+  },
+  {
+   "title": "G 的跨行溢出",
+   "mechanism": "G 是 41 家银行 ln(V_D0/V_DDM) 的等权均值；ROE < COE 的银行 V_DDM 对 ROE 最敏感，其输入变化经 G 改变所有银行的 V",
+   "evidence": "全体银行改用 min(三年中位, TTM) 时 G +21.8%，成都自身 roe0 降 2.9pp，V 反而 +10.5%；保险的 Ḡ 也继承这一效应",
+   "affected_field": "bank_valuation.h2_scale（等权几何均值）",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "全部银行",
+    "五家保险（经 Ḡ）"
+   ],
+   "proposed_fix": "检验按市值或按 ROE 分组计算 G，或改用截面回归（V_D0 对 V_DDM）的稳健估计，降低少数低 ROE 银行对全体的影响；须预登记后由用户裁定"
+  },
+  {
+   "title": "统一 COE 与终值 ROE、留存复利不受资本约束",
+   "mechanism": "所有银行 COE 10%、ROE 衰减到 min(roe0, 12%)，衰减期 BV 按 ROE × 留存复利；没有地区集中、政府类敞口或 CET1 余量的差异",
+   "evidence": "成都 BV 十年增到 2.68 倍，CET1 8.97%；模型 V/B 对 ROE 斜率 8.9 vs 市场 5.5；Spearman(ROE, 模型 P/V) = −0.41",
+   "affected_field": "bank_valuation.COE、TERMINAL_EXCESS、roe_bv_path",
+   "v_impact_pct": -5.8,
+   "likely_affected_peers": [
+    "杭州银行",
+    "宁波银行",
+    "江苏银行",
+    "南京银行",
+    "常熟银行",
+    "青岛银行"
+   ],
+   "proposed_fix": "预登记检验两种候选：衰减期 BV 增速封顶 7%（成都 −5.8%、杭州 −8.2%、大行 +1～2%）；或城农商行 COE +1pp、终值 ROE 仍取 12%（城农商行 −6～8%、大行股份行 +13%）"
+  },
+  {
+   "title": "档案显示的银行 V 不是生产 V",
+   "mechanism": "档案与 README 取带文件 intrinsic_value（带可得日的股利利差值），却标注为 V_DDM × G",
+   "evidence": "成都档案 24.67，生产 24.57；宁波档案 31.41，生产 37.41",
+   "affected_field": "a_share_valuation_dossiers.csv 的 band_low/band_high/band_derivation",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "全部 42 家银行与 5 家保险"
+   ],
+   "proposed_fix": "档案写入 resolve_live_band 的当日值，或注明仅供参考"
+  }
+ ],
+ "sources": [
+  {
+   "title": "成都银行 2026 年半年度报告",
+   "date": "2026-08-27",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-27/1225515294.PDF"
+  },
+  {
+   "title": "成都银行 2025 年年度报告",
+   "date": "2026-04-23",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-23/1225153907.PDF"
+  },
+  {
+   "title": "OI-259 拆解表与生产带",
+   "date": "2026-09-30",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/decomposition.csv; data/processed/roic_bands.csv"
+  },
+  {
+   "title": "G6 复现脚本（bank_valuation 只读调用）",
+   "date": "2026-10-05",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/raw/g6_scripts/"
+  },
+  {
+   "title": "腾讯行情接口（09-30 收盘与 P/B）",
+   "date": "2026-10-05",
+   "url_or_path": "http://qt.gtimg.cn/q=sh601838"
+  }
+ ]
+}

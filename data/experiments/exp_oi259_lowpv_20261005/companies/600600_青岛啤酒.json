@@ -1,0 +1,53 @@
+{
+  "code": "600600",
+  "name": "青岛啤酒",
+  "close": 50.02,
+  "model": {
+    "V": 63.3234,
+    "pv": 0.7899,
+    "path": "growth/blend(λ=0.5,w=0.04,v=0.00)",
+    "nopat_anchor_yi": 43.74,
+    "g0": 0.1146,
+    "net_cash_ps": 19.9287,
+    "drivers": "EV 45.19（每股NOPAT锚3.206×14.1倍；ROIC0 118.7%、g0 11.46%=min(增量ROIC 56%,40%)×再投资率28.65%）+净现金19.93（占V 31%）−少数1.78−外生权益0.01。锚43.7亿≈2025年NOPAT 43.0亿；g0取0时V 49.71"
+  },
+  "why_low": [
+    "资本腿g0 11.46%：再投资率含营运资金浮存回吐（−106.0→−93.9亿）与搬迁改造开支，增量ROIC 56%（ΔNOPAT来自吨价与成本）封顶40%；g0贡献V约+13.6元",
+    "ROIC0 118.7%使维持增长所需留存约10%，增长在引擎中近乎免费",
+    "现价隐含零增长NOPAT 43亿，与现有盈利相当：市场按不增长定价（PE TTM 14.8，低于五年最低15.0）"
+  ],
+  "computation_check": [
+    {"item": "股本A+H", "result": "ok", "detail": "1,364,195,121股（2025年报p72）与模型一致", "v_impact_pct": null},
+    {"item": "NOPAT与研发", "result": "ok", "detail": "2025 EBIT 57.4亿、税率25%→NOPAT 43.0；研发仅1.22亿，资本化影响V约1%（62.53 vs 63.32）", "v_impact_pct": -1.3},
+    {"item": "净现金", "result": "ok", "detail": "年末现金类248.6（货币128.6+交易性62.3+同业存单与国债逆回购4.5+一年以上定存53.2）+其他非流动金融资产24.7−2%营收6.5=266.8，−有息负债1.15，×1.023=271.9亿；6/30同口径扣应付股利32.07亿（半年报p31）后281.8亿，模型未高估", "v_impact_pct": null},
+    {"item": "受限现金（财务公司央行准备金）", "result": "issue", "detail": "受限货币资金4.84亿，主要是财务公司存放央行法定准备金4.51亿（年报p16、p109），计入超额现金；OI-257第二条已裁定待实施", "v_impact_pct": -0.5},
+    {"item": "客户押金与工程款", "result": "issue", "detail": "其他应付款中应付押金及保证金10.24亿（年报p140；6/30为10.91亿，半年报p99）、应付设备工程款12.12亿（6/30为10.76亿），对应现金按超额现金计", "v_impact_pct": -2.6},
+    {"item": "g0资本腿", "result": "issue", "detail": "2022–25再投资43.7亿=净资本开支31.6（搬迁改造：青啤二厂纯生基地、潍坊60万千升、鞍山30万千升；产能1,455万千升、产量963万千升，年报p17）+ΔWC 12.1（浮存回吐）；NOPAT 27.8→43.4来自毛利率；2025销量+1.5%，2026H1营收−4.1%（受销量影响，半年报p8）", "v_impact_pct": -21.5},
+    {"item": "年后宣派股息", "result": "ok", "detail": "2025末期2.35元/股（32.06亿，年报p3）年后宣派、6/30尚未支付（应付股利），模型年报净现金未扣，但上半年现金积累抵消", "v_impact_pct": null}
+  ],
+  "independent": {
+    "normalized_profit_yi": {"bear": 37, "base": 42, "bull": 46},
+    "net_cash_ps": {"bear": 16.0, "base": 18.5, "bull": 19.5},
+    "growth_premium_ps": 0,
+    "V": {"bear": 43.12, "base": 49.29, "bull": 57.29},
+    "pv": {"bear": 1.16, "base": 1.015, "bull": 0.873},
+    "V_12pct_base": 44.16,
+    "method_note": "股数13.642亿；正常化NOPAT为归母口径（2025 NOPAT 43.0×97.3%≈41.8，TTM约42.2，一致预期2026E归母48.4亿含利息收入）；EPV=NOPAT÷10%；销量下行不给基准增长溢价，乐观档名义2%×10年、增量ROIC 50%；净现金=6/30同口径321亿扣受限4.8、押金保证金10.9、应付股利32.1、设备工程款10.8、2%营收与租赁≈255亿（18.7元/股），悲观再扣半数经销商预收（合同负债56～77亿）与长期职工薪酬"
+  },
+  "model_vs_independent_pct": 28.5,
+  "undervaluation_view": "大致合理",
+  "trap_risk": "现金厚、无有息负债，非毁值型陷阱；但模型0.79的便宜依赖g0 11.5%。若销量年降3%以上、吨价停滞，或大麦铝材成本回升、竞争加剧，悲观档P/V 1.16",
+  "model_flaws": [
+    {"title": "存量负营运资金公司的资本腿把浮存回吐与搬迁开支当增长（OI-252扩展）", "mechanism": "再投资率=(资本开支−折旧+ΔWC)/NOPAT，ΔWC由负转少负时计为再投资；增量ROIC=ΔNOPAT/ΔIC在IC很小时被利润率改善放大，封顶40%后仍给高g0", "evidence": "g0 11.46%；ΔWC占再投资28%，资本开支以搬迁为主、产能利用率66%；2026H1营收−4.1%；V在g0=0/3%/5%时为49.71/52.82/55.06", "affected_field": "reinvestment_rate、incremental_roic、g0", "v_impact_pct": -21.5, "likely_affected_peers": ["000568 泸州老窖（g0 6.2%）", "000596 古井贡酒（6.7%）", "603369 今世缘（5.9%）", "600809 山西汾酒（2.8%）"], "proposed_fix": "营运资金为负且收缩时ΔWC不计再投资；存量（稳定型）属性g0以营收或名义GDP增速封顶；增量ROIC用营收驱动的ΔNOPAT；按OI-252预登记统计"},
+    {"title": "极高ROIC0使增长近乎免费", "mechanism": "引擎留存率=g/ROIC_t，ROIC0 118.7%时维持11%增长只需留存约10%", "evidence": "g0贡献V约+13.6元（+27%）", "affected_field": "roic0", "v_impact_pct": null, "likely_affected_peers": ["高现金负营运资金的消费品公司"], "proposed_fix": "留存率按增量ROIC（≤40%）计算，或对ROIC0设上限用于留存"},
+    {"title": "客户押金、工程应付款与财务公司准备金按超额现金计", "mechanism": "超额现金只扣客户资金（代理买卖证券款）与票据质押，其他应付款中的押金保证金与工程款不扣；财务公司法定准备金规则（OI-257）未实施", "evidence": "押金保证金10.9亿、设备工程款10.8亿、央行准备金4.51亿", "affected_field": "excess_cash、fin_net_debt_ps", "v_impact_pct": -3.1, "likely_affected_peers": ["啤酒、白酒、家电等收取经销商保证金的公司"], "proposed_fix": "超额现金另扣其他应付款中的押金保证金；落实OI-257第二条"}
+  ],
+  "sources": [
+    {"title": "青岛啤酒2025年年度报告", "date": "2026-03-27", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225036286.PDF（data/raw/annual_reports/600600/2025.txt.gz）"},
+    {"title": "青岛啤酒2026年半年度报告全文", "date": "2026-08-27", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-27/1225514143.PDF（raw/600600/2026H1.txt.gz）"},
+    {"title": "生产候选侧带与拆解表", "date": "2026-09-30", "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv；decomposition.csv"},
+    {"title": "东财一致预期与五年PE区间", "date": "2026-08-04", "url_or_path": "data/interim/valuation_evidence/600600.json"},
+    {"title": "OI-252、OI-257", "date": "2026-10-05", "url_or_path": "docs/000_Ashare_workflow_open_issues.md"},
+    {"title": "§6.7参数重跑建带", "date": "2026-10-05", "url_or_path": "会话暂存目录 bands_rd_on/off.csv（未入库）"}
+  ]
+}

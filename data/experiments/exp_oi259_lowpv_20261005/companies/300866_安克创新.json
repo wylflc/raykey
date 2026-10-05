@@ -1,0 +1,54 @@
+{
+  "code": "300866",
+  "name": "安克创新",
+  "close": 124.63,
+  "model": {
+    "V": 134.4394,
+    "pv": 0.927,
+    "path": "growth/blend(λ=0.5,w=0.00,v=0.00)",
+    "nopat_anchor_yi": 46.64,
+    "g0": 0.1993,
+    "net_cash_ps": 10.0922,
+    "drivers": "EV 130.50（每股NOPAT锚8.6952×15.0倍；ROIC0 36.9%、g0 19.93%=增量ROIC 35.9%×再投资率55.6%）+净现金10.09−少数5.86+外生权益0.51−9/30除息0.80。锚=λ0.5混合比率0.532×经营账面87.7亿=46.6亿，比报表口径NOPAT 23.1亿高一倍：研发加回15.3亿、TTM因子1.21"
+  },
+  "why_low": [
+    "研发资本化：2025研发28.93亿、5年摊销11.89亿，加回17.0亿（研发的59%），资本化NOPAT 38.4亿（报表23.1亿）；不资本化时V 67.62、P/V 1.84",
+    "资本化使再投资率计入研发净投入（占73%），g0由9.6%升到19.9%，终值占比69%",
+    "2026H1营收+29.1%、扣非+49.7%，TTM因子1.21经λ=0.5进入锚"
+  ],
+  "computation_check": [
+    {"item": "股本与报告期后H股", "result": "issue", "detail": "模型536,387,890股；2026-07-02发行H股46,632,800股、7-29超额配售3,443,300股，价格99.32港元（半年报p46），总股本约5.86亿股（+9.3%）、募资约44亿元均未进模型；补入后V约130.5", "v_impact_pct": -2.9},
+    {"item": "研发费用序列", "result": "ok", "detail": "2018–2025年2.87/3.94/5.67/7.78/10.80/14.14/21.08/28.93亿（各年年报合并利润表；2025年报p29），公司研发资本化为0，与模型一致", "v_impact_pct": null},
+    {"item": "NOPAT口径", "result": "ok", "detail": "2025 EBIT 25.8亿、税率10.4%→NOPAT 23.1；资本化加回(28.93−11.89)×0.896=15.3→38.4", "v_impact_pct": null},
+    {"item": "TTM因子与一次性收益", "result": "ok", "detail": "2026H1非经常损益2.63亿（主要为权益工具公允价值变动），上年同期2.05亿；扣非口径TTM因子与1.21相近", "v_impact_pct": null},
+    {"item": "净现金", "result": "issue", "detail": "年末超额现金79.1−有息负债29.8（含应付债券10.97亿）=49.3×1.099=54.1亿（10.09元/股）；6/30同口径（货币38.04+交易性22.83+定期存单12.14+其他非流动金融资产6.66+衍生2.49−受限1.83−2%营收−负债30.7）43.0亿（8.0元/股），存货50.0→67.3亿（半年报p58）", "v_impact_pct": -1.5},
+    {"item": "少数股东", "result": "ok", "detail": "m=4.17%（窗口内少数损益占比中位），扣减m×(EV−fin_nd)=5.86元/股", "v_impact_pct": null},
+    {"item": "税率", "result": "ok", "detail": "2025年10.4%，2026H1升至15.9%，锚仍按2025税率；若税率维持15%，NOPAT约−5%", "v_impact_pct": null}
+  ],
+  "independent": {
+    "normalized_profit_yi": {"bear": 21, "base": 29, "bull": 34},
+    "net_cash_ps": {"bear": 11.0, "base": 14.0, "bull": 15.0},
+    "growth_premium_ps": 46.54,
+    "V": {"bear": 52.44, "base": 109.99, "bull": 196.17},
+    "pv": {"bear": 2.377, "base": 1.133, "bull": 0.635},
+    "V_12pct_base": 89.91,
+    "method_note": "股数5.8635亿（含7月H股）；正常化NOPAT为报表口径归母（TTM EBIT 35.0亿×(1−13%)×96%≈29亿；一致预期2026E归母31.9亿为H1前）；EPV=NOPAT÷10%；增长溢价两段式：基准g 15%×7年、增量ROIC 40%（不资本化增量ROIC 52.9%），悲观5%×5年/25%，乐观22%×8年/50%，其后零增长；净现金=6/30同口径43.0亿+H股募资约44亿−中期股息0.8元/股"
+  },
+  "model_vs_independent_pct": 22.2,
+  "undervaluation_view": "大致合理",
+  "trap_risk": "北美收入46%、亚马逊渠道52%、境外97%（2025年报p23–24）；美国关税再升、亚马逊费率或流量规则变化、2026H1存货67亿减值、竞争压价都可使增长停滞，悲观档P/V 2.4；估值对增长假设高度敏感",
+  "model_flaws": [
+    {"title": "消费电子研发按5年次年起摊，加回额在fade与终值中复利", "mechanism": "§6.5.1按证监会大类（计算机通信电子设备制造业）取5年；加回=研发−过去5年均值，研发高增长时达研发的59%；引擎把含加回的锚按g衰减与终值复利，稳态（g_T=3%）下加回仅研发的8.4%", "evidence": "资本化NOPAT 38.4 vs 稳态加回口径约25.3亿（比1.52）；终值占比69%；V资本化134.44/3年寿命122.58/当年起摊118.34/不资本化67.62", "affected_field": "nopat_ps、rd_life", "v_impact_pct": -20.0, "likely_affected_peers": ["002920 德赛西威", "002594 比亚迪", "300274 阳光电源", "消费电子与智能硬件公司"], "proposed_fix": "消费电子、汽车电子按3年并当年起摊；或锚中加回按稳态比例计、研发增长交给g0；预登记公允性检验"},
+    {"title": "研发强度上升全部计为增长投资，g0翻倍", "mechanism": "资本化后再投资率计入研发−摊销；研发率上升（竞争性维持投入）也被当作以35.9%回报的增长投资", "evidence": "研发率2020年6.1%→2025年9.5%→2026H1 11.3%；研发净投入占再投资73%；g0 9.6%→19.9%", "affected_field": "reinvestment_rate、g0", "v_impact_pct": null, "likely_affected_peers": ["研发强度上升的成长股"], "proposed_fix": "再投资率中的研发净投入只计研发率不升部分（按营收增长折算），或另设研发强度上升的维持性扣减研究开关"},
+    {"title": "报告期后增发（H股）不进模型", "mechanism": "带的股数与现金取报告期末；除权归一化只处理送转与分红，不处理增发", "evidence": "7月H股5,007.6万股、募资约44亿元，发行价约91元低于模型V", "affected_field": "shares_est、fin_net_debt_ps", "v_impact_pct": -2.9, "likely_affected_peers": ["2026年A+H上市或定增的池成员"], "proposed_fix": "扫描时从股本变动事件表读报告期后增发，按发行价同时加股数与现金"},
+    {"title": "季报带净现金沿用年报并按账面放大", "mechanism": "fin_nd取最新年报×BPS_op/E_op，季报期间备货不进", "evidence": "模型10.09元/股，6/30同口径8.0元/股", "affected_field": "fin_net_debt_ps", "v_impact_pct": -1.5, "likely_affected_peers": ["002920 德赛西威"], "proposed_fix": "季报行用最新季报资产负债表"}
+  ],
+  "sources": [
+    {"title": "安克创新2025年年度报告", "date": "2026-04-10", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-10/1225090973.PDF（data/raw/annual_reports/300866/2025.txt.gz）"},
+    {"title": "安克创新2026年半年度报告", "date": "2026-08-31", "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-31/1225533054.PDF（raw/300866/2026H1.txt.gz）"},
+    {"title": "安克创新2020–2024年年度报告（研发费用序列）", "date": "2021–2025", "url_or_path": "data/raw/annual_reports/300866/"},
+    {"title": "生产候选侧带与拆解表", "date": "2026-09-30", "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv；decomposition.csv"},
+    {"title": "东财一致预期与五年PE区间", "date": "2026-08-04", "url_or_path": "data/interim/valuation_evidence/300866.json"},
+    {"title": "§6.7参数重跑建带（研发资本化开/关/3年/当年起摊）", "date": "2026-10-05", "url_or_path": "会话暂存目录 bands_rd_on/off/life3/sameyear.csv（未入库）"}
+  ]
+}

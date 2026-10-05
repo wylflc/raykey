@@ -62,6 +62,59 @@ class ClassifyTest(unittest.TestCase):
         self.assertAlmostEqual(c["loan"], 100.0)                 # 交易性金融资产无报表行值时不设限
 
 
+class CashNoteBreakdownTest(unittest.TestCase):
+    """OI-257：货币资金类行原因笼统时读受限分项；法定存款准备金。"""
+    GREE_2025 = ("1、 货币资金\n项目 期末余额 期初余额\n库存现金 317,120.96 493,036.20\n"
+                 "其他货币资金【注 1】 9,253,823,481.13 35,080,968,670.38\n存放中央银行款项【注 2】 1,911,851,424.72 1,876,552,187.02\n"
+                 "合计 11,165,992,026.81 36,957,013,893.60\n"
+                 "【注 1】其他货币资金期末余额主要为银行承兑汇票保证金、保函保证金、信用证保证金存款\n等，其中受限制资金为 8,675,252,384.99元；\n"
+                 "【注 2】公司存放中央银行款项中法定存款准备金为 1,902,339,726.09元，其使用受到限制；\n2、 交易性金融资产\n")
+    TASK = dict(code="000651", year=2025, balance={"MONETARYFUNDS": 11_165_992_026.81})
+
+    def test_prose_breakdown_with_reserve_and_manual_loan(self):
+        detail = [dict(label="货币资金", value=10_577_592_111.08, cat="generic", reason="法定存款准备金及保证金等"),
+                  dict(label="其他债权投资", value=7_900_000_000.0, cat="generic", reason="质押")]
+        out = rc.cash_note_breakdown(self.GREE_2025, self.TASK, detail, 18_477_592_111.08, 640_006.60)
+        self.assertAlmostEqual(out["fallback"], 8_675_252_384.99 - 640_006.60, places=2)   # 票据类保证金先减借款质押余额
+        self.assertAlmostEqual(out["reserve"], 1_902_339_726.09, places=2)
+        self.assertAlmostEqual(out["generic"], 7_900_000_000.0 + 640_006.60, places=2)     # 质押存单维持笼统
+        self.assertEqual(out["breakdown_source"], "cash_note:generic")
+
+    def test_reserve_without_restricted_table(self):
+        out = rc.cash_note_breakdown(self.GREE_2025, self.TASK, [], 0.0, 0.0)
+        self.assertEqual(out["fallback"], 0.0)
+        self.assertAlmostEqual(out["reserve"], 1_902_339_726.09, places=2)
+
+    def test_reason_column_and_opening_only_rows(self):
+        # 「理由」列重复行名（兖矿 2023）；只有期初数的行（中材国际 2019）按期末 0 计
+        rows = rc.labeled_rows("项目 本期金额 上期金额 理由\n票据及信用证保证金 2,875,788 2,857,243 票据及信用证保证金\n"
+                               "环境恢复治理基金 2,736,368 2,165,121 环境恢复治理基金\n法定存款保证金 1,524,257 2,524,619 法定存款保证金\n"
+                               "贷款保证金  27 贷款保证金\n合计 7,136,413 7,547,010 /\n", "integer")
+        found = rc.find_breakdown(rows, 7_136_413_000.0, 1e3)
+        self.assertIsNotNone(found)
+        cats = {i["label"]: i["cat"] for i in found["items"]}
+        self.assertEqual(cats, {"票据及信用证保证金": "notes", "环境恢复治理基金": "generic", "法定存款保证金": "reserve"})
+
+    def test_notes_row_carves_out_reserve(self):
+        # 受限资产表同一行写票据类原因而整行计入、又写明法定存款准备金（伊利 2021）：先拆出准备金
+        text = ("1、货币资金\n单位：元\n项目 期末余额 期初余额\n银行存款 1,000,000,000.00 900,000,000.00\n"
+                "其他货币资金 481,558,991.11 300,000,000.00\n合计 1,481,558,991.11 1,200,000,000.00\n"
+                "受限制的货币资金明细如下：\n项目 期末余额 期初余额\n存放中央银行法定存款准备金 391,966,366.16 149,569,894.32\n"
+                "担保保证金 61,907,515.05 25,256,300.27\n信用证保证金 27,685,109.90\n合计 481,558,991.11 174,826,194.59\n2、交易性金融资产\n")
+        task = dict(code="600887", year=2021, balance={"MONETARYFUNDS": 1_481_558_991.11})
+        detail = [dict(label="货币资金", value=481_558_991.11, cat="notes", reason="存放中央银行法定存款准备金、担保保证金、信用证保证金")]
+        out = rc.cash_note_breakdown(text, task, detail, 0.0, 0.0)
+        self.assertAlmostEqual(out["reserve"], 391_966_366.16, places=2)
+        self.assertAlmostEqual(out["carve"], 391_966_366.16, places=2)
+        self.assertEqual(out["fallback"], 0.0)
+
+    def test_sum_mismatch_falls_back_to_generic(self):
+        detail = [dict(label="货币资金", value=12_000_000_000.0, cat="generic", reason="保证金")]
+        out = rc.cash_note_breakdown(self.GREE_2025, self.TASK, detail, 12_000_000_000.0, 0.0)
+        self.assertEqual(out["fallback"], 0.0)                          # 分项之和与受限额不符不补计
+        self.assertAlmostEqual(out["reserve"], 1_902_339_726.09, places=2)
+
+
 class EngineDeductionTest(unittest.TestCase):
     @staticmethod
     def parts(notes_payable: float) -> dict:
@@ -82,6 +135,14 @@ class EngineDeductionTest(unittest.TestCase):
     def test_no_notes_payable_no_deduction(self):
         cut = roic_inputs._year_from_parts("000001", "2025-12-31", self.parts(0), False, 0.1, "nonop", 0.0, 500.0)
         self.assertEqual(cut.restricted_cash, 0.0)
+
+    def test_statutory_reserve_out_of_excess_cash_not_working_capital(self):
+        base = roic_inputs._year_from_parts("000001", "2025-12-31", self.parts(0), False, 0.1, "nonop", 0.0, 0.0, True)
+        cut = roic_inputs._year_from_parts("000001", "2025-12-31", self.parts(0), False, 0.1, "nonop", 0.0, 0.0, True, 50.0)
+        self.assertAlmostEqual(cut.statutory_reserve, 50.0)
+        self.assertAlmostEqual(base.excess_cash - cut.excess_cash, 50.0)
+        self.assertAlmostEqual(cut.ebit - base.ebit, 50.0 * 18 / 900)
+        self.assertEqual(cut.working_capital, base.working_capital)
 
 
 if __name__ == "__main__":

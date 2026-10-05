@@ -36,8 +36,9 @@
   2% 是营运现金的通行经验值；客户资金（代理买卖证券款、代理承销证券款）属客户所有，不是公司现金（OI-200）。
   `legacy` 口径（改前：货币资金 + 交易性金融资产，EBIT = 利润总额 + 利息费用）只作复现。
 * **质押开票的现金类（OI-219，v4.206 生产口径 `restricted_cash = "notes"`）**：年报受限资产附注中原因写票据、承兑汇票、
-  信用证或保函的现金类（`restricted_cash_items.csv`）不计超额现金、按经营资产进投入资本，以当期应付票据与现金类为限；
-  其利息并回 EBIT。应付票据仍是经营负债，WACC 不变。
+  信用证或保函的现金类（`restricted_cash_items.csv`，原因笼统时含货币资金附注受限分项，OI-257）不计超额现金、按经营资产进
+  投入资本，以当期应付票据与现金类为限；其利息并回 EBIT。应付票据仍是经营负债，WACC 不变。
+* **财务公司法定存款准备金（OI-257）**：同表 `reserve_yuan`，不计超额现金、不进营运资金，按经营资产进投入资本，利息同上式并回 EBIT。
 * **类金融识别**：一般企业模板里金融中介负债（客户资金、卖出回购、拆入、吸收存款、同业存放、央行借款）
   合计 ≥ 总资产 20% 的公司同样判 `is_financial`、退回权益口径（OI-200：东方财富用一般企业模板，
   客户资金与两融负债被当成自有超额现金）。
@@ -208,6 +209,8 @@ class RoicYear:
     note_cash: float = 0.0            # 年报附注核定的三行现金类（OI-201，nonop 口径计入超额现金）
     restricted_cash: float = 0.0      # OI-219：为应付票据质押、改按经营资产的现金类（以应付票据与现金类为限）
     restricted_interest: float = 0.0  # 上项的利息，并回 EBIT
+    statutory_reserve: float = 0.0    # OI-257：财务公司存放中央银行的法定存款准备金（不计超额现金、不进营运资金）
+    reserve_interest: float = 0.0     # 上项的利息，并回 EBIT
     nonop_income: float = 0.0         # nonop 口径从 EBIT 剔除的金融收益净额（财务费用净额取负、投资与公允价值收益、财务公司净利息）
     superseded: list = field(default_factory=list)   # OI-130：[(superseded_at, 重述前版本 RoicYear)]，按日期升序
     delayed_until: str = ""                            # OI-130：有重述日而无存档版本时，现行值自此日起才可用
@@ -218,7 +221,7 @@ class RoicYear:
 
 def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap: bool,
                      ic_floor: float = 0.0, caliber: str = "nonop", note_cash: float = 0.0,
-                     restricted: float = 0.0, pledged_wc: bool = False) -> RoicYear | None:
+                     restricted: float = 0.0, pledged_wc: bool = False, reserve: float = 0.0) -> RoicYear | None:
     """三表同一财年的三行 → `RoicYear`；缺资产负债表或利润表、或无公告日时返回 None。"""
     bal, inc, cfl = parts.get("balance"), parts.get("income"), parts.get("cashflow")
     if not (bal and inc):
@@ -268,17 +271,20 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
         invest = (_num(inc.get("INVEST_INCOME")) or 0.0) - (_num(inc.get("INVEST_JOINT_INCOME")) or 0.0)
         year.nonop_income = invest + (_num(inc.get("FAIRVALUE_CHANGE_INCOME")) or 0.0) + fin_sub_net - fin_expense
         year.interest_expense += _num(inc.get("INTEREST_EXPENSE")) or 0.0
-        if restricted > 0:
+        if restricted > 0 or reserve > 0:
             # §6.5.1（OI-219）：质押开票的现金类按经营资产——扣出超额现金（以应付票据与现金类为限），
-            # 其利息按「利息收入 ÷ (货币资金 + 附注核定存款)」估计（夹 [0, 5%]；未单列利息收入时取当年末一年期存款基准利率）并回 EBIT
+            # 其利息按「利息收入 ÷ (货币资金 + 附注核定存款)」估计（夹 [0, 5%]；未单列利息收入时取当年末一年期存款基准利率）并回 EBIT；
+            # 财务公司法定存款准备金（OI-257）在其后扣出（以余下的现金类为限），利息同式
             cash_like = _sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds
             year.restricted_cash = max(0.0, min(restricted, _num(bal.get("NOTE_PAYABLE")) or 0.0, cash_like))
+            year.statutory_reserve = max(0.0, min(reserve, cash_like - year.restricted_cash))
             deposits = (_num(bal.get("MONETARYFUNDS")) or 0.0) + note_cash
             income = _num(inc.get("FE_INTEREST_INCOME"))
             rate = (min(max(income / deposits, 0.0), RESTRICTED_YIELD_CAP) if income is not None and deposits > 0
                     else DEPOSIT_BENCHMARK.get(int(period[:4]), 0.015))
             year.restricted_interest = year.restricted_cash * rate
-            year.nonop_income -= year.restricted_interest
+            year.reserve_interest = year.statutory_reserve * rate
+            year.nonop_income -= year.restricted_interest + year.reserve_interest
     if total_profit is not None:
         year.ebit = (total_profit - year.nonop_income if caliber == "nonop"
                      else total_profit + year.interest_expense)
@@ -293,7 +299,7 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
     operating_cash = OPERATING_CASH_RATIO * (year.revenue or 0.0)
     if caliber == "nonop":
         year.note_cash = note_cash
-        cash = _sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds - year.restricted_cash
+        cash = _sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds - year.restricted_cash - year.statutory_reserve
         year.excess_cash = max(0.0, cash - operating_cash) + max(0.0, _sum(bal, OTHER_FIN_ASSET_FIELDS))
     else:
         cash = (_num(bal.get("MONETARYFUNDS")) or 0.0) \
@@ -365,6 +371,22 @@ def load_restricted_cash_items(codes: set[str] | None = None, path: Path | None 
     return out
 
 
+def load_statutory_reserves(codes: set[str] | None = None, path: Path | None = None) -> dict[tuple[str, str], float]:
+    """`restricted_cash_items.csv` 的 `reserve_yuan` → `{(代码, 年报期): 财务公司法定存款准备金（元）}`（OI-257）；
+    准备金不以受限资产表核定为前提，任何状态的行都取。"""
+    path = path or RESTRICTED_CASH_FILE
+    out: dict[tuple[str, str], float] = {}
+    if not path.exists():
+        return out
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            code = (row.get("security_code") or "").zfill(6)
+            value = _num(row.get("reserve_yuan")) or 0.0
+            if value > 0 and (codes is None or code in codes):
+                out[(code, (row.get("report_date") or "")[:10])] = value
+    return out
+
+
 def load_statements(codes: set[str] | None = None,
                     stmt_dir: Path = STMT_DIR,
                     ic_floor: float = 0.0,
@@ -405,15 +427,17 @@ def load_statements(codes: set[str] | None = None,
     note_cash = load_cash_note_items(codes) if caliber == "nonop" else {}
     restricted = (load_restricted_cash_items(codes, mode=restricted_cash)
                   if caliber == "nonop" and restricted_cash != "off" else {})
+    reserves = load_statutory_reserves(codes) if caliber == "nonop" and restricted_cash != "off" else {}
     out: dict[str, dict[str, RoicYear]] = {}
     for code, periods in raw.items():
         for period, parts in periods.items():
             year = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber, note_cash.get((code, period), 0.0),
-                                    restricted.get((code, period), 0.0), restricted_cash == "notes_wc")
+                                    restricted.get((code, period), 0.0), restricted_cash == "notes_wc",
+                                    reserves.get((code, period), 0.0))
             if year is not None:
                 out.setdefault(code, {})[period] = year
     attach_superseded_versions(out, raw, codes, stmt_dir, notice_cap, ic_floor, caliber, note_cash, restricted,
-                               restricted_cash == "notes_wc")
+                               restricted_cash == "notes_wc", reserves)
     annualize_consolidation(out, load_consolidation_events(codes=codes))
     return out
 
@@ -466,7 +490,8 @@ def load_restatement_dates(codes: set[str] | None = None, path: Path | None = No
 
 def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, codes: set[str] | None,
                                stmt_dir: Path, notice_cap: bool, ic_floor: float = 0.0, caliber: str = "nonop",
-                               note_cash: dict | None = None, restricted: dict | None = None, pledged_wc: bool = False) -> None:
+                               note_cash: dict | None = None, restricted: dict | None = None, pledged_wc: bool = False,
+                               reserves: dict | None = None) -> None:
     """给被追溯重述的财年挂上「重述前版本」（`RoicYear.superseded`，按 superseded_at 升序），
     版本 = 该日之前在用的三行（某表无存档即沿用现行）。重述日志有重述日、却无存档版本覆盖该日的，
     记 `delayed_until` = 重述日：现行值在该日之前不可用（不假装当时已知）。"""
@@ -483,7 +508,8 @@ def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, c
                 if cands:
                     parts[kind] = min(cands, key=lambda c: c[0])[1]
             old = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber,
-                                   (note_cash or {}).get((code, period), 0.0), (restricted or {}).get((code, period), 0.0), pledged_wc)
+                                   (note_cash or {}).get((code, period), 0.0), (restricted or {}).get((code, period), 0.0), pledged_wc,
+                                   (reserves or {}).get((code, period), 0.0))
             if old is not None:
                 versions.append((sa, old))
         year.superseded = versions

@@ -1,0 +1,235 @@
+{
+ "code": "603279",
+ "name": "景津装备",
+ "close": 10.94,
+ "model": {
+  "V": 19.8676,
+  "pv": 0.5506,
+  "path": "growth / trough_median（λ=0, v=1.0）",
+  "nopat_anchor_yi": 11.25,
+  "g0": 0.0,
+  "net_cash_ps": 2.4987,
+  "drivers": "谷底守卫满权重（TTM比率0.081只有十年中位0.184的44%），锚=五年中位0.2375（=2021年NOPAT 7.13亿÷经营账面30.0亿）×当期经营账面47.4亿=11.25亿，高于十年来任何一年的NOPAT（最高2023年10.75亿）；ROIC0 32.4%、增量ROIC −16.7%、g0=0、EV/锚8.9倍；净现金2.50元/股（占V 13%）"
+ },
+ "anchor_variants": {
+  "method": "§6.7旗标重建并用sys.settrace取锚内部量；EV对锚线性（ROIC0、g0不变），股权桥按新EV重算；守卫关一档另用--trough-guard off实跑，逐位相同",
+  "prod": {
+   "nopat_yi": 11.25,
+   "V": 19.87,
+   "pv": 0.551
+  },
+  "median3_guard_off": {
+   "nopat_yi": 8.59,
+   "V": 15.75,
+   "pv": 0.694
+  },
+  "trough_target_min_M5_M10": {
+   "nopat_yi": 8.71,
+   "V": 15.94,
+   "pv": 0.686
+  },
+  "latest_annual_ratio": {
+   "nopat_yi": 4.9,
+   "V": 10.06,
+   "pv": 1.088
+  },
+  "ttm": {
+   "nopat_yi": 3.83,
+   "V": 8.41,
+   "pv": 1.301
+  },
+  "cap_at_window_max_nopat": {
+   "nopat_yi": 10.75,
+   "V": 19.1,
+   "pv": 0.573
+  },
+  "rd_capitalize_off": {
+   "nopat_yi": 10.11,
+   "V": 18.1,
+   "pv": 0.604
+  },
+  "after_2026_annual_same_rules": {
+   "nopat_yi": 8.59,
+   "V": 15.75,
+   "pv": 0.694,
+   "assumption": "2026年报比率=当前TTM比率；2021年移出五年窗口后五年中位降为0.181"
+  }
+ },
+ "why_low": [
+  "谷底守卫v=1把锚拉到五年中位，而五年窗2021–2025含2021–2023三年锂电与新能源材料扩产景气，中位落在2021年比率0.2375，高于十年中位0.184",
+  "比率乘当期账面：2021年至今经营账面增长58%（留存为主，增量ROIC −16.7%），锚11.25亿＝2021年实际NOPAT 7.13亿的1.58倍，并超过历史最高NOPAT 10.75亿",
+  "λ=0（近两次年度比率都下行），非周期锚也停在三年中位0.181（2024年比率）；当前TTM比率0.081",
+  "净现金（2.50元/股）与增长（g0=0）不是主因；现价对应EV/锚仅4.3倍，模型8.9倍"
+ ],
+ "computation_check": [
+  {
+   "item": "复现",
+   "result": "ok",
+   "detail": "按§6.7第2步旗标重建，三只235行与roic_bands.csv逐位一致；--trough-guard off实跑V 15.7533与引擎重算一致",
+   "v_impact_pct": null
+  },
+  {
+   "item": "NOPAT口径（2025）",
+   "result": "ok",
+   "detail": "归母5.21−金融收益0.11×(1−24.4%)−研发加回0.36×(1−24.4%)=4.85亿；研发由2023年2.10亿降到1.14亿，加回为负",
+   "v_impact_pct": null
+  },
+  {
+   "item": "经营账面与股本",
+   "result": "ok",
+   "detail": "2019–2023年扣未用IPO募资（约1元/股），2024年起回加注销股份1.76亿（x_cum −0.3054元/股），符合§6.5.1第2条；shares_est 5.7637亿",
+   "v_impact_pct": null
+  },
+  {
+   "item": "受限现金与债务",
+   "result": "ok",
+   "detail": "2025年票据保证金按OI-219以应付票据3.69亿为限扣出超额现金；短期借款2.0亿；年报无短融，无少数股东",
+   "v_impact_pct": null
+  },
+  {
+   "item": "合同负债（预收定金）",
+   "result": "ok",
+   "detail": "2026-06-30合同负债25.31亿（半年报p.35）为经营负债，现行规则下现金全额计入；外部审计回归不支持对现金打折（§12.309），只在独立估值悲观档扣30%",
+   "v_impact_pct": null
+  },
+  {
+   "item": "研发资本化",
+   "result": "ok",
+   "detail": "按OI-213规则执行；敏感度：关闭后锚10.1亿、V 18.10（−8.9%），锚年2021研发加回0.70亿税后",
+   "v_impact_pct": null
+  },
+  {
+   "item": "TTM因子",
+   "result": "ok",
+   "detail": "0.78（2026H1归母−34.6%，扣非−34.7%），无汇兑或一次性扭曲",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 4.0,
+   "base": 5.5,
+   "bull": 7.5
+  },
+  "net_cash_ps": {
+   "bear": 1.37,
+   "base": 2.69,
+   "bull": 3.11
+  },
+  "growth_premium_ps": 0,
+  "V": {
+   "bear": 8.31,
+   "base": 12.23,
+   "bull": 16.12
+  },
+  "pv": {
+   "bear": 1.316,
+   "base": 0.894,
+   "bull": 0.679
+  },
+  "V_12pct_base": 10.64,
+  "method_note": "10%零增长EPV＋净自由现金，利润为NOPAT（无少数股东，剔金融收益）。营收按约58亿（2022–2025年57–62亿，2026H1−2.4%）。毛利率三档：悲观20%（2026H1 20.2%）、基准约24%、乐观28%（2016–2024年29–37%）；费用与税金约占营收11%，所得税24%。销量稳：整机2021年13,880台→2025年16,101台，2026H1同比增；价格降：单台收入28.0万→23.0万元，整机毛利率28.6%→21.1%（2025年报p.16主动降价、p.19–20）。净现金：6月末现金14.21＋结构性存款4.42＋收益凭证1.25−借款2.0−票据保证金与2%营收备付约2.4≈15.5亿；悲观再扣合同负债25.3亿的30%；乐观17.9亿。增长溢价0（增量ROIC为负）。交叉：现价隐含永续NOPAT 4.76亿（≈2025年4.85亿），PE(TTM)15.5，PB 1.38（东财五年最低1.48、中位3.04，截至08-03），股息率7.3%（2025年每股0.80元、分红率89%）；08-04一致预期2026E 6.67亿，上半年实际2.14亿；正常化PE（市值÷(基准NOPAT+税后利息约0.2亿)）约11.1倍"
+ },
+ "model_vs_independent_pct": 62.4,
+ "undervaluation_view": "小幅低估",
+ "trap_risk": "中高。锚取自2021年景气比率且高于历史最高NOPAT，属「锚在周期高位」；业务未坏（销量稳、份额约四成、配件毛利37%），但价格战使毛利率降到上市以来最低。可证伪：连续两季毛利率≥25%且销量不降→基准偏保守；2026年毛利率<20%、归母<3.5亿或营收<55亿，或合同负债同比降>20%→价值陷阱",
+ "model_flaws": [
+  {
+   "title": "谷底守卫的回归目标（五年中位）可高于其判定基准（十年中位）",
+   "mechanism": "§6.5.1第1条：v按十年中位÷当期判定，但ratio0混向五年中位（build_historical_valuation_bands.py中ratio_cyc=statistics.median(ratios)）；五年窗含2–3个景气年时，守卫把锚拉到高于长期常态的水平，与「均值回归」本意相反",
+   "evidence": "景津五年中位0.2375（2021年）vs十年中位0.1838；目标改min(五年,十年)后V 19.87→15.94",
+   "affected_field": "ratio_cyc / trough_weight / roic_nopat_mode=trough_median",
+   "v_impact_pct": -19.8,
+   "likely_affected_peers": [
+    "300316 晶盛机电（−36%）",
+    "002179 中航光电（−10.5%）",
+    "300896 爱美客（−10%）",
+    "000596 古井贡酒（−9.6%）",
+    "600570 恒生电子（−9.2%）",
+    "688271 联影医疗（−8%）",
+    "000568 泸州老窖（−7%）",
+    "600970 中材国际（−2.5%）"
+   ],
+   "proposed_fix": "谷底侧目标改为min(五年中位, 十年中位)，峰侧不变；与OI-254 A1（全程十年中位，未采纳）不同，只封顶谷底上调；按OI-246同法预登记公允性检验"
+  },
+  {
+   "title": "比率×当期经营账面：衰退期锚随留存账面上涨",
+   "mechanism": "nopat_ps=ratio0×bps_op；增量ROIC为负时，新增留存仍按历史比率计回报，锚可超过窗口内任何一年的绝对NOPAT",
+   "evidence": "锚11.25亿>历史最高10.75亿、=2021年实际7.13亿×1.58；封顶到窗口最高NOPAT后V −3.9%",
+   "affected_field": "nopat_ps（ratio0×bps_operating）",
+   "v_impact_pct": -3.9,
+   "likely_affected_peers": [
+    "000786 北新建材（−8.4%）",
+    "600970 中材国际（−5.8%）",
+    "603369 今世缘（−8.1%）",
+    "600690 海尔智家（−7.4%）",
+    "603529 爱玛科技（−7.3%）"
+   ],
+   "proposed_fix": "与OI-246 R1（封顶M5，λ不能区分）同类，不建议改模型；作为谷底侧复核队列的触发特征"
+  },
+  {
+   "title": "谷底侧缺少对称的复核队列",
+   "mechanism": "§7.3只对峰守卫设结构性增长复核；谷底守卫与λ=0中位锚正是触发买入的一侧，却无强制研究数复核",
+   "evidence": "本票锚为TTM的2.9倍，模型P/V 0.551，独立基准0.894",
+   "affected_field": "§7.3 / structural_growth_review.py（只查峰侧）",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "600970 中材国际",
+    "000786 北新建材",
+    "000568 泸州老窖",
+    "000596 古井贡酒",
+    "603369 今世缘"
+   ],
+   "proposed_fix": "v>0或λ=0且锚≥1.5×TTM NOPAT即入队，按§6.5.2.2登记研究正常化盈利与可证伪条件；研究数低于模型锚时按OI-209冻结新增买入"
+  },
+  {
+   "title": "窗口滚动造成的机械跳变",
+   "mechanism": "锚取窗口中位，景气年移出窗口时V跳降，与新信息无关",
+   "evidence": "2026年报后2021年移出窗口，五年中位降为0.181，V 19.87→15.75（−21%）",
+   "affected_field": "roic_nopat_mode=trough_median",
+   "v_impact_pct": -20.7,
+   "likely_affected_peers": [
+    "600970 中材国际（−23%）",
+    "000786 北新建材（−8%）"
+   ],
+   "proposed_fix": "随谷底侧复核一并处理，不单独改规则"
+  }
+ ],
+ "sources": [
+  {
+   "title": "景津装备股份有限公司2025年年度报告（p.16主动调低销售价格、p.19–20分产品与产销量）",
+   "date": "2026-04-24",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-24/1225162640.PDF；data/raw/annual_reports/603279/2025.txt.gz"
+  },
+  {
+   "title": "景津装备股份有限公司2026年半年度报告（p.13–16经营讨论与资产负债变动、p.35合同负债）",
+   "date": "2026-08-26",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-26/1225502392.PDF；data/experiments/exp_oi259_lowpv_20261005/raw/603279_2026H1.pdf"
+  },
+  {
+   "title": "景津装备2021–2024年年度报告（整机销量与毛利率）",
+   "date": "2022-04-08至2025-04-23",
+   "url_or_path": "data/raw/annual_reports/603279/2021–2024.txt.gz"
+  },
+  {
+   "title": "光大证券点评：销量率先修复 价格及盈利能力承压",
+   "date": "2026-08-31",
+   "url_or_path": "https://m.gelonghui.com/news/5302673"
+  },
+  {
+   "title": "东财估值区间与一致预期快照",
+   "date": "2026-08-04",
+   "url_or_path": "data/interim/valuation_evidence/603279.json"
+  },
+  {
+   "title": "生产候选侧带、ROIC历史带、拆解表",
+   "date": "2026-09-30",
+   "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv；data/processed/roic_bands.csv；data/experiments/exp_oi259_lowpv_20261005/decomposition.csv"
+  },
+  {
+   "title": "业务属性登记（易复制、规模锁守份额不守价格）",
+   "date": "2026-10-01",
+   "url_or_path": "data/processed/a_share_business_attributes.csv"
+  }
+ ]
+}

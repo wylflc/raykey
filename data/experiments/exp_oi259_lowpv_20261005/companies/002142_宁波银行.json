@@ -1,0 +1,173 @@
+{
+ "code": "002142",
+ "name": "宁波银行",
+ "close": 35.43,
+ "model": {
+  "V": 37.41,
+  "pv": 0.947,
+  "path": "bank_divspread（V = V_DDM × G）",
+  "nopat_anchor_yi": null,
+  "g0": null,
+  "net_cash_ps": null,
+  "drivers": "V_DDM 56.66（BPS 36.76、roe0 13.59% 十年线性降到 12%、派息率 19.92%；衰减期股利现值 8.61 + 终值现值 48.05）× 截面 G 0.6603；V_D0 = 1.20 ÷ 3.667% − 0.90 = 31.82，V/V_D0 = 1.18。带文件 g0 0.1088 不进 DDM。"
+ },
+ "why_low": [
+  "P/V 0.947 不算低，接近买入线 1.0034：roe0 13.59% 与 TTM 13.33% 接近，模型没有高估宁波的盈利",
+  "截面 G 0.660 把银行整体压到股利利差水平；模型 V/B 1.02，低于独立基准的 P/B 1.17",
+  "市场 P/B 0.964 高于同业 ROE 拟合值 0.816（残差 +0.15），市场已经给了质量溢价",
+  "截面 G 受他行锚偏高拖累：全体银行改用 min(三年中位, TTM) 时 G 0.660→0.804，宁波 V 45.15（+20.7%，P/V 0.785），宁波的锚本身是准的"
+ ],
+ "computation_check": [
+  {
+   "item": "BPS 36.76、年化加权 ROE 14.24%、不良 0.76%、拨备覆盖率 373%、CET1 9.53%、NIM 1.70%",
+   "result": "ok",
+   "detail": "2026 半年报 p7–8、p12",
+   "v_impact_pct": null
+  },
+  {
+   "item": "FY2025 每股分红 1.20（中期 0.30 + 末期 0.90）与 07-16 除息",
+   "result": "ok",
+   "detail": "公司行动表与半年报一致；2026 中期每 10 股派 4 元，待股东会批准（p2），09-30 前未除息",
+   "v_impact_pct": null
+  },
+  {
+   "item": "派息率 19.92%",
+   "result": "issue",
+   "detail": "只计年末分配：0.6/3.75、0.9/3.95、0.9/4.29；FY2025 中期 0.30 漏计，实际三年均值 22.25%",
+   "v_impact_pct": -0.9
+  },
+  {
+   "item": "roe0 13.59%（guarded λ=0）",
+   "result": "ok",
+   "detail": "三年中位，比 TTM 13.33% 只高 0.26pp；换 TTM 时 V −0.9%",
+   "v_impact_pct": 0.9
+  },
+  {
+   "item": "普通股 BPS（剔除优先股与永续债）",
+   "result": "ok",
+   "detail": "归母权益 2,835.9 亿，其中其他权益工具约 408 亿；普通股 66.04 亿股 × 36.76 ≈ 2,428 亿",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 267.0,
+   "base": 291.3,
+   "bull": 315.6
+  },
+  "net_cash_ps": {
+   "bear": null,
+   "base": null,
+   "bull": null
+  },
+  "growth_premium_ps": 0,
+  "V": {
+   "bear": 34.6,
+   "base": 43.09,
+   "bull": 52.51
+  },
+  "pv": {
+   "bear": 1.024,
+   "base": 0.822,
+   "bull": 0.675
+  },
+  "V_12pct_base": 36.76,
+  "method_note": "银行 P/B = (长期 ROE − 3%) ÷ (COE − 3%)；ROE {11%, 13%} × COE {10%, 11.5%} 四格，基准取均值 1.172，悲观／乐观取最小／最大；BPS 36.76（6 月末，2026 中期息未除）。依据：NIM 1.70% 同比仍降 6bp；信用成本约 1.2%；零售不良 2.00%；CET1 9.53% 偏紧。正常化利润 = ROE × 普通股权益约 2,428 亿。V_12pct_base 为 ROE 12%、COE 12%。"
+ },
+ "model_vs_independent_pct": -13.2,
+ "undervaluation_view": "小幅低估",
+ "trap_risk": "零售贷款 5,370 亿，不良 2.00%（消费贷 3,460 亿，不良 1.78%；个体经营 879 亿，不良 3.81%），上半年信用减值 115.8 亿，同比 +24%；NIM 同比仍降 6bp；对公贷款半年 +19%、风险加权资产半年 +7.2%，而 CET1 只有 9.53%，若增长不放缓就要外部补充资本。可证伪条件：零售不良 > 2.5% 或年化信用成本 > 1.5%；NIM < 1.6%；CET1 < 9% 或公告普通股融资；年化 ROE < 12%。",
+ "model_flaws": [
+  {
+   "title": "派息率漏计中期息",
+   "mechanism": "payout_ratio 只计 report_date = 12-31 的分红",
+   "evidence": "宁波 19.92% vs 实际 22.25%；全池 38/47 家低估 > 2pp",
+   "affected_field": "roic_bands.payout",
+   "v_impact_pct": -0.9,
+   "likely_affected_peers": [
+    "中国平安",
+    "招商银行",
+    "杭州银行",
+    "江苏银行",
+    "南京银行",
+    "工商银行"
+   ],
+   "proposed_fix": "按财年合计所有现金分红（同 annual_dividend）"
+  },
+  {
+   "title": "留存复利没有资本约束",
+   "mechanism": "衰减期 BV 按 ROE × (1 − 派息率) 复利，每一元留存都按 ROE_t 赚钱；不检验风险加权资产增速与 CET1 余量",
+   "evidence": "宁波 BV 十年增到 2.64 倍（年 10.2%）；CET1 9.53%，低派息是资本约束所迫",
+   "affected_field": "bank_valuation.roe_bv_path",
+   "v_impact_pct": -4.7,
+   "likely_affected_peers": [
+    "成都银行",
+    "杭州银行",
+    "江苏银行",
+    "南京银行",
+    "常熟银行"
+   ],
+   "proposed_fix": "预登记检验衰减期 BV 增速封顶（7% 时宁波 −4.7%）或把超出可持续增速的留存按 COE 计"
+  },
+  {
+   "title": "V 与股利能力几乎脱钩",
+   "mechanism": "V_DDM 对派息率的弹性很小（+10pp 只降 2.8%），而 V_D0 与派息率成正比；G 归一后，低派息行高于、高派息行低于自身股利值",
+   "evidence": "V/V_D0：宁波 1.18、杭州 1.25、招行 0.86；与 OI-231 的派息率 IC（1 年 −0.18）方向相反",
+   "affected_field": "bank_valuation.live_h2 / h2_scale",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "杭州银行",
+    "常熟银行",
+    "苏农银行",
+    "长沙银行",
+    "招商银行"
+   ],
+   "proposed_fix": "并入 OI-231 的检验，不单独改公式"
+  },
+  {
+   "title": "G 的跨行溢出",
+   "mechanism": "G 为 41 家银行的等权几何均值，ROE < COE 银行的 V_DDM 对 ROE 最敏感；他行锚偏高抬高截面 V_DDM、压低 G",
+   "evidence": "全体银行改用 min(三年中位, TTM)：G +21.8%，宁波 V +20.7%、招行 +16.6%、成都 +10.5%、兴业 −7.2%",
+   "affected_field": "bank_valuation.h2_scale",
+   "v_impact_pct": 20.7,
+   "likely_affected_peers": [
+    "全部银行",
+    "五家保险（经 Ḡ）"
+   ],
+   "proposed_fix": "与 ROE 锚问题一并预登记检验；考虑 G 的稳健估计（分组或截面回归）"
+  },
+  {
+   "title": "档案显示的银行 V 不是生产 V",
+   "mechanism": "档案取带文件 intrinsic_value（带可得日的股利利差值）",
+   "evidence": "宁波档案 V 31.41、P/V 1.111（09-21 价），生产 37.41、0.947",
+   "affected_field": "a_share_valuation_dossiers.csv",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "全部银行与保险"
+   ],
+   "proposed_fix": "档案写入 resolve_live_band 的当日值"
+  }
+ ],
+ "sources": [
+  {
+   "title": "宁波银行 2026 年半年度报告",
+   "date": "2026-08-20",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-20/1225482240.PDF"
+  },
+  {
+   "title": "OI-259 拆解表与生产带",
+   "date": "2026-09-30",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/decomposition.csv; data/processed/roic_bands.csv"
+  },
+  {
+   "title": "G6 复现脚本",
+   "date": "2026-10-05",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/raw/g6_scripts/"
+  },
+  {
+   "title": "腾讯行情接口（09-30 收盘与 P/B）",
+   "date": "2026-10-05",
+   "url_or_path": "http://qt.gtimg.cn/q=sz002142"
+  }
+ ]
+}

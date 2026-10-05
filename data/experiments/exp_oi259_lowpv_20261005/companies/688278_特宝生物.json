@@ -1,0 +1,160 @@
+{
+ "code": "688278",
+ "name": "特宝生物",
+ "close": 52.89,
+ "model": {
+  "V": 60.06,
+  "pv": 0.881,
+  "path": "growth / blend(λ=0.5,w=0.78,v=0.00)",
+  "nopat_anchor_yi": 13.87,
+  "g0": 0.25,
+  "net_cash_ps": 2.0864,
+  "drivers": "EV 59.37（每股 NOPAT 3.399 × EV/NOPAT 17.5，终值占比 72%）+ 净现金 2.09 + x −1.39（回购）；零增长部分 34.7、增长贡献约 25；锚含研发 10 年资本化加回约 2.6 亿，峰守卫 w=0.775"
+ },
+ "why_low": [
+  "研发 10 年资本化：2025 年 NOPAT 10.21→12.77 亿（+25%），V 48.42→60.06（+24%）；不资本化时 P/V 1.092，高于原买入线 1.0495",
+  "g0 取 25% 上限：资本腿 28.1% 含 ΔWC 10.05 亿（应收 DSO 约 53→123 天）",
+  "市场压价：增值税改一般计税（净收入 −8.85%）、集采与医保降价、bepirovirsen 在华上市申请受理（2026-03-30）、15.33 亿可转债；现价对应 EV/NOPAT 15.4 倍"
+ ],
+ "computation_check": [
+  {
+   "item": "外生权益 x 与回购",
+   "result": "ok",
+   "detail": "x −1.3945 = 06-30 库存股 6.03 亿（回购专户 10,752,989 股，2.63%）；季报行净现金按年报比例缩放，回购流出由 x 承接，不重复",
+   "v_impact_pct": 0.0
+  },
+  {
+   "item": "股数",
+   "result": "ok",
+   "detail": "shares_est 4.082 亿含回购专户股；若注销或长期持有，每股价值低估约 2.7%（偏保守）",
+   "v_impact_pct": 2.7
+  },
+  {
+   "item": "净现金与可转债",
+   "result": "ok",
+   "detail": "模型合计 0.69 元/股；06-30 原文：货币 8.37 + 交易性 1.11 + 其他非流动金融资产 0.62 − 有息负债 7.70（长借 6.84）− 2% 营收 ≈ 1.6 亿（0.39 元/股）；2026-07 发行可转债 15.33 亿（转股价 58.56），现金与负债同增，中性；全额转股摊薄 6.4%",
+   "v_impact_pct": -0.5
+  },
+  {
+   "item": "研发序列与资本化",
+   "result": "issue",
+   "detail": "费用化研发 2021–2025：0.815/1.498/2.300/2.947/3.880 亿，与年报一致；资本化开发支出 0.86/0.58/0.50/0.48/0.35 亿已在无形资产中，不重复。10 年摊销：2025 年 NOPAT 10.21→12.77 亿，IC 26.5→37.2 亿，ROIC0 45.1%→40.1%，增量 ROIC 43.9%→38.2%，再投资率 62.3%→73.5%，g0 24.9%→25%，峰守卫 w 1.0→0.775，V 48.42→60.06；改 5 年摊销时 V 57.08。加回约为当年研发的 75%（研发 2021–2025 年复合增速约 48%），稳态（研发增速 10%/3%）下仅 39%/15%",
+   "v_impact_pct": -14.0
+  },
+  {
+   "item": "g0 资本腿与营运资金",
+   "result": "issue",
+   "detail": "窗口 2021→2025：ΔNOPAT 10.51/ΔIC 27.54 = 38.2%；再投资分子 = 资本开支（含研发）20.78 − 折旧摊销 5.94 + ΔWC 10.05 = 24.89 亿，sumNOPAT 33.86 亿。应收（含票据）2.23→12.44 亿，占营收 14.6%→33.7%，存货 1.30→4.15 亿。扣除 ΔWC 后再投资率 43.8%，资本腿 16.7%，V 约 48",
+   "v_impact_pct": -20.0
+  },
+  {
+   "item": "一次性项目与税制",
+   "result": "ok",
+   "detail": "增值税自 2026-01-01 由 3% 简易改 13% 一般计税（财税〔2026〕10 号），属永久变化，已在 TTM 内；ACT580 首付款 2,500 万美元将进入后续研发，资本化口径下大部分被加回；少数股东为 0",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 10.0,
+   "base": 11.5,
+   "bull": 12.5
+  },
+  "net_cash_ps": {
+   "bear": 0.4,
+   "base": 0.4,
+   "bull": 0.5
+  },
+  "growth_premium_ps": 23.93,
+  "V": {
+   "bear": 27.29,
+   "base": 52.51,
+   "bull": 74.68
+  },
+  "pv": {
+   "bear": 1.94,
+   "base": 1.01,
+   "bull": 0.71
+  },
+  "V_12pct_base": 39.49,
+  "method_note": "正常化 NOPAT 研发费用化，剔除 ACT580 首付款：2026E 归母约 11.8 亿（上半年 4.77 + 下半年约 7.0）。增长单列，因增量 ROIC 远高于 10%、需求为结构扩张（临床治愈渗透）：显式 DCF，FCF = NOPAT×(1 − g/增量ROIC)。基准 5 年 13%（ROIC 35%）→ 5 年 6%（25%）→ 3% 永续（15%）；乐观 18%/9%；悲观 3 年 5% 后零增长。净现金：06-30 现金类 10.10 − 有息负债 7.70 − 2% 营收；每股按 4.082 亿股（含回购专户，偏保守）"
+ },
+ "model_vs_independent_pct": 14.4,
+ "undervaluation_view": "大致合理",
+ "trap_risk": "派格宾占营收 84%，毛利 96%；替代威胁是 GSK bepirovirsen（在华 NDA 2026-03-30 受理，05 月与中国生物制药/正大天晴合作，预计 2027 年前后获批）与集采。陷阱条件：bepirovirsen 获批并于 2028 年前进医保且 2027 年抗病毒用药销量增速 <10%；PEG-IFN 降价 >20%；应收/营收继续升至 >35%。反证：2027 年归母（剔除一次性）≥15 亿且销量增速 ≥15%。另：10-01 成长股复核的研究口径 V 61.99 沿用研发加回 2.45 亿与 g0 25%，与本复核指出的两处偏乐观来源相同",
+ "model_flaws": [
+  {
+   "title": "研发资本化把高速增长期的暂时性加回（研发 − 摊销）计入正常化 NOPAT 并外推",
+   "mechanism": "capitalize_rd 加回当年研发 − 摊销。研发高速增长时加回接近当年研发全额，锚（三年中位/λ/TTM）与 g0、fade 再把这一差额当作永续盈利；研发增速回落后，加回会自然收敛到研发 ×(1 − 年金系数/N)",
+   "evidence": "特宝 2025 年加回 2.56 亿（NOPAT +25%），10 年摊销下研发增速 47%/10%/3% 对应加回占研发 79%/39%/15%；锚按稳态加回（约 11.6～12.5 亿）计 V 降 12～17%；研发开关使 P/V 1.092→0.881，越过买入线",
+   "affected_field": "capitalize_rd / nopat_ps / ratio0",
+   "v_impact_pct": -14.0,
+   "likely_affected_peers": [
+    "300910 瑞丰新材（2026H1 研发 +140%）",
+    "688235 百济神州",
+    "600276 恒瑞医药",
+    "603855 华荣股份（2024 年研发跳升）"
+   ],
+   "proposed_fix": "锚内研发加回改按稳态（g_T 或三年研发增速封顶）计；或在引擎中让加回差额随 fade 衰减；预登记公允性检验后由用户裁定"
+  },
+  {
+   "title": "应收账款扩张计入再投资率，抬高资本腿 g0",
+   "mechanism": "再投资率 = (资本开支 − 折旧摊销 + ΔWC)/NOPAT，信用期拉长带来的应收增长也被当作生产性再投资，经 min(增量ROIC,40%) × 再投资率 推高 g0",
+   "evidence": "特宝 ΔWC 10.05 亿占再投资分子 40%，应收周转天数约 53→123 天；扣除后资本腿 16.7%，V 约 48（−20%）",
+   "affected_field": "reinvestment_rate / g0",
+   "v_impact_pct": -20.0,
+   "likely_affected_peers": [
+    "需全池统计 ΔWC 占再投资分子 >30% 且应收周转天数上升 >30 天的行"
+   ],
+   "proposed_fix": "ΔWC 按窗口期初营运资金/营收比例 × 营收增量计入（超出部分视为信用放宽，不计再投资）"
+  },
+  {
+   "title": "回购专户股计入 shares_est",
+   "mechanism": "股数按总股本，未扣回购专户",
+   "evidence": "1,075 万股（2.63%）",
+   "affected_field": "shares_est",
+   "v_impact_pct": 2.7,
+   "likely_affected_peers": [
+    "持有回购专户股的公司"
+   ],
+   "proposed_fix": "回购用途为注销或已超过 3 年未使用时，按流通股计"
+  }
+ ],
+ "sources": [
+  {
+   "title": "特宝生物 2025 年年度报告（研发投入、分产品收入）",
+   "date": "2026-03-27",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/raw/688278_2025AR.pdf（http://static.cninfo.com.cn/finalpage/2026-03-27/1225038165.PDF）"
+  },
+  {
+   "title": "特宝生物 2026 年半年度报告（增值税、回购专户、ACT580、长期借款、资产负债表）",
+   "date": "2026-08-19",
+   "url_or_path": "data/experiments/exp_oi259_lowpv_20261005/raw/688278_2026H1.pdf（http://static.cninfo.com.cn/finalpage/2026-08-19/1225480751.PDF）"
+  },
+  {
+   "title": "特宝生物 2021/2023/2024 年年度报告",
+   "date": "2022–2025",
+   "url_or_path": "data/raw/annual_reports/688278/"
+  },
+  {
+   "title": "成长股首批复核（研究数 14.25 亿、税制与集采细节）",
+   "date": "2026-10-01",
+   "url_or_path": "data/experiments/exp_growth_reviews_20261001/688278_特宝生物.md"
+  },
+  {
+   "title": "GSK 6-K: Bepirovirsen accepted for review in China",
+   "date": "2026-03-30",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/1131399/000165495426002919/a5265y.htm"
+  },
+  {
+   "title": "GSK partners with SBP Group to accelerate bepirovirsen launch across China",
+   "date": "2026-05",
+   "url_or_path": "https://biopharma-asia.com/sections/gsk-partners-with-sbp-group-to-accelerate-bepirovirsen-launch-across-china/"
+  },
+  {
+   "title": "生产带 / 历史带 / 同引擎复算（--rd-capitalize on/off、5 年年限、§6.5.2.2 网格）",
+   "date": "2026-09-30 / 2026-10-05",
+   "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv; data/processed/roic_bands.csv；复算脚本在会话草稿区，不入库"
+  }
+ ]
+}

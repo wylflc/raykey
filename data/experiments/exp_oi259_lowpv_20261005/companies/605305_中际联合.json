@@ -1,0 +1,148 @@
+{
+ "code": "605305",
+ "name": "中际联合",
+ "close": 30.33,
+ "model": {
+  "V": 41.24,
+  "pv": 0.735,
+  "path": "growth/blend(λ=1.0,w=0.17,v=0.00)＋研究数 2026-10-01",
+  "nopat_anchor_yi": 4.68,
+  "g0": 0.1968,
+  "net_cash_ps": 10.36,
+  "drivers": "V = EV 31.32（研究 NOPAT 2.2021 × 14.22）+ 净现金 10.36 − 少数 0.01 − x 0.05 − 除息 0.38；g0 19.68% = min(增量 ROIC 44.77%, 40%) × 再投资率 49.2%（机械，研究数未改）；ROIC0 26.06%；净现金占 V 25%"
+ },
+ "why_low": [
+  "g0 19.68% 贡献 11.5 元（V 的 28%）：2021→2025 窗口跨过 2022 年价格战谷底（NOPAT 2.45→1.44→5.05 亿），增量回报触 40% 上限",
+  "净现金 10.36 元占 V 25%",
+  "现价隐含 EV/NOPAT 9.3，即零增长；市场按国内中标下滑与美国退坡定价"
+ ],
+ "computation_check": [
+  {
+   "item": "研究数叠加",
+   "result": "ok",
+   "detail": "4.68 亿 ÷ 2.1252 亿股 = 2.2021 元（机械 2.4593）；IV 45.73 → 41.62，再除息 0.38（09-11）",
+   "v_impact_pct": null
+  },
+  {
+   "item": "净现金（季报带）",
+   "result": "issue",
+   "detail": "带 10.36 元 = 年报 20.1 亿 × 账面增长 5.9%；06-30（半年报 PDF p47）现金 11.38 + 交易性 9.43 + 债权投资 0.21 − 借款与租赁 0.74 − 2% 营收 0.40 = 19.88 亿 = 9.35 元",
+   "v_impact_pct": -2.4
+  },
+  {
+   "item": "TTM 因子",
+   "result": "issue",
+   "detail": "1.0026 按归母；H1 财务费用 +0.35 亿（上年 −0.16 亿，汇兑损失，p51）、其他收益（退税）0.31 vs 1.71 亿，模型口径 EBIT 同比 +23%；归母口径偏保守，研究数已覆盖",
+   "v_impact_pct": null
+  },
+  {
+   "item": "g0 资本腿",
+   "result": "ok",
+   "detail": "(5.05 − 2.45)/(11.82 − 6.01) = 44.8% → 上限 40%；再投资率 49.2%（资本开支净额 3.19、ΔWC 2.30 / ΣNOPAT 11.15）；公式无误",
+   "v_impact_pct": null
+  },
+  {
+   "item": "峰守卫与股数",
+   "result": "ok",
+   "detail": "当期 ÷ 十年中位 1.40 → w 0.17；股数 2.1252 亿、无库存股、无少数",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 3.5,
+   "base": 4.5,
+   "bull": 5.4
+  },
+  "net_cash_ps": {
+   "bear": 8.5,
+   "base": 8.97,
+   "bull": 9.2
+  },
+  "growth_premium_ps": 3.1,
+  "V": {
+   "bear": 25.0,
+   "base": 33.2,
+   "bull": 41.4
+  },
+  "pv": {
+   "bear": 1.213,
+   "base": 0.914,
+   "bull": 0.733
+  },
+  "V_12pct_base": 29.0,
+  "method_note": "EPV（÷10%，2.1252 亿股）+ 净现金 + 增长溢价。基准 4.5 亿较研究数 4.68 亿（区间 3.63～5.63）略下调：国内 2026 年 1–7 月招标 −7%、中标 −29%、H1 新增并网 −24.8%，美国风电抵免退坡；悲观 3.5 亿；乐观 5.4 亿为 TTM 平台。增长：全球新增装机 2025→2028 年复合约 5.5%（GWEC），轻资产、增量回报约 40%，基准 g 4% × 5 年（+3.1 元）、乐观 7% × 5 年（+6.8 元）。净现金 = 06-30 19.88 亿 − 09 月股利 0.81 亿 = 8.97 元。12% 折现基准 29.0（P/V 1.05）"
+ },
+ "model_vs_independent_pct": 24.2,
+ "undervaluation_view": "小幅低估",
+ "trap_risk": "国内中标 −29% 于 2027 年交付期兑现、美国风电退坡与关税同时发生，外销毛利率跌破 52%，利润回到 2023 年 2～3 亿；汇兑损失持续",
+ "model_flaws": [
+  {
+   "title": "资本腿窗口跨谷底、40% 上限仍偏高（OI-252）",
+   "mechanism": "端点法增量 ROIC 在谷底后回升期被价格与利润率修复抬高，再乘再投资率外推 10 年；业务属性已改判存量需求",
+   "evidence": "g0 取 5%／3%／0 时 V 32.11／31.12／29.73（−22%～−28%）",
+   "affected_field": "g0 / incremental_roic",
+   "v_impact_pct": -22.1,
+   "likely_affected_peers": [
+    "全池 g0≥10% 的 51 只中 39 只窗口起点即窗口内 NOPAT 最低点（中际联合谷底在第二年）",
+    "存量需求、g0>10% 的稳定型／周期型成员（OI-252 待统计）"
+   ],
+   "proposed_fix": "存量需求公司 g0 以名义 GDP 为上限，或增量 ROIC 取 3／5 年窗口较小值"
+  },
+  {
+   "title": "采用研究数时 g0 照机械值",
+   "mechanism": "研究数为正常化口径，g0 仍按谷底回升计；§6.5.2.2 研究增长只许已实现资本腿，用户 10-01 裁定不改规则",
+   "evidence": "同中创智领条目",
+   "affected_field": "g0 / research_g0",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "所有采用研究数的 growth 行"
+   ],
+   "proposed_fix": "采用研究数时须同时登记研究增长，未登记取 0"
+  },
+  {
+   "title": "季报带净现金按年报值 × 账面增长缩放",
+   "mechanism": "期内利润转为应收、存货而非现金时，净现金被高估",
+   "evidence": "带 10.36 vs 06-30 实际 9.35",
+   "affected_field": "fin_net_debt_ps（季报行）",
+   "v_impact_pct": -2.4,
+   "likely_affected_peers": [
+    "所有季报行，方向不定"
+   ],
+   "proposed_fix": "季报行用当期资产负债表重算"
+  },
+  {
+   "title": "TTM 因子取归母口径",
+   "mechanism": "NOPAT 剔除财务费用（含汇兑）与金融收益，TTM 因子却用归母净利",
+   "evidence": "H1 汇兑损失与退税减少使归母口径低于 EBIT 口径（偏保守）",
+   "affected_field": "ttm_factor",
+   "v_impact_pct": null,
+   "likely_affected_peers": [
+    "外销占比高或金融收益大的公司：比亚迪、格力、中际联合等"
+   ],
+   "proposed_fix": "TTM 因子改按模型口径 EBIT（季报利润表可得）"
+  }
+ ],
+ "sources": [
+  {
+   "title": "中际联合 2026 年半年度报告",
+   "date": "2026-08-26",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-26/1225501228.PDF（raw/605305_2026H1.pdf）"
+  },
+  {
+   "title": "档案研究数与 OI-252",
+   "date": "2026-10-01",
+   "url_or_path": "data/processed/a_share_valuation_dossiers.csv（605305）；docs/000_Ashare_workflow_open_issues.md OI-252"
+  },
+  {
+   "title": "风电行业数据（档案 research_source 所引：金风科技 IR 2026-08-26 H1 并网 38.62GW −24.8%；五矿证券 2026-09-14 1–7 月招标 −7%、中标 −29%；GWEC 2026-04-20 全球新增 2025→2028 年复合 5.5%）",
+   "date": "2026-08-26～09-14",
+   "url_or_path": "data/processed/a_share_valuation_dossiers.csv（605305 research_source）"
+  },
+  {
+   "title": "生产带",
+   "date": "2026-09-30",
+   "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv"
+  }
+ ]
+}
