@@ -320,6 +320,40 @@ class BalanceSupplementTest(unittest.TestCase):
         self.assertEqual(st.unused_supplements({"UBER": supp}), ["UBER other_financial_assets 2025-12-30"])
 
 
+class CustomerFundsTest(unittest.TestCase):
+    """OI-256：代客户收付的托管资金从现金类扣除，只取同一期末，单位须与报表币一致。"""
+
+    def supplements(self, rows):
+        path = write_csv(rows)
+        self.addCleanup(path.unlink)
+        return st.load_statement_supplements("2026-09-28", COMPANIES, path).get("UBER")
+
+    @staticmethod
+    def funds(period, value):
+        return supplement_row(market="US", security_code="UBER", security_name="优步", period=period, period_kind="balance",
+                              field="customer_funds", value=value, unit="USD", evidence_date="2026-02-13")
+
+    def test_deduct_and_recompute(self):
+        supp = self.supplements([self.funds("2025-12-31", 3000.0)])
+        row = BalanceSupplementTest.row()
+        self.assertEqual(st.apply_customer_funds([row], supp), 1)
+        self.assertAlmostEqual(row["excess_cash"], max(0.0, 10175.0 - 3000.0 - 0.02 * 52017.0) + 4397.0)
+        self.assertAlmostEqual(row["invested_capital"], max(10743.0 + 27918.0 - row["excess_cash"], st.IC_FLOOR * 27918.0))
+        self.assertIn("customer_funds=supplement:2025-12-31", row["tags_used"])
+
+    def test_ttm_carry_and_unit_check(self):
+        supp = self.supplements([self.funds("2025-12-31", 3000.0)])
+        ttm = BalanceSupplementTest.row(period="2026-06-30", period_type="ttm")
+        self.assertEqual(st.apply_customer_funds([ttm], supp), 1)
+        self.assertIn("customer_funds=supplement_carried:2025-12-31", ttm["tags_used"])
+        stale = BalanceSupplementTest.row(period="2027-06-30", period_type="ttm")
+        self.assertEqual(st.apply_customer_funds([stale], supp), 0)
+        annual_without = BalanceSupplementTest.row(period="2024-12-31")                # 年报行不沿用
+        self.assertEqual(st.apply_customer_funds([annual_without], supp), 0)
+        with self.assertRaises(st.SupplementError):
+            st.apply_customer_funds([BalanceSupplementTest.row(ccy="TWD")], supp)
+
+
 class HkDownloadPagingTest(unittest.TestCase):
     """京东 FY2023：只按 REPORT_DATE 排序时跨页重复／漏行；须带 STD_ITEM_CODE 次序键，且下载结果查重。"""
 
@@ -366,7 +400,7 @@ class RepositoryTableTest(unittest.TestCase):
                                           st.HK_REPORT_CCY.get(r["security_code"], "CNY") if r["market_type"].upper() == "HK" else "")
                      for r in watch}
         out = st.load_statement_supplements("9999-12-31", companies)
-        self.assertEqual(set(out), {"00316", "06862", "09618", "UBER", "TSM"})
+        self.assertEqual(set(out), {"00316", "06862", "09618", "UBER", "TSM", "00700", "PDD", "09988"})
 
 
 if __name__ == "__main__":

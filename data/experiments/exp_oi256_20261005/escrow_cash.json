@@ -1,0 +1,495 @@
+{
+  "pdd": {
+    "currency": "CNY",
+    "unit": "百万元",
+    "periods": [
+      {
+        "period": "2021-12-31",
+        "restricted_cash_m": 59617.256,
+        "payable_to_merchants_m": 62509.714,
+        "merchant_deposits_m": 13577.552,
+        "restricted_to_payable": 0.954,
+        "doc": "20-F FY2021（2022-04-25）合并资产负债表"
+      },
+      {
+        "period": "2022-12-31",
+        "restricted_cash_m": 57974.225,
+        "payable_to_merchants_m": 63316.695,
+        "merchant_deposits_m": 15058.229,
+        "restricted_to_payable": 0.916,
+        "doc": "20-F FY2022（2023-04-26）合并资产负债表"
+      },
+      {
+        "period": "2023-12-31",
+        "restricted_cash_m": 61985.436,
+        "payable_to_merchants_m": 74997.252,
+        "merchant_deposits_m": 16878.746,
+        "restricted_to_payable": 0.827,
+        "doc": "20-F FY2023（2024-04-25）合并资产负债表"
+      },
+      {
+        "period": "2024-12-31",
+        "restricted_cash_m": 68426.368,
+        "payable_to_merchants_m": 91655.947,
+        "merchant_deposits_m": 16460.6,
+        "restricted_to_payable": 0.747,
+        "doc": "20-F FY2025（2026-04-29）比较期"
+      },
+      {
+        "period": "2025-12-31",
+        "restricted_cash_m": 73830.824,
+        "payable_to_merchants_m": 107407.16,
+        "merchant_deposits_m": 17708.197,
+        "restricted_to_payable": 0.687,
+        "doc": "20-F FY2025（2026-04-29）合并资产负债表"
+      },
+      {
+        "period": "2026-06-30",
+        "restricted_cash_m": 77274.0,
+        "payable_to_merchants_m": 109924.0,
+        "merchant_deposits_m": 18545.0,
+        "restricted_to_payable": 0.703,
+        "doc": "6-K ex99-1（2026-08-25）简明合并资产负债表"
+      }
+    ],
+    "nature_quote": "Restricted cash mainly represents cash received from consumers and reserved in a bank supervised account for payments to merchants.",
+    "nature_quote_item5": "As of the same date, we had restricted cash of RMB73,830.8 million (US$10,557.7 million), mainly representing cash received from buyers and reserved in a bank supervised account for payments to merchants.",
+    "company_liquidity_quote": "Cash, cash equivalents and short-term investments were RMB456.4 billion (US$67.3 billion) as of June 30, 2026, compared with RMB422.3 billion as of December 31, 2025.",
+    "source": "PDD 20-F FY2025（SEC 2026-04-29）Notes to the Consolidated Financial Statements, Note 2(g) Restricted cash, p. F-16；Item 5.B Liquidity and Capital Resources；FY2021–FY2023 20-F 附注同句；金额见各期 doc；6-K ex99-1（2026-08-25）",
+    "liability_link": "受限现金是消费者已付、存于银行监管账户、用于付给商家的款项，对应流动负债 Payable to merchants（2026-06-30 1,099.24 亿元，为受限现金的 1.42 倍）；Merchant deposits 另列为流动负债，附注未写其资金受限。受限现金占应付商家款 2021 年 95% → 2026-06 70%。20-F 现金流量表把应付商家款增加列为经营现金来源（2025 年 +153.28 亿）。公司自己的流动性口径（6-K 现金、等价物与短期投资 4,564 亿）不含受限现金。",
+    "valuation_effect": {
+      "basis": "2026-09-25 带：V 291.040 元/普通股，稀释股数 5,907m，净负债/股 −100.723，每股 NOPAT 锚 17.954，t 20%，汇率 0.1488，每 ADS 4 股，价 77.57 美元",
+      "deduct_772.74亿_no_interest": {
+        "dV_cny_per_share": -13.08,
+        "dV_usd_per_ads": -7.79,
+        "pv": 0.469
+      },
+      "deduct_with_oi219_interest": {
+        "yield": 0.045,
+        "dV_cny_per_share": -8.07,
+        "pv": 0.461,
+        "note": "收益率 = FY2025 利息收入 25,584 ÷ (现金＋受限＋短投＋长期债权投资 566,436)；并回 EBIT 后按 EV/NOPAT 10.6 倍粗估，须建带复算"
+      },
+      "ic_floor": "投入资本扣除后仍低于 0.1×权益下限，ROIC0 不变",
+      "caveat": "以上为现行带上的直接效应；投入资本扣除前后均为负、触 0.1×权益下限（2026-06-30 扣除后 −699 亿 < 下限 448 亿）。历史年行同步扣除会经 §6.5.1 股本口径第 2 条「未花的募资」改变经营账面 E_op，须建带复算。"
+    },
+    "liability_notes": [
+      {
+        "item": "Payable to merchants",
+        "quote": "Balances of contract liabilities were RMB8,633,670 and RMB10,728,065 (US$1,534,093) as of December 31, 2024 and 2025, respectively, which were included in “Customer advances and deferred revenues” and “Payable to merchants” in the consolidated balance sheets.",
+        "source": "20-F FY2025 Note 13 Revenues（千元）",
+        "reading": "应付商家款另含部分平台服务预收（合同负债），20-F 未给应付商家款的独立定义"
+      },
+      {
+        "item": "Merchant deposits",
+        "quote": "",
+        "source": "20-F FY2025 合并资产负债表流动负债行；附注无单独说明",
+        "reading": "列为流动负债，附注未写其资金存于受限账户；FY2021 Item 5 把其增加列为经营现金流来源"
+      }
+    ]
+  },
+  "overseas": [
+    {
+      "code": "09988",
+      "name": "阿里巴巴",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 42585,
+      "currency": "CNY",
+      "nature": "customer_escrow",
+      "escrow_amount_m": 35965,
+      "escrow_period": "2026-03-31",
+      "nature_detail": "受限现金与托管应收款 42,038（2026-03-31）＝商户缴存的消费者保障金 35,965＋其他 6,073",
+      "quote": "The amount represents buyer protection fund deposits received from merchants on the Company’s marketplaces, which are restricted for the purpose of compensating buyers for claims against merchants. A corresponding liability is recorded in other deposits and advances received under accrued expenses, accounts payable and other liabilities (Note 19) on the consolidated balance sheets.",
+      "related_liability": "Other deposits and advances received 57,464（2026-03-31，含保障金）；另有 Payable to merchants and third party marketing affiliates 55,212",
+      "per_share_effect": "按保障金 35,965 扣：−1.87 元/股（V 71.739 的 2.6%）",
+      "source": "Alibaba 20-F FY2026（SEC 2026-05-20）Note 10 Restricted cash and escrow receivables, p. F-53；Note 19, p. F-63；2026-06-30 金额取东财 HK F10 受限制存款及现金"
+    },
+    {
+      "code": "09618",
+      "name": "京东集团",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 13396,
+      "currency": "CNY",
+      "nature": "other",
+      "nature_detail": "银行承兑汇票与保函保证金（OI-219 同类），非客户资金",
+      "quote": "The Group’s restricted cash mainly includes security deposits held in designated bank accounts for issuance of bank acceptance and letter of guarantee.",
+      "related_liability": "承兑汇票含在 Accounts payable（188,379，2025-12-31）内未单列；HK F10「应付票据」3,511（2025-12-31）对应的是 Unsecured senior notes 流动部分，不是承兑汇票",
+      "per_share_effect": "若全扣：−4.75 元/股（V 100.943 的 4.7%）；OI-219 上限（应付票据）不可得，现行照计",
+      "source": "JD.com 20-F FY2025（SEC 2026-04-16）Note 2(i) Restricted cash, p. F-21；Note 13 Accounts payable"
+    },
+    {
+      "code": "03690",
+      "name": "美团",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 21947,
+      "currency": "CNY",
+      "nature": "other",
+      "nature_detail": "附注原因笼统；现金流量表把受限现金增加列为营运资金变动，与应付商家款、用户预付款并列；用户委托资金按托管人不入表",
+      "quote": "Restricted cash balances were those held in bank accounts subject to certain restriction according to agreement with certain parties. / The Group does not recognise cash amounts deposited with banks in the Chinese Mainland under users’ entrustment in the consolidated statement of financial position as the Group acts as a custodian according to the relevant users’ agreements.",
+      "related_liability": "Payables to merchants 27,176；Advances from transacting users 10,300（2026-06-30）",
+      "per_share_effect": "现无法估值；若全扣 −3.55 元/股",
+      "source": "Meituan 2025 Annual Report（HKEX 2026-04-24）Note 25(b)、Note 2.2.5、Note 36(a)；2026 Interim Report（2026-09-29）资产负债表"
+    },
+    {
+      "code": "00700",
+      "name": "腾讯控股",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 7729,
+      "currency": "CNY",
+      "nature": "insurance_regulatory",
+      "nature_detail": "牌照业务监管准备金，未披露对应负债",
+      "quote": "As at 31 December 2025, restricted deposits held at banks of approximately RMB6,977 million (31 December 2024: RMB3,334 million) were mainly denominated in RMB, the majority of which were reserves provided for certain licensed businesses under regulatory requirements.",
+      "per_share_effect": "若全扣 −0.85 元/股（V 的 0.3%）",
+      "source": "Tencent Annual Report 2025（HKEX 2026-04-09）Note 32(b), p. 242；2026 Interim Report（2026-08-25）"
+    },
+    {
+      "code": "UBER",
+      "name": "优步",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 2307,
+      "currency": "USD",
+      "nature": "insurance_regulatory",
+      "nature_detail": "保险保单的信用证与抵押（流动 661＋非流动 1,646）；受限投资 9,486 不在现金类与其他金融资产",
+      "quote": "Restricted cash and cash equivalents are pledged as security for letters of credit or other collateral amounts established by us for certain insurance policies and also include cash and cash equivalents that are unavailable for immediate use due to legal and/or contractual restrictions.",
+      "related_liability": "Short-term insurance reserves 3,758＋Long-term insurance reserves 9,528＝13,286（2026-06-30，经营负债）",
+      "per_share_effect": "若扣：−1.13 美元/股（V 23.778 的 4.7%）",
+      "source": "Uber 10-K FY2025（SEC 2026-02-13）Note 1 Restricted Cash and Cash Equivalents；10-Q Q2 2026（2026-08-05）资产负债表"
+    },
+    {
+      "code": "META",
+      "name": "Meta Platforms",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 13809,
+      "currency": "USD",
+      "nature": "other",
+      "nature_detail": "自身多年期基础设施采购协议的托管（10,800）＋保险相关、特定用途、并购留存款；流动 702＋非流动 13,107",
+      "quote": "As of June 30, 2026, our restricted cash equivalents of $13.55 billion include $10.80 billion of money market funds related to escrow requirements under certain multi-year infrastructure purchase agreements. These funds are restricted from general corporate use and are expected to be released between 2028 and 2030 upon satisfying the underlying purchase obligations.",
+      "per_share_effect": "若全扣 −5.38 美元/股（V 346.996 的 1.6%）",
+      "source": "Meta 10-Q Q2 2026（SEC 2026-07-30）Note 4 Financial Instruments — Restricted Cash Equivalents；10-K FY2025 Note 1"
+    },
+    {
+      "code": "MSFT",
+      "name": "微软",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 3800,
+      "currency": "USD",
+      "nature": "other",
+      "nature_detail": "供应商协议下的受限投资 11,300：3,800 在短期投资（现金类），7,500 在 equity and other investments（进其他金融资产）",
+      "quote": "Additionally, as of June 30, 2026, restricted investments pursuant to a supplier agreement were $11.3 billion, with $3.8 billion included in short-term investments and $7.5 billion included in equity and other investments in our consolidated balance sheet.",
+      "per_share_effect": "11,300 全扣 −1.52 美元/股（V 的 0.8%）",
+      "source": "Microsoft 10-K FY2026（SEC 2026-07-29）Note 1 Accounting Policies — Contract Balances and Other Receivables, p. 57"
+    },
+    {
+      "code": "MU",
+      "name": "美光科技",
+      "period": "2026-05-28",
+      "restricted_in_cash_like_m": 27,
+      "currency": "USD",
+      "nature": "other",
+      "nature_detail": "未说明原因；占现金类 0.1%",
+      "quote": "Restricted cash is included in other current assets.",
+      "source": "Micron 10-Q（SEC 2026-06-25）现金调节表脚注 (4)；10-K FY2025 同"
+    },
+    {
+      "code": "06862",
+      "name": "海底捞",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 145,
+      "currency": "CNY",
+      "nature": "loan_pledge",
+      "nature_detail": "2025-12-31 已抵押／受限 113.1：质押借款 90.1、诉讼 20.7、租金装修 2.3",
+      "quote": "As at December 31, 2025, bank deposits of RMB90,147,000 (2024: nil) that are carrying interest at a rate of 0.95% per annum are pledged to banks to secure the Group’s bank borrowings.",
+      "source": "Haidilao Annual Report 2025（HKEX 2026-04-24）Note 26(ii)"
+    },
+    {
+      "code": "09992",
+      "name": "泡泡玛特",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 3,
+      "currency": "CNY",
+      "nature": "other",
+      "nature_detail": "信用证质押（流动，进现金类）＋租金保函质押 224（非流动，F10 列「现金及等价物(非流动)」，进其他金融资产）；无应付票据，OI-219 扣除为 0",
+      "quote": "Restricted cash – pledged for letter of credits (2,658) – pledged for letter of guarantees for rentals (256,265)（RMB’000，2025-12-31）",
+      "source": "Pop Mart Annual Report 2025（HKEX 2026-04-21）Note 24 Cash and cash equivalents"
+    },
+    {
+      "code": "03888",
+      "name": "金山软件",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 3,
+      "currency": "CNY",
+      "nature": "other",
+      "nature_detail": "附注只列金额（2025-12-31 8.4），未写原因",
+      "quote": "Restricted cash 8,392（RMB’000，Note 28 Cash and bank deposits and restricted cash）",
+      "source": "Kingsoft 2025 Annual Report（HKEX 2026-04-22）Note 28"
+    },
+    {
+      "code": "00316",
+      "name": "东方海外国际",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 33,
+      "currency": "CNY",
+      "nature": "other",
+      "nature_detail": "约 460 万美元，原因笼统",
+      "quote": "As at 31st December 2025, the restricted bank balances of US$4.6 million (2024: US$4.0 million) are funds pledged or required to be utilised for specific purposes.",
+      "source": "OOIL 2025 Annual Report（HKEX 2026-04-22）Note 24"
+    },
+    {
+      "code": "TSM",
+      "name": "台积电",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 0,
+      "currency": "TWD",
+      "nature": "none",
+      "nature_detail": "质押存单 129.4 百万新台币列在其他金融资产（OI-226 不计现金类）",
+      "quote": "The Company provided certificate of deposits recorded in other financial assets as collateral mainly for building lease agreements.",
+      "source": "TSMC 20-F FY2025（SEC 2026-04-16）Note 35 Pledged assets"
+    },
+    {
+      "code": "NVDA/GOOGL/AAPL/ADBE/ASML",
+      "name": "英伟达、谷歌、苹果、Adobe、阿斯麦",
+      "restricted_in_cash_like_m": 0,
+      "currency": "USD/EUR",
+      "nature": "none",
+      "nature_detail": "最新行现金取 CashAndCashEquivalentsAtCarryingValue，companyfacts 含受限合计标签与其相等；阿斯麦 RestrictedCashAndCashEquivalents = 0",
+      "quote": "",
+      "source": "data/raw/overseas_statements/sec/*.json；data/interim/overseas_roic_years.csv tags_used"
+    },
+    {
+      "code": "TSLA",
+      "name": "特斯拉",
+      "period": "2026-06-30",
+      "restricted_in_cash_like_m": 0,
+      "currency": "USD",
+      "nature": "none",
+      "nature_detail": "受限现金 496＋710 未进现金类（现金标签为 CashAndCashEquivalentsAtCarryingValue）",
+      "quote": "",
+      "source": "data/raw/overseas_statements/sec/TSLA.json"
+    },
+    {
+      "code": "AMD",
+      "name": "AMD",
+      "period": "2026-06-27",
+      "restricted_in_cash_like_m": 0,
+      "currency": "USD",
+      "nature": "none",
+      "nature_detail": "TTM 行未含受限 11（FY2025 年报行含 17）",
+      "quote": "",
+      "source": "data/raw/overseas_statements/sec/AMD.json"
+    },
+    {
+      "code": "DIS/GLW/INTC/ORCL",
+      "name": "迪士尼、康宁、英特尔、甲骨文（无法估值）",
+      "restricted_in_cash_like_m": null,
+      "currency": "USD",
+      "nature": "other",
+      "nature_detail": "迪士尼最新行含受限现金与投资 114；康宁、英特尔 TTM 行未含（年报行含 40、447）；甲骨文无。不影响任何带，未核原文",
+      "quote": "",
+      "source": "data/raw/overseas_statements/sec/*.json"
+    },
+    {
+      "code": "BRK.B/00267",
+      "name": "伯克希尔、中信股份",
+      "restricted_in_cash_like_m": null,
+      "currency": "",
+      "nature": "none",
+      "nature_detail": "金融资本型，隐含 PB，不走 ROIC 现金口径",
+      "quote": "",
+      "source": "data/processed/overseas_watchlist_valuation.csv"
+    }
+  ],
+  "a_share": [
+    {
+      "code": "600415",
+      "name": "小商品城",
+      "item": "支付业务备付金（其他流动资产）",
+      "amount_yi": 9.29,
+      "note": "2025 年报：按《非金融机构支付服务管理办法》和《支付机构客户备付金存管办法》规定开立的银行专用存款账户；对应其他流动负债「支付业务往来」9.54 亿。其他流动资产不在 CASH_LIKE_FIELDS，cash_note_items 核定 cash_like_amount = 0，现行口径已不计超额现金。货币资金内另有快捷支付业务风险保证金 0.063 亿、支付通平台受限 0.12 亿（计入现金类，量小）。"
+    },
+    {
+      "code": "300059",
+      "name": "东方财富",
+      "item": "代理买卖证券款（客户资金）",
+      "amount_yi": 1410.82,
+      "note": "2025-12-31；§6.5.1 已从现金类扣除；结算备付金 195.77 亿不在现金类；类金融走 equity_fallback，现金不进估值。"
+    },
+    {
+      "code": "002352",
+      "name": "顺丰控股",
+      "item": "应付代收货款＋应付充值款（其他应付款）",
+      "amount_yi": 26.54,
+      "note": "2025 年报：应付代收货款 13.68 亿、应付充值款 12.86 亿，资金未受限、在一般货币资金中，属浮存而非托管；受限货币资金 11.06 亿中财务公司法定存款准备金 8.96 亿，属 OI-257 范畴。"
+    },
+    {
+      "code": "000333/600887/000895",
+      "name": "美的集团、伊利股份、双汇发展",
+      "item": "财务公司存放央行法定存款准备金（货币资金）",
+      "amount_yi": 28.2,
+      "note": "美的 7.51、伊利 17.61、双汇 3.08 亿（2025 年报）。监管准备金，非客户资金；归 OI-257（格力同类）一并核，不属本项。"
+    }
+  ],
+  "proposed_rule": "第一类（采纳，与客户资金同理）：客户资金 = 代理买卖证券款 + 代理承销证券款 + 核定托管资金。核定托管资金指年报或中报附注写明为客户、商户等第三方专户存放或代收待付的受限资金——平台代收待付款的银行监管／托管账户、商户缴存的消费者保障金、支付业务客户备付金；扣除额 = min(核定额, 对应经营负债, 现金类)，对应经营负债为附注或报表写明、未计入有息负债的应付商家款、商户保证金、备付金往来等；扣除额不计超额现金、按经营资产计入投入资本，其利息按 OI-219 同式并回 EBIT。第二类（待裁定，OI-219 框架的海外延伸）：为经营负债担保的受限资金——承兑汇票、信用证、保函（上限为单列的应付票据，未单列不扣）、保险保单担保（上限为保险准备金）。第三类（照计现金类）：借款质押（借款已计有息负债）、财务公司法定存款准备金（OI-257）、无对应负债的牌照监管准备金、自身采购或并购托管、诉讼冻结及只写笼统原因的受限资金。A 股与海外同式：A 股按附注核定（restricted_cash_items.csv 增 escrow 原因类，对应负债人工登记）；海外按 overseas_statement_supplements.csv 登记，季报无拆分时沿用 15 个月内最近年报核定额、以当期受限行为上限。",
+  "evidence_fields": "escrow_cash（核定额，报表币，期末）；escrow_class（customer_escrow／operating_pledge）；escrow_line（所在报表行：受限现金、其他流动资产等）；escrow_liability 与 escrow_liability_line（对应负债金额与科目，须未计入有息负债）；escrow_quote 与 escrow_source（文件、附注号、页码、原文）；evidence_date（公开日，只自该日起生效）；carry_from（季报沿用的年报期末）；interest_yield_basis（利息收入 ÷ 存款类，夹 [0, 5%]）。",
+  "sources": [
+    {
+      "title": "PDD Holdings 20-F FY2025",
+      "date": "2026-04-29",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465926050727/pdd-20251231x20f.htm"
+    },
+    {
+      "title": "PDD Holdings 6-K ex99-1 Q2 2026 results",
+      "date": "2026-08-25",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465926100534/tm2623874d1_ex99-1.htm"
+    },
+    {
+      "title": "PDD Holdings 20-F FY2023",
+      "date": "2024-04-25",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465924051610/pdd-20231231x20f.htm"
+    },
+    {
+      "title": "PDD Holdings 20-F FY2022",
+      "date": "2023-04-26",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465923049927/pdd-20221231x20f.htm"
+    },
+    {
+      "title": "Pinduoduo 20-F FY2021",
+      "date": "2022-04-25",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1737806/000110465922049283/pdd-20211231x20f.htm"
+    },
+    {
+      "title": "Alibaba Group 20-F FY2026",
+      "date": "2026-05-20",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1577552/000119312526231755/baba-20260331.htm"
+    },
+    {
+      "title": "JD.com 20-F FY2025",
+      "date": "2026-04-16",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1549802/000119312526157870/d53690d20f.htm"
+    },
+    {
+      "title": "Uber 10-K FY2025",
+      "date": "2026-02-13",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000015/uber-20251231.htm"
+    },
+    {
+      "title": "Uber 10-Q Q2 2026",
+      "date": "2026-08-05",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1543151/000154315126000032/uber-20260630.htm"
+    },
+    {
+      "title": "Meta 10-Q Q2 2026",
+      "date": "2026-07-30",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026050705/meta-20260630.htm"
+    },
+    {
+      "title": "Meta 10-K FY2025",
+      "date": "2026-01-29",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003942/meta-20251231.htm"
+    },
+    {
+      "title": "Microsoft 10-K FY2026",
+      "date": "2026-07-29",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/789019/000119312526323660/msft-20260630.htm"
+    },
+    {
+      "title": "Micron 10-Q (quarter ended 2026-05-28)",
+      "date": "2026-06-25",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000015/mu-20260528.htm"
+    },
+    {
+      "title": "Micron 10-K FY2025",
+      "date": "2025-10-03",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000028/mu-20250828.htm"
+    },
+    {
+      "title": "TSMC 20-F FY2025",
+      "date": "2026-04-16",
+      "url_or_path": "https://www.sec.gov/Archives/edgar/data/1046179/000162828026025362/tsm-20251231.htm"
+    },
+    {
+      "title": "Tencent Annual Report 2025",
+      "date": "2026-04-09",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0409/2026040901231.pdf"
+    },
+    {
+      "title": "Tencent Interim Report 2026",
+      "date": "2026-08-25",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0825/2026082500556.pdf"
+    },
+    {
+      "title": "Meituan 2025 Annual Report",
+      "date": "2026-04-24",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0424/2026042400179.pdf"
+    },
+    {
+      "title": "Meituan 2026 Interim Report",
+      "date": "2026-09-29",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0929/2026092900007.pdf"
+    },
+    {
+      "title": "Meituan 2018 Annual Report",
+      "date": "2019-04-11",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2019/0411/ltn201904111286.pdf"
+    },
+    {
+      "title": "Haidilao Annual Report 2025",
+      "date": "2026-04-24",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0424/2026042401134.pdf"
+    },
+    {
+      "title": "OOIL 2025 Annual Report",
+      "date": "2026-04-22",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0422/2026042200995.pdf"
+    },
+    {
+      "title": "Kingsoft 2025 Annual Report",
+      "date": "2026-04-22",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0422/2026042200390.pdf"
+    },
+    {
+      "title": "Pop Mart Annual Report 2025",
+      "date": "2026-04-21",
+      "url_or_path": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0421/2026042100394.pdf"
+    },
+    {
+      "title": "小商品城 2025 年年度报告",
+      "date": "2026-04-09",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-09/1225085392.PDF（本地 data/raw/annual_reports/600415/2025.txt.gz）"
+    },
+    {
+      "title": "顺丰控股 2025 年年度报告",
+      "date": "2026-03-31",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-03-31/1225057387.PDF（本地 data/raw/annual_reports/002352/2025.txt.gz）"
+    },
+    {
+      "title": "美的集团 2025 年年度报告",
+      "date": "2026-03-31",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-03-31/1225065145.PDF（本地）"
+    },
+    {
+      "title": "伊利股份 2025 年年度报告",
+      "date": "2026-04-29",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-30/1225259562.PDF（本地）"
+    },
+    {
+      "title": "双汇发展 2025 年年度报告",
+      "date": "2026-03-25",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-03-25/1225028113.PDF（本地）"
+    },
+    {
+      "title": "仓库缓存：海外 ROIC 年表与 SEC／港股 F10 三表",
+      "date": "2026-09-28",
+      "url_or_path": "data/interim/overseas_roic_years.csv；data/raw/overseas_statements/"
+    },
+    {
+      "title": "仓库缓存：A 股三表与附注核定现金",
+      "date": "2026-09-25",
+      "url_or_path": "data/raw/financials_statements/balance.csv；data/reference/cash_note_items.csv"
+    },
+    {
+      "title": "当前海外带",
+      "date": "2026-09-28",
+      "url_or_path": "data/processed/overseas_watchlist_valuation.csv"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
 | 名单状态 | worth_attention |
 | 质量档 | L2 |
 | 参考分 | 56.30 |
-| 模型价值区间 | 155.88 ~ 190.52 USD |
+| 模型价值区间 | 148.55 ~ 181.57 USD |
 | 估值证据日 | 2026-08-24 |
 | 估值事件 | 二季报（2026Q2） |
 
@@ -15,7 +15,7 @@
 
 ROIC·增长
 
-ROIC·增长（工作流程海外估值口径，财年 2021~2025＋截至 2026-06-30 TTM，PDD official Q2 2026 unaudited results TTM; OI-210: cash_like = cash 128,918m + restricted cash 77,274m + short-term investments 327,496m (6-K ex99-1 filed 2026-08-25)）：NOPAT/经营账面财年序列 0.086／0.253／0.297／0.327／0.200 → ratio0 **0.252**（blend(λ=0.5,w=0.00,v=0.00)）× 经营账面 BPS_op 71.21（稀释股数 5,907m）= 每股 NOPAT 锚 **17.954**；股本口径：十年窗 |X_y|≥5% 年份 FY2017 +0.0b／FY2018 +29.0b／FY2019 +12.4b／FY2020 +45.2b／FY2021 +8.6b／FY2022 +5.3b／FY2023 +8.0b／FY2024 +10.5b；结构断点 2020-12-31 起重切窗口；年报已计累计外生权益 +32.5b（最新年报经营账面 E_op 380.9b，母公司权益 413.4b）；年报后 x -0.90/股（ttm_x|book_break；其后归母净利 39.73b、已付股息 0.00b）；BPS_op = 当期 BPS 75.81 − x − X_cum/股 +5.50 = 71.21；周期守卫 NOPAT/经营账面：当期 0.208（最新年报 0.200 × f 1.04）vs 十年中位 0.227 = 0.92×，坡道 w=0.00／谷 v=0.00；信任度 λ=0.5，非周期锚 = 三年中位 0.297 + λ×(当期 − 三年中位) = 0.252，五年中位 0.253，ratio0 = (1−max(w,v))×非周期锚 + max(w,v)×五年中位；最新观察点回购 0.0b；ROIC0 272.8%；WACC 10.00%（r 10%；rd 4.50%；t 20%；账面权重）；增长 g0=0.0%（来源 trailing：资本腿 —=min(增量ROIC 208.6%,40%)×再投资率 -2%，增速腿 0.0%=CAGR 73.8%×(1−w 0.00)×d 0.83），ROIC_T=min(WACC+2pp, ROIC0)=12.0%，g_T=3.0%，增速 fade 10 年、回报指数衰减 λ 0.12，终值占比 44%；净负债/股 -100.723（有息负债−超额现金＋少数股东扣减，扣减取账面与账面份额×权益价值较大者）；**V = 291.040 CNY/普通股**；报表币 CNY → 交易币 USD 汇率 0.1488，每 ADR 4 股 → **173.20 USD**；带 = V×[0.90,1.10]。标签：dividends_paid_ytd=eastmoney:RPT_USF10_INFO_DIVIDEND;net_income=eastmoney:RPT_USF10_FN_INCOME:TTM;net_income_ytd=eastmoney:RPT_USF10_FN_INCOME:累计季报;other_financial_assets=carried:2025-12-31
+ROIC·增长（工作流程海外估值口径，财年 2021~2025＋截至 2026-06-30 TTM，PDD official Q2 2026 unaudited results TTM; OI-210: cash_like = cash 128,918m + restricted cash 77,274m + short-term investments 327,496m (6-K ex99-1 filed 2026-08-25)；研发资本化 3 年（最近年报研发 16.50b，FY2025））：NOPAT/经营账面财年序列 0.130／0.263／0.292／0.325／0.207 → ratio0 **0.253**（blend(λ=0.5,w=0.00,v=0.00)）× 经营账面 BPS_op 72.67（稀释股数 5,907m）= 每股 NOPAT 锚 **18.412**；股本口径：十年窗 |X_y|≥5% 年份 FY2017 +0.0b／FY2018 +29.0b／FY2019 +12.4b／FY2020 +45.2b／FY2021 +8.6b／FY2022 +5.3b／FY2023 +8.0b／FY2024 +10.5b；结构断点 2020-12-31 起重切窗口；年报已计累计外生权益 +23.9b（最新年报经营账面 E_op 389.5b，母公司权益 413.4b）；年报后 x -0.90/股（ttm_x|book_break；其后归母净利 39.73b、已付股息 0.00b）；BPS_op = 当期 BPS 75.81 − x − X_cum/股 +4.04 = 72.67；周期守卫 NOPAT/经营账面：当期 0.214（最新年报 0.207 × f 1.04）vs 十年中位 0.235 = 0.91×，坡道 w=0.00／谷 v=0.00；信任度 λ=0.5，非周期锚 = 三年中位 0.292 + λ×(当期 − 三年中位) = 0.253，五年中位 0.263，ratio0 = (1−max(w,v))×非周期锚 + max(w,v)×五年中位；最新观察点回购 0.0b；ROIC0 129.2%；WACC 10.00%（r 10%；rd 4.50%；t 20%；账面权重）；增长 g0=1.5%（来源 capital：资本腿 1.5%=min(增量ROIC 148.9%,40%)×再投资率 4%，增速腿 0.0%=CAGR 64.3%×(1−w 0.00)×d 0.86），ROIC_T=min(WACC+2pp, ROIC0)=12.0%，g_T=3.0%，增速 fade 10 年、回报指数衰减 λ 0.12，终值占比 46%；净负债/股 -87.641（有息负债−超额现金＋少数股东扣减，扣减取账面与账面份额×权益价值较大者）；**V = 277.362 CNY/普通股**；报表币 CNY → 交易币 USD 汇率 0.1488，每 ADR 4 股 → **165.06 USD**；带 = V×[0.90,1.10]。标签：dividends_paid_ytd=eastmoney:RPT_USF10_INFO_DIVIDEND;net_income=eastmoney:RPT_USF10_FN_INCOME:TTM;net_income_ytd=eastmoney:RPT_USF10_FN_INCOME:累计季报;other_financial_assets=carried:2025-12-31;customer_funds=supplement:2026-06-30:77274000000
 
 <details>
 <summary>历史研究原文（非现行估值、评级或交易依据）</summary>

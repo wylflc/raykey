@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import dataclasses
 import statistics
 import sys
 from datetime import date
@@ -23,6 +24,7 @@ WATCHLIST = ROOT / "data/processed/overseas_watchlist_valuation.csv"
 YEARS_CSV = ROOT / "data/interim/overseas_roic_years.csv"
 INPUTS_CSV = ROOT / "data/reference/overseas_valuation_inputs.csv"
 REPORT_EVIDENCE = ROOT / "data/reference/overseas_report_evidence.csv"
+INDUSTRY_CSV = ROOT / "data/reference/overseas_industry.csv"   # OI-255：研发摊销年限按证监会大类（§6.5.1，`roic_inputs.rd_life`）
 BAND_LOW_COEF, BAND_HIGH_COEF = 0.90, 1.10
 THIN_EQUITY_MAX = 0.50  # §6.5.1；与 A 股生产薄权益守卫同口径
 # §6.8（OI-210）：与 A 股 §6.5.1／§6.7 第 2 步生产参数相同，不按市场、国家或质量档调整（test_strategy_parameter_sync 核对同值）
@@ -95,6 +97,7 @@ def load_years() -> dict[str, list[roic_inputs.RoicYear]]:
     meta: dict[str, dict] = {}
     current: dict[str, roic_inputs.RoicYear] = {}
     current_meta: dict[str, dict] = {}
+    rd: dict[str, dict[str, float]] = {}
     with YEARS_CSV.open(encoding="utf-8") as handle:
         for r in csv.DictReader(handle):
             y = year_from_row(r)
@@ -106,12 +109,47 @@ def load_years() -> dict[str, list[roic_inputs.RoicYear]]:
             else:
                 out.setdefault(r["security_code"], []).append(y)
                 meta[r["security_code"]] = row_meta
+                rd_value = _f(r.get("rd_expense"))
+                if rd_value is not None and rd_value > 0:
+                    rd.setdefault(r["security_code"], {})[r["period"]] = rd_value
     for code in out:
         out[code].sort(key=lambda y: y.period)
     load_years.meta = meta  # type: ignore[attr-defined]
     load_years.current = current  # type: ignore[attr-defined]
     load_years.current_meta = current_meta  # type: ignore[attr-defined]
+    load_years.rd = rd  # type: ignore[attr-defined]
     return out
+
+
+def load_industry() -> dict[str, str]:
+    """`overseas_industry.csv`：代码 → 证监会「门类-大类」对应口径（研发摊销年限用）。"""
+    if not INDUSTRY_CSV.exists():
+        return {}
+    with INDUSTRY_CSV.open(encoding="utf-8-sig") as handle:
+        return {r["security_code"]: r.get("csrc_industry", "") for r in csv.DictReader(handle)}
+
+
+def capitalized_years(years: list[roic_inputs.RoicYear], rd: dict[str, float] | None, industry: str | None,
+                      as_of: str) -> tuple[list[roic_inputs.RoicYear], dict[str, float] | None, str]:
+    """§6.5.1 研发费用资本化（OI-255，与 A 股 `roic_inputs.capitalize_rd` 同一实现）：返回 (资本化后的年报序列,
+    资本化前逐年 NOPAT, 说明)。无研发、无基年或估值日早于起用日时原样返回。"""
+    if not rd:
+        return years, None, ""
+    life = roic_inputs.rd_life(industry)
+    done = roic_inputs.capitalize_rd({y.period: y for y in years}, rd, life)
+    if done is None:
+        return years, None, "研发资本化：无基年（2017 财年起首个报告研发的财年）或基年营收非正，不资本化"
+    adjusted, from_date = done
+    if from_date and as_of < from_date:
+        return years, None, f"研发资本化：估值日早于起用日 {from_date}，不资本化"
+    fields = {f.name for f in dataclasses.fields(roic_inputs.RoicYear)}
+    for y in years:      # `year_from_row` 另挂的股数、回购、已付股息等不是数据类字段，`replace` 不带，逐项抄回
+        for key, value in vars(y).items():
+            if key not in fields:
+                setattr(adjusted[y.period], key, value)
+    latest = max(rd)
+    return ([adjusted[y.period] for y in years], {y.period: y.nopat for y in years},
+            f"研发资本化 {life} 年（最近年报研发 {rd[latest] / 1e9:.2f}b，FY{latest[:4]}）")
 
 
 def load_report_evidence(as_of: str) -> dict[str, dict[str, str]]:
@@ -185,7 +223,8 @@ def operating_equity(year: roic_inputs.RoicYear, deduct: dict[str, float]) -> fl
 
 
 def value_company(code: str, tier: str, years: list[roic_inputs.RoicYear], inp: dict[str, float],
-                  current: roic_inputs.RoicYear | None = None) -> dict:
+                  current: roic_inputs.RoicYear | None = None, raw_nopat: dict[str, float] | None = None,
+                  rd_note: str = "") -> dict:
     """复刻 ROIC 路径，返回 {status, value_report_ccy, path, text, ...}。
 
     §6.8（OI-210）：r、终值回报、g_T、回报衰减与投入资本下限取 A 股生产参数，`tier` 与 `inp` 不再进估值（保留参数供调用方沿用）。"""
@@ -237,9 +276,11 @@ def value_company(code: str, tier: str, years: list[roic_inputs.RoicYear], inp: 
     if not ratios:
         res["reason"] = "无可用的 NOPAT/经营账面比率"; return res
     long_ratios = [y.nopat / e_op(y) for y in long_hist if y.nopat is not None and e_op(y)]
+    # OI-255：研发资本化后，TTM 因子仍按资本化前的年报 NOPAT 计（季报 TTM 行不资本化；A 股季报带按归母净利 TTM 因子同理）
+    annual_nopat_raw = (raw_nopat or {}).get(annual_latest.period, annual_latest.nopat)
     f_ttm = 1.0
-    if latest is not annual_latest and latest.nopat is not None and annual_latest.nopat and annual_latest.nopat > 0:
-        f_ttm = latest.nopat / annual_latest.nopat
+    if latest is not annual_latest and latest.nopat is not None and annual_nopat_raw and annual_nopat_raw > 0:
+        f_ttm = latest.nopat / annual_nopat_raw
     r_cur = ratios[-1] * f_ttm
     # 周期守卫坡道（OI-088）与谷底对称守卫（OI-090）：s = 当期比率 ÷ 十年中位，
     # w = clip((s − (K − ramp)) / (2·ramp), 0, 1)，v 同式取 1/s；ramp = 0 退回单点阈值。
@@ -333,7 +374,7 @@ def value_company(code: str, tier: str, years: list[roic_inputs.RoicYear], inp: 
                   x_by_year={k: v for k, v in x_by_year.items() if v}, applied=applied, e_op_ref=e_op_ref,
                   equity_ref=annual_latest.parent_equity, book_break=book_break,
                   ev_ps=zero_ev_ps, fin_net_debt_ps=fin_nd_ps, minority_book_ps=minority_book_ps,
-                  net_debt_fixed_ps=nd_zero_fixed, thin_equity_ratio=nd_zero_fixed / zero_ev_ps)
+                  net_debt_fixed_ps=nd_zero_fixed, thin_equity_ratio=nd_zero_fixed / zero_ev_ps, rd_note=rd_note)
     if not roic_ok:
         if v_zero <= 0:
             res["reason"] = f"零增长股权价值 {v_zero:.2f} ≤ 0：净负债超过零增长企业价值"; res.update(common); return res
@@ -348,8 +389,8 @@ def value_company(code: str, tier: str, years: list[roic_inputs.RoicYear], inp: 
     ordered_np = [y.nopat for y in history if y.nopat is not None]
     if len(ordered_np) >= 2 and ordered_np[-1] > 0 and ordered_np[-2] > 0:
         damp = min(1.0, ordered_np[-1] / ordered_np[-2])
-    if latest is not annual_latest and latest.nopat and annual_latest.nopat and annual_latest.nopat > 0:
-        damp *= max(0.0, min(1.0, latest.nopat / annual_latest.nopat))
+    if latest is not annual_latest and latest.nopat and annual_nopat_raw and annual_nopat_raw > 0:
+        damp *= max(0.0, min(1.0, latest.nopat / annual_nopat_raw))
     if cagr is not None and cagr > 0 and (1.0 - peak_w) > 0:
         g_trail = cagr * TRAIL_WEIGHT * (1.0 - peak_w) * damp
     cands = [g for g in (g_capital, g_trail) if g is not None]
@@ -405,7 +446,8 @@ def derivation_text(code: str, r: dict, meta: dict, cfg: dict, fx: float, value_
     x_txt = (f"股本口径：{years_txt}；年报已计累计外生权益 {r['applied']/1e9:+.1f}b（最新年报经营账面 E_op {r['e_op_ref']/1e9:.1f}b，母公司权益 {r['equity_ref']/1e9:.1f}b）；"
              f"年报后 x {r['x_ps']:+.2f}/股（{r['x_mode']}{('|' + r['x_note']) if r.get('x_note') else ''}{x_detail}）；"
              f"BPS_op = 当期 BPS {r['bps']:.2f} − x − X_cum/股 {r['x_cum_ps']:+.2f} = {r['bps_op']:.2f}")
-    return (f"ROIC·{'增长' if r['path']=='growth' else '零增长'}（工作流程海外估值口径，{period_text}，{meta.get('source','')}）："
+    rd_txt = f"；{r['rd_note']}" if r.get("rd_note") else ""
+    return (f"ROIC·{'增长' if r['path']=='growth' else '零增长'}（工作流程海外估值口径，{period_text}，{meta.get('source','')}{rd_txt}）："
             f"NOPAT/经营账面财年序列 {ratio_txt} → ratio0 **{r['ratio0']:.3f}**（{r['mode']}）× 经营账面 BPS_op {r['bps_op']:.2f}（稀释股数 {r['shares']/1e6:,.0f}m）= 每股 NOPAT 锚 **{r['nopat_ps']:.3f}**；{x_txt}；{guard_txt}；{anchor_txt}；"
             f"最新观察点回购 {r['buyback_latest']/1e9:.1f}b；"
             f"ROIC0 {r['roic0']:.1%}；WACC {r['wacc']:.2%}（r {r['r']:.0%}；rd {r['rd']:.2%}；t {r['tax']:.0%}；账面权重）；{g_line}；"
@@ -449,6 +491,8 @@ def main() -> int:
     inp = load_inputs()
     years = load_years(); meta = load_years.meta  # type: ignore[attr-defined]
     current = load_years.current  # type: ignore[attr-defined]
+    rd_all = load_years.rd  # type: ignore[attr-defined]
+    industry = load_industry()
     current_meta = load_years.current_meta  # type: ignore[attr-defined]
     evidence = load_report_evidence(args.as_of)
     with WATCHLIST.open(encoding="utf-8-sig") as handle:
@@ -481,7 +525,8 @@ def main() -> int:
             method, text, lo, hi, v_trade, status = "无法估值", f"{NO_SOURCE.get(code, '无三表数据')}；旧档案带 {old_band} 仅供参考，不再作为模型价值。", None, None, None, "unavailable"
         else:
             model_current = current.get(code)
-            r = value_company(code, tier, years[code], inp, model_current)
+            years_cap, raw_nopat, rd_note = capitalized_years(years[code], rd_all.get(code), industry.get(code), args.as_of)
+            r = value_company(code, tier, years_cap, inp, model_current, raw_nopat=raw_nopat, rd_note=rd_note)
             model_meta = current_meta.get(code, meta[code]) if model_current else meta[code]
             ccy_report = model_meta["ccy"]
             fx = 1.0

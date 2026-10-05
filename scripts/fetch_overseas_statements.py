@@ -191,7 +191,7 @@ def hk_ebit(get) -> tuple[float | None, str]:
 FIELDS = ["market", "security_code", "security_name", "period", "fiscal_year", "notice_date", "report_currency",
           "revenue", "operating_income", "pretax", "income_tax", "interest_expense", "ebit", "tax_rate", "tax_rate_observed",
           "nopat", "total_equity", "parent_equity", "minority_equity", "interest_debt", "cash_like", "excess_cash",
-          "invested_capital", "capex", "dep_amort", "cfo", "shares", "buybacks", "dividends_paid",
+          "invested_capital", "capex", "dep_amort", "cfo", "shares", "buybacks", "dividends_paid", "rd_expense",
           "net_income", "tci", "net_income_ytd", "dividends_paid_ytd",
           "ebit_source", *EBIT_PART_KEYS, "other_financial_assets", "financial_liabilities", "intermediation_share",
           "tags_used", "source"]
@@ -255,6 +255,9 @@ GAAP = {
     # §6.5.2.3 股本口径：年报间外生权益 X_y = ΔE − (归母综合收益 − 已付股息)，综合收益缺失用归母净利；季报观察点 x 用其后归母净利
     "net_income": ["NetIncomeLoss", "NetIncomeLossAvailableToCommonStockholdersBasic", "ProfitLoss"],
     "tci": ["ComprehensiveIncomeNetOfTax", "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest"],
+    # OI-255（§6.8）：研发费用资本化（§6.5.1）取利润表研发标签；软件公司另有不含并购在研的软件研发标签（Adobe）
+    "rd_expense": ["ResearchAndDevelopmentExpense", "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost",
+                   "ResearchAndDevelopmentExpenseSoftwareExcludingAcquiredInProcessCost"],
 }
 IFRS = {
     "revenue": ["Revenue", "RevenueFromSaleOfGoods", "RevenueFromContractsWithCustomers"],
@@ -289,8 +292,10 @@ IFRS = {
     "dividends_paid": ["DividendsPaidClassifiedAsFinancingActivities", "DividendsPaid"],
     "net_income": ["ProfitLossAttributableToOwnersOfParent", "ProfitLoss"],
     "tci": ["ComprehensiveIncomeAttributableToOwnersOfParent", "ComprehensiveIncome"],
+    "rd_expense": ["ResearchAndDevelopmentExpense"],
 }
 DURATION = {"revenue", "operating_income", "pretax", "income_tax", "interest_expense", "capex", "dep_amort", "cfo", "shares", "buybacks", "dividends_paid",
+            "rd_expense",
             "net_income", "tci", "pretax_domestic", "pretax_foreign", "continuing_income", "profit_loss", "depreciation", "amort_intangible",
             *EBIT_PART_KEYS}
 # OI-226（§6.8）：IFRS 16 于 2019-01-01 起生效；此前期末的租赁为 IAS 17 经营租赁（租金在经营利润内），过渡日余额常标在
@@ -431,6 +436,7 @@ HK_ITEMS = {
     "dividends_paid": ("cashflow", ["已付股息(融资)", "已付股息"]),
     "net_income": ("income", ["股东应占溢利"]),
     "tci": ("income", ["本公司拥有人应占全面收益总额"]),
+    "rd_expense": ("income", ["研发费用"]),     # OI-255；F10 不单列者按年报附注维护补充表 rd_expense
     # OI-210（§6.8）：EBIT 剔除金融资产收益、金融资产按账面计入超额现金、金融负债计入有息负债、类金融识别
     "interest_income": ("income", ["利息收入"]),
     "investment_gains": ("income", ["其他收益"]),
@@ -689,8 +695,21 @@ def load_statement_overrides(as_of: str) -> list[dict]:
             ebit_parts={"equity_method_income": em},
             financial={"other": _num(raw.get("other_financial_assets")),
                        "liab": _num(raw.get("financial_liabilities")) or 0.0},
+            rd=_num(raw.get("rd_expense")),
         ))
     return rows
+
+
+def fill_override_rd(overrides: list[dict], extracted: list[dict]) -> list[str]:
+    """OI-255：年报维护行未填研发时，取同一期末 SEC 结构化研发（自动提取行的 `rd_expense`）补入并在 tags 留痕。"""
+    sec_rd = {g["period"]: g["rd_expense"] for g in extracted if g.get("period_type") == "annual" and g.get("rd_expense")}
+    done = []
+    for g in overrides:
+        if g.get("period_type") == "annual" and g.get("rd_expense") is None and g["period"] in sec_rd:
+            g["rd_expense"] = sec_rd[g["period"]]
+            g["tags_used"] = ";".join(t for t in (g.get("tags_used"), "rd_expense=SEC companyfacts") if t)
+            done.append(g["period"])
+    return done
 
 
 def carry_other_financial_assets(overrides: list[dict], extracted: list[dict]) -> None:
@@ -722,6 +741,8 @@ SUPPLEMENT_FIELDS = {
     "ebit_financial_income_in_operating": ("flow", frozenset({"HK"})),
     "equity_method_income": ("flow", frozenset({"HK"})),
     "other_financial_assets": ("balance", frozenset({"HK", "US"})),
+    "rd_expense": ("flow", frozenset({"HK"})),          # OI-255：利润表不单列研发、年报附注披露的港股
+    "customer_funds": ("balance", frozenset({"HK", "US"})),   # OI-256：代客户收付、只能用于结算的托管资金（§6.5.1 客户资金）
 }
 SUPPLEMENT_KINDS = {"flow": frozenset({"annual", "interim_ytd"}), "balance": frozenset({"balance"})}
 SUPPLEMENT_COLUMNS = ("market", "security_code", "security_name", "period", "period_kind", "field", "value", "unit",
@@ -853,6 +874,38 @@ def apply_balance_supplements(rows: list[dict], supplements: dict | None) -> int
             row["invested_capital"] = ic if ic > 0 else None
         row["tags_used"] = ((row["tags_used"] + ";" if row["tags_used"] else "")
                             + f"other_financial_assets={how}:{item['period']}")
+        applied += 1
+    return applied
+
+
+def apply_customer_funds(rows: list[dict], supplements: dict | None) -> int:
+    """OI-256（§6.8，与 §6.5.1 客户资金同理）：代客户、商户收付或专户存放的托管资金从现金类扣除，
+    超额现金 = max(0, 现金类 − 托管资金 − 2% 营收) + 其他金融资产，投入资本同式重算。年报行只取同一期末的补充值；
+    TTM 行无同期值时沿用 15 个月内最近一期（季报未拆分托管资金）。"""
+    items = (supplements or {}).get("customer_funds") or {}
+    applied = 0
+    for row in rows:
+        item, how = items.get(row["period"]), "supplement"
+        if item is None and row.get("period_type") == "ttm":
+            prior = [p for p in items if p < row["period"]
+                     and (date.fromisoformat(row["period"]) - date.fromisoformat(p)).days <= CARRY_MAX_DAYS]
+            if prior:
+                item, how = items[max(prior)], "supplement_carried"
+        if item is None:
+            continue
+        if item["unit"] != row.get("report_currency"):
+            raise SupplementError(f"{row['security_code']} {row['period']} customer_funds: 单位 {item['unit']} "
+                                  f"与报表币 {row.get('report_currency')} 不符")
+        item["_used"] = True
+        cash = float(row.get("cash_like") or 0.0)
+        other = max(0.0, float(row.get("other_financial_assets") or 0.0))
+        row["excess_cash"] = (max(0.0, cash - item["value"] - roic_inputs.OPERATING_CASH_RATIO * (row.get("revenue") or 0.0))
+                              + other)
+        if row.get("total_equity") is not None:
+            ic = max(row["interest_debt"] + row["total_equity"] - row["excess_cash"], IC_FLOOR * row["total_equity"])
+            row["invested_capital"] = ic if ic > 0 else None
+        row["tags_used"] = ((row["tags_used"] + ";" if row["tags_used"] else "")
+                            + f"customer_funds={how}:{item['period']}:{item['value']:.0f}")
         applied += 1
     return applied
 
@@ -1334,7 +1387,8 @@ def _sec_extract_framework(symbol: str, name: str, facts: dict, framework: str) 
                                buybacks=abs(v("buybacks") or 0.0), dividends=abs(v("dividends_paid") or 0.0),
                                net_income=v("net_income"), tci=v("tci"),
                                period_type="annual", report_label=f"年报（FY{end[:4]}，截至 {end}）",
-                               ebit=ebit, ebit_source=ebit_source, ebit_parts=parts, financial=fin))
+                               ebit=ebit, ebit_source=ebit_source, ebit_parts=parts, financial=fin,
+                               rd=v("rd_expense") if "rd_expense" in maps else None))
     return rows
 
 
@@ -1440,6 +1494,11 @@ def hk_extract(code: str, name: str, tables: dict[str, list[dict]], shares: floa
             code, period, parts, f10_equity,
             supplement_value(code, supplements, "equity_method_income", period, "annual"),
             supplement_value(code, supplements, "ebit_financial_income_in_operating", period, "annual"))
+        rd_f10, rd_sup = pick(period, "rd_expense"), supplement_value(code, supplements, "rd_expense", period, "annual")
+        if rd_f10 is not None and rd_sup is not None:
+            raise SupplementError(f"{code} {period}: F10 已有研发费用行，补充表不得再给 rd_expense")
+        if rd_sup is not None:
+            extra_tags["rd_expense"] = SUPPLEMENT_TAG
         row_tags = ChainMap(extra_tags, tags) if extra_tags else tags   # 同一 tags 字典随后续 pick 更新，与原行为一致
         ebit, ebit_source = hk_ebit(lambda k: {"operating_income": opinc, "pretax": pretax, "interest_expense": intexp}.get(k, parts.get(k)))
         dividends = pick(period, "dividends_paid")
@@ -1457,7 +1516,8 @@ def hk_extract(code: str, name: str, tables: dict[str, list[dict]], shares: floa
                                buybacks=abs(pick(period, "buybacks") or 0.0), dividends=abs(dividends or 0.0),
                                net_income=pick(period, "net_income"), tci=pick(period, "tci"),
                                period_type="annual", report_label=f"年报（FY{period[:4]}，截至 {period}）",
-                               ebit=ebit, ebit_source=ebit_source, ebit_parts=parts, financial=fin))
+                               ebit=ebit, ebit_source=ebit_source, ebit_parts=parts, financial=fin,
+                               rd=rd_f10 if rd_f10 is not None else rd_sup))
     return rows
 
 
@@ -1564,7 +1624,7 @@ def _build_row(market, code, name, period, notice, ccy, rev, opinc, pretax, taxv
                debt, cash, capex, dep, cfo, shares, tags, src, tax_default, buybacks=0.0, dividends=0.0,
                net_income=None, tci=None, net_income_ytd=None, dividends_ytd=None,
                period_type="annual", report_label="", evidence_url="",
-               ebit=None, ebit_source="", ebit_parts=None, financial=None, other_given=True) -> dict:
+               ebit=None, ebit_source="", ebit_parts=None, financial=None, other_given=True, rd=None) -> dict:
     # 与 roic_inputs.load_statements（caliber = "nonop"）同式；`ebit` 由 `nonop_ebit`／`hk_ebit` 给出（OI-210）。
     # 未给出者（官方维护行无经营利润）退回税前利润 + 利息费用并记 `ebit_source = legacy`。
     if ebit is None:
@@ -1593,7 +1653,7 @@ def _build_row(market, code, name, period, notice, ccy, rev, opinc, pretax, taxv
         "interest_debt": debt, "cash_like": cash, "excess_cash": excess,
         "invested_capital": ic if (ic is not None and ic > 0) else None,
         "capex": capex, "dep_amort": dep, "cfo": cfo, "shares": shares,
-        "buybacks": buybacks, "dividends_paid": dividends,
+        "buybacks": buybacks, "dividends_paid": dividends, "rd_expense": rd if (rd is not None and rd > 0) else None,
         "net_income": net_income, "tci": tci, "net_income_ytd": net_income_ytd, "dividends_paid_ytd": dividends_ytd,
         "ebit_source": ebit_source, **{k: (ebit_parts or {}).get(k) for k in EBIT_PART_KEYS},
         "other_financial_assets": other_fin, "financial_liabilities": fin_liab,
@@ -1656,8 +1716,11 @@ def main() -> int:
         else:
             summary.append(f"{market} {code} {name}: 该市场无三表取数源，不出行（清单保持无法估值）"); continue
         # 官方报表维护行优先于自动提取；SEC companyfacts 对 6-K 境外发行人季报通常没有结构化事实。
-        got = [g for g in got if (code, g["period"], g["period_type"]) not in override_keys]
         own_overrides = [g for g in overrides if g["security_code"] == code]
+        rd_filled = fill_override_rd(own_overrides, got)
+        if rd_filled:
+            fills.append(f"{code} 年报维护行 {len(rd_filled)} 期: SEC 补 rd_expense")
+        got = [g for g in got if (code, g["period"], g["period_type"]) not in override_keys]
         if own_overrides and market == "US" and any(g.get(k) is None for g in own_overrides
                                                     for k in ("net_income", "tci", "net_income_ytd", "dividends_paid_ytd")):
             income, events = us_income_items(code, args.refresh), us_dividend_events(code, args.refresh)
@@ -1671,6 +1734,7 @@ def main() -> int:
         carry_other_financial_assets(own_overrides, got)
         got += own_overrides
         apply_balance_supplements(got, supplements.get(code))     # OI-216：非流动金融资产补充值（在维护行沿用之后）
+        apply_customer_funds(got, supplements.get(code))          # OI-256：客户托管资金不计超额现金（在金融资产补充之后）
         got = apply_evidence(got, evidence)
         got.sort(key=lambda g: (g["period"], 0 if g["period_type"] == "annual" else 1))
         rows += got

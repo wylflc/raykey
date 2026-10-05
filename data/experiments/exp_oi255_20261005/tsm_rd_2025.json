@@ -1,0 +1,8 @@
+{
+  "period": "2025-12-31",
+  "value_twd": 246427000000,
+  "evidence_date": "2026-01-15",
+  "source_url": "https://investor.tsmc.com/english/encrypt/files/encrypt_file/reports/2026-02/cb73d5f4e019a8f6d7a494a0f8f6c6da2dfc4ee2/FS.pdf",
+  "source_ref": "TSMC '2025Q4 Financial Statements' (link 'Financial Statements' on investor.tsmc.com/english/quarterly-results/2025/q4; PDF title '2025Q4 Financial Statements - Document Template - PRD'), PDF p.3 'Consolidated Condensed Statements of Comprehensive Income (Audited)', For the Years Ended December 31, NTD millions. The FS file prints no date: PDF created 2026-02-13 and stored under reports/2026-02/ (post-audit file; the 4Q24 analogue is 'FS_audited.pdf' under reports/2025-02/). evidence_date 2026-01-15 is the first publication of the same full-year line in the official 4Q25 Management Report (dated January 15, 2026, page 3, NT$246.43 billion; reports/2026-01/, Wayback capture 2026-01-15 17:10 UTC). Use 2026-02-13 if the FS file's own date is required. Cross-check: audited '2025 Q4 Consolidated Report' (auditors' report dated 2026-02-10; SEC 6-K filed 2026-02-26, page 8, NT$ thousands): Research and development 246,427,264 (2024: 204,181,823).",
+  "quote": "[2025Q4 Financial Statements, PDF p.3, Consolidated Condensed Statements of Comprehensive Income (Audited), (Expressed in Millions of New Taiwan Dollars (\"NTD\") and U.S. Dollars (\"USD\")), For the Years Ended December 31; columns 2025 USD | NTD | % ; 2024 NTD | % ; YoY NTD | %] Research and Development Expenses (7,920) (246,427) (6.5) (204,182) (7.1) (42,245) 20.7 || [4Q25 Management Report, January 15, 2026, Page 3, (In NT$ billions) 4Q25 3Q25 4Q24 2025 2024] Research & Development (64.86) (63.74) (57.23) (246.43) (204.18)"
+}

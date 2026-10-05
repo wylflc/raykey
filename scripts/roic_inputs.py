@@ -53,6 +53,7 @@ import math
 import statistics
 from collections import Counter
 from dataclasses import dataclass, field, replace
+from datetime import date
 from pathlib import Path
 
 from disclosure_dates import available_at
@@ -543,6 +544,24 @@ def load_rd_expense(codes: set[str] | None = None, stmt_dir: Path = STMT_DIR) ->
     return out
 
 
+def fiscal_labels(periods) -> dict[str, int]:
+    """年报期末 → 财年序号。全部为 12 月年结（A 股）时即期末年份；否则（海外非 12 月年结、52／53 周年结）按期末先后编号：
+    首期取期末年份（期末在 1～6 月的取上一年），其后每期按与上期相隔的年数（四舍五入、至少 1）递增（OI-255）。"""
+    ordered = sorted(set(periods))
+    if all(p.endswith("-12-31") for p in ordered):
+        return {p: int(p[:4]) for p in ordered}
+    out: dict[str, int] = {}
+    prev = None
+    for p in ordered:
+        d = date.fromisoformat(p[:10])
+        if prev is None:
+            out[p] = d.year if d.month >= 7 else d.year - 1
+        else:
+            out[p] = out[prev] + max(1, round((d - date.fromisoformat(prev[:10])).days / 365.25))
+        prev = p
+    return out
+
+
 def capitalize_rd(years: dict[str, RoicYear], rd: dict[str, float], life: int) -> tuple[dict[str, RoicYear], str] | None:
     """研发资本化后的年报副本与起用日（OI-213）。
 
@@ -550,21 +569,25 @@ def capitalize_rd(years: dict[str, RoicYear], rd: dict[str, float], life: int) -
     研发资产 `Σ_{k<N} R&D_{t−k}·(N−k)/N`、摊销 `Σ_{1≤k≤N} R&D_{t−k}/N`（当年支出次年起摊）；EBIT 加回「研发 − 摊销」、
     NOPAT 同额按原税率加回、投入资本加研发资产、资本开支加研发、折旧摊销加摊销（再投资率与维持性估计随之同源）。
     重述前版本同式调整。起用日 = 基年年报公告日（研发强度自此可知），调用方只对不早于此日的带使用副本。
-    无基年或基年营收非正返回 None。"""
-    base = min((p for p in rd if int(p[:4]) >= RD_BASE_YEAR and p in years), default=None)
+    财年按 `fiscal_labels` 编号（12 月年结即年份，海外非 12 月年结同式）。无基年或基年营收非正返回 None。"""
+    labels = fiscal_labels(set(years) | set(rd))
+    period_of = {n: p for p, n in labels.items()}
+    base = min((p for p in rd if labels[p] >= RD_BASE_YEAR and p in years), default=None)
     if base is None or not (years[base].revenue and years[base].revenue > 0):
         return None
     intensity = rd[base] / years[base].revenue
 
     def spend(year: int) -> float:
-        period = f"{year}-12-31"
+        period = period_of.get(year)
+        if period is None:
+            return 0.0
         if year >= RD_BASE_YEAR and period in rd:
             return rd[period]
         y = years.get(period)
         return intensity * y.revenue if y is not None and y.revenue and y.revenue > 0 else 0.0
 
     def adjust(y: RoicYear) -> RoicYear:
-        t = int(y.period[:4])
+        t = labels[y.period]
         spends = [spend(t - k) for k in range(life + 1)]
         asset = sum(spends[k] * (life - k) / life for k in range(life))
         amort = sum(spends[1:]) / life
