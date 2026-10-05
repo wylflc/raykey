@@ -1312,7 +1312,7 @@
   "source": "https://news.10jqka.com.cn/20260917/c680021075.shtml"
  },
  "rule_version": {
-  "workflow": "v4.228",
+  "workflow": "v4.229",
   "epoch": "E5",
   "epoch_note": "策略纪元E5自2026-09-30起；E6自2026-10-08起（v4.224取消银行同尺系数、v4.225保险改按V_DDM×平滑银行G、v4.228成长股模块）"
  },
@@ -1341,7 +1341,9 @@
   "band_refresh_v4225_dossier_text": 27405521,
   "rescan_v4225_dossier_text": 27405522,
   "band_refresh_v4228": 27430686,
-  "rescan_v4228": 27430687
+  "rescan_v4228": 27430687,
+  "band_refresh_v4229": 27582131,
+  "rescan_v4229": 27582133
  },
  "resource_measurements": {
   "evidence_elapsed": "00:18:15",
@@ -1388,6 +1390,17 @@
    "605305": "稳定型"
   },
   "buy_line_count": "31→30",
+  "trend_qualified": 7,
+  "growth_gated": 0,
+  "plan": "空（可用资金为负）",
+  "verify": "通过"
+ },
+ "republish_v4229": {
+  "reason": "用户2026-10-05裁定：OI-253中创智领采用研究数（研究29.3亿、模型锚39.22亿）；v4.229海外研发资本化与客户托管资金（只改海外观察附表）；OI-254、OI-258不采纳结案与OI-257采纳待实施的裁定行追加到决策日志",
+  "adopted_research": {
+   "601717": "V 23.62→18.99（候选侧与持仓侧同），P/V 0.565→0.703"
+  },
+  "buy_line_count": "30→30",
   "trend_qualified": 7,
   "growth_gated": 0,
   "plan": "空（可用资金为负）",
