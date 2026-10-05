@@ -187,6 +187,10 @@ def load_statement_roster(paths) -> set[str]:
 ROIC_YEARS: dict[str, dict[str, "roic_inputs.RoicYear"]] = {}
 # OI-205 研究开关 `--guard-scope cyclical_tags`：峰谷守卫只对该集合（策略标签 H／F，`cycle_guard_scope`）生效；None = 全体（现行）
 GUARD_CODES: set[str] | None = None
+# `--demand-cycle-codes FILE`（OI-254 研究开关）：需求周期型资本品代码集；锚改取十年中位比率，`--demand-cycle-g0 zero` 另把 g0 置 0。
+# 缺省为空＝现行逐位不变。
+DEMAND_CYCLE_CODES: set[str] = set()
+DEMAND_CYCLE_G0_ZERO = False
 
 
 def guard_applies(code: str) -> bool:
@@ -2252,8 +2256,14 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                     nopat_cyclical = False
                     ROIC_STATS["OI-249 量驱动放宽峰守卫"] += 1
                 w_any = max(peak_w, trough_w)
+                demand_cycle = (code in DEMAND_CYCLE_CODES and len(long_ratios) >= 5 and statistics.median(long_ratios) > 0)
+                if demand_cycle:
+                    ratio_cyc, w_any = statistics.median(long_ratios), 1.0
+                    ROIC_STATS["OI-254 需求周期·十年中位锚"] += 1
                 ratio0 = (1.0 - w_any) * ratio_noncyc + w_any * ratio_cyc
-                if w_any >= 1.0:
+                if demand_cycle:
+                    band.roic_nopat_mode = "demand_cycle_median10"
+                elif w_any >= 1.0:
                     band.roic_nopat_mode = "cyclical_median" if peak_w >= trough_w else "trough_median"
                 elif w_any <= 0.0 and trust >= 1.0:
                     band.roic_nopat_mode = "ttm_growth"
@@ -2435,6 +2445,8 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                 g0_raw = g_capital if g_capital is not None else 0.0
                 band.roic_g_source = "capital"
             g0 = max(min(g0_raw, args.g0_cap), args.g0_floor)
+            if DEMAND_CYCLE_G0_ZERO and code in DEMAND_CYCLE_CODES:
+                g0, band.roic_g_source = 0.0, "demand_cycle_zero"
             if reset_active and len(ratios) < 3:
                 f_reset = band.ttm_factor if band.ttm_factor is not None else 1.0
                 # 增速腿同源：TTM 增速 × 模型的增速腿权重（--roic-trail-weight）再封顶，不直接外推原始 TTM 增速
@@ -3342,6 +3354,10 @@ def main() -> int:
                              "§7.3 结构性增长复核（scripts/structural_growth_review.py）用它判量驱动与不设峰守卫的每股 NOPAT；off=缺省＝生产")
     parser.add_argument("--peak-relax-rev", type=float, default=0.25, help="研究开关（OI-249）：营收两年年复合门槛")
     parser.add_argument("--peak-relax-gm", type=float, default=5.0, help="研究开关（OI-249）：毛利率两年升幅上限（百分点）")
+    parser.add_argument("--demand-cycle-codes", type=Path,
+                        help="研究开关（OI-254）：需求周期型资本品代码文件（每行一个）；这些代码的 ROIC 锚取十年中位比率")
+    parser.add_argument("--demand-cycle-g0", choices=("keep", "zero"), default="keep",
+                        help="研究开关（OI-254）：zero = 上述代码 g0 置 0")
     parser.add_argument("--guard-scope", choices=("all", "cyclical_tags"), default="all",
                         help="研究开关（OI-205）：cyclical_tags=峰谷守卫（ROIC 路径与权益口径）只对策略标签 H／F 生效，标签取 "
                              "strategy_tag_map.csv 与 data/reference/cycle_guard_supplement.csv（`cycle_guard_scope`）；all=缺省＝生产")
@@ -3423,6 +3439,13 @@ def main() -> int:
     PV_BASIS = getattr(args, "pv_basis", "ev")
     global STATE_EFFECTIVE
     STATE_EFFECTIVE = args.state_effective
+    global DEMAND_CYCLE_CODES, DEMAND_CYCLE_G0_ZERO
+    if args.demand_cycle_codes:
+        DEMAND_CYCLE_CODES = {line.strip().zfill(6) for line in args.demand_cycle_codes.read_text(encoding="utf-8").splitlines()
+                              if line.strip() and not line.startswith("#")}
+        DEMAND_CYCLE_G0_ZERO = args.demand_cycle_g0 == "zero"
+        print(f"需求周期型资本品（OI-254 研究开关）：{len(DEMAND_CYCLE_CODES)} 个代码，锚取十年中位比率"
+              + ("，g0 置 0" if DEMAND_CYCLE_G0_ZERO else ""))
     global GUARD_CODES
     if args.guard_scope == "cyclical_tags":
         import cycle_guard_scope
