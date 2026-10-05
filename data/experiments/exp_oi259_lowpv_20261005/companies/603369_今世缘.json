@@ -1,0 +1,177 @@
+{
+ "code": "603369",
+ "name": "今世缘",
+ "close": 28.09,
+ "model": {
+  "V": 39.5146,
+  "pv": 0.7109,
+  "path": "growth/median3",
+  "nopat_anchor_yi": 36.19,
+  "g0": 0.0585,
+  "net_cash_ps": 6.1828,
+  "drivers": "V 39.51 = EV 33.33（每股 NOPAT 2.9024 × 11.48 倍）＋ 净现金 6.18。g0 5.85% = 增量 ROIC 6.7% × 再投资率 87%。锚 = 三年中位比率 20.6% × 经营账面 175.8 亿 = 36.2 亿；λ=0（2024、2025 连降），谷底守卫未触发（当期 ÷ 十年中位 = 0.78）。锚高于历史最高 NOPAT 32.7 亿（2024），是 TTM 22.5 亿的 1.61 倍"
+ },
+ "why_low": [
+  "λ=0 使锚取三年中位比率（约 2024 年水平）× 更大的当期账面，锚 36.2 亿，超过历史最高 NOPAT；锚取 TTM 时 V 25.7、P/V 1.09",
+  "资本腿 g0 5.85% 来自低于资本成本的增量回报（6.7%）× 高再投资率（87%），引擎却按整本 ROIC 98% 计价增长，增长贡献约 +14%"
+ ],
+ "computation_check": [
+  {
+   "item": "年报、中报数字",
+   "result": "ok",
+   "detail": "2025 年归母 26.04 亿（−23.69%），第四季度 0.55 亿（年报 p.6）。2026 上半年营收 64.35 亿（−7.41%），归母 20.82 亿（−6.60%），第二季度 6.97 亿（+19%），经营现金流 16.16 亿（+50.3%）（中报 p.5）。与面板一致",
+   "v_impact_pct": null
+  },
+  {
+   "item": "06-30 实有净现金",
+   "result": "issue",
+   "detail": "货币资金 51.83 ＋ 交易性金融资产 12.08 ＋ 其他非流动金融资产 24.86 − 借款 16.12 − 经营备付 1.93 = 70.7 亿，即 5.67 元／股（中报 p.22～23）。模型 6.18 元，高 0.51 元",
+   "v_impact_pct": -1.3
+  },
+  {
+   "item": "其他非流动金融资产的流动性",
+   "result": "ok",
+   "detail": "其他非流动金融资产 24.9 亿按账面计入超额现金，其中权益工具 12.7 亿（年报 p.111）。全部公允价值计量金融资产 36.7 亿中，私募基金 12.0 亿、信托 4.1 亿（年报 p.23），估值与流动性均弱。按 §6.5.1 口径计入无误，悲观档对权益部分折价 30%",
+   "v_impact_pct": null
+  },
+  {
+   "item": "受限资金与应付票据",
+   "result": "ok",
+   "detail": "应付票据 8.37 亿，年报未披露质押（restricted_cash_items 记为 none_stated）",
+   "v_impact_pct": null
+  },
+  {
+   "item": "资本开支与自由现金流",
+   "result": "ok",
+   "detail": "固定资产由 2023 年的 12.5 亿增至 2025 年的 64.1 亿；2025 年资本开支 18.3 亿，高于经营现金流 15.1 亿，自由现金流为负。新产能折旧将压低未来 NOPAT。非计算错误",
+   "v_impact_pct": null
+  },
+  {
+   "item": "股本、少数股东、研发资本化",
+   "result": "ok",
+   "detail": "股本 12.468 亿股；无少数股东；研发资本化前后 NOPAT 为 23.7／23.8 亿",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 19,
+   "base": 24,
+   "bull": 29
+  },
+  "net_cash_ps": {
+   "bear": 4.61,
+   "base": 5.67,
+   "bull": 5.67
+  },
+  "growth_premium_ps": 0,
+  "V": {
+   "bear": 19.85,
+   "base": 24.92,
+   "bull": 28.93
+  },
+  "pv": {
+   "bear": 1.415,
+   "base": 1.127,
+   "bull": 0.971
+  },
+  "V_12pct_base": 21.71,
+  "method_note": "V = NOPAT ÷ 10% ÷ 12.468 亿股 ＋ 净自由现金。正常化 NOPAT 三档：悲观 19 亿，假设江苏 300～600 元价格带打价格战、政务宴请禁酒持续，在 2026 年基础上再降 10%；基准 24 亿，取中报后一致预期 2026E／27E 归母 26.1／27.7 亿（折 NOPAT 23.9／25.5 亿）；乐观 29 亿，约为 2028E。经营现状：特A+类上半年 37.43 亿（−13.2%），国缘四开批量价 380～450 元、建议零售 668 元，江苏高端白酒开瓶率 −23%；合同负债 06-30 同比 +40%，第二季度利润回升。净自由现金：悲观档对私募基金等权益部分折价 30%，并扣合同负债的一半和预提费用 26.2 亿的 20%。不计增长。现价隐含零增长 NOPAT 28.0 亿"
+ },
+ "model_vs_independent_pct": 58.6,
+ "undervaluation_view": "大致合理",
+ "trap_risk": "低至中。五家中基本面最稳：利润降幅收窄，预收款回升，宴席渠道刚性。风险在于江苏次高端价格带收缩、政务消费禁酒，以及新产能折旧与低回报的再投资。可证伪条件：2026 年归母低于 23 亿、年末合同负债低于 15 亿或特A+类降幅超过 20%，则转向陷阱；2027 年归母 ≥ 30 亿，则低估成立",
+ "model_flaws": [
+  {
+   "title": "λ=0 三年中位锚使锚停在 2024 年水平",
+   "mechanism": "两年比率连降，λ=0，非周期锚 = 三年中位，不看当期；谷底守卫未触发，但锚同样高于当期",
+   "evidence": "锚 36.2 亿，TTM 22.5 亿，比值 1.61；锚取 TTM 时 V 25.7（−35%）",
+   "affected_field": "growth_trust／roic_nopat_mode",
+   "v_impact_pct": -35.0,
+   "likely_affected_peers": [
+    "000568 泸州老窖",
+    "600809 山西汾酒（持仓侧）",
+    "600690 海尔智家",
+    "603855 华荣股份"
+   ],
+   "proposed_fix": "存量型且锚 ÷ TTM ≥ 1.5 时进入 §7.3 研究数复核；或在 λ=0 时，以三年每股 NOPAT 绝对中位为上限"
+  },
+  {
+   "title": "比率 × 含现金账面抬高锚",
+   "mechanism": "三年中位比率来自账面较小的年份，乘以留存现金后变大的当期账面",
+   "evidence": "三年 NOPAT 绝对中位 29.2 亿，对应 V 32.4（−18%）",
+   "affected_field": "nopat_ps",
+   "v_impact_pct": -18.1,
+   "likely_affected_peers": [
+    "000596 古井贡酒",
+    "000568 泸州老窖",
+    "600809 山西汾酒"
+   ],
+   "proposed_fix": "锚按每股 NOPAT 绝对中位，或比率分母剔除净超额现金；预登记检验"
+  },
+  {
+   "title": "增量回报低于资本成本时，资本腿仍给正增长，且按整本 ROIC 计价",
+   "mechanism": "g0 = min(增量 ROIC, 40%) × 再投资率。增量 ROIC 低于 r 时，增长本应不增值，但引擎按衰减中的整本 ROIC（98%）计算增长所需留存，使增长显得几乎免费",
+   "evidence": "2021～25 年投入资本由 10 亿增至 92.5 亿，NOPAT 只增 5.5 亿，增量 ROIC 6.7%；g0 5.85%；g0=0 时 V 33.9（−14%）",
+   "affected_field": "g0／incremental_roic／reinvestment_rate",
+   "v_impact_pct": -14.3,
+   "likely_affected_peers": [
+    "000596 古井贡酒（增量 ROIC 9.9%）",
+    "600600 青岛啤酒"
+   ],
+   "proposed_fix": "增量 ROIC < r 时 g0 置 0，或增长按增量 ROIC 计价；并入 OI-252"
+  }
+ ],
+ "sources": [
+  {
+   "title": "今世缘 2025 年年度报告",
+   "date": "2026-04-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-29/1225245218.PDF；data/raw/annual_reports/603369/2025.txt.gz"
+  },
+  {
+   "title": "今世缘 2026 年半年度报告",
+   "date": "2026-08-18",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-18/1225476449.PDF；data/experiments/exp_oi259_lowpv_20261005/raw/603369_2026H1.pdf"
+  },
+  {
+   "title": "投资界：今世缘特A+类上半年 −13.19%，国缘四开批量价 380～450 元，江苏高端白酒开瓶率 −23%",
+   "date": "2026-08-29",
+   "url_or_path": "https://news.pedaily.cn/202608/568294.shtml"
+  },
+  {
+   "title": "东方财富 F10 盈利预测（中报后机构预测与近六月均值）",
+   "date": "2026-10-05",
+   "url_or_path": "https://emweb.securities.eastmoney.com/PC_HSF10/ProfitForecast/PageAjax?code=SH603369"
+  },
+  {
+   "title": "东方财富 F10 季度合并资产负债表（RPT_F10_FINANCE_GBALANCE，交叉核对合同负债、应付股利）",
+   "date": "2026-10-05",
+   "url_or_path": "https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_FINANCE_GBALANCE"
+  },
+  {
+   "title": "酒价内参 9 月 30 日 12 大单品终端零售均价",
+   "date": "2026-09-30",
+   "url_or_path": "https://m.gelonghui.com/live/2694364"
+  },
+  {
+   "title": "新浪财经：「双节」白酒冷热考，动销向名酒、刚需集中，供需拐点有待 Q4",
+   "date": "2026-09-30",
+   "url_or_path": "https://cj.sina.com.cn/articles/view/1651428902/626ece2602001kc06"
+  },
+  {
+   "title": "虎嗅：白酒上市公司 2026 年中报综述",
+   "date": "2026-09-10",
+   "url_or_path": "https://www.huxiu.com/article/4890246.html"
+  },
+  {
+   "title": "中共中央 国务院《党政机关厉行节约反对浪费条例》（第二十三条：工作餐不上酒）",
+   "date": "2025-05-18",
+   "url_or_path": "https://www.news.cn/politics/20250518/d643d80c9a1d4205a98c74432b066004/c.html"
+  },
+  {
+   "title": "生产带与拆解表（09-30 信号日候选侧带）",
+   "date": "2026-09-30",
+   "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv；data/experiments/exp_oi259_lowpv_20261005/decomposition.csv"
+  }
+ ]
+}

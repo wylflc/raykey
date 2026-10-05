@@ -1,15 +1,15 @@
 {
   "as_of": "2026-09-30",
-  "generated_at_utc": "2026-10-05T09:23:20.188797+00:00",
-  "sha256": "151939b715194f5c6ef55a28a658bdd0c10e6ce7a0d58b2a5bf6b303091bd99f",
+  "generated_at_utc": "2026-10-05T16:30:15.905442+00:00",
+  "sha256": "7f5e36703d1bb7ccb03d92110e3d2f32b2d9aaf6bf85ceb3b83321970695431a",
   "inputs": {
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/a_share_earnings_forecasts.csv": "061ca950c944f282f39d58980482080f06ad1c7d896452dcc7fcecc883d94d56",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/a_share_report_disclosures.csv": "2e042fc78c69672f871767440938c09d295560ef80ae5b9383a4bbe970516378",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_attention_triage.csv": "40aeb91e690dee3a781597ba53b863a9578b8ef94b29df1fa1abc9fd5c6a3d67",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_watchlist_quality_tiers.csv": "d1c10250296b30cbb5a9ef3a75d08f61d59798be9db99d95c89c9ada7d3b9075",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_core_valuation_pool.csv": "304f857849805d43561e5d567bf7d6c2bda40f29e8bb8d47ef3d928c809ac3b0",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_valuation_dossiers.csv": "93cf766f514b6d8552b3305634c66018f376c2a85539a4a4ac559aee4e0b150d",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "619421067fa0dd5aa826aa3162b838d5d85c035192772c809eb351b3fae29c35",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/structural_growth_review.csv": "0189901287f2c25368decefba19af8bc5e68cd0559f31cce9cb09f469de5a80b"
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_core_valuation_pool.csv": "ef8564a662d4787f97df6432fda85f6b84d3fbb0e2c00f2453c79efb5a5772c5",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_valuation_dossiers.csv": "4c930a307a10d8444c4fa502cea3625ca6c58ef3f869bfb6569899eccad919f1",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "8f4e57a0d52ba32e7020a9118a1f82ba42752e24a43b1c7444904d2cb4f43e2f",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/structural_growth_review.csv": "ee611128d64df3e315626f62b523b87d080e5d885462a8e523d549f4fbd62e8c"
   }
 }

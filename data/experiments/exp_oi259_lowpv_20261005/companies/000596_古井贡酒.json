@@ -1,0 +1,186 @@
+{
+ "code": "000596",
+ "name": "古井贡酒",
+ "close": 93.55,
+ "model": {
+  "V": 115.6639,
+  "pv": 0.8088,
+  "path": "growth/trough_median",
+  "nopat_anchor_yi": 45.64,
+  "g0": 0.0672,
+  "net_cash_ps": 22.1995,
+  "drivers": "V 115.66 = EV 97.31 ＋ 净现金 22.20 − 少数股东 3.85 ＋ x 0.004。EV = 每股 NOPAT 8.634 × 11.27 倍；g0 6.72% = 增量 ROIC 9.87% × 再投资率 68%。当期比率 9.6%（2025 年 16.6% × TTM 因子 0.578）为十年中位 21.1% 的 0.46 倍，谷底守卫 v=1，取五年中位 22.9%（即 2022 年 NOPAT 31.1 亿 ÷ 账面 135.7 亿），乘当期经营账面 199.3 亿得锚 45.6 亿，是 TTM 19.3 亿的 2.36 倍。不触发守卫时非周期锚为 18.75%，对应 37.4 亿、V 96.8"
+ },
+ "why_low": [
+  "谷底守卫把锚由 18.75% 抬到五年中位 22.9%（+22%）：守卫贡献 V +18.9 元",
+  "五年中位取自 2022 年的比率，却乘以 2025 年已增大的账面：按五年 NOPAT 绝对中位 33.4 亿定锚，V 为 88.0（−24%）",
+  "资本腿 g0 6.72% 来自低于 r 的增量回报（9.87%）；g0=0 时 V 98.4（−15%）",
+  "锚取 TTM 时 V 58.5、P/V 1.60"
+ ],
+ "computation_check": [
+  {
+   "item": "年报数字与一次性项目",
+   "result": "ok",
+   "detail": "2025 年归母 35.49 亿（−35.67%），第四季度 −4.11 亿（年报 p.8），其中含黄鹤楼商誉减值 3.15 亿（p.133），属一次性：TTM 因此低估约 3 亿，锚取 2022 年比率，不受影响。2026 上半年营收 101.31 亿（−27.0%）、归母 21.64 亿（−40.9%）、经营现金流 15.43 亿（−62.9%）（中报 p.6），与面板一致",
+   "v_impact_pct": null
+  },
+  {
+   "item": "06-30 实有净现金",
+   "result": "issue",
+   "detail": "货币资金 133.02 ＋ 交易性金融资产 6.03 − 有息负债 5.21 − 应付股利 17.97（07-17 派 3.40 元）− 开票质押 9.24（受限 12.63 亿以应付票据为限，中报 p.94）− 经营备付 3.02 = 103.6 亿，合 19.60 元。模型 22.20 元：年报比率 × BPS 未反映上半年现金减少，且股息只间接扣了 2.0 元",
+   "v_impact_pct": -2.2
+  },
+  {
+   "item": "合同负债与经销商保证金",
+   "result": "ok",
+   "detail": "合同负债 2024 年末 35.15 亿 → 2025 年末 15.20 亿 → 06-30 8.34 亿（同比 −42%）；经销商保证金及押金 17.61 亿（中报 p.113），2024 年末为 25.46 亿。浮存已大量回吐，余量仍有回吐风险，悲观档扣半",
+   "v_impact_pct": null
+  },
+  {
+   "item": "少数股东与定增",
+   "result": "ok",
+   "detail": "少数股东份额 m 3.22%，扣 3.85 元；2021 年定增约 49.5 亿按「未花募资」从经营账面剔除、现金仍计入净现金，口径一致",
+   "v_impact_pct": null
+  },
+  {
+   "item": "研发资本化",
+   "result": "ok",
+   "detail": "2025 年 NOPAT 资本化前后为 33.2／33.4 亿，影响可忽略",
+   "v_impact_pct": null
+  }
+ ],
+ "independent": {
+  "normalized_profit_yi": {
+   "bear": 20,
+   "base": 28,
+   "bull": 36
+  },
+  "net_cash_ps": {
+   "bear": 16.51,
+   "base": 19.6,
+   "bull": 19.6
+  },
+  "growth_premium_ps": 0,
+  "V": {
+   "bear": 52.6,
+   "base": 70.24,
+   "bull": 84.88
+  },
+  "pv": {
+   "bear": 1.779,
+   "base": 1.332,
+   "bull": 1.102
+  },
+  "V_12pct_base": 61.69,
+  "method_note": "V =（合并 NOPAT ÷ 10% ÷ 5.286 亿股 ＋ 净自由现金）×（1 − 3.22%）。三档 NOPAT 依据：悲观 20 亿，为 TTM 剔除商誉减值；基准 28 亿，取中报后 11 家一致预期 2026E／27E 归母 28.7／31.8 亿；乐观 36 亿，约为 2028E 一致预期 35.9 亿。经营现状：年份原浆上半年收入 −27.3%、销量 −16.7%，销售费用率 30.3%，经销商减少 125 家，管理层称库存「偏高但可控」，古20 零售约 530 元。悲观档净自由现金另扣三项：超过应付票据的受限资金 3.39 亿、合同负债的一半、保证金的一半。不计增长。现价隐含零增长 NOPAT 40.4 亿，为 2024 年峰值的 73%"
+ },
+ "model_vs_independent_pct": 64.7,
+ "undervaluation_view": "高估",
+ "trap_risk": "中至高。五家中收缩最深，营收 −27%，合同负债已降到 8.3 亿，销售费用刚性约占收入 30%，盈利杠杆向下。可证伪条件：2026 年归母低于 25 亿、年末合同负债低于 10 亿，或保证金继续下降，均说明下行未止；2027 年归母 ≥ 42 亿（恢复到 2024 年的 76%），则现价合理或偏低",
+ "model_flaws": [
+  {
+   "title": "谷底守卫把多年下行的存量型公司当作周期谷底抬锚",
+   "mechanism": "当期 ÷ 十年中位 ≤ 0.43 时 v=1，锚取五年中位。五年窗口落在 2021～25 年扩张期，守卫因此把锚拉回扩张期水平",
+   "evidence": "守卫抬锚 +22%，V 96.8 → 115.7；锚 ÷ TTM = 2.36，锚取 TTM 时 V 58.5（−49%）",
+   "affected_field": "trough_weight／nopat_ps",
+   "v_impact_pct": -16.3,
+   "likely_affected_peers": [
+    "000858 五粮液（机械锚）",
+    "603279 景津装备",
+    "000786 北新建材",
+    "000568 泸州老窖（v=0.75）"
+   ],
+   "proposed_fix": "OI-246 不采纳改守卫，此处不重提；改为存量型且锚 ÷ TTM ≥ 1.5 时进入 §7.3 研究数复核（仿 OI-249 候选 3）"
+  },
+  {
+   "title": "比率 × 含现金账面放大锚",
+   "mechanism": "五年中位比率乘当期经营账面，账面里含持续积累的现金，现金另计入净现金",
+   "evidence": "2022 年比率 22.9% × 2026 年账面 199.3 亿（2022 年为 135.7 亿）；按五年 NOPAT 绝对中位 33.4 亿定锚，V 88.0（−24%）",
+   "affected_field": "nopat_ps",
+   "v_impact_pct": -24.0,
+   "likely_affected_peers": [
+    "603369 今世缘",
+    "000568 泸州老窖",
+    "600809 山西汾酒"
+   ],
+   "proposed_fix": "锚按每股 NOPAT 绝对中位，或比率分母剔除净超额现金；预登记检验"
+  },
+  {
+   "title": "季度带净现金按年报比率 × BPS 推算",
+   "mechanism": "不读季度资产负债表，不扣应付股利",
+   "evidence": "06-30 实有 19.60 元，模型 22.20 元",
+   "affected_field": "fin_net_debt_ps",
+   "v_impact_pct": -2.2,
+   "likely_affected_peers": [
+    "000858 五粮液",
+    "600809 山西汾酒",
+    "603369 今世缘"
+   ],
+   "proposed_fix": "季度带改读最新季度资产负债表，扣应付股利"
+  },
+  {
+   "title": "增量回报低于 r 时资本腿仍给增长（OI-252）",
+   "mechanism": "g0 = 增量 ROIC 9.87% × 再投资率 68%，引擎却按整本 ROIC 计价增长",
+   "evidence": "g0 6.72%；g0=0 时 V 98.4（−15%）",
+   "affected_field": "g0",
+   "v_impact_pct": -14.9,
+   "likely_affected_peers": [
+    "603369 今世缘",
+    "000568 泸州老窖"
+   ],
+   "proposed_fix": "增量 ROIC < r 时 g0 置 0；存量型 g0 设上限"
+  }
+ ],
+ "sources": [
+  {
+   "title": "古井贡酒 2025 年年度报告",
+   "date": "2026-04-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-29/1225237594.PDF；data/raw/annual_reports/000596/2025.txt.gz"
+  },
+  {
+   "title": "古井贡酒 2026 年半年度报告",
+   "date": "2026-08-29",
+   "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-08-29/1225524329.PDF；data/experiments/exp_oi259_lowpv_20261005/raw/000596_2026H1.pdf"
+  },
+  {
+   "title": "蓝鲸财经：古井贡酒中报，合同负债 8.34 亿、经销商减少 125 家、库存「偏高但可控」",
+   "date": "2026-09-15",
+   "url_or_path": "https://www.lanjinger.com/d/1788946419289569906"
+  },
+  {
+   "title": "东方财富 F10 盈利预测（中报后机构预测与近六月均值）",
+   "date": "2026-10-05",
+   "url_or_path": "https://emweb.securities.eastmoney.com/PC_HSF10/ProfitForecast/PageAjax?code=SZ000596"
+  },
+  {
+   "title": "东方财富 F10 季度合并资产负债表（RPT_F10_FINANCE_GBALANCE，交叉核对合同负债、应付股利）",
+   "date": "2026-10-05",
+   "url_or_path": "https://datacenter.eastmoney.com/securities/api/data/v1/get?reportName=RPT_F10_FINANCE_GBALANCE"
+  },
+  {
+   "title": "酒价内参 9 月 30 日 12 大单品终端零售均价",
+   "date": "2026-09-30",
+   "url_or_path": "https://m.gelonghui.com/live/2694364"
+  },
+  {
+   "title": "新浪财经：「双节」白酒冷热考，动销向名酒、刚需集中，供需拐点有待 Q4",
+   "date": "2026-09-30",
+   "url_or_path": "https://cj.sina.com.cn/articles/view/1651428902/626ece2602001kc06"
+  },
+  {
+   "title": "虎嗅：白酒上市公司 2026 年中报综述",
+   "date": "2026-09-10",
+   "url_or_path": "https://www.huxiu.com/article/4890246.html"
+  },
+  {
+   "title": "中共中央 国务院《党政机关厉行节约反对浪费条例》（第二十三条：工作餐不上酒）",
+   "date": "2025-05-18",
+   "url_or_path": "https://www.news.cn/politics/20250518/d643d80c9a1d4205a98c74432b066004/c.html"
+  },
+  {
+   "title": "生产带与拆解表（09-30 信号日候选侧带）",
+   "date": "2026-09-30",
+   "url_or_path": "data/processed/a_share_pool_model_bands_adopted.csv；data/experiments/exp_oi259_lowpv_20261005/decomposition.csv"
+  }
+ ]
+}
