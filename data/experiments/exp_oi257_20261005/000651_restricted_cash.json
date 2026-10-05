@@ -1,0 +1,364 @@
+{
+  "report": "2025年报",
+  "page_numbering": "PDF 页码；印刷页码 = PDF 页 − 1",
+  "page_refs": [
+    "p32 第三节 六、3 截至报告期末的资产权利受限情况",
+    "p130 附注五、1 货币资金（注 1、注 2）",
+    "p134 附注五、6 应收款项融资（期末已质押 3,513,771,591.88）",
+    "p162–163 附注五、29 所有权或使用权受限资产；五、30 短期借款（质押借款 12,946,180,129.39）",
+    "p164–165 附注五、32 应付票据 15,544,348,535.69；五、35 吸收存款及同业存放 208,923,102.80",
+    "p167 附注五、41 长期借款（质押借款 5,929,940,000.00）",
+    "p178 附注五、70(3) 收到的其他与筹资活动有关的现金：借款质押保证金净减少额 14,083,182,364.73",
+    "p180 附注五、71(4) 现金和现金等价物的构成（法定存款准备金 1,902,339,726.09；票据、信用证等保证金 8,675,252,384.99）",
+    "p68 重大担保：对子公司担保余额 B4 = 427,156.39 万元，担保物为票据池",
+    "p196 利率风险：有息负债表含其他应付款 1,547,471,401.00（4.35%）"
+  ],
+  "items": [
+    {
+      "line": "货币资金（存放中央银行款项中的法定存款准备金）",
+      "amount_yi": 19.02,
+      "reason_text": "受限资产表：「法定存款准备金及保证金等」；货币资金附注【注 2】：「公司存放中央银行款项中法定存款准备金为 1,902,339,726.09元，其使用受到限制」；现金和现金等价物的构成：「其中：法定存款准备金 1,902,339,726.09」",
+      "page": 130,
+      "page_also": [
+        162,
+        180
+      ],
+      "liability": "财务公司吸收的集团内部存款（合并抵销，无合并负债）；合并报表仅余外部吸收存款及同业存放 2.09 亿",
+      "liability_amount_yi": 2.09,
+      "liability_in_debt": true,
+      "current_rule_class": "generic",
+      "economic_class": "unavailable",
+      "note": "准备金远大于外部存款，主要按集团内部存款计提；财务公司存续期间不可动用。现行规则明文不扣（只写存款准备金的不计），是否扣出需另裁。"
+    },
+    {
+      "line": "货币资金（其他货币资金中的票据、信用证、保函保证金）",
+      "amount_yi": 86.75,
+      "reason_text": "受限资产表：「法定存款准备金及保证金等」；货币资金附注【注 1】：「其他货币资金期末余额主要为银行承兑汇票保证金、保函保证金、信用证保证金存款等，其中受限制资金为 8,675,252,384.99元」；现金和现金等价物的构成：「票据、信用证等保证金 8,675,252,384.99」",
+      "page": 130,
+      "page_also": [
+        162,
+        180
+      ],
+      "liability": "应付票据（银行承兑汇票）155.44 亿（p164）；表外信用证、保函（金额未披露）",
+      "liability_amount_yi": 155.44,
+      "liability_in_debt": false,
+      "current_rule_class": "generic",
+      "rule_intent_class": "notes",
+      "economic_class": "operating",
+      "note": "受限资产表原因笼统，抽取按规则文字记 generic；同一报告已写明为票据、信用证、保函保证金，属 OI-219 意图内，扣除额 = min(86.75, 155.44) = 86.75。借款质押保证金余额推算约 64 万元（见 loan_margin_trace），可忽略。"
+    },
+    {
+      "line": "一年内到期的非流动资产",
+      "amount_yi": 104.7,
+      "reason_text": "质押",
+      "page": 162,
+      "liability": "质押借款（与其他债权投资、其他非流动资产两行合并对应）",
+      "liability_amount_yi": 188.76,
+      "liability_in_debt": true,
+      "current_rule_class": "generic",
+      "economic_class": "offset_by_debt",
+      "note": "三行合计 316.7 亿，附注未逐行写用途；对应质押借款 188.76 亿（短期 129.46，p163；长期含一年内到期 59.3，p167），均已计入有息负债，抵消部分按超额现金计入正确。超出质押借款的 127.94 亿见 cd_beyond_loans。"
+    },
+    {
+      "line": "其他债权投资",
+      "amount_yi": 79.0,
+      "reason_text": "质押",
+      "page": 162,
+      "liability": "质押借款（同上）",
+      "liability_amount_yi": 188.76,
+      "liability_in_debt": true,
+      "current_rule_class": "generic",
+      "economic_class": "offset_by_debt",
+      "note": "其他债权投资主要为可转让大额存单（p142）。三行合计 316.7 亿，附注未逐行写用途；对应质押借款 188.76 亿（短期 129.46，p163；长期含一年内到期 59.3，p167），均已计入有息负债，抵消部分按超额现金计入正确。超出质押借款的 127.94 亿见 cd_beyond_loans。"
+    },
+    {
+      "line": "其他非流动资产",
+      "amount_yi": 133.0,
+      "reason_text": "质押",
+      "page": 163,
+      "liability": "质押借款（同上）",
+      "liability_amount_yi": 188.76,
+      "liability_in_debt": true,
+      "current_rule_class": "generic",
+      "economic_class": "offset_by_debt",
+      "note": "其他非流动资产为货币性投资产品（p162）。三行合计 316.7 亿，附注未逐行写用途；对应质押借款 188.76 亿（短期 129.46，p163；长期含一年内到期 59.3，p167），均已计入有息负债，抵消部分按超额现金计入正确。超出质押借款的 127.94 亿见 cd_beyond_loans。"
+    }
+  ],
+  "cd_beyond_loans": {
+    "amount_yi": 127.94,
+    "economic_class": "excess",
+    "possible_operating_max_yi": 33.55,
+    "note": "质押存单 316.7 − 质押借款 188.76。用途未披露；应付票据 155.44 − 保证金 86.75 − 已质押应收款项融资 35.14 = 33.55 亿，若这部分票据由存单全额担保则属经营；其余为超额质押或表外信用证、保函担保，解押后仍归公司，按超额现金计入正确。"
+  },
+  "non_cash_restricted": [
+    {
+      "line": "应收账款",
+      "amount_yi": 0.06,
+      "reason_text": "质押",
+      "page": 162
+    },
+    {
+      "line": "应收款项融资",
+      "amount_yi": 35.14,
+      "reason_text": "质押",
+      "page": 162,
+      "note": "银行承兑汇票 3,298,768,689.49、财务公司承兑汇票 215,002,902.39（p134），票据池质押，属营运资金"
+    },
+    {
+      "line": "合同资产",
+      "amount_yi": 0.0,
+      "amount_yuan": 120750.0,
+      "reason_text": "质押",
+      "page": 162
+    },
+    {
+      "line": "投资性房地产",
+      "amount_yi": 0.04,
+      "reason_text": "抵押",
+      "page": 163
+    },
+    {
+      "line": "固定资产",
+      "amount_yi": 15.16,
+      "reason_text": "抵押",
+      "page": 163
+    },
+    {
+      "line": "无形资产",
+      "amount_yi": 6.76,
+      "reason_text": "抵押",
+      "page": 163
+    }
+  ],
+  "table_check": "十行合计 47,963,399,240.24 与附注合计相符；现金类四行 42,247,592,111.08 与 restricted_cash_items.csv 一致（status ok，counted 0，全部 generic）",
+  "loan_margin_trace": {
+    "anchor": "2015 年末借款质押保证金 2,276,553,945.98（2015 年报货币资金附注）",
+    "flows_yi": {
+      "2016": -21.11,
+      "2017": -1.6,
+      "2018": -0.05,
+      "2019": 0.0,
+      "2020": 98.26,
+      "2021": 164.42,
+      "2022": 122.54,
+      "2023": -190.55,
+      "2024": -53.83,
+      "2025": -140.83
+    },
+    "balance_2025_yuan": 640006.6,
+    "net_2020_2025_yuan": -5993.4,
+    "note": "各年报筹资活动「借款质押保证金」净增减（2020 年取 2021 年报比较数）。2025 年末余额约 64 万元，86.75 亿保证金基本不含借款质押；推算期末余额 2020–2024：98.26、262.68、385.22、194.67、140.84 亿。"
+  },
+  "h1_2026": {
+    "report": "2026半年报",
+    "page_refs": [
+      "p27 第三节 五、4 资产权利受限情况",
+      "p109 附注七、1 货币资金（注 1、注 2）",
+      "p113 附注七、7 应收款项融资（已质押 5,188,889,684.45）",
+      "p137 附注七、30 所有权或使用权受限资产；七、31 短期借款",
+      "p138 七、33 应付票据 20,949,230,073.22",
+      "p139 七、36 吸收存款及同业存放 182,482,118.53",
+      "p141 七、42 长期借款（质押借款期末无）",
+      "p151 七、71(3) 筹资活动（本期无借款质押保证金）",
+      "p153 七、72(4) 现金和现金等价物的构成",
+      "p43 重大担保 B4 = 1,432,429.97 万元（票据池）"
+    ],
+    "items": [
+      {
+        "line": "货币资金（法定存款准备金）",
+        "amount_yi": 23.26,
+        "reason_text": "受限资产表：「法定存款准备金及保证金等」；【注 2】「公司存放中央银行款项中法定存款准备金为 2,325,654,745.57元，其使用受到限制」",
+        "page": 109,
+        "liability": "财务公司集团内部存款（合并抵销）；外部吸收存款及同业存放 1.82 亿",
+        "liability_amount_yi": 1.82,
+        "liability_in_debt": true,
+        "current_rule_class": "generic",
+        "economic_class": "unavailable",
+        "note": ""
+      },
+      {
+        "line": "货币资金（票据、信用证等保证金）",
+        "amount_yi": 116.37,
+        "reason_text": "【注 1】「其他货币资金期末余额主要为银行承兑汇票保证金、保函保证金、信用证保证金存款等，其中受限制资金为 11,637,390,163.06元」；p153「票据、信用证等保证金 11,637,390,163.06」",
+        "page": 109,
+        "liability": "应付票据 209.49 亿；表外信用证、保函",
+        "liability_amount_yi": 209.49,
+        "liability_in_debt": false,
+        "current_rule_class": "generic",
+        "rule_intent_class": "notes",
+        "economic_class": "operating",
+        "note": "半年内增 29.62 亿，经营活动现金流只列净增 2.60 亿、筹资活动无借款质押保证金，约 27 亿来自非现金转入，用途无法核实。"
+      },
+      {
+        "line": "其他流动资产",
+        "amount_yi": 13.45,
+        "reason_text": "质押",
+        "page": 137,
+        "liability": "质押借款",
+        "liability_amount_yi": 112.95,
+        "liability_in_debt": true,
+        "current_rule_class": "generic",
+        "economic_class": "offset_by_debt",
+        "note": ""
+      },
+      {
+        "line": "一年内到期的非流动资产",
+        "amount_yi": 33.0,
+        "reason_text": "质押",
+        "page": 137,
+        "liability": "质押借款",
+        "liability_amount_yi": 112.95,
+        "liability_in_debt": true,
+        "current_rule_class": "generic",
+        "economic_class": "offset_by_debt",
+        "note": ""
+      },
+      {
+        "line": "其他债权投资",
+        "amount_yi": 92.0,
+        "reason_text": "质押",
+        "page": 137,
+        "liability": "质押借款",
+        "liability_amount_yi": 112.95,
+        "liability_in_debt": true,
+        "current_rule_class": "generic",
+        "economic_class": "offset_by_debt",
+        "note": ""
+      },
+      {
+        "line": "其他非流动资产",
+        "amount_yi": 168.0,
+        "reason_text": "质押",
+        "page": 137,
+        "liability": "质押借款",
+        "liability_amount_yi": 112.95,
+        "liability_in_debt": true,
+        "current_rule_class": "generic",
+        "economic_class": "offset_by_debt",
+        "note": ""
+      }
+    ],
+    "pledged_loans_yi": {
+      "short_pledged": 55.45,
+      "short_pledged_and_credit": 57.51,
+      "long_pledged": 0.0,
+      "total": 112.95
+    },
+    "cash_like_restricted_yi": 446.08,
+    "cd_beyond_loans_yi": 193.5,
+    "residual_bills_yi": 41.23,
+    "overcount_yi": 139.63,
+    "overcount_per_share": 2.49,
+    "upper_bound_yi": 180.86,
+    "upper_bound_per_share": 3.23,
+    "note": "半年报不进现行生产带（带的现金与负债取 2025 年末三表）；同法算出，供下一份年报参考。09-30 独立估值的 5.9 元与「受限现金类 446.08 − 质押借款 112.96 = 333.13 亿（5.95 元）」吻合（推算，原报告未列算式），即把超额质押存单也当不可动用。"
+  },
+  "finance_company": {
+    "pbc_reserve_yi": 19.02,
+    "deposits_taken_yi": 2.09,
+    "in_cash_like": true,
+    "in_debt": true,
+    "note": "准备金在货币资金「存放中央银行款项」1,911,851,424.72 内（p130），模型按 MONETARYFUNDS 计入现金类；吸收存款及同业存放 208,923,102.80（p164–165）经东财 ACCEPT_DEPOSIT_INTERBANK 计入有息负债。年末无向中央银行借款、拆入资金、卖出回购（p87）；发放贷款和垫款 22.98 亿计入其他金融资产，买入返售 48.01 亿计入现金类。准备金无合并负债相抵、不可动用，现行按超额现金计入。2026-06-30：准备金 23.26 亿，吸收存款及同业存放 1.82 亿。"
+  },
+  "overcount_yi": 105.78,
+  "overcount_per_share": 1.89,
+  "overcount_breakdown": {
+    "shares_yi": 56.014,
+    "notes_margin_yi": 86.75,
+    "notes_margin_per_share": 1.55,
+    "notes_margin_status": "现行规则意图内，抽取漏判",
+    "pbc_reserve_yi": 19.02,
+    "pbc_reserve_per_share": 0.34,
+    "pbc_reserve_status": "现行规则明文不扣，需另裁",
+    "possible_extra_yi": 33.55,
+    "upper_bound_yi": 139.33,
+    "upper_bound_per_share": 2.49,
+    "model_scale_per_share": 1.91,
+    "model_basis": "生产带 fin_net_debt_ps −31.2361 = 2025 年末（有息负债 856.87 − 超额现金 2,583.68）÷ E_op 1,568.13 × BPS_op 28.3658，换算股数当量 55.28 亿",
+    "v_effect_rough": "未重建带：股权桥 −1.91 元；OI-219 回 EBIT 的利息约 +0.2～0.4 元；V 约 −1.5～−1.7 元，候选侧 P/V 0.511 → 约 0.52"
+  },
+  "history_label_check": {
+    "note": "若只按「票据、信用证等保证金」标签计入，格力 2020–2023 年把借款质押保证金也当经营资产扣掉（借款已计有息负债）；2024 年应付票据封顶后无影响。",
+    "rows_yi": [
+      {
+        "year": 2020,
+        "label": 182.98,
+        "loan_margin_est": 98.26,
+        "notes_payable": 214.27,
+        "over_deduct": 98.26
+      },
+      {
+        "year": 2021,
+        "label": 359.25,
+        "loan_margin_est": 262.68,
+        "notes_payable": 407.44,
+        "over_deduct": 262.68
+      },
+      {
+        "year": 2022,
+        "label": 479.54,
+        "loan_margin_est": 385.22,
+        "notes_payable": 386.1,
+        "over_deduct": 291.78
+      },
+      {
+        "year": 2023,
+        "label": 350.63,
+        "loan_margin_est": 194.67,
+        "notes_payable": 237.41,
+        "over_deduct": 81.45
+      },
+      {
+        "year": 2024,
+        "label": 342.78,
+        "loan_margin_est": 140.84,
+        "notes_payable": 144.79,
+        "over_deduct": 0.0
+      },
+      {
+        "year": 2025,
+        "label": 86.75,
+        "loan_margin_est": 0.01,
+        "notes_payable": 155.44,
+        "over_deduct": 0.0
+      }
+    ]
+  },
+  "conclusion": "需补规则",
+  "proposed_rule": "①（OI-219 补充）受限资产表的货币资金行原因笼统（只写保证金、存款准备金等）时，读同一报告「现金和现金等价物的构成」或货币资金附注中「使用受到限制的存款」的分项：名称含票据、承兑、汇票、信用证或保函的分项按 OI-219 计入，扣除额仍为 min(计入额, 当期应付票据, 现金类)；同一报告列出借款质押保证金余额的先减去，只在现金流量表列增减的按累计增减人工核定。只写「质押」的存单等维持不计。②（另裁）财务公司法定存款准备金不计超额现金，也不进营运资金。",
+  "side_findings": [
+    "其他应付款中「企业借款及利息」1,547,471,401.00，公司在利率风险表（p196）列为有息负债（4.35%），模型 DEBT_FIELDS 不含，少计有息负债 15.47 亿（约 0.28 元／股）；与受限现金无关，未计入 overcount。"
+  ],
+  "sources": [
+    {
+      "title": "珠海格力电器股份有限公司2025年年度报告",
+      "date": "2026-04-29",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2026-04-29/1225250396.PDF（raw/000651_2025_annual.pdf，md5 aa07a6604369cbb65585289a2601f00b，与 data/raw/annual_reports/000651/2025.pdf 相同）"
+    },
+    {
+      "title": "珠海格力电器股份有限公司2026年半年度报告",
+      "date": "2026-08-27",
+      "url_or_path": "https://static.cninfo.com.cn/finalpage/2026-08-27/1225515004.PDF（raw/000651_2026_h1.pdf，md5 b748f17d831983fa32d2b7710cbf038f）"
+    },
+    {
+      "title": "格力电器2015年年度报告（借款质押保证金期末余额）",
+      "date": "2016-04-29",
+      "url_or_path": "http://static.cninfo.com.cn/finalpage/2016-04-29/1202265764.PDF"
+    },
+    {
+      "title": "格力电器2016–2024年年度报告（筹资活动借款质押保证金净增减、现金等价物构成）",
+      "date": "2017-04-27～2025-04-28",
+      "url_or_path": "data/raw/annual_reports/000651/2016–2024.txt.gz（巨潮原文缓存，URL 见同名 .json）"
+    },
+    {
+      "title": "受限资产抽取表与生产带",
+      "date": "2026-09-25 / 2026-08-27",
+      "url_or_path": "data/reference/restricted_cash_items.csv；data/processed/a_share_pool_model_bands_adopted.csv；scripts/roic_inputs.py；scripts/fetch_restricted_cash_items.py"
+    },
+    {
+      "title": "持仓六只独立估值（5.9 元／股的出处）",
+      "date": "2026-09-30",
+      "url_or_path": "docs/reports/independent_valuation_holdings_2026-09-30.zh.md"
+    }
+  ]
+}
