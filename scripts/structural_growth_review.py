@@ -9,7 +9,11 @@
 `a_share_business_attributes.csv`）的记 `flagged`，由 `build_report_update_queue.py` 入队复核（不冻结）。
 `commodity` 列标出东财 2016 行业属商品定价型（建带脚本 `OI249_COMMODITY_PREFIXES`）的公司，供复核参考，不影响入队。
 
-    python3 scripts/structural_growth_review.py --signal-date YYYY-MM-DD    # → data/interim/structural_growth_review.csv
+同跑 §7.3 谷底侧复核（OI-265）：ROIC 路径池带的机械盈利锚（每股 NOPAT × `shares_est`，采用研究数的行取 `model_nopat_ps`）
+≥ 1.5 倍 TTM 等价 NOPAT（可得日不晚于带可得日的最新年报 NOPAT × 带 `ttm_factor`，与建带同口径：nonop 现金、受限现金、
+研发资本化起用日后资本化），且 λ（`growth_trust`）= 0 或 v（`trough_weight`）> 0 的记 `flagged`，由队列入队并冻结新增买入。
+
+    python3 scripts/structural_growth_review.py --signal-date YYYY-MM-DD    # → data/interim/structural_growth_review.csv、trough_anchor_review.csv
 """
 from __future__ import annotations
 
@@ -40,6 +44,12 @@ FIELDS = ["security_code", "security_name", "report_date", "available_at", "peak
           "cut", "volume_driven", "business_class", "trigger", "flagged", "commodity", "em2016", "v_guarded", "v_unguarded",
           "band_match", "signal_date"]
 INDUSTRY = ROOT / "data/reference/a_share_csrc_industry.csv"
+# §7.3 谷底侧复核（OI-265）
+DEFAULT_TROUGH_OUTPUT = ROOT / "data/interim/trough_anchor_review.csv"
+TROUGH_MULTIPLE_MIN = 1.5
+TROUGH_FIELDS = ["security_code", "security_name", "report_date", "available_at", "roic_path", "annual_period", "nopat_annual_yi",
+                 "ttm_factor", "nopat_ttm_yi", "nopat_anchor_yi", "anchor_basis", "anchor_ttm_multiple", "growth_trust",
+                 "trough_weight", "flagged", "note", "signal_date"]
 
 
 def industries() -> dict[str, tuple[str, bool]]:
@@ -121,6 +131,68 @@ def review(pool_rows: list[dict[str, str]], guarded: dict, relaxed: dict, unguar
     return rows
 
 
+def annual_nopat(band_rows: list[dict[str, str]]) -> dict[str, tuple[str, float | None]]:
+    """各池带可得日当日在用的最新年报 NOPAT（元），与 §6.7 第 2 步同口径；无年报返回空。"""
+    import roic_inputs
+    codes = {r["security_code"].zfill(6) for r in band_rows}
+    if not codes:
+        return {}
+    years = roic_inputs.load_statements(codes, ic_floor=0.1, caliber="nonop", restricted_cash="notes_wc")
+    rd = roic_inputs.load_rd_expense(codes)
+    csrc = {}
+    if INDUSTRY.exists():
+        with INDUSTRY.open(newline="", encoding="utf-8") as handle:
+            csrc = {r["security_code"]: r.get("csrc_industry", "") for r in csv.DictReader(handle)}
+    out = {}
+    for row in band_rows:
+        code = row["security_code"].zfill(6)
+        ys = years.get(code) or {}
+        capitalized = roic_inputs.capitalize_rd(ys, rd.get(code, {}), roic_inputs.rd_life(csrc.get(code))) if ys else None
+        use = capitalized[0] if capitalized and row.get("available_at", "") >= capitalized[1] else ys
+        hist = roic_inputs.years_before(use, row.get("available_at", ""), 1)
+        if hist:
+            out[code] = (hist[0].period, hist[0].nopat)
+    return out
+
+
+def trough_review(band_rows: list[dict[str, str]], annual: dict[str, tuple[str, float | None]], signal_date: str,
+                  multiple_min: float = TROUGH_MULTIPLE_MIN) -> list[dict]:
+    """§7.3 谷底侧复核（OI-265）：锚 ≥ multiple_min × TTM 等价 NOPAT 且 λ = 0 或 v > 0 记 flagged（TTM 等价 ≤ 0 亦记）。"""
+    rows = []
+    for band in sorted(band_rows, key=lambda r: r["security_code"]):
+        if band.get("roic_path") not in ROIC_PATHS:
+            continue
+        code = band["security_code"].zfill(6)
+        adopted = bool((band.get("research_overlay") or "").strip())
+        nopat_ps = _num(band.get("model_nopat_ps")) if adopted else _num(band.get("nopat_ps"))
+        shares = _num(band.get("shares_est"))
+        lam, v = _num(band.get("growth_trust")), _num(band.get("trough_weight"))
+        f_ttm = _num(band.get("ttm_factor"))
+        f_ttm = 1.0 if f_ttm is None else f_ttm
+        period, nopat = annual.get(code, ("", None))
+        base = dict(security_code=code, security_name=band.get("security_name", ""), report_date=band.get("report_date", ""),
+                    available_at=band.get("available_at", ""), roic_path=band.get("roic_path", ""), annual_period=period,
+                    ttm_factor=f"{f_ttm:.4f}", anchor_basis="model_nopat_ps" if adopted else "nopat_ps",
+                    growth_trust=band.get("growth_trust", ""), trough_weight=band.get("trough_weight", ""),
+                    flagged=False, signal_date=signal_date)
+        if nopat_ps is None or shares is None or nopat_ps <= 0:
+            rows.append(dict(base, note="锚不可得或非正"))
+            continue
+        anchor = nopat_ps * shares / 1e8
+        base["nopat_anchor_yi"] = f"{anchor:.2f}"
+        if nopat is None:
+            rows.append(dict(base, note="无可得年报 NOPAT"))
+            continue
+        ttm = nopat / 1e8 * f_ttm
+        multiple = anchor / ttm if ttm > 0 else None
+        state = (lam is not None and lam == 0.0) or (v is not None and v > 0.0)
+        high = multiple is None or multiple >= multiple_min
+        rows.append(dict(base, nopat_annual_yi=f"{nopat / 1e8:.2f}", nopat_ttm_yi=f"{ttm:.2f}",
+                         anchor_ttm_multiple=f"{multiple:.4f}" if multiple is not None else "",
+                         note="TTM 等价 NOPAT ≤ 0" if multiple is None else "", flagged=bool(high and state)))
+    return rows
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--signal-date", required=True)
@@ -128,6 +200,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--cut-min", type=float, default=CUT_MIN)
     parser.add_argument("--business", type=Path, default=DEFAULT_BUSINESS, help="业务属性登记（个人投资体系第 5.12 节）")
+    parser.add_argument("--trough-output", type=Path, default=DEFAULT_TROUGH_OUTPUT, help="§7.3 谷底侧复核（OI-265）输出")
     args = parser.parse_args()
     pool_rows = guarded_rows(args.bands)
     codes = sorted({r["security_code"].zfill(6) for r in pool_rows})
@@ -154,6 +227,18 @@ def main() -> None:
     print(f"structural growth review: {len(rows)} guarded pool bands, {volume} volume-driven, {unregistered} without business attributes, "
           f"{len(flagged)} flagged"
           + (f"：{'、'.join(flagged)}" if flagged else ""))
+    with args.bands.open(newline="", encoding="utf-8") as handle:
+        roic_rows = [r for r in csv.DictReader(handle) if r.get("roic_path") in ROIC_PATHS]
+    trough = trough_review(roic_rows, annual_nopat(roic_rows), args.signal_date)
+    args.trough_output.parent.mkdir(parents=True, exist_ok=True)
+    with args.trough_output.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=TROUGH_FIELDS)
+        writer.writeheader()
+        writer.writerows(trough)
+    stamp(args.trough_output, args.signal_date, (args.bands,))
+    hits = [f"{r['security_name']}（{float(r['anchor_ttm_multiple']):.2f} 倍）" if r.get("anchor_ttm_multiple") else f"{r['security_name']}（TTM ≤ 0）"
+            for r in trough if r.get("flagged")]
+    print(f"trough anchor review: {len(trough)} ROIC-path pool bands, {len(hits)} flagged" + (f"：{'、'.join(hits)}" if hits else ""))
 
 
 if __name__ == "__main__":

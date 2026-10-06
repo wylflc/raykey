@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.230
+# A股选股-估值-量价操作流程 v4.231
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -55,6 +55,8 @@
 | 每日阅读日志 | `docs/000_daily_scan_log.md` |
 | 审计日志 | `data/processed/a_share_workflow_decision_log.csv`，只追加不覆盖；核心池重建每次写一行汇总，逐票只在 `pool_layer` 变化时写行；换纪元时把旧纪元行移入 `data/archive/decision_log_<起>_to_<止>.csv`（公司分析索引同读） |
 | 结构性增长复核（§7.3） | `data/interim/structural_growth_review.csv` |
+| 谷底侧复核（§7.3） | `data/interim/trough_anchor_review.csv` |
+| 临时冻结名单（§7.5） | `data/reference/review_holds.csv`（用户裁定，人工登记） |
 | 业务属性登记（个人投资体系第 5.12 节） | `data/processed/a_share_business_attributes.csv`（人工登记） |
 | 财报更新队列 | `data/interim/a_share_report_update_queue.csv` |
 | 每日行情与两侧 P/V | `data/processed/daily_buy_candidates.csv`（§8.2；`--since auto` 由它检出上次扫描日） |
@@ -552,6 +554,11 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 - 判定由 `scripts/structural_growth_review.py` 按 §6.7 第 2 步参数当晚重建三次得出：原样、研究开关 `--peak-relax volume`（判量驱动）、`--roic-peak-k 99`（不设峰守卫）。输出另标东财 2016 行业属商品定价型的公司与业务类别，供复核参考。
 - 复核按 §6.5.2.2 登记研究正常化盈利与可证伪条件；登记后改由研究与模型差距规则管理，未登记前每次扫描照常入队。
 
+**谷底侧复核（OI-265）**：估值范围内 ROIC 路径的池成员，候选侧池带的机械盈利锚（§6.5.2.2 模型盈利锚，采用研究数的行取 `model_nopat_ps`）≥ 1.5 倍 TTM 等价 NOPAT，且带 `growth_trust`（λ）= 0 或 `trough_weight`（v）> 0 的，即入队并按 §7.5 冻结新增买入。TTM 等价 NOPAT = 可得日不晚于带可得日的最新年报 NOPAT（与建带同口径：§6.5.1 第 3 条现金口径与受限现金、研发资本化，起用日前不资本化）× 带 `ttm_factor`。
+- 判定由 `scripts/structural_growth_review.py` 与结构性增长复核同跑，写 `data/interim/trough_anchor_review.csv`。
+- 档案登记研究正常化盈利后改由研究与模型差距规则管理，未登记前每次扫描照常入队。
+- 买入区内（候选侧 `P/V` ≤ §9.3.1 买入线）的入队行须按 §6.5.2.2 登记研究数复核；买入区外的冻结不影响交易，不要求复核，进入买入区时在当日报告「需人工处理」列出。
+
 **成长股重点复核**：触发、内容与失效见 §9.3.6 第 3 条。
 
 ### 7.4 事件复核触发
@@ -565,6 +572,8 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 ### 7.5 复核期冻结
 
 估值或事件复核触发后（§7.3 生产所用锚较低的差距复核除外），将 `buy_blocked` 设为 `review_pending`，冻结新增买入但继续持仓跟踪。完成复核、更新证据与复核日期并重建队列后自动解除。
+
+**用户裁定的临时冻结（OI-265）**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
 
 **预告与快报触发的估值复核由 §6.4 的叠加机械完成**：叠加把带与 `valuation_reviewed_at` 一并推进到公告日，队列重建后冻结自动解除。叠加覆盖不到的行（银行与保险、`zero_growth` 路径输入不全、股本多期倒推不一致；脚本逐行打印跳过原因）走人工复核。
 

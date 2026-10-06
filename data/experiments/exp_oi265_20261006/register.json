@@ -1,0 +1,422 @@
+{
+ "000568": {
+  "name": "泸州老窖",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   60.0,
+   80.0,
+   105.0
+  ],
+  "research_bear_base_bull": [
+   60.24,
+   80.24,
+   105.24
+  ],
+  "research_nopat_yi": 80.24,
+  "minority_share": 0.0027,
+  "rd_addback_yi": 0.24,
+  "nopat_less_net_profit_yi": -3.39,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.2589082635836776,
+  "model_anchor_yi": 129.61,
+  "gap": 0.6153,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "若 2026 年归母低于 65 亿且 2027 年无回升，或国窖批价跌破 800 元，或年末合同负债低于 25 亿，即构成陷阱，而模型锚要到 2027 年报才会自行回落；若 2027 年归母 ≥ 100 亿且批价 ≥ 900 元，则低估成立",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/000568_泸州老窖.json"
+ },
+ "000596": {
+  "name": "古井贡酒",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   20.0,
+   28.0,
+   36.0
+  ],
+  "research_bear_base_bull": [
+   20.2,
+   28.2,
+   36.2
+  ],
+  "research_nopat_yi": 28.2,
+  "minority_share": 0.0322,
+  "rd_addback_yi": 0.2,
+  "nopat_less_net_profit_yi": -2.98,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.28394662910439344,
+  "model_anchor_yi": 45.64,
+  "gap": 0.6184,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "2026 年归母低于 25 亿、年末合同负债低于 10 亿，或保证金继续下降，均说明下行未止；2027 年归母 ≥ 42 亿（恢复到 2024 年的 76%），则现价合理或偏低",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/000596_古井贡酒.json"
+ },
+ "000786": {
+  "name": "北新建材",
+  "caliber": "parent_operating",
+  "audit_bear_base_bull": [
+   18.0,
+   24.0,
+   30.0
+  ],
+  "research_bear_base_bull": [
+   19.64,
+   25.71,
+   31.78
+  ],
+  "research_nopat_yi": 25.71,
+  "minority_share": 0.0117,
+  "rd_addback_yi": 1.42,
+  "nopat_less_net_profit_yi": 1.58,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.08459087481982432,
+  "model_anchor_yi": 44.88,
+  "gap": 0.7458,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-09-30",
+  "falsifier": "2026年下半年石膏板毛利率<33%或2026年归母<20亿→落入悲观档；2027年归母≥30亿且石膏板毛利率≥37%→乐观档成立",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/000786_北新建材.json"
+ },
+ "000858": {
+  "name": "五粮液",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   110.0,
+   150.0,
+   190.0
+  ],
+  "research_bear_base_bull": [
+   111.49,
+   151.49,
+   191.49
+  ],
+  "research_nopat_yi": 151.49,
+  "minority_share": 0.0416,
+  "rd_addback_yi": 1.49,
+  "nopat_less_net_profit_yi": -18.84,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.23623039350657904,
+  "model_anchor_yi": 276.11,
+  "gap": 0.8226,
+  "triggered": true,
+  "freeze": false,
+  "adopted": true,
+  "evidence_date": "2026-10-05",
+  "falsifier": "2026 年报归母低于 140 亿、年末监管商品款项仍高于 200 亿或出现退款、普五批价连续两季低于 800 元、全年经营现金流低于归母，任一成立即确认陷阱方向；2027 年归母 ≥ 200 亿、监管款降至 100 亿以下且批价 ≥ 900 元同时成立，则低估成立",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/000858_五粮液.json"
+ },
+ "002001": {
+  "name": "新和成",
+  "caliber": "parent_net",
+  "audit_bear_base_bull": [
+   41.0,
+   60.0,
+   77.0
+  ],
+  "research_bear_base_bull": [
+   45.69,
+   64.78,
+   81.87
+  ],
+  "research_nopat_yi": 64.78,
+  "minority_share": 0.0049,
+  "rd_addback_yi": 4.5,
+  "nopat_less_net_profit_yi": 4.49,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.13343886318141998,
+  "model_anchor_yi": 78.4,
+  "gap": 0.2102,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/002001_新和成.json"
+ },
+ "002594": {
+  "name": "比亚迪",
+  "caliber": "parent_net",
+  "audit_bear_base_bull": [
+   294.0,
+   360.0,
+   400.0
+  ],
+  "research_bear_base_bull": [
+   559.32,
+   628.19,
+   669.93
+  ],
+  "research_nopat_yi": 628.19,
+  "minority_share": 0.0416,
+  "rd_addback_yi": 276.88,
+  "nopat_less_net_profit_yi": 252.56,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.1507378968591818,
+  "model_anchor_yi": 707.34,
+  "gap": 0.126,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-01",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/002594_比亚迪.json"
+ },
+ "002920": {
+  "name": "德赛西威",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   19.0,
+   25.0,
+   29.0
+  ],
+  "research_bear_base_bull": [
+   29.93,
+   35.93,
+   39.93
+  ],
+  "research_nopat_yi": 35.93,
+  "minority_share": 0.0,
+  "rd_addback_yi": 10.93,
+  "nopat_less_net_profit_yi": 11.13,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.03789976055228854,
+  "model_anchor_yi": 41.26,
+  "gap": 0.1484,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/002920_德赛西威.json"
+ },
+ "300910": {
+  "name": "瑞丰新材",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   5.3,
+   6.6,
+   7.8
+  ],
+  "research_bear_base_bull": [
+   5.95,
+   7.25,
+   8.45
+  ],
+  "research_nopat_yi": 7.25,
+  "minority_share": 0.0032,
+  "rd_addback_yi": 0.65,
+  "nopat_less_net_profit_yi": 0.41,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.1290582014201369,
+  "model_anchor_yi": 8.51,
+  "gap": 0.1733,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/300910_瑞丰新材.json"
+ },
+ "600809": {
+  "name": "山西汾酒",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   80.0,
+   100.0,
+   120.0
+  ],
+  "research_bear_base_bull": [
+   80.79,
+   100.79,
+   120.79
+  ],
+  "research_nopat_yi": 100.79,
+  "minority_share": 0.004,
+  "rd_addback_yi": 0.79,
+  "nopat_less_net_profit_yi": -1.24,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.26154010377134146,
+  "model_anchor_yi": 117.89,
+  "gap": 0.1697,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "2026 年归母低于 95 亿且 2027 年继续低于 2026 年，或年末合同负债低于 60 亿，或青花汾20 零售价跌破 350 元，即转为陷阱；2027 年归母 ≥ 125 亿，则低估成立",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/600809_山西汾酒.json"
+ },
+ "600938": {
+  "name": "中国海油",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   937.0,
+   1231.0,
+   1502.0
+  ],
+  "research_bear_base_bull": [
+   937.9,
+   1231.9,
+   1502.9
+  ],
+  "research_nopat_yi": 1231.9,
+  "minority_share": 0.0003,
+  "rd_addback_yi": 0.9,
+  "nopat_less_net_profit_yi": 5.31,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.279953312622687,
+  "model_anchor_yi": 1528.04,
+  "gap": 0.2404,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-09-30",
+  "falsifier": "2027 年布伦特均价 < 65 美元且三年远期 < 65 美元，此时独立 V 约 24（P/V 1.4）。低估成立条件：三年远期 ≥ 78 美元持续两个季度，2027 年产量 ≥ 830 MMboe，桶油主要成本 ≤ 30 美元",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/600938_中国海油.json"
+ },
+ "600970": {
+  "name": "中材国际",
+  "caliber": "parent_operating",
+  "audit_bear_base_bull": [
+   21.0,
+   25.5,
+   29.0
+  ],
+  "research_bear_base_bull": [
+   27.38,
+   32.3,
+   36.13
+  ],
+  "research_nopat_yi": 32.3,
+  "minority_share": 0.0848,
+  "rd_addback_yi": 2.75,
+  "nopat_less_net_profit_yi": 2.14,
+  "fx_pretax_yi": 2.0,
+  "tax_rate": 0.15470284369860446,
+  "model_anchor_yi": 43.87,
+  "gap": 0.3583,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-09-30",
+  "falsifier": "2026或2027年扣非除汇兑归母<22亿；新签连续两个半年同比降>15%或在手连续两期下降；减值再超10亿或一年以上应收占比>45%；全年经营现金流为负",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/600970_中材国际.json"
+ },
+ "603279": {
+  "name": "景津装备",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   4.0,
+   5.5,
+   7.5
+  ],
+  "research_bear_base_bull": [
+   3.73,
+   5.23,
+   7.23
+  ],
+  "research_nopat_yi": 5.23,
+  "minority_share": 0.0,
+  "rd_addback_yi": -0.27,
+  "nopat_less_net_profit_yi": -0.35,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.2438998600070639,
+  "model_anchor_yi": 11.25,
+  "gap": 1.1511,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-10-01",
+  "falsifier": "连续两季毛利率≥25%且销量不降→基准偏保守；2026年毛利率<20%、归母<3.5亿或营收<55亿，或合同负债同比降>20%→价值陷阱",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/603279_景津装备.json"
+ },
+ "603369": {
+  "name": "今世缘",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   19.0,
+   24.0,
+   29.0
+  ],
+  "research_bear_base_bull": [
+   19.1,
+   24.1,
+   29.1
+  ],
+  "research_nopat_yi": 24.1,
+  "minority_share": 0.0,
+  "rd_addback_yi": 0.1,
+  "nopat_less_net_profit_yi": -2.23,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.24744029610445067,
+  "model_anchor_yi": 36.19,
+  "gap": 0.5015,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "2026 年归母低于 23 亿、年末合同负债低于 15 亿或特A+类降幅超过 20%，则转向陷阱；2027 年归母 ≥ 30 亿，则低估成立",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/603369_今世缘.json"
+ },
+ "603855": {
+  "name": "华荣股份",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   3.0,
+   3.8,
+   4.6
+  ],
+  "research_bear_base_bull": [
+   3.31,
+   4.11,
+   4.91
+  ],
+  "research_nopat_yi": 4.11,
+  "minority_share": 0.0208,
+  "rd_addback_yi": 0.31,
+  "nopat_less_net_profit_yi": 0.27,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.13797778864904,
+  "model_anchor_yi": 5.39,
+  "gap": 0.3118,
+  "triggered": true,
+  "freeze": true,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/603855_华荣股份.json"
+ },
+ "920599": {
+  "name": "同力股份",
+  "caliber": "nopat",
+  "audit_bear_base_bull": [
+   5.5,
+   8.3,
+   9.8
+  ],
+  "research_bear_base_bull": [
+   6.64,
+   9.44,
+   10.94
+  ],
+  "research_nopat_yi": 9.44,
+  "minority_share": 0.0047,
+  "rd_addback_yi": 1.14,
+  "nopat_less_net_profit_yi": 1.2,
+  "fx_pretax_yi": 0.0,
+  "tax_rate": 0.12765946935356315,
+  "model_anchor_yi": 10.33,
+  "gap": 0.0942,
+  "triggered": false,
+  "freeze": false,
+  "adopted": false,
+  "evidence_date": "2026-10-05",
+  "falsifier": "",
+  "report": "data/experiments/exp_oi259_lowpv_20261005/companies/920599_同力股份.json"
+ }
+}

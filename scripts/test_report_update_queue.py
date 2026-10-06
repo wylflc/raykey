@@ -182,5 +182,51 @@ class StructuralGrowthReviewTest(unittest.TestCase):
         self.assertEqual(self.queue(tier=dict(_tier("300308"), quality_tier="L4")), [])
 
 
+class TroughAnchorReviewTest(unittest.TestCase):
+    """§7.3 谷底侧复核（OI-265）：标记的公司入队并冻结新增买入；登记研究数后转由差距规则管理。"""
+
+    def queue(self, flagged=True, dossier=None, tier=None, multiple="1.7568"):
+        trough = [{"security_code": "000786", "flagged": str(flagged), "anchor_ttm_multiple": multiple}]
+        return q.build_queue([], [tier or _tier("000786")], [_pool("000786", "2026-09-01")], [], [], [], "2026-09-24",
+                             [dossier] if dossier else [], [], None, [], trough)
+
+    def test_flagged_company_is_queued_and_frozen(self) -> None:
+        rows = self.queue()
+        self.assertEqual(len(rows), 1)
+        self.assertIn("trough_anchor_review", rows[0]["queue_reasons"])
+        self.assertEqual(rows[0]["buy_blocked"], "review_pending")
+        self.assertTrue(rows[0]["valuation_review_needed"])
+        self.assertEqual(rows[0]["trough_anchor_multiple"], "1.7568")
+        self.assertEqual(self.queue(multiple="")[0]["trough_anchor_multiple"], "ttm_nonpositive")
+
+    def test_registered_research_hands_over_to_divergence_rule(self) -> None:
+        rows = self.queue(dossier=_dossier("000786", 44.0))
+        self.assertTrue(all("trough_anchor_review" not in r["queue_reasons"] for r in rows))
+
+    def test_unflagged_or_out_of_scope_is_skipped(self) -> None:
+        self.assertEqual(self.queue(flagged=False), [])
+        self.assertEqual(self.queue(tier=dict(_tier("000786"), quality_tier="L4")), [])
+
+
+class ReviewHoldTest(unittest.TestCase):
+    """§7.5 用户裁定的临时冻结（OI-265）：released_at 为空的行冻结新增买入，解除后不再入队。"""
+
+    def queue(self, released=""):
+        holds = [{"security_code": "002594", "basis": "OI-265", "released_at": released}]
+        return q.build_queue([], [_tier("002594")], [_pool("002594", "2026-09-01")], [], [], [], "2026-09-24",
+                             [], [], None, [], [], holds)
+
+    def test_active_hold_freezes_buying(self) -> None:
+        rows = self.queue()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["queue_reasons"], "user_review_hold")
+        self.assertEqual(rows[0]["buy_blocked"], "review_pending")
+        self.assertFalse(rows[0]["valuation_review_needed"])
+        self.assertEqual(rows[0]["review_hold_basis"], "OI-265")
+
+    def test_released_hold_is_ignored(self) -> None:
+        self.assertEqual(self.queue(released="2026-10-20"), [])
+
+
 if __name__ == "__main__":
     unittest.main()

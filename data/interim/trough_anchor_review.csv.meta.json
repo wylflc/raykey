@@ -1,0 +1,8 @@
+{
+  "as_of": "2026-09-30",
+  "generated_at_utc": "2026-10-06T08:40:38.074432+00:00",
+  "sha256": "9af17ef35060c4ecb844f80d40446ae04a9a4a04816af5185c0eaeb0b0c3ae5c",
+  "inputs": {
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "0abc144e80ca234d1b24c4187dbc35a569b58036f7917f2bbe65086e3cf81fde"
+  }
+}
