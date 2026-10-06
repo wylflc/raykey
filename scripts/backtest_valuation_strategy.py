@@ -1547,6 +1547,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
         tier_buy_scale: dict[str, float] | None = None,
         tier_sell_scale: dict[str, float] | None = None,
         exright_stop: str = "adjust", addon_max_gain: float = 0.0,
+        addon_pullback: float | None = None, dev_trim: float = 0.0, dev_trim_cooldown: int = 10, dev_trim_ma: int = 20,
         fill_missing: str = "skip", dividend_tax: bool = False, swap_repeat: str = "skip",
         gain_sell: float = 0.0, gain_sell_mode: str = "gated",
         swap_trigger: str = "power", credit_over_limit: str = "repay",
@@ -1878,6 +1879,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 buy_counters=dict(lot_counters_buy), sell_counters=dict(lot_counters_sell)))
 
     last_stop_day: dict[str, int] = {}           # OI-224 RE：代码 → 最近一次建仓止损清仓的交易日序号
+    last_dev_trim: dict[str, int] = {}           # OI-234 偏离减仓：代码 → 最近一次偏离减档的交易日序号
     relaxed_entry: set[str] = set()              # OI-224 RE：当日只因重入放宽而过走势条件的代码
 
     def _e1_low(code: str, when: str) -> bool:
@@ -2487,7 +2489,15 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
             else:
                 gain_hit = bool(gain_sell) and lot.avg_cost > 0 and \
                     gain_close(code, price) >= lot.avg_cost * (1.0 + gain_sell)
-            if not value_rich and not gain_hit:
+            # OI-234 研究开关 `dev_trim`（缺省 0＝关）：信号日收盘 ≥ MA（`dev_trim_ma`，缺省 20）× K 即减一档、不减到一档以下，同票
+            # `dev_trim_cooldown` 个交易日内至多一次；与估值／涨幅减持同一减档路径，不过走势闸门。
+            dev_hit = False
+            if dev_trim and not value_rich and not gain_hit:
+                _dc = today.get(code, (None,))[0]
+                _dm = (mas.get(code, {}).get(sig_day) or {}).get(dev_trim_ma)
+                dev_hit = bool(_dc and _dm and _dc >= _dm * dev_trim and lot.shares * sp > sell_budget
+                               and day_no - last_dev_trim.get(code, -10 ** 9) >= dev_trim_cooldown)
+            if not value_rich and not gain_hit and not dev_hit:
                 continue
             # 先保留 T 日逐路径信号，再要求**同一路径**在 T+1 收盘仍成立。不能用 T+1 新出现的
             # 涨幅条件替代 T 日的估值减持，反之亦然；那会变成重新发信号而不是确认旧操作。
@@ -2508,8 +2518,10 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                     stats["T+1确认·减持取消·价格线恢复"] += 1
                     continue
             sell_tag = rich_tag if value_rich else (f"阶梯≥{ladder_rung:.0%}" if gain_ladder else f"涨幅≥{gain_sell:.0%}")
+            if dev_hit:
+                sell_tag = f"偏离MA{dev_trim_ma}≥{dev_trim:g}"
             ladder_sale = bool(gain_ladder) and gain_hit and not value_rich
-            if sell_trend_ma and not (gain_hit and gain_sell_mode == "ungated"):
+            if sell_trend_ma and not (gain_hit and gain_sell_mode == "ungated") and not dev_hit:
                 judge_close = (exec_today[code][0] if exec_confirm_close else
                                today.get(code, (None,))[0])
                 judge_ma_day = day if exec_confirm_close else sig_day
@@ -2543,7 +2555,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                     if not all(a < b * k_sell for a, b in zip(seq_x, seq_x[1:])):
                         stats["卖出T+1确认·减持取消·收盘站回均线"] += 1
                         continue
-            if value_rich or gain_hit:
+            if value_rich or gain_hit or dev_hit:
                 if confirmed_cooldown and not cooldown_sell.ready(code):
                     continue
                 cooldown_proceeds = lot.proceeds
@@ -2560,6 +2572,8 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 stats["P/V≥估值减持线·减一档" if value_rich else f"{sell_tag}·减一档"] += 1
                 # 阶梯：本档只卖到「尚待减持」为止；待减不足一手时不动（高价股按手兜底同样要求待减 ≥ 一手）
                 want = min(sell_budget / sp, ladder_pending) if ladder_sale else sell_budget / sp
+                if dev_hit:
+                    want = min(sell_budget, lot.shares * sp - sell_budget) / sp     # 不减到一档以下
                 shares = sell_shares(want, lot.shares, sp, lot_size, res_floor(sp), residual_clear_cny)
                 if (not shares and lot_ratio_cooldown and lot_size
                         and lot.shares >= lot_size
@@ -2569,6 +2583,8 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                     stats["高价股·按手减持"] += 1
                 if shares <= 0:
                     continue
+                if dev_hit:
+                    last_dev_trim[code] = day_no
                 if ladder_sale:
                     lot.ladder_sold += (lot.shares if shares >= lot.shares * 0.999 else shares)
                 if shares >= lot.shares * 0.999:
@@ -3519,6 +3535,10 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 if _l is not None and addon_max_gain and _l.avg_cost > 0 \
                         and r[1] >= _l.avg_cost * (1.0 + addon_max_gain):
                     continue
+                if _l is not None and addon_pullback is not None:
+                    _pm = (mas.get(r[0], {}).get(buy_day) or {}).get(20)
+                    if not _pm or r[1] > _pm * (1.0 + addon_pullback):
+                        continue
                 _recips.append(r)
             if _recips:
                 _w = [(1.0 / r[3] if r[3] > 0 else 0.0) if swap_proceeds == "splitw" else 1.0 for r in _recips]
@@ -3598,6 +3618,13 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 _held = portfolio.lots[code]
                 if _held.avg_cost > 0 and close >= _held.avg_cost * (1.0 + addon_max_gain):
                     stats[f"加仓·涨幅≥{addon_max_gain:.0%}·跳过"] += 1
+                    continue
+            # OI-234 研究开关 `addon_pullback`（缺省 None＝关）：已持仓只在回踩时加仓——信号日收盘 ≤ MA20 × (1 + δ)；
+            # 新建仓不受影响，资金顺位下一名。
+            if addon_pullback is not None and code in portfolio.lots:
+                _pm = (mas.get(code, {}).get(buy_day) or {}).get(20)
+                if not _pm or close > _pm * (1.0 + addon_pullback):
+                    stats[f"加仓·未回踩MA20(δ{addon_pullback:g})·跳过"] += 1
                     continue
             avail = affordable_amount(funds_available(), day)   # OI-170：可用资金先留出买入费税
             if eb_active_cap is not None:
@@ -4659,6 +4686,14 @@ def main() -> int:
                              "除权同步折算），生效止损线 = max(现行线, 锁定线)；阶梯用逗号分隔。空=关（逐位不变）。例 1.0:1.5")
     parser.add_argument("--addon-max-gain", type=float, default=0.0, metavar="G",
                         help="研究开关（用户 2026-08-22）：信号日收盘 ≥ 持仓均价×(1+G) 的持仓不再加仓；0=关。例 0.5")
+    parser.add_argument("--addon-pullback", type=float, default=None, metavar="D",
+                        help="研究开关（OI-234）：已持仓只在回踩时加仓——信号日收盘 ≤ MA20×(1+D)；不给＝关。例 0.03")
+    parser.add_argument("--dev-trim", type=float, default=0.0, metavar="K",
+                        help="研究开关（OI-234）：信号日收盘 ≥ MA20×K 即减一档（不减到一档以下），不过走势闸门；0＝关。例 1.25")
+    parser.add_argument("--dev-trim-ma", type=int, default=20, choices=(20, 60), metavar="W",
+                        help="研究开关（OI-234）：偏离减仓所用均线，20 或 60，配合 --dev-trim")
+    parser.add_argument("--dev-trim-cooldown", type=int, default=10, metavar="N",
+                        help="研究开关（OI-234）：同票偏离减仓的最短间隔（交易日），配合 --dev-trim")
     parser.add_argument("--gain-sell", type=float, default=0.0, metavar="G",
                         help="研究开关（用户 2026-08-22）：信号日收盘 ≥ 持仓均价×(1+G) 即触发减一档并可作换仓卖出源；0=关。例 1.0")
     parser.add_argument("--gain-sell-mode", choices=("gated", "ungated"), default="gated",
@@ -5133,6 +5168,9 @@ def main() -> int:
                      + (f"_tr{args.trail_ratio:g}" if args.trail_ratio else "")
                      + (("_pl" + args.profit_lock.replace(":", "at").replace(",", "_")) if args.profit_lock else "")
                      + (f"_ag{args.addon_max_gain:g}" if args.addon_max_gain else "")
+                     + (f"_apb{args.addon_pullback:g}" if args.addon_pullback is not None else "")
+                     + (f"_dvt{args.dev_trim:g}c{args.dev_trim_cooldown}" + (f"m{args.dev_trim_ma}" if args.dev_trim_ma != 20 else "")
+                        if args.dev_trim else "")
                      + (f"_gs{args.gain_sell:g}{'u' if args.gain_sell_mode == 'ungated' else ''}" if args.gain_sell else "")
                      + (("_gl" + args.gain_ladder.replace(":", "at").replace(",", "_")) if args.gain_ladder else "")
                      + (f"_sx{args.sell_x:g}" if args.sell_x else "")
@@ -5319,6 +5357,8 @@ def main() -> int:
                          tier_buy_scale=parse_tier_scale(args.tier_buy_scale),
                          tier_sell_scale=parse_tier_scale(args.tier_sell_scale),
                          addon_max_gain=args.addon_max_gain, gain_sell=args.gain_sell,
+                         addon_pullback=args.addon_pullback, dev_trim=args.dev_trim, dev_trim_cooldown=args.dev_trim_cooldown,
+                         dev_trim_ma=args.dev_trim_ma,
                          gain_sell_mode=args.gain_sell_mode, swap_trigger=args.swap_trigger,
                          credit_over_limit=args.credit_over_limit, swap_held_trigger=args.swap_held_trigger,
                          swap_proceeds=args.swap_proceeds,

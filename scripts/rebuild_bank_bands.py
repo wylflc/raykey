@@ -189,10 +189,10 @@ def ri_value(bps, roe0, payout, coe):
     return bps + pv + terminal
 
 
-def ddm_value(bps, roe0, payout, coe):
+def ddm_value(bps, roe0, payout, coe, cap=None):
     """股利贴现（唯一实现 `bank_valuation.ddm_value`）；h2 缺省可持续终值派息率（v4.221），第 5 段 `cur` 复现此前口径；
-    研究模式 `ddm:` 保持此前口径。"""
-    return bank_valuation.ddm_value(bps, roe0, payout, coe, FADE_YEARS, sustainable_terminal=H2_SUSTAINABLE)
+    研究模式 `ddm:` 保持此前口径。`cap`：银行 BV 年增速上限（OI-269），保险传 None。"""
+    return bank_valuation.ddm_value(bps, roe0, payout, coe, FADE_YEARS, sustainable_terminal=H2_SUSTAINABLE, cap=cap)
 H2 = mode.startswith("h2:")
 H2_COE = float(mode.split(":")[2]) if H2 else None
 # OI-227：`h2:RP:COE[:SCALE]`——银行（保险除外）V 乘同尺系数，缺省取 `bank_valuation.BANK_SCALE`（生产，v4.224 起为 1）；
@@ -202,8 +202,13 @@ H2_BANK_SCALE = (float(mode.split(":")[3]) if len(mode.split(":")) > 3 else bank
 # `h2:RP:COE:SCALE:cur` 复现 v4.221 之前的口径（终值按当期派息率、V_D0 不可得的银行无值）
 # 第 5 段选项（可用 + 连写）：`cur` 复现 v4.221 之前的 DDM 终值口径；`insd0` 复现 v4.225 之前的保险 V = V_D0
 H2_OPTS = set(mode.split(":")[4].split("+")) if H2 and len(mode.split(":")) > 4 else set()
-if H2_OPTS - {"cur", "insd0"}:
-    sys.exit(f"未知的 h2 第 5 段：{mode}（只接受 cur、insd0 或 cur+insd0）")
+# OI-269：第 5 段 `bv7`＝银行 BV 年增速封顶 7%、`bvoff`＝不封顶；都不给时取 `bank_valuation.BV_GROWTH_CAP`（保险恒不封顶）
+H2_BV_CAP = 0.07 if "bv7" in H2_OPTS else None if "bvoff" in H2_OPTS else bank_valuation.BV_GROWTH_CAP
+bank_valuation.BV_GROWTH_CAP = H2_BV_CAP
+if "insg0" in H2_OPTS:          # OI-269 落地变体：保险平滑 Ḡ 取不封顶的银行 G
+    bank_valuation.INSURER_G_UNCAPPED = True
+if H2_OPTS - {"cur", "insd0", "bv7", "bvoff", "insg0"}:
+    sys.exit(f"未知的 h2 第 5 段：{mode}（只接受 cur、insd0、bv7、bvoff、insg0，可用 + 连写）")
 H2_SUSTAINABLE = H2 and "cur" not in H2_OPTS
 # v4.225（OI-232）：保险 V = V_DDM × Ḡ（前 36 个自然月末银行 G 的中位，`bank_valuation.smoothed_g`），不可得时退回 V_D0
 H2_INS_SMOOTH = H2 and "insd0" not in H2_OPTS
@@ -272,7 +277,7 @@ if H2:
                 v0 = None
         vd = fd = cd = None
         if f and f[1] and f[1] > 0 and f[2] is not None and f[2] > 0:
-            raw_ddm = ddm_value(f[1], f[2], f[3], H2_COE)
+            raw_ddm = ddm_value(f[1], f[2], f[3], H2_COE, cap=None if c in INSURER_CODES else H2_BV_CAP)
             if raw_ddm and raw_ddm > 0:
                 vd, fd, cd = ex_adjust(c, f[0], d, raw_ddm, split_since=f[4])
                 if vd <= 0:
@@ -303,7 +308,7 @@ if H2_INS_SMOOTH:
     _month_g: dict[str, float | None] = {}
     def _g_at(day):
         if day not in _month_g:
-            _month_g[day] = bank_valuation.bank_g_at(day, v_d0, _fund, ACTIONS, _banks)
+            _month_g[day] = bank_valuation.bank_g_at(day, v_d0, _fund, ACTIONS, _banks, uncapped=bank_valuation.INSURER_G_UNCAPPED)
         return _month_g[day]
     for m in _ins_months:
         INS_GBAR[m] = bank_valuation.smoothed_g(f"{m}-01", _g_at)

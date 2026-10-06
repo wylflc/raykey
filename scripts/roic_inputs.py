@@ -98,6 +98,9 @@ IROIC_ENDPOINT = "1y"      # OI-252 G2：2y = 增量 ROIC 取端点两年均值
 REINVEST_WC = "full"       # OI-252 G3：half = 窗口 ΔWC 为正且超过净再投资一半时不计 ΔWC
 RD_ADDBACK = "full"        # OI-267 R1：steady = 各年研发加回以「稳态加回比例 × 当年研发」为上限
 RD_AMORT_START = "next"    # OI-267 R2：current = 研发当年起摊
+FX_IN_EBIT = False         # OI-270 研究开关：True = 财务费用中利息净额之外的部分（汇兑损益、手续费等）留在 EBIT
+MINORITY_SHARE_MODE = "median"   # OI-270 研究开关：floor0 = 各年份额先夹到 ≥ 0 再取中位；latest = 最新年度份额（≥ 0）
+RD_LIFE_MODE = "csrc"      # OI-270 研究开关：uniform5 = 研发摊销年限一律 5 年
 RD_STEADY_GROWTH = 0.03    # R1 的稳态研发增速
 COST_OF_DEBT_BOUNDS = (0.02, 0.12)
 DEFAULT_COST_OF_DEBT = 0.045
@@ -310,6 +313,9 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
         fin_sub_net = (_num(inc.get("INTEREST_INCOME")) or 0.0) - (_num(inc.get("INTEREST_EXPENSE")) or 0.0)
         invest = (_num(inc.get("INVEST_INCOME")) or 0.0) - (_num(inc.get("INVEST_JOINT_INCOME")) or 0.0)
         year.nonop_income = invest + (_num(inc.get("FAIRVALUE_CHANGE_INCOME")) or 0.0) + fin_sub_net - fin_expense
+        if FX_IN_EBIT and _num(inc.get("FE_INTEREST_EXPENSE")) is not None:
+            # OI-270 研究开关：只把利息净额剔出 EBIT，汇兑损益、手续费等留作经营成本
+            year.nonop_income += fin_expense - ((_num(inc.get("FE_INTEREST_EXPENSE")) or 0.0) - (_num(inc.get("FE_INTEREST_INCOME")) or 0.0))
         year.interest_expense += _num(inc.get("INTEREST_EXPENSE")) or 0.0
         if restricted > 0 or reserve > 0:
             # §6.5.1（OI-219）：质押开票的现金类按经营资产——扣出超额现金（以应付票据与现金类为限），
@@ -746,6 +752,8 @@ RD_BASE_YEAR = 2017      # 利润表单列研发费用自 2017 财年起基本�
 
 def rd_life(csrc_industry: str | None) -> int:
     """证监会行业「门类-大类」→ 研发摊销年限。"""
+    if RD_LIFE_MODE == "uniform5":
+        return RD_LIFE_DEFAULT
     major = (csrc_industry or "").split("-")[-1]
     return next((n for key, n in RD_LIFE_BY_CSRC if key in major), RD_LIFE_DEFAULT)
 
@@ -853,6 +861,12 @@ def minority_share(history: list[RoicYear]) -> tuple[float, str]:
     夹在 [0, MINORITY_SHARE_CAP]。返回 (份额, 口径标记)。"""
     ratios = [y.minority_profit / y.net_profit for y in history
               if y.net_profit is not None and y.net_profit > 0 and y.minority_profit is not None]
+    if ratios and MINORITY_SHARE_MODE == "latest":          # OI-270 研究开关
+        latest = max((y for y in history if y.net_profit is not None and y.net_profit > 0 and y.minority_profit is not None),
+                     key=lambda y: y.period)
+        return min(max(latest.minority_profit / latest.net_profit, 0.0), MINORITY_SHARE_CAP), "earnings_latest"
+    if ratios and MINORITY_SHARE_MODE == "floor0":          # OI-270 研究开关
+        ratios = [max(r, 0.0) for r in ratios]
     if ratios:
         share, basis = statistics.median(ratios), "earnings"
     else:

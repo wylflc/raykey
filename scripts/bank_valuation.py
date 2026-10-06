@@ -36,10 +36,14 @@ MIN_BANKS = 5
 BANK_SCALE = 1.0            # v4.224（OI-244）取消同尺系数：全期 0.7045 主要来自 2017–2019 起始月，2020 年起约 1.00，分时段不稳（回测日志 §12.294）
 INSURER_G_MONTHS = 36       # v4.225（OI-232）保险 V = V_DDM × 前 36 个自然月末银行 G 的中位
 INSURER_G_MIN = 12          # 可算 G 的月末不足 12 个时保险退回 V_D0
+BV_GROWTH_CAP: float | None = 0.07   # OI-269（§6.5.1 第 4 条，v4.235）：银行 V_DDM 路径的 BV 年增速上限；保险恒不封顶；None 只作复现（h2 `bvoff`）
+INSURER_G_UNCAPPED = True    # OI-269（v4.235）：保险平滑 Ḡ 取不封顶的银行 G，保险不随银行封顶变动
 
 
-def roe_bv_path(bps: float, roe0: float, payout: float | None, coe: float, fade_years: int = FADE_YEARS):
-    """ROE 自 roe0 线性衰减到 ROE_T，BV 按留存滚存。返回 (逐年 (roe_t, bv_prev), roe_T, g_T, bv_N, 留存率)。"""
+def roe_bv_path(bps: float, roe0: float, payout: float | None, coe: float, fade_years: int = FADE_YEARS,
+                cap: float | None = None):
+    """ROE 自 roe0 线性衰减到 ROE_T，BV 按留存滚存（`cap` 给出时年增速不超过它，OI-269）。
+    返回 (逐年 (roe_t, bv_prev), roe_T, g_T, bv_N, 留存率)。"""
     b = 1.0 - (payout if payout is not None else DEFAULT_PAYOUT)
     b = min(max(b, 0.0), 1.0)
     roe_t_end = min(roe0, coe + TERMINAL_EXCESS)
@@ -48,18 +52,18 @@ def roe_bv_path(bps: float, roe0: float, payout: float | None, coe: float, fade_
     for t in range(1, fade_years + 1):
         roe_t = roe0 + (roe_t_end - roe0) * t / fade_years
         path.append((roe_t, bv))
-        bv = bv * (1.0 + roe_t * b)
+        bv = bv * (1.0 + (roe_t * b if cap is None else min(roe_t * b, cap)))
     return path, roe_t_end, g_t, bv, b
 
 
 def ddm_value(bps: float, roe0: float, payout: float | None, coe: float = COE, fade_years: int = FADE_YEARS,
-              sustainable_terminal: bool = True) -> float | None:
+              sustainable_terminal: bool = True, cap: float | None = None) -> float | None:
     """同一 ROE／BV 路径上的股利贴现；分母塌陷（COE − g_T < 2pp）返回 None。
 
     终值期派息率取可持续派息率 `1 − g_T ÷ ROE_T`（v4.221，OI-230：清洁盈余一致，与同一路径剩余收益逐位相等；`g_T` 上限
     不生效时即当期派息率），衰减期仍按当期派息率，派息率为 0 也可估。`sustainable_terminal=False` 只供复现 v4.221 之前的
     状态（终值按当期派息率，不派息返回 None）。"""
-    path, roe_t_end, g_t, bv_n, b = roe_bv_path(bps, roe0, payout, coe, fade_years)
+    path, roe_t_end, g_t, bv_n, b = roe_bv_path(bps, roe0, payout, coe, fade_years, cap)
     pay = 1.0 - b
     if coe - g_t < 0.02 or (pay <= 0 and not sustainable_terminal):
         return None
@@ -98,8 +102,15 @@ class BankFundamentals:
         return self.seq[code][i] if i >= 0 else None
 
 
-def ddm_at(fund: BankFundamentals, actions: list[dict], code: str, day: str, coe: float = COE) -> float | None:
-    """`day` 当日的 V_DDM（按除权参考价折到当日股本基准，锚取带可得日、送转自 bps 基准日）。"""
+_BANK_CAP = object()
+
+
+def ddm_at(fund: BankFundamentals, actions: list[dict], code: str, day: str, coe: float = COE,
+           cap=_BANK_CAP) -> float | None:
+    """`day` 当日的 V_DDM（按除权参考价折到当日股本基准，锚取带可得日、送转自 bps 基准日）；`cap` 为 BV 年增速上限，
+    缺省取银行口径 `BV_GROWTH_CAP`，保险调用传 None。"""
+    if cap is _BANK_CAP:
+        cap = BV_GROWTH_CAP
     from build_historical_valuation_bands import exright_adjust
     f = fund.at(code, day)
     if not f:
@@ -107,7 +118,7 @@ def ddm_at(fund: BankFundamentals, actions: list[dict], code: str, day: str, coe
     band_av, bps, roe0, payout, basis = f
     if not bps or bps <= 0 or roe0 is None or roe0 <= 0:
         return None
-    v = ddm_value(bps, roe0, payout, coe)
+    v = ddm_value(bps, roe0, payout, coe, cap=cap)
     if v is None or v <= 0:
         return None
     (adj,), _factor, _cash = exright_adjust(actions, band_av, day, (v,), split_since=basis)
@@ -126,8 +137,10 @@ def month_ends_before(as_of: str, months: int = INSURER_G_MONTHS) -> list[str]:
 
 
 def bank_g_at(day: str, d0: Callable[[str, str], float | None], fund: BankFundamentals, actions: dict[str, list],
-              codes: Iterable[str]) -> float | None:
+              codes: Iterable[str], uncapped: bool = False) -> float | None:
     """`day` 当日银行截面 G（与 `live_h2` 同法）：`d0(code, day)` 给该日 V_D0，V_DDM 取 `ddm_at`。"""
+    if uncapped:
+        return h2_scale((d0(c, day), ddm_at(fund, actions.get(c, []), c, day, cap=None)) for c in sorted(codes))
     return h2_scale((d0(c, day), ddm_at(fund, actions.get(c, []), c, day)) for c in sorted(codes))
 
 
@@ -142,7 +155,7 @@ def insurer_value(fund: BankFundamentals, actions: dict[str, list], code: str, d
     """保险 `V = V_DDM(day) × Ḡ`（v4.225，OI-232）；Ḡ 或 V_DDM 不可得返回 None，由调用方退回 V_D0。"""
     if not g_bar:
         return None
-    dd = ddm_at(fund, actions.get(code, []), code, day)
+    dd = ddm_at(fund, actions.get(code, []), code, day, cap=None)
     return dd * g_bar if dd else None
 
 

@@ -37,6 +37,21 @@ class BankValuationTests(unittest.TestCase):
         # 派息率 90%：g_T = 12% × 10% = 1.2% < 3%，可持续派息率即当期派息率
         self.assertAlmostEqual(bv.ddm_value(10.0, 0.15, 0.9, 0.10), bv.ddm_value(10.0, 0.15, 0.9, 0.10, sustainable_terminal=False))
 
+    def test_bv_growth_cap_lowers_ddm_only_when_binding(self):
+        """OI-269：BV 年增速封顶只在 ROE × 留存超过上限时生效；不给上限时与原路径逐位相同。"""
+        self.assertEqual(bv.ddm_value(10.0, 0.15, 0.3, 0.10, cap=None), bv.ddm_value(10.0, 0.15, 0.3, 0.10))
+        self.assertLess(bv.ddm_value(10.0, 0.15, 0.3, 0.10, cap=0.07), bv.ddm_value(10.0, 0.15, 0.3, 0.10))   # 15% × 70% = 10.5% > 7%
+        self.assertEqual(bv.ddm_value(10.0, 0.15, 0.6, 0.10, cap=0.07), bv.ddm_value(10.0, 0.15, 0.6, 0.10))   # 6% < 7%：不生效
+        path, _roe_t, _g_t, bv_n, _b = bv.roe_bv_path(10.0, 0.15, 0.3, 0.10, cap=0.07)
+        self.assertAlmostEqual(bv_n, 10.0 * 1.07 ** 10)
+
+    def test_insurer_value_ignores_bank_bv_cap(self):
+        """OI-269：保险 V_DDM 不封顶（`insurer_value` 传 cap=None），银行路径缺省取 `BV_GROWTH_CAP`。"""
+        with patch.object(bv, 'BV_GROWTH_CAP', 0.07), patch.object(bv, 'ddm_at', side_effect=lambda *a, **k: k.get('cap', 'bank')) as m:
+            self.assertIsNone(bv.insurer_value(None, {}, '601318', '2026-09-30', None))
+            bv.insurer_value(None, {}, '601318', '2026-09-30', 1.0)
+            self.assertIsNone(m.call_args.kwargs['cap'])
+
     def test_scale_needs_min_banks(self):
         pairs = [(2.0, 1.0)] * (bv.MIN_BANKS - 1)
         self.assertIsNone(bv.h2_scale(pairs))

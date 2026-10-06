@@ -3512,6 +3512,12 @@ def main() -> int:
     parser.add_argument("--iroic-endpoint", choices=("1y", "2y"), default="1y", help="研究开关（OI-252 G2）：2y＝增量 ROIC 取端点两年均值")
     parser.add_argument("--reinvest-wc", choices=("full", "half"), default="full",
                         help="研究开关（OI-252 G3）：half＝窗口 ΔWC 为正且超过净再投资一半时再投资率不计 ΔWC")
+    parser.add_argument("--fx-in-ebit", choices=("off", "on"), default="off",
+                        help="研究开关（OI-270）：on＝财务费用中利息净额之外的部分（汇兑、手续费）留在 EBIT")
+    parser.add_argument("--minority-share", choices=("median", "floor0", "latest"), default="median",
+                        help="研究开关（OI-270）：少数股东份额 floor0＝各年夹到 ≥ 0 再取中位、latest＝最新年度")
+    parser.add_argument("--rd-life", choices=("csrc", "uniform5"), default="csrc",
+                        help="研究开关（OI-270）：uniform5＝研发摊销年限一律 5 年")
     parser.add_argument("--rd-addback", choices=("full", "steady"), default="full",
                         help="研究开关（OI-267 R1）：steady＝各年研发加回以稳态比例（研发增速 3%%）× 当年研发为上限")
     parser.add_argument("--rd-amort-start", choices=("next", "current"), default="next", help="研究开关（OI-267 R2）：current＝研发当年起摊")
@@ -3604,6 +3610,8 @@ def main() -> int:
     PAYOUT_BASIS, SHARE_EQUITY, DIVIDEND_TIMING = args.payout_basis, args.share_equity, args.dividend_timing
     roic_inputs.IROIC_DIC_FLOOR, roic_inputs.IROIC_ENDPOINT = args.iroic_dic_floor, args.iroic_endpoint
     roic_inputs.REINVEST_WC, roic_inputs.RD_ADDBACK, roic_inputs.RD_AMORT_START = args.reinvest_wc, args.rd_addback, args.rd_amort_start
+    roic_inputs.FX_IN_EBIT = args.fx_in_ebit == "on"
+    roic_inputs.MINORITY_SHARE_MODE, roic_inputs.RD_LIFE_MODE = args.minority_share, args.rd_life
     global DEMAND_CYCLE_CODES, DEMAND_CYCLE_G0_ZERO
     if args.demand_cycle_codes:
         DEMAND_CYCLE_CODES = {line.strip().zfill(6) for line in args.demand_cycle_codes.read_text(encoding="utf-8").splitlines()

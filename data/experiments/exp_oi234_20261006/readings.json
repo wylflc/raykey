@@ -1,0 +1,2283 @@
+{
+ "ref": "CONTROL",
+ "A": [
+  "000338",
+  "000651",
+  "600897",
+  "601088",
+  "601225"
+ ],
+ "levels": {
+  "CONTROL": {
+   "cagr": 0.4404005,
+   "mdd": 0.397577,
+   "a2009": 0.391555,
+   "a2011": 0.407866,
+   "mdd2009": 0.396726
+  },
+  "P0": {
+   "cagr": 0.307245,
+   "mdd": 0.400741,
+   "a2009": 0.288132,
+   "a2011": 0.298266,
+   "mdd2009": 0.395151
+  },
+  "P3": {
+   "cagr": 0.4095125,
+   "mdd": 0.4028695,
+   "a2009": 0.363746,
+   "a2011": 0.389199,
+   "mdd2009": 0.399202
+  },
+  "P6": {
+   "cagr": 0.4083015,
+   "mdd": 0.39656650000000004,
+   "a2009": 0.3676,
+   "a2011": 0.393091,
+   "mdd2009": 0.39637
+  },
+  "D115": {
+   "cagr": 0.4529165,
+   "mdd": 0.3859435,
+   "a2009": 0.386653,
+   "a2011": 0.413421,
+   "mdd2009": 0.387271
+  },
+  "D125": {
+   "cagr": 0.4450695,
+   "mdd": 0.395375,
+   "a2009": 0.380046,
+   "a2011": 0.399244,
+   "mdd2009": 0.395375
+  },
+  "D135": {
+   "cagr": 0.4454355,
+   "mdd": 0.397577,
+   "a2009": 0.388638,
+   "a2011": 0.410711,
+   "mdd2009": 0.396726
+  },
+  "PD": {
+   "cagr": 0.39919,
+   "mdd": 0.3877265,
+   "a2009": 0.361089,
+   "a2011": 0.388488,
+   "mdd2009": 0.383799
+  }
+ },
+ "vs_base": {
+  "P0": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数 -16.44pp < −1pp"
+   ],
+   "main": [
+    -0.16436553204999999,
+    0.004589349204999989,
+    0.008225943854999994
+   ],
+   "cagr": [
+    -0.11960999999999997,
+    0.008213500000000012,
+    0.006011500000000003
+   ],
+   "mdd": [
+    0.0035985000000000045,
+    -0.02706349999999999
+   ],
+   "better": 0,
+   "u_clause4": {
+    "滚动5年年化中位": 0.0030685000000000018,
+    "滚动5年年化P25": 0.027170999999999987,
+    "滚动5年年化最差": 0.010963,
+    "滚动5年回撤中位": 0.002332999999999974,
+    "滚动5年Calmar中位": 0.04192950000000001,
+    "滚动5年Sharpe中位": 0.06678250000000002,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": 0.006011500000000003,
+    "最大回撤": 0.009893999999999986,
+    "Calmar": 0.04348350000000001,
+    "Sharpe": 0.05613299999999999,
+    "互不重叠5年块中位": -0.005873500000000004,
+    "滚动3年年化中位": 0.006644499999999998,
+    "滚动3年回撤中位": -0.021522999999999987,
+    "逐年收益中位": 0.03706899999999999,
+    "逐年最差": 0.01083400000000001
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 5.0,
+    "单票权重中位": -0.25598600000000005,
+    "单票权重P90": -0.11121700000000001,
+    "单票权重最大": -0.10674099999999997,
+    "前三权重中位": -0.39685699999999996,
+    "单票超60%天数占比": -0.33805450000000004,
+    "平均仓位": -0.036654000000000075
+   }
+  },
+  "P3": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数 -2.96pp < −1pp"
+   ],
+   "main": [
+    -0.02955487509999999,
+    0.0010661838500000131,
+    0.016385723399999996
+   ],
+   "cagr": [
+    -0.027638499999999983,
+    -0.009647500000000003,
+    0.008027499999999993
+   ],
+   "mdd": [
+    0.005225000000000007,
+    -0.009285499999999974
+   ],
+   "better": 0,
+   "u_clause4": {
+    "滚动5年年化中位": 0.0087835,
+    "滚动5年年化P25": 0.016026499999999985,
+    "滚动5年年化最差": 0.0031485000000000003,
+    "滚动5年回撤中位": 0.008754499999999998,
+    "滚动5年Calmar中位": 0.009228500000000028,
+    "滚动5年Sharpe中位": 0.04032999999999998,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": 0.008027499999999993,
+    "最大回撤": 0.0031779999999999864,
+    "Calmar": 0.020183499999999965,
+    "Sharpe": 0.02793650000000003,
+    "互不重叠5年块中位": -0.003655500000000006,
+    "滚动3年年化中位": 0.010637000000000008,
+    "滚动3年回撤中位": 0.016676499999999983,
+    "逐年收益中位": -0.0005114999999999981,
+    "逐年最差": -0.009524000000000032
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 4.0,
+    "单票权重中位": -0.018407000000000007,
+    "单票权重P90": 0.016166499999999973,
+    "单票权重最大": 0.05248499999999995,
+    "前三权重中位": -0.10893699999999995,
+    "单票超60%天数占比": -0.07598999999999997,
+    "平均仓位": -0.008451499999999945
+   }
+  },
+  "P6": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数 -2.84pp < −1pp"
+   ],
+   "main": [
+    -0.028386891400000003,
+    0.0005868549000000445,
+    -0.01052191534999998
+   ],
+   "cagr": [
+    -0.0236045,
+    -0.006072999999999995,
+    -0.010560499999999973
+   ],
+   "mdd": [
+    -0.00027499999999999747,
+    0.0015410000000000146
+   ],
+   "better": 1,
+   "u_clause4": {
+    "滚动5年年化中位": -0.018388000000000015,
+    "滚动5年年化P25": -0.01889449999999998,
+    "滚动5年年化最差": -0.0300465,
+    "滚动5年回撤中位": 1.4999999999876223e-06,
+    "滚动5年Calmar中位": -0.15892250000000002,
+    "滚动5年Sharpe中位": -0.0527475,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": -0.010560499999999973,
+    "最大回撤": 0.0014775000000000205,
+    "Calmar": -0.031480499999999995,
+    "Sharpe": -0.02234799999999998,
+    "互不重叠5年块中位": -0.026624500000000023,
+    "滚动3年年化中位": -0.0077635000000000065,
+    "滚动3年回撤中位": 0.03797349999999999,
+    "逐年收益中位": -0.04535800000000004,
+    "逐年最差": -0.019858000000000015
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 2.0,
+    "单票权重中位": 0.004722499999999963,
+    "单票权重P90": 0.024702000000000057,
+    "单票权重最大": 0.09446100000000002,
+    "前三权重中位": -0.0052074999999999205,
+    "单票超60%天数占比": 0.024463000000000013,
+    "平均仓位": -0.0048960000000000115
+   }
+  },
+  "D115": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数一表 -0.78pp 而另一表不到 +1pp"
+   ],
+   "main": [
+    0.008647706399999983,
+    -0.007772927549999975,
+    -0.007772927549999975
+   ],
+   "cagr": [
+    0.00429199999999999,
+    -0.023230499999999987,
+    -0.023230499999999987
+   ],
+   "mdd": [
+    -0.011588000000000015,
+    -0.005208000000000018
+   ],
+   "better": 9,
+   "u_clause4": {
+    "滚动5年年化中位": -0.02251249999999999,
+    "滚动5年年化P25": -0.014120499999999994,
+    "滚动5年年化最差": 0.014178999999999997,
+    "滚动5年回撤中位": -0.00282099999999999,
+    "滚动5年Calmar中位": 0.024780999999999997,
+    "滚动5年Sharpe中位": -0.04430850000000003,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": -0.023230499999999987,
+    "最大回撤": -0.005208000000000018,
+    "Calmar": -0.04295249999999998,
+    "Sharpe": -0.04224349999999999,
+    "互不重叠5年块中位": -0.02562399999999998,
+    "滚动3年年化中位": -0.02022099999999999,
+    "滚动3年回撤中位": -0.015341999999999995,
+    "逐年收益中位": 0.00683350000000002,
+    "逐年最差": -0.007560999999999984
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 0.25,
+    "单票权重中位": -0.012555499999999997,
+    "单票权重P90": -0.02002499999999996,
+    "单票权重最大": -0.06551299999999993,
+    "前三权重中位": -0.024679999999999924,
+    "单票超60%天数占比": -0.04051350000000001,
+    "平均仓位": -0.006490500000000066
+   }
+  },
+  "D125": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数一表 -0.16pp 而另一表不到 +1pp"
+   ],
+   "main": [
+    -0.0015782159499999893,
+    0.0012800190499999975,
+    0.0012800190499999975
+   ],
+   "cagr": [
+    -0.008292000000000022,
+    -0.002063499999999968,
+    -0.002063499999999968
+   ],
+   "mdd": [
+    -0.0020710000000000173,
+    -1.3000000000013001e-05
+   ],
+   "better": 4,
+   "u_clause4": {
+    "滚动5年年化中位": -0.0021355000000000124,
+    "滚动5年年化P25": -0.002916000000000002,
+    "滚动5年年化最差": 0.001977000000000005,
+    "滚动5年回撤中位": -7.199999999998874e-05,
+    "滚动5年Calmar中位": -0.05894300000000002,
+    "滚动5年Sharpe中位": -0.009160999999999975,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": -0.002063499999999968,
+    "最大回撤": -1.3000000000013001e-05,
+    "Calmar": -0.005874499999999977,
+    "Sharpe": -0.0033684999999999965,
+    "互不重叠5年块中位": 0.0021355000000000124,
+    "滚动3年年化中位": -0.00149100000000002,
+    "滚动3年回撤中位": 0.006029499999999993,
+    "逐年收益中位": 0.018923499999999982,
+    "逐年最差": 0.00019299999999999873
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 0.0,
+    "单票权重中位": -0.00018899999999999473,
+    "单票权重P90": -0.004416000000000031,
+    "单票权重最大": -0.028880499999999976,
+    "前三权重中位": 0.008869499999999975,
+    "单票超60%天数占比": 0.00548499999999999,
+    "平均仓位": -4.6999999999908226e-05
+   }
+  },
+  "D135": {
+   "flag": "未见劣化",
+   "reasons": [],
+   "main": [
+    0.004909923249999976,
+    0.0,
+    0.0
+   ],
+   "cagr": [
+    0.0020155000000000034,
+    0.00032199999999998896,
+    0.00032199999999998896
+   ],
+   "mdd": [
+    0.0,
+    0.0
+   ],
+   "better": 9,
+   "u_clause4": {
+    "滚动5年年化中位": -0.003092000000000039,
+    "滚动5年年化P25": 0.0,
+    "滚动5年年化最差": 0.0,
+    "滚动5年回撤中位": 0.0,
+    "滚动5年Calmar中位": -0.006997500000000018,
+    "滚动5年Sharpe中位": -0.00788850000000002,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": 0.00032199999999998896,
+    "最大回撤": 0.0,
+    "Calmar": 0.0012400000000000189,
+    "Sharpe": 0.0014994999999999314,
+    "互不重叠5年块中位": 0.0046800000000000175,
+    "滚动3年年化中位": -0.000960500000000003,
+    "滚动3年回撤中位": 3.500000000017378e-06,
+    "逐年收益中位": 0.015060500000000004,
+    "逐年最差": 0.0
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 0.0,
+    "单票权重中位": 0.0008004999999999818,
+    "单票权重P90": -0.005952500000000027,
+    "单票权重最大": -0.011506000000000016,
+    "前三权重中位": 0.01745350000000001,
+    "单票超60%天数占比": 0.009112000000000009,
+    "平均仓位": 1.4999999999876223e-06
+   }
+  },
+  "PD": {
+   "flag": "劣化",
+   "reasons": [
+    "主读数 -3.35pp < −1pp"
+   ],
+   "main": [
+    -0.03352104925000002,
+    -0.001563138500000033,
+    0.01760783595000001
+   ],
+   "cagr": [
+    -0.026678499999999994,
+    -0.0046710000000000085,
+    0.004749000000000031
+   ],
+   "mdd": [
+    -0.011192499999999994,
+    0.0010965000000000003
+   ],
+   "better": 0,
+   "u_clause4": {
+    "滚动5年年化中位": 0.009188500000000016,
+    "滚动5年年化P25": 0.017814499999999997,
+    "滚动5年年化最差": 0.002913999999999999,
+    "滚动5年回撤中位": 0.007295000000000024,
+    "滚动5年Calmar中位": -0.0002154999999999796,
+    "滚动5年Sharpe中位": 0.030407499999999976,
+    "滚动5年为负的窗口占比": 0.0,
+    "年化": 0.004749000000000031,
+    "最大回撤": 0.0017989999999999673,
+    "Calmar": 0.02056949999999999,
+    "Sharpe": 0.01973400000000003,
+    "互不重叠5年块中位": -0.009569999999999995,
+    "滚动3年年化中位": 0.015671500000000005,
+    "滚动3年回撤中位": 0.014454999999999996,
+    "逐年收益中位": -0.003560500000000022,
+    "逐年最差": -0.009670500000000026
+   },
+   "u_all_good": false,
+   "conc": {
+    "持仓数中位": 4.75,
+    "单票权重中位": -0.02348750000000005,
+    "单票权重P90": 0.004275000000000029,
+    "单票权重最大": 0.012871500000000036,
+    "前三权重中位": -0.10898349999999996,
+    "单票超60%天数占比": -0.09414800000000001,
+    "平均仓位": -0.011261999999999883
+   }
+  }
+ },
+ "dose": {
+  "P": {
+   "P0": {
+    "main": -0.16436553204999999,
+    "cagr": -0.11960999999999997,
+    "main_a": 0.004589349204999989,
+    "cagr_a": 0.008213500000000012
+   },
+   "P3": {
+    "main": -0.02955487509999999,
+    "cagr": -0.027638499999999983,
+    "main_a": 0.0010661838500000131,
+    "cagr_a": -0.009647500000000003
+   },
+   "P6": {
+    "main": -0.028386891400000003,
+    "cagr": -0.0236045,
+    "main_a": 0.0005868549000000445,
+    "cagr_a": -0.006072999999999995
+   }
+  },
+  "D": {
+   "D115": {
+    "main": 0.008647706399999983,
+    "cagr": 0.00429199999999999,
+    "main_a": -0.007772927549999975,
+    "cagr_a": -0.023230499999999987
+   },
+   "D125": {
+    "main": -0.0015782159499999893,
+    "cagr": -0.008292000000000022,
+    "main_a": 0.0012800190499999975,
+    "cagr_a": -0.002063499999999968
+   },
+   "D135": {
+    "main": 0.004909923249999976,
+    "cagr": 0.0020155000000000034,
+    "main_a": 0.0,
+    "cagr_a": 0.00032199999999998896
+   }
+  }
+ },
+ "accounts": {
+  "CONTROL": {
+   "adds": 1088.5,
+   "add_unique": 2703,
+   "add_over": {
+    ">1.00": 0.6888642249352571,
+    ">1.03": 0.36403995560488345,
+    ">1.06": 0.16722160562338143
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1719,
+     "f20": 0.005813953488372103,
+     "f20_neg": 0.4514252472367656,
+     "f60": 0.016628125000000216,
+     "f60_neg": 0.4376828554710357
+    },
+    "收盘>MA20×1.03": {
+     "n": 984,
+     "f20": 0.0036144578313253017,
+     "f20_neg": 0.4758974358974359,
+     "f60": 0.012871853546910672,
+     "f60_neg": 0.4537037037037037
+    }
+   },
+   "trims": 0.0,
+   "trims_amount": 0.0,
+   "trim_unique": 0,
+   "trim_f20": null,
+   "trim_f20_neg": null,
+   "trim_f60": null,
+   "trim_f60_neg": null
+  },
+  "P0": {
+   "adds": 690.5,
+   "add_unique": 1626,
+   "add_over": {
+    ">1.00": 0.006765067650676507,
+    ">1.03": 0.006765067650676507,
+    ">1.06": 0.006150061500615006
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1615,
+     "f20": 0.0039823008849557695,
+     "f20_neg": 0.46559206447613144,
+     "f60": 0.018789716723848437,
+     "f60_neg": 0.4499689247980112
+    },
+    "收盘>MA20×1.03": {
+     "n": 11,
+     "f20": -0.04817432273262667,
+     "f20_neg": 0.7272727272727273,
+     "f60": -0.11054421768707468,
+     "f60_neg": 0.8181818181818182
+    }
+   },
+   "trims": 0.0,
+   "trims_amount": 0.0,
+   "trim_unique": 0,
+   "trim_f20": null,
+   "trim_f20_neg": null,
+   "trim_f60": null,
+   "trim_f60_neg": null
+  },
+  "P3": {
+   "adds": 945.0,
+   "add_unique": 2207,
+   "add_over": {
+    ">1.00": 0.5428183053919348,
+    ">1.03": 0.0018124150430448573,
+    ">1.06": 0.0018124150430448573
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 2203,
+     "f20": 0.0056285178236397115,
+     "f20_neg": 0.4438891412994094,
+     "f60": 0.020065490952128062,
+     "f60_neg": 0.4216537231612609
+    },
+    "收盘>MA20×1.03": {
+     "n": 4,
+     "f20": -0.08366511316604075,
+     "f20_neg": 1.0,
+     "f60": -0.019908668261220897,
+     "f60_neg": 0.5
+    }
+   },
+   "trims": 0.0,
+   "trims_amount": 0.0,
+   "trim_unique": 0,
+   "trim_f20": null,
+   "trim_f20_neg": null,
+   "trim_f60": null,
+   "trim_f60_neg": null
+  },
+  "P6": {
+   "adds": 1010.5,
+   "add_unique": 2311,
+   "add_over": {
+    ">1.00": 0.6443098225876244,
+    ">1.03": 0.2492427520553873,
+    ">1.06": 0.0012981393336218088
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1735,
+     "f20": 0.0060679611650482634,
+     "f20_neg": 0.44149855907780977,
+     "f60": 0.018018018018017834,
+     "f60_neg": 0.44044160371876817
+    },
+    "收盘>MA20×1.03": {
+     "n": 576,
+     "f20": 0.008219178082191636,
+     "f20_neg": 0.45694200351493847,
+     "f60": 0.013665815344785281,
+     "f60_neg": 0.4416961130742049
+    }
+   },
+   "trims": 0.0,
+   "trims_amount": 0.0,
+   "trim_unique": 0,
+   "trim_f20": null,
+   "trim_f20_neg": null,
+   "trim_f60": null,
+   "trim_f60_neg": null
+  },
+  "D115": {
+   "adds": 1177.5,
+   "add_unique": 2705,
+   "add_over": {
+    ">1.00": 0.6853974121996304,
+    ">1.03": 0.3678373382624769,
+    ">1.06": 0.17523105360443622
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1710,
+     "f20": 0.006006324739061264,
+     "f20_neg": 0.4473684210526316,
+     "f60": 0.017505470459518557,
+     "f60_neg": 0.4374633000587199
+    },
+    "收盘>MA20×1.03": {
+     "n": 995,
+     "f20": 0.003146506882462874,
+     "f20_neg": 0.4807692307692308,
+     "f60": 0.0123281175912755,
+     "f60_neg": 0.45685279187817257
+    }
+   },
+   "trims": 72.5,
+   "trims_amount": 403688041.0,
+   "trim_unique": 131,
+   "trim_f20": -0.002272727272727537,
+   "trim_f20_neg": 0.5190839694656488,
+   "trim_f60": 0.005013927576601462,
+   "trim_f60_neg": 0.48854961832061067
+  },
+  "D125": {
+   "adds": 1132.0,
+   "add_unique": 2683,
+   "add_over": {
+    ">1.00": 0.6887812150577711,
+    ">1.03": 0.36041744316064106,
+    ">1.06": 0.17294073797987328
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1716,
+     "f20": 0.005407895185778888,
+     "f20_neg": 0.45396270396270394,
+     "f60": 0.015368986712797739,
+     "f60_neg": 0.4439882697947214
+    },
+    "收盘>MA20×1.03": {
+     "n": 967,
+     "f20": 0.0024695121951220367,
+     "f20_neg": 0.48333333333333334,
+     "f60": 0.010836845273931361,
+     "f60_neg": 0.4638743455497382
+    }
+   },
+   "trims": 11.5,
+   "trims_amount": 48525605.5,
+   "trim_unique": 22,
+   "trim_f20": -0.03992135332549174,
+   "trim_f20_neg": 0.6363636363636364,
+   "trim_f60": -0.06950774208770999,
+   "trim_f60_neg": 0.7272727272727273
+  },
+  "D135": {
+   "adds": 1104.5,
+   "add_unique": 2773,
+   "add_over": {
+    ">1.00": 0.6804904435629282,
+    ">1.03": 0.35809592499098447,
+    ">1.06": 0.16624594302199783
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 1780,
+     "f20": 0.005369214581201098,
+     "f20_neg": 0.4550561797752809,
+     "f60": 0.013285172809220702,
+     "f60_neg": 0.4467005076142132
+    },
+    "收盘>MA20×1.03": {
+     "n": 993,
+     "f20": 0.004999999999999893,
+     "f20_neg": 0.475177304964539,
+     "f60": 0.012871853546910672,
+     "f60_neg": 0.4573170731707317
+    }
+   },
+   "trims": 3.0,
+   "trims_amount": 13313393.5,
+   "trim_unique": 6,
+   "trim_f20": -0.05386501747695316,
+   "trim_f20_neg": 0.6666666666666666,
+   "trim_f60": -0.16791870337020837,
+   "trim_f60_neg": 0.6666666666666666
+  },
+  "PD": {
+   "adds": 959.5,
+   "add_unique": 2183,
+   "add_over": {
+    ">1.00": 0.5547411818598259,
+    ">1.03": 0.00320659642693541,
+    ">1.06": 0.00320659642693541
+   },
+   "add_groups": {
+    "收盘≤MA20×1.03": {
+     "n": 2176,
+     "f20": 0.0060679611650482634,
+     "f20_neg": 0.4436263230556834,
+     "f60": 0.02182724444348194,
+     "f60_neg": 0.4236111111111111
+    },
+    "收盘>MA20×1.03": {
+     "n": 7,
+     "f20": 0.009175537997118566,
+     "f20_neg": 0.42857142857142855,
+     "f60": -0.027383158328186052,
+     "f60_neg": 0.7142857142857143
+    }
+   },
+   "trims": 11.0,
+   "trims_amount": 24477033.0,
+   "trim_unique": 26,
+   "trim_f20": -0.03981112937805842,
+   "trim_f20_neg": 0.5384615384615384,
+   "trim_f60": -0.05460277511452005,
+   "trim_f60_neg": 0.6538461538461539
+  }
+ },
+ "clause13": {
+  "CONTROL": {
+   "by_label": {
+    "一般": {
+     "cycles": 40.0,
+     "invested_share": 0.3405360472923541,
+     "contrib": 1.3833609999999998
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 13.0,
+     "invested_share": 0.39879624172348593,
+     "contrib": 0.11822949999999999
+    },
+    "机会": {
+     "cycles": 28.5,
+     "invested_share": 0.23610964006431823,
+     "contrib": 4.5743920000000005
+    },
+    "陷阱": {
+     "cycles": 5.5,
+     "invested_share": 0.03465175934022967,
+     "contrib": 0.15642899999999998
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 10,
+     "starts": 14,
+     "contrib_median": 0.055868,
+     "contrib_median_held": 0.0629475
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.343133,
+     "contrib_median_held": 0.343598
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.0063184999999999995,
+     "contrib_median_held": 0.0066555
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.8375775000000001,
+     "contrib_median_held": 0.838381
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.343725,
+     "contrib_median_held": 0.343725
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.5016665,
+     "contrib_median_held": 0.5016665
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.343725,
+     "contrib_median_held": 0.343725
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.0035275,
+     "contrib_median_held": 0.017347
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.003502
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.084616,
+     "contrib_median_held": 0.084616
+    },
+    "T12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    }
+   }
+  },
+  "P0": {
+   "by_label": {
+    "一般": {
+     "cycles": 47.5,
+     "invested_share": 0.5194626093201757,
+     "contrib": 1.5305209999999998
+    },
+    "估值扩张": {
+     "cycles": 1.5,
+     "invested_share": 0.019693723367458893,
+     "contrib": 0.08765999999999999
+    },
+    "无标签": {
+     "cycles": 1.0,
+     "invested_share": 3.385004170366758e-06,
+     "contrib": 0.0005445000000000001
+    },
+    "未满3年": {
+     "cycles": 37.0,
+     "invested_share": 0.22141670250469742,
+     "contrib": 0.13530749999999997
+    },
+    "机会": {
+     "cycles": 30.0,
+     "invested_share": 0.17313190026593772,
+     "contrib": 2.692437
+    },
+    "陷阱": {
+     "cycles": 11.0,
+     "invested_share": 0.0553604486388521,
+     "contrib": 0.26814999999999994
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 11,
+     "starts": 14,
+     "contrib_median": 0.011753999999999999,
+     "contrib_median_held": 0.017971
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.22501,
+     "contrib_median_held": 0.225855
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.015794,
+     "contrib_median_held": 0.0177075
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.3232885,
+     "contrib_median_held": 0.344755
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.396694,
+     "contrib_median_held": 0.396694
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.097555,
+     "contrib_median_held": 0.097555
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.396694,
+     "contrib_median_held": 0.396694
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.0714475,
+     "contrib_median_held": 0.0916605
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.1105675
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": -0.006626,
+     "contrib_median_held": -0.006626
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.233814,
+     "contrib_median_held": 0.233814
+    },
+    "T12": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": -0.008536499999999999,
+     "contrib_median_held": -0.008536499999999999
+    }
+   }
+  },
+  "P3": {
+   "by_label": {
+    "一般": {
+     "cycles": 45.0,
+     "invested_share": 0.5446704766099855,
+     "contrib": 1.7713554999999999
+    },
+    "估值扩张": {
+     "cycles": 1.0,
+     "invested_share": 0.0001915046773794387,
+     "contrib": 0.0009275
+    },
+    "无标签": {
+     "cycles": 1.0,
+     "invested_share": 8.718449222822523e-07,
+     "contrib": 0.000392
+    },
+    "未满3年": {
+     "cycles": 24.5,
+     "invested_share": 0.22496928844354097,
+     "contrib": 0.088204
+    },
+    "机会": {
+     "cycles": 28.5,
+     "invested_share": 0.17505084270737864,
+     "contrib": 3.6845605
+    },
+    "陷阱": {
+     "cycles": 7.0,
+     "invested_share": 0.03857940100081077,
+     "contrib": 0.2859315
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 11,
+     "starts": 14,
+     "contrib_median": 0.3612825,
+     "contrib_median_held": 0.363038
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.3612825,
+     "contrib_median_held": 0.363038
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.0105725,
+     "contrib_median_held": 0.013195
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.8265205,
+     "contrib_median_held": 0.861791
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.4229595,
+     "contrib_median_held": 0.4229595
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.038654,
+     "contrib_median_held": 0.038654
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.42256150000000003,
+     "contrib_median_held": 0.42256150000000003
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.027107,
+     "contrib_median_held": 0.0561975
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.0064175
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.1274535,
+     "contrib_median_held": 0.1274535
+    },
+    "T12": {
+     "held_starts": 11,
+     "starts": 14,
+     "contrib_median": -6.5000000000000004e-06,
+     "contrib_median_held": -1.2e-05
+    }
+   }
+  },
+  "P6": {
+   "by_label": {
+    "一般": {
+     "cycles": 45.0,
+     "invested_share": 0.35691179813482754,
+     "contrib": 1.6729034999999999
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 16.0,
+     "invested_share": 0.41381247934342036,
+     "contrib": 0.034351000000000007
+    },
+    "机会": {
+     "cycles": 27.5,
+     "invested_share": 0.21358326997027643,
+     "contrib": 4.0893
+    },
+    "陷阱": {
+     "cycles": 6.5,
+     "invested_share": 0.024423181710665064,
+     "contrib": 0.24771300000000002
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 11,
+     "starts": 14,
+     "contrib_median": 0.053202,
+     "contrib_median_held": 0.062941
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.45633100000000004,
+     "contrib_median_held": 0.457417
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.008123499999999999,
+     "contrib_median_held": 0.008333
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.8299965,
+     "contrib_median_held": 0.866268
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.35337050000000003,
+     "contrib_median_held": 0.35337050000000003
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.072212,
+     "contrib_median_held": 0.072212
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.35337050000000003,
+     "contrib_median_held": 0.35337050000000003
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.0218005,
+     "contrib_median_held": 0.0567645
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.0013694999999999998
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.12900099999999998,
+     "contrib_median_held": 0.12900099999999998
+    },
+    "T12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    }
+   }
+  },
+  "D115": {
+   "by_label": {
+    "一般": {
+     "cycles": 42.0,
+     "invested_share": 0.3862911528822114,
+     "contrib": 1.6311015
+    },
+    "估值扩张": {
+     "cycles": 1.0,
+     "invested_share": 0.0015221830678720564,
+     "contrib": 0.009356
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 16.0,
+     "invested_share": 0.35121798028157736,
+     "contrib": 0.11655499999999999
+    },
+    "机会": {
+     "cycles": 26.5,
+     "invested_share": 0.2108541923497092,
+     "contrib": 4.512020499999999
+    },
+    "陷阱": {
+     "cycles": 5.0,
+     "invested_share": 0.04282232095368008,
+     "contrib": 0.105525
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 10,
+     "starts": 14,
+     "contrib_median": 0.04185,
+     "contrib_median_held": 0.059159
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.3406935,
+     "contrib_median_held": 0.340832
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.004709,
+     "contrib_median_held": 0.005461499999999999
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.818515,
+     "contrib_median_held": 0.823311
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.3187565,
+     "contrib_median_held": 0.3187565
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.534332,
+     "contrib_median_held": 0.534332
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.319396,
+     "contrib_median_held": 0.319396
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.004254
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": -0.00659
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.06286549999999999,
+     "contrib_median_held": 0.06286549999999999
+    },
+    "T12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    }
+   }
+  },
+  "D125": {
+   "by_label": {
+    "一般": {
+     "cycles": 40.5,
+     "invested_share": 0.331462954635691,
+     "contrib": 1.4552875
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 14.0,
+     "invested_share": 0.30636678120587274,
+     "contrib": 0.0672165
+    },
+    "机会": {
+     "cycles": 29.5,
+     "invested_share": 0.30178646730878433,
+     "contrib": 4.459129000000001
+    },
+    "陷阱": {
+     "cycles": 5.5,
+     "invested_share": 0.031801584369204765,
+     "contrib": 0.1495005
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 10,
+     "starts": 14,
+     "contrib_median": 0.0525445,
+     "contrib_median_held": 0.06299650000000001
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.34158049999999995,
+     "contrib_median_held": 0.341707
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.0055709999999999996,
+     "contrib_median_held": 0.006507499999999999
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.831274,
+     "contrib_median_held": 0.831656
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.333457,
+     "contrib_median_held": 0.333457
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.507307,
+     "contrib_median_held": 0.507307
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.333457,
+     "contrib_median_held": 0.333457
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.026861,
+     "contrib_median_held": 0.035278500000000004
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.0017605000000000001
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.106601,
+     "contrib_median_held": 0.106601
+    },
+    "T12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    }
+   }
+  },
+  "D135": {
+   "by_label": {
+    "一般": {
+     "cycles": 39.0,
+     "invested_share": 0.3400963020407888,
+     "contrib": 1.3332769999999996
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 15.0,
+     "invested_share": 0.3776896990248322,
+     "contrib": 0.0539205
+    },
+    "机会": {
+     "cycles": 29.5,
+     "invested_share": 0.25191530856593536,
+     "contrib": 4.5334535
+    },
+    "陷阱": {
+     "cycles": 6.0,
+     "invested_share": 0.032930172432063455,
+     "contrib": 0.153978
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 10,
+     "starts": 14,
+     "contrib_median": 0.0473585,
+     "contrib_median_held": 0.0629475
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.343156,
+     "contrib_median_held": 0.343327
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.005795,
+     "contrib_median_held": 0.0066324999999999995
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.8375775000000001,
+     "contrib_median_held": 0.838381
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.34195,
+     "contrib_median_held": 0.34195
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.545228,
+     "contrib_median_held": 0.545228
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.34195,
+     "contrib_median_held": 0.34195
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.0035275,
+     "contrib_median_held": 0.017264
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.003960999999999999
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.08236299999999999,
+     "contrib_median_held": 0.08236299999999999
+    },
+    "T12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    }
+   }
+  },
+  "PD": {
+   "by_label": {
+    "一般": {
+     "cycles": 46.0,
+     "invested_share": 0.5433816681510519,
+     "contrib": 1.7372035000000001
+    },
+    "估值扩张": {
+     "cycles": 1.0,
+     "invested_share": 3.74963913766578e-05,
+     "contrib": 0.000167
+    },
+    "无标签": {
+     "cycles": 0.0,
+     "invested_share": 0.0,
+     "contrib": 0.0
+    },
+    "未满3年": {
+     "cycles": 24.0,
+     "invested_share": 0.21526377267129782,
+     "contrib": 0.0695365
+    },
+    "机会": {
+     "cycles": 29.0,
+     "invested_share": 0.1788237664268904,
+     "contrib": 3.8339334999999997
+    },
+    "陷阱": {
+     "cycles": 6.5,
+     "invested_share": 0.03767499931300463,
+     "contrib": 0.30195649999999996
+    }
+   },
+   "cases": {
+    "O01": {
+     "held_starts": 11,
+     "starts": 14,
+     "contrib_median": 0.35868849999999997,
+     "contrib_median_held": 0.370339
+    },
+    "O02": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.35868849999999997,
+     "contrib_median_held": 0.370339
+    },
+    "O03": {
+     "held_starts": 12,
+     "starts": 14,
+     "contrib_median": 0.0117815,
+     "contrib_median_held": 0.0135
+    },
+    "O04": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O05": {
+     "held_starts": 13,
+     "starts": 14,
+     "contrib_median": 0.821533,
+     "contrib_median_held": 0.846845
+    },
+    "O06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O08": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.418269,
+     "contrib_median_held": 0.418269
+    },
+    "O09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O10": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.024636500000000002,
+     "contrib_median_held": 0.024636500000000002
+    },
+    "O11": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O12": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "O13": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T01": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.418269,
+     "contrib_median_held": 0.418269
+    },
+    "T02": {
+     "held_starts": 8,
+     "starts": 14,
+     "contrib_median": 0.06802849999999999,
+     "contrib_median_held": 0.096663
+    },
+    "T03": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T04": {
+     "held_starts": 4,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": 0.006723000000000001
+    },
+    "T05": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T06": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T07": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T08": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T09": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T10": {
+     "held_starts": 0,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": null
+    },
+    "T11": {
+     "held_starts": 14,
+     "starts": 14,
+     "contrib_median": 0.1607445,
+     "contrib_median_held": 0.1607445
+    },
+    "T12": {
+     "held_starts": 6,
+     "starts": 14,
+     "contrib_median": 0.0,
+     "contrib_median_held": -4.9999999999999996e-06
+    }
+   }
+  }
+ },
+ "cases": {
+  "PD": {
+   "top3": {
+    "total": -0.2581950000000003,
+    "top3": [
+     [
+      "601225",
+      -0.289096
+     ],
+     [
+      "000333",
+      0.12562299999999998
+     ],
+     [
+      "000423",
+      0.117716
+     ]
+    ],
+    "share": 0.17721876876004564
+   },
+   "table": [
+    "| 美的集团（000333） | +12.56pp | 捕捉便宜机会 | 机会组 Δ+12.56pp |",
+    "| 东阿阿胶（000423） | +11.77pp | 避开便宜陷阱 | 陷阱组 Δ+11.77pp |",
+    "| 宇通客车（600066） | +9.12pp | 捕捉便宜机会 | 机会组 Δ+17.38pp |",
+    "| 海螺水泥（600585） | +8.11pp | 捕捉便宜机会 | 机会组 Δ+8.15pp |",
+    "| 中国神华（601088） | +5.56pp | 与估值无关 | 一般组 Δ+6.70pp |",
+    "| 陕西煤业（601225） | -28.91pp | 错过便宜机会 | 机会组 Δ-44.71pp |",
+    "| 洋河股份（002304） | -11.26pp | 错过便宜机会 | 机会组 Δ-11.26pp |",
+    "| 格力电器（000651） | -9.74pp | 错过便宜机会 | 机会组 Δ-16.86pp |",
+    "| 潍柴动力（000338） | -9.13pp | 错过便宜机会 | 机会组 Δ-10.79pp |",
+    "| 盐湖股份（000792） | -6.54pp | 与估值无关 | 一般组 Δ-6.54pp |"
+   ]
+  },
+  "P3": {
+   "top3": {
+    "total": -0.2568210000000001,
+    "top3": [
+     [
+      "601225",
+      -0.27198100000000003
+     ],
+     [
+      "000333",
+      0.126288
+     ],
+     [
+      "002304",
+      -0.11201599999999998
+     ]
+    ],
+    "share": 1.0034576611725672
+   },
+   "table": [
+    "| 美的集团（000333） | +12.63pp | 捕捉便宜机会 | 机会组 Δ+12.63pp |",
+    "| 东阿阿胶（000423） | +9.18pp | 避开便宜陷阱 | 陷阱组 Δ+9.18pp |",
+    "| 海螺水泥（600585） | +8.14pp | 捕捉便宜机会 | 机会组 Δ+8.22pp |",
+    "| 三一重工（600031） | +5.24pp | 捕捉便宜机会 | 机会组 Δ+4.48pp |",
+    "| 宇通客车（600066） | +4.64pp | 与估值无关 | 一般组 Δ+5.91pp |",
+    "| 陕西煤业（601225） | -27.20pp | 错过便宜机会 | 机会组 Δ-42.40pp |",
+    "| 洋河股份（002304） | -11.20pp | 错过便宜机会 | 机会组 Δ-11.20pp |",
+    "| 潍柴动力（000338） | -7.77pp | 错过便宜机会 | 机会组 Δ-10.16pp |",
+    "| 格力电器（000651） | -7.24pp | 错过便宜机会 | 机会组 Δ-15.38pp |",
+    "| 盐湖股份（000792） | -6.94pp | 与估值无关 | 一般组 Δ-6.94pp |"
+   ]
+  },
+  "D125": {
+   "top3": {
+    "total": -0.06782200000000047,
+    "top3": [
+     [
+      "002128",
+      -0.06121700000000002
+     ],
+     [
+      "601225",
+      0.05431999999999998
+     ],
+     [
+      "688516",
+      -0.05062099999999999
+     ]
+    ],
+    "share": 0.8480728967001805
+   },
+   "table": [
+    "| 陕西煤业（601225） | +5.43pp | 捕捉便宜机会 | 机会组 Δ+5.43pp |",
+    "| 中兴通讯（000063） | +3.50pp | 与估值无关 | 无标签组 Δ+3.50pp |",
+    "| 宇通客车（600066） | +2.88pp | 与估值无关 | 一般组 Δ+2.33pp |",
+    "| 中国神华（601088） | +1.22pp | 与估值无关 | 一般组 Δ+3.19pp |",
+    "| 分众传媒（002027） | +1.01pp | 与估值无关 | 一般组 Δ+1.01pp |",
+    "| 电投能源（002128） | -6.12pp | 错过便宜机会 | 机会组 Δ-3.30pp |",
+    "| 奥特维（688516） | -5.06pp | 与估值无关 | 无标签组 Δ-5.06pp |",
+    "| 恩华药业（002262） | -2.28pp | 错过便宜机会 | 机会组 Δ-2.28pp |",
+    "| 格力电器（000651） | -1.56pp | 错过便宜机会 | 机会组 Δ-2.06pp |",
+    "| 中材国际（600970） | -1.55pp | 与估值无关 | 无标签组 Δ-1.55pp |"
+   ]
+  }
+ },
+ "family": {
+  "new": 7,
+  "related": "§12.148 加仓闸门、archive §12.40 偏离停投、§12.290 让位换仓源"
+ }
+}

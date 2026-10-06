@@ -115,20 +115,29 @@ def main() -> int:
             best[code] = dict(row)
     for code, row in list(best.items()):
         best[code] = minority_claims.invalidate_row(row, a.as_of)
-    # 银行：V 换成采纳逐日状态最后一行的股利折现值
+    # 银行与保险：V 按信号日口径实时计算（§6.5.1 第 4 条唯一实现 `bank_live_value`，与实盘扫描、池外档案同值，OI-269）；
+    # 国债利率或完整财年分红不可得时退回采纳逐日状态最后一行（逐日状态随历史行情缓存，可能滞后于信号日）
+    from screen_daily_volume_price_signals import _default_rf, bank_live_value
     bank_codes = {c for c, n in pool.items() if is_bank(n, c)}
+    rf = _default_rf(a.signal_date)
+    live: dict[str, float] = {}
+    for c in bank_codes:
+        v = bank_live_value(c, a.signal_date, rf)[0] if rf is not None else None
+        if v and v > 0:
+            live[c] = v
     bank_last: dict[str, dict] = {}
-    with a.states.open(newline="", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            c = row["security_code"].zfill(6)
-            if c in bank_codes:
-                prev = bank_last.get(c)
-                if prev is None or row["date"] > prev["date"]:
-                    bank_last[c] = row
+    if bank_codes - set(live):
+        with a.states.open(newline="", encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                c = row["security_code"].zfill(6)
+                if c in bank_codes and c not in live:
+                    prev = bank_last.get(c)
+                    if prev is None or row["date"] > prev["date"]:
+                        bank_last[c] = row
     replaced = 0
     for c, row in best.items():
-        if c in bank_codes and c in bank_last and not minority_claims.row_blocked(row):
-            v = float(bank_last[c]["intrinsic_value"])
+        if c in bank_codes and (c in live or c in bank_last) and not minority_claims.row_blocked(row):
+            v = live[c] if c in live else float(bank_last[c]["intrinsic_value"])
             row["intrinsic_value"] = f"{v:.4f}"
             row["band_low"], row["band_high"] = f"{v * 0.90:.4f}", f"{v * 1.10:.4f}"
             row["roic_path"] = "bank_divspread"
@@ -149,7 +158,7 @@ def main() -> int:
         w.writeheader()
         for c in sorted(best):
             w.writerow(best[c])
-    print(f"带 {len(best)}/{len(pool)} 只（银行改写 {replaced}）→ {a.out.name}")
+    print(f"带 {len(best)}/{len(pool)} 只（银行改写 {replaced}，其中信号日实时 {sum(1 for c in live if c in best)}）→ {a.out.name}")
     if missing:
         # 无 ok 带 = 模型判不可估或数据不全 → §6.5.2.4 无法估值，不静默
         names = "、".join(pool[c] for c in missing)

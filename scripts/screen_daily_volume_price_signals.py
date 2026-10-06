@@ -519,7 +519,7 @@ def load_blocked_codes(path: Path) -> set[str] | None:
 # **口径一律来自 `docs/000_Ashare_workflow.md` §9.3，此处不另立标准。**
 # close 为当日未复权价格；MA 按 §8.3 的完整事件日历折到同日口径。
 # 历史研究必须隔离状态与输出；生产输入与发布边界由 daily_execution_guard 核验。
-SEC93_BUY_LINE = 1.0034        # §9.3.1 买入线（v4.216 OI-213 研发资本化上重解、保留四位小数，回测日志 §12.278；v4.219 OI-227 银行同尺缩放不做对齐、保留此线；v4.221 OI-230 银行 DDM 可持续终值在容差内保留此线，同尺系数重估后在册合格面重登为 11.761%，§12.282；v4.224 OI-244 取消银行同尺系数、不做对齐保留此线，在册合格面重登为 16.916%，§12.295）
+SEC93_BUY_LINE = 1.0034        # §9.3.1 买入线（v4.216 OI-213 研发资本化上重解、保留四位小数，回测日志 §12.278；v4.219 OI-227 银行同尺缩放不做对齐、保留此线；v4.221 OI-230 银行 DDM 可持续终值在容差内保留此线，同尺系数重估后在册合格面重登为 11.761%，§12.282；v4.224 OI-244 取消银行同尺系数、不做对齐保留此线，在册合格面重登为 16.916%，§12.295；v4.235 OI-269 银行 BV 年增速封顶只动银行、按用户裁定不做对齐保留此线，在册合格面重登为 16.687%，§12.326）
 SEC93_MAX_CORR = 1.0           # §9.3.1：252 日相关性只计算并列报告、不作过滤（1.0 = 无一被跳过；与回测 `--max-corr` 同值）
 SEC93_SCAN_DEPTH = 40          # 每日最多考察的合格候选名次（与回测 `--scan-depth` 同值；相关性不过滤后不绑定）
 SEC93_TRANCHE_PCT = 0.05       # §9.3.1 单次买入比例
@@ -723,7 +723,8 @@ def _insurer_g_bar(as_of: str) -> float | None:
             rates[day] = _default_rf(day)
         return bank_dividend_intrinsic(code, day, rates[day]) if rates[day] is not None else None
     return bank_valuation.smoothed_g(
-        as_of, lambda day: bank_valuation.bank_g_at(day, d0, _bank_fundamentals(), _corporate_actions(), banks))
+        as_of, lambda day: bank_valuation.bank_g_at(day, d0, _bank_fundamentals(), _corporate_actions(), banks,
+                                                    uncapped=bank_valuation.INSURER_G_UNCAPPED))
 
 
 def bank_live_value(code: str, as_of: str, rf: float) -> tuple[float | None, str]:

@@ -99,10 +99,8 @@ def model_assumptions(band: dict, mid: float, pv: float | None) -> str:
         head += (f"，盈利锚按差距复核结论采用研究数 {band.get('research_nopat_yi') or '—'} 亿"
                  f"（§6.5.2.2，机械 IV {band.get('pre_research_iv') or '—'}）")
     if path == "bank_divspread":
-        tail = "：V = 最近已知完整财年每股现金分红 ÷（十年国债 + 2%）"
-        if pv:
-            tail += f"，即现价股息率 = 带口径要求收益率 ÷ {pv:.3f}"
-        return head + tail + "；参数全文见第二节。"
+        return (head + "：银行 V = V_DDM × G（当日银行截面 G），保险 V = V_DDM × Ḡ（前 36 个月末银行 G 的中位），不可算时退回股利利差 "
+                "V_D0 = 最近已知完整财年每股现金分红 ÷（十年国债 + 2%）；按信号日计算，与实盘扫描同值（§6.5.1 第 4 条）；参数全文见第二节。")
     if path == "growth":
         # g0 的来源按带文件 `roic_g_source` 如实写：hybrid 两腿取大，多数带由利润增速腿给出
         # （§12.99.1：生产池 202 只 growth 带里 116 只），写成「增量 ROIC × 再投资率」是错的归因（OI-069 判例）。
