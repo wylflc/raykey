@@ -79,6 +79,7 @@ ADDMAX75,archive,m2,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranch
 AG110U,archive,m1,,14,14,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr0.7_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_ex5_lot100_lrc2
 AGETROUGHOFF,archive,m1,,14,14,14,trend_x5_w-0.0757_x1c_dtax_sma20_swap_corr0.7_tranche_slmin_gs1.25_ma60stop_addma_swk20_cap0.6_sp_ex5_lot100_lrc2
 AGUARDEFF,archive,m1,,14,14,14,trend_x5_w-0.0437_x1c_dtax_sma20_swap_corr0.7_tranche_slmin_gs1.25_ma60stop_addma_swk20_cap0.6_sp_ex5_lot100_lrc2
+ALIGNED,current,m3,,9,18,9,trend_x5_w0.1605_x1c_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_ca2_addma_swk20_cap0.6s_sp_gso_lot1_sig1
 ALLP,archive,m1,,23,23,0,trend_x5_w0.0593_x1c_sma20_swap_corr0.7_tranche_slmin_skipma60_sl2.5236_addma_swk20_sp_lot100_lrc
 ALLPG,archive,m1,,23,23,0,trend_x5_w0.0593_x1c_sma20_swap_corr0.7_tranche_slmin_skipma60_sl2.5236_addma_swk20_sp_lot100_lrc
 ALLs15a,archive,m1,,23,23,0,trend_x5_w0.0566_x1c_sma20_swap_corr0.7_tranche_slmin_skipma60_sl2.5008_addma_swk20_sp_lot100_lrc
@@ -93,7 +94,7 @@ AM100,archive,m1,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr0.7_tranche
 AME,archive,m1,,23,23,0,trend_x1_w0.0328_x1c_sma20_swap_corr0.85_tranche_sl3.2606_addma_nvs_swk20_cap0.15_sp_lot100_lrc
 AMELONG,archive,m1,,0,1,0,trend_x1_w0.0328_x1c_sma20_swap_corr0.85_tranche_sl3.2606_addma_nvs_swk20_cap0.15_sp_lot100_lrc_AMELONG
 AMEnoalign,archive,m1,,23,23,0,trend_x1_w0_x1c_sma20_swap_corr0.85_tranche_sl2.5_addma_nvs_swk20_cap0.15_sp_lot100_lrc
-ANOCREDIT,archive,m2,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_gso_lot100_lrc2
+ANOCREDIT,archive+current,m2+m3,,14,56,28,trend_x5_w0.0476_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_ca2_addma_swk20_cap0.6s_sp_gso_ebcap0.03r_c0.3h0.035_lot100_sig1_lrc3
 ASB1,archive,m1,,14,14,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_ex5_lot100_lrc2
 ASBBOTH,archive,m2,,14,14,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_stopboth_addma_swk20_cap0.6_sp_gso_ex5_lot100_lrc2
 ASBSIG,archive,m2,,14,14,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_stopsig_addma_swk20_cap0.6_sp_gso_ex5_lot100_lrc2
@@ -1146,6 +1147,7 @@ OI168LM16,archive,m2,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranc
 OI168LM17,archive,m2,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_gso_lot100_lrc2
 OI168LM18,archive,m2,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_gso_lot100_lrc2
 OLDEX,archive,m1,,23,23,0,trend_x1_w-0.5884_x1c_sma20_swap_corr0.85_tranche_sl1.1044_sp_lot100_lrc
+OLDLINE,current,m3,,9,18,9,trend_x5_w-0.0454_x1c_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_ca2_addma_swk20_cap0.6s_sp_gso_lot1_sig1
 OLDnocap,archive,m1,,23,23,0,trend_x1_w0_x1c_sma20_swap_corr0.85_tranche_sl2.5_sp_lot100_lrc
 ON3,archive,m1,,23,23,0,trend_x1_w-0.3198_x1c_sma20_swap_corr0.85_tranche_sl0.9338_sp_lot100_lrc
 ON4,archive,m1,,23,23,0,trend_x1_w-0.2531_x1c_sma20_swap_corr0.85_tranche_sl0.8845_sp_lot100_lrc
@@ -1444,6 +1446,7 @@ SOFT,archive,m1,,23,23,0,trend_x5_w0.0566_x1c_sma20_swap_corr0.7_tranche_slmin_s
 SOP12,archive,m1,,23,23,0,trend_x1_w0.0543_x1c_sma20_swap_corr0.85_tranche_sl2.5786_addma_nvs_swk20_sop1.2_cap0.15_sp_lot100_lrc
 SOP15,archive,m1,,23,23,0,trend_x1_w0.0543_x1c_sma20_swap_corr0.85_tranche_sl2.5786_addma_nvs_swk20_sop1.5_cap0.15_sp_lot100_lrc
 SOP20,archive,m1,,23,23,0,trend_x1_w0.0543_x1c_sma20_swap_corr0.85_tranche_sl2.5786_addma_nvs_swk20_sop2_cap0.15_sp_lot100_lrc
+SP100,current,m3,,9,18,9,trend_x5_w0.0476_x1c_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_ca2_addma_swk20_cap0.6s_sp_gso_lot1_sig1
 SPL,archive,m1,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_sps_lot100_lrc2
 SPLIT,archive,m1,,14,28,14,trend_x5_w-0.0453_x1c_dtax_sma20_swap_corr0.7_tranche_slmin_gs1.25_ma60stop_addma_swk20_cap0.6_sp_lot100_lrc2
 SPLM10,archive,m1,,14,28,14,trend_x5_w-0.0454_x1c_dtax_sma20_swap_corr1_tranche_slmin_gs1.1u_ma60stop_addma_swk20_cap0.6_sp_sps_lot100_lrc2

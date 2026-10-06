@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.236
+# A股选股-估值-量价操作流程 v4.237
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -17,8 +17,7 @@
 | 海外单票研究（港股／美股／韩股点名） | §5 → §6.8 | 逐层判断；建档、入清单、重出阅读版三步缺一不可 |
 | 成长股（结构成长型）识别、复核与买卖 | §9.3.6 | `a_share_business_attributes.csv`、`structural_growth_review.py` |
 | 修改估值、交易规则或回测参数 | §12-§13 | `sweep_backtest_configs.py` |
-
-所有可复核结论均按 §2 写入决策日志。买卖机制只认 §9.3；账户级风险只认个人投资体系 §4 的两条外生硬约束（券商授信额度、强平线）。
+| 清理仓库、精简文档 | — | `docs/repository_cleanup_rules.md` |
 
 ## 1. 目标与边界
 
@@ -41,12 +40,12 @@
 | 质量分层与参考分 | `data/processed/a_share_watchlist_quality_tiers.csv` |
 | 逐票研究档案 | `data/processed/a_share_valuation_dossiers.csv` 与 `data/companies/<代码>_<名称>/` |
 | 当前生产模型带 | `data/processed/a_share_pool_model_bands_adopted.csv`（候选侧） |
-| 持仓侧模型带 | `data/processed/a_share_pool_model_bands_hold.csv`（逐票取候选侧与 B2 较高 V；§9.3.1 换仓来源读它） |
+| 持仓侧模型带 | `data/processed/a_share_pool_model_bands_hold.csv`（§6.5.2.3） |
 | 核心估值池 | `data/processed/a_share_core_valuation_pool.csv` |
 | 核心池阅读版 | `docs/000_a_share_core_valuation_pool.md` |
 | 持仓 | `data/processed/a_share_holdings.csv` |
 | 持仓除权处理台账 | `data/processed/holdings_corporate_actions_applied.csv`（§11.4，只追加） |
-| 账户快照 | `data/processed/portfolio_account_snapshot.csv`；可用资金按 §10.2（券商可用保证金优先），策略收益率、峰值与回撤按 §10.3 |
+| 账户快照 | `data/processed/portfolio_account_snapshot.csv`（§10.2、§10.3） |
 | 每日买入计划 | `data/processed/daily_entry_plan.csv` |
 | 每日卖出清单 | `data/processed/daily_sell_plan.csv`（涨幅减持、出名单、换仓、余仓清空） |
 | 比例冷却计数器 | `data/processed/daily_cooldown_state.csv`（§9.3.3，扫描器每日读写） |
@@ -77,7 +76,7 @@
 | `documented_not_attention` | 用户点名建档、经分析判无护城河的公司：有档案、L4 分层、参考分与估值区间，但不在 `worth_attention`，一律不可买（§10.1 第 1 条） |
 | `garbage` | 仅因坐实治理灾难或结构性绝望行业而永久排除的公司 |
 | L1/L2/L3/L4 | §5.7 的业务质量分层；不直接决定买入资格（不可买由名单归属决定） |
-| 模型价值 `V`（排序锚） | §6 当前生产带上下沿的中值。买入线按在册合格面重解（§12.1），`P/V` 表示一只股票在全池估值分布中的位置，`P/V < 1` 不表示低于公允价值（OI-208） |
+| 模型价值 `V`（排序锚） | §6 当前生产带上下沿的中值。买入线按在册合格面重解（§12.1），`P/V` 表示一只股票在全池估值分布中的位置，`P/V < 1` 不表示低于公允价值 |
 | `P/V` | 未复权现价 ÷ `V`，交易规则使用的估值比率（唯一实现 `scripts/pv_ratio.py`，扫描器／跟踪器／阅读版／档案同源）；薄权益带（净负债 ≥ 50% 企业价值）按 §6.5.1 守卫判无法估值、无 `P/V` |
 | 空间 | `V ÷ 现价 − 1`，仅作阅读展示 |
 | 合格集 | 通过 §9.3.1 买入线、走势条件、冻结与 L3 战术闸门的股票，按 `P/V` 升序 |
@@ -241,15 +240,15 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 ### 6.3 数据与时点
 
 1. 建带输入不得包含当日现价、现市值、当前 PE 或当前 PB；股本可以用同一时点的总市值÷现价取得。
-2. 财务数据按可得日 `available_at` 生效，禁止用报告期末代替可得日。**可得日 = `min(记录公告日, 法定披露截止日)`**（年报次年 4/30、一季报当年 4/30、半年报 8/31、三季报 10/31；唯一实现 `scripts/disclosure_dates.py`）。**被追溯重述的报告期按版本生效**：重述前版本用至重述后值的可得日（存档列 `superseded_at`），其后用重述后版本；无重述前版本存档的期，可得日取 `max(原可得日, 重述可得日)`。存档由 §6.7 第 1 步取数脚本在覆盖旧行前写入：三大报表 `data/raw/financials_statements/superseded/<表>.csv`（`superseded_at` = 远端新 `UPDATE_DATE`）、逐季面板 `data/raw/financials/superseded/<报告期>.csv`（`superseded_at` = 重取的证据日）；重述日志 `data/interim/statement_restatements.csv`。面板无存档而三表有存档的期，面板重述前版本由三表存档推得（`bps = 重述前普通股权益 ÷ 期末股数`，普通股权益 = 归母权益 − 其他权益工具；期末股数取股本，现行三表普通股权益 ÷ 股本与面板 BPS 相差超过 2% 时（面值非 1 元或股本含溢价，如中国海油）改取现行普通股权益 ÷ 面板 BPS；OI-262，建带 `--share-equity common`；EPS／归母净利／营收取重述前利润表）。**重述的发现与原文版本（OI-203）**：`scripts/scan_restatement_announcements.py` 按公告标题登记更正公告（会计差错更正、前期差错、追溯调整、追溯重述）与前后 15 天内同一公司的定期报告更新版（更新后、更正后、修订版）于 `data/interim/restatement_announcements.csv`；配对到的报告期即重述期、公告日即重述可得日，无覆盖该日的重述前版本时按本条延后。按原定期报告与更正公告核定的重述前数值登记 `data/reference/panel_restatement_originals.csv`，与存档同规按 `superseded_at` 生效、同日并存时以原文为准。
+2. 财务数据按可得日 `available_at` 生效，禁止用报告期末代替可得日。**可得日 = `min(记录公告日, 法定披露截止日)`**（年报次年 4/30、一季报当年 4/30、半年报 8/31、三季报 10/31；唯一实现 `scripts/disclosure_dates.py`）。**被追溯重述的报告期按版本生效**：重述前版本用至重述后值的可得日（存档列 `superseded_at`），其后用重述后版本；无重述前版本存档的期，可得日取 `max(原可得日, 重述可得日)`。存档由 §6.7 第 1 步取数脚本在覆盖旧行前写入：三大报表 `data/raw/financials_statements/superseded/<表>.csv`（`superseded_at` = 远端新 `UPDATE_DATE`）、逐季面板 `data/raw/financials/superseded/<报告期>.csv`（`superseded_at` = 重取的证据日）；重述日志 `data/interim/statement_restatements.csv`。面板无存档而三表有存档的期，面板重述前版本由三表存档推得（`bps = 重述前普通股权益 ÷ 期末股数`，普通股权益 = 归母权益 − 其他权益工具；期末股数取股本，现行三表普通股权益 ÷ 股本与面板 BPS 相差超过 2% 时改取现行普通股权益 ÷ 面板 BPS；建带 `--share-equity common`；EPS／归母净利／营收取重述前利润表）。**重述的发现与原文版本**：`scripts/scan_restatement_announcements.py` 按公告标题登记更正公告（会计差错更正、前期差错、追溯调整、追溯重述）与前后 15 天内同一公司的定期报告更新版（更新后、更正后、修订版）于 `data/interim/restatement_announcements.csv`；配对到的报告期即重述期、公告日即重述可得日，无覆盖该日的重述前版本时按本条延后。按原定期报告与更正公告核定的重述前数值登记 `data/reference/panel_restatement_originals.csv`，与存档同规按 `superseded_at` 生效、同日并存时以原文为准。
 3. 季报财务为累计口径；单季值用同年累计差分，TTM 用最近四个单季求和。
 4. 一致预期使用逐份研报归母净利润中位数，覆盖少于三家时不得采用；禁止混用送转前后的研报 EPS。
 5. 跨字段比率必须使用同一披露口径；字段缺失时整体退回上一套已披露口径，不拼接半新半旧的数据。
-6. **经营营运资金的科目归并（OI-168）**：应收/应付组有合计时取合计，合计缺失才取同一报表行的明细和，不叠加二者；合计与明细冲突时保留合计及冲突诊断，不以混入次年期初、旧主体或旧分类的明细强行补齐。经营性应收款项融资 `FINANCE_RECE` 独立计入资产侧；旧票据字段被归入新融资应收且合计已排除它时，只承接新分类一次。存货、预付、合同资产及经营负债沿用现有范围；为应付票据质押、按经营资产计入投入资本的现金类（§6.5.1 第 3 条）计入资产侧，与其担保的应付票据相抵（OI-220）。唯一实现 `roic_inputs.working_capital_inputs`；同一已披露三表版本内归并，再依第2条选择历史版本。生产口径 = `--wc-aggregation operating`（`RoicYear.working_capital` 与建带缺省即此口径，§6.7 命令显式给出）；`reported`（仅去重）与 `legacy`（合计与明细相加，`RoicYear.working_capital_legacy`）只作研究复现开关，不得用于生产带与 `BASE`。核验设计与采纳证据见 `data/experiments/exp_oi168_wc_20260909/preregister.md`、`data/experiments/exp_oi168_land_20260909/preregister.md` 及回测日志 12.216～12.217 节。
+6. **经营营运资金的科目归并**：应收/应付组有合计时取合计，合计缺失才取同一报表行的明细和，不叠加二者；合计与明细冲突时保留合计及冲突诊断，不以混入次年期初、旧主体或旧分类的明细强行补齐。经营性应收款项融资 `FINANCE_RECE` 独立计入资产侧；旧票据字段被归入新融资应收且合计已排除它时，只承接新分类一次。存货、预付、合同资产及经营负债沿用现有范围；为应付票据质押、按经营资产计入投入资本的现金类（§6.5.1 第 3 条）计入资产侧，与其担保的应付票据相抵。唯一实现 `roic_inputs.working_capital_inputs`；同一已披露三表版本内归并，再依第2条选择历史版本。建带 `--wc-aggregation operating`。
 
 ### 6.4 预告与快报的叠加
 
-预告与快报只有在公告已发生、尚未被正式报告取代且报告期已实质走完时进入锚；快报优先，区间取中值。执行点是 §6.7 第 4 步的 `apply_forecast_band_overlay.py`。叠加只走 `bps` 通道——预告的归母净利经留存收益改变每股净资产，`nopat_ps = ratio0 × BPS_op` 与 `eps0 = roe0 × BPS_op` 随经营账面等比缩放（缩放基数为 `bps_operating`，外生权益 `x` 不动），**归一化锚 `ratio0`／`roe0` 不动**；净负债不调整（预告无资产负债表）。正式报告披露后由机械带自然取代。
+预告与快报只有在公告已发生、尚未被正式报告取代且报告期已实质走完时进入锚；快报优先，区间取中值。执行点是 §6.7 第 4 步的 `apply_forecast_band_overlay.py`。叠加只走 `bps` 通道——预告的归母净利经留存收益改变每股净资产，`nopat_ps = ratio0 × BPS_op` 与 `eps0 = roe0 × BPS_op` 随经营账面等比缩放（缩放基数为 `bps_operating`，外生权益 `x` 不动），**归一化锚 `ratio0`／`roe0` 不动**；净负债不调整。正式报告披露后由机械带自然取代。
 
 ### 6.5 当前估值方法
 
@@ -257,18 +256,18 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 #### 6.5.1 唯一生产模型
 
-生产估值只有一个入口（§6.7 建带命令），按输入可得性与企业性质分四条路径，带文件 `roic_path` 列逐行标明；读跨票比较结论时先看该列：
+生产估值只有一个入口（§6.7 建带命令），按输入可得性与企业性质分四条路径，带文件 `roic_path` 列逐行标明，读跨票比较结论时先看该列：
 
-1. **growth（主路径：非金融且三大报表 ≥3 个财年）**——ROIC/FCFF 内在价值：NOPAT、投入资本、增量 ROIC（五年窗首尾 `ΔNOPAT/ΔIC`）、再投资率、WACC、增长衰减和净负债共同生成每股价值；`g0` 取资本腿 `min(增量 ROIC, 40%) × 再投资率` 与利润增速腿（NOPAT 五年 CAGR × 增速腿权重 `W`）之**大者**、夹 `[0, 25%]`；`W` 只由 §6.7 建带命令的 `--roic-trail-weight` 给出，现行为 0，即 g0 只取资本腿，资本腿不可算或非正时 g0 = 0（OI-202）；带文件 `roic_g_source` 列标明实际来源（`capital`／`trailing`／g0 = 0 记 `none`）；终值 `ROIC_T = min(WACC + 2pp, ROIC0)`。**每股 NOPAT 的归一化比率 `ratio0`**：①**增长态信任度** `λ = 近两次年度变动中上行的次数 ÷ 2 ∈ {0, ½, 1}`，非周期锚 `= 三年比率中位 + λ × (当期比率 − 三年中位)`；②**周期守卫坡道** `w = clip((当期比率 ÷ 十年中位 − 1.3) ÷ 0.6, 0, 1)`（十年中位 ≤ 0 时 `w = 0`），`ratio0 = (1−w) × 非周期锚 + w × 五年比率中位`，利润增速腿 `× (1−w)`；**谷底对称守卫** `v = clip((十年中位 ÷ 当期比率 − 1.3) ÷ 0.6, 0, 1)`，取 `max(w, v)` 作混合权重；带文件 `peak_weight`／`growth_trust`／`trough_weight` 三列留痕，`roic_nopat_mode` 在两端记 `ttm_growth`／`median3`／`cyclical_median`、中间记 `blend(λ,w)`。**季报期间的当期化与增速腿折减**：季报行的当期比率 = 年报最新比率 × `归母净利 TTM ÷ 年报归母净利`（TTM = 年报 + 本期 YTD − 上年同期 YTD；年报行恒为 1；年报净利 ≤ 0、季报缺行或年报滞后一年以上时不算），信任度 λ 与三年/五年中位仍取年报、守卫坡道 `w` 按 TTM 当期重算；增速腿另乘 `d = min(1, NOPAT_最新/NOPAT_上年) × min(1, TTM 因子)`；带文件 `ttm_factor`／`growth_damp` 两列留痕。**B2 口径（持仓侧带的第二输入，建带命令另加 `--ttm-trust on --ttm-trust-delta 0.02`）**：季报行的 λ 改按 {年报₋₁→年报₀, 年报₀→TTM} 两次变动计（TTM 一步 `TTM 因子 ≥ 1.02` 记上行、`≤ 0.98` 记下行、其间沿用年度 λ；极低比率保护不变），其余与候选侧同式。
+1. **growth（主路径：非金融且三大报表 ≥3 个财年）**——ROIC/FCFF 内在价值：NOPAT、投入资本、增量 ROIC（五年窗首尾 `ΔNOPAT/ΔIC`）、再投资率、WACC、增长衰减和净负债共同生成每股价值；`g0` 取资本腿 `min(增量 ROIC, 40%) × 再投资率` 与利润增速腿（NOPAT 五年 CAGR × 增速腿权重 `W`）之**大者**、夹 `[0, 25%]`；`W` 只由 §6.7 建带命令的 `--roic-trail-weight` 给出，现行为 0，即 g0 只取资本腿，资本腿不可算或非正时 g0 = 0；带文件 `roic_g_source` 列标明实际来源（`capital`／`trailing`／g0 = 0 记 `none`）；终值 `ROIC_T = min(WACC + 2pp, ROIC0)`。**每股 NOPAT 的归一化比率 `ratio0`**：①**增长态信任度** `λ = 近两次年度变动中上行的次数 ÷ 2 ∈ {0, ½, 1}`，非周期锚 `= 三年比率中位 + λ × (当期比率 − 三年中位)`；②**周期守卫坡道** `w = clip((当期比率 ÷ 十年中位 − 1.3) ÷ 0.6, 0, 1)`（十年中位 ≤ 0 时 `w = 0`），`ratio0 = (1−w) × 非周期锚 + w × 五年比率中位`，利润增速腿 `× (1−w)`；**谷底对称守卫** `v = clip((十年中位 ÷ 当期比率 − 1.3) ÷ 0.6, 0, 1)`，取 `max(w, v)` 作混合权重；带文件 `peak_weight`／`growth_trust`／`trough_weight` 三列留痕，`roic_nopat_mode` 在两端记 `ttm_growth`／`median3`／`cyclical_median`、中间记 `blend(λ,w)`。**季报期间的当期化与增速腿折减**：季报行的当期比率 = 年报最新比率 × `归母净利 TTM ÷ 年报归母净利`（TTM = 年报 + 本期 YTD − 上年同期 YTD；年报行恒为 1；年报净利 ≤ 0、季报缺行或年报滞后一年以上时不算），信任度 λ 与三年/五年中位仍取年报、守卫坡道 `w` 按 TTM 当期重算；增速腿另乘 `d = min(1, NOPAT_最新/NOPAT_上年) × min(1, TTM 因子)`；带文件 `ttm_factor`／`growth_damp` 两列留痕。**B2 口径（持仓侧带的第二输入，建带命令另加 `--ttm-trust on --ttm-trust-delta 0.02`）**：季报行的 λ 改按 {年报₋₁→年报₀, 年报₀→TTM} 两次变动计（TTM 一步 `TTM 因子 ≥ 1.02` 记上行、`≤ 0.98` 记下行、其间沿用年度 λ；极低比率保护不变），其余与候选侧同式。
 2. **zero_growth**——`ROIC0` 距 `g_T` 不足利差护栏时退零增长锚：`V = 每股NOPAT ÷ WACC − 每股净负债`。投入资本（有息负债 + 权益 − 超额现金）按财年取下限 `0.1 × 总权益`（`--roic-ic-floor 0.1`），`ROIC0` 与资本腿增量回报照常计算，不因投入资本 ≤ 0 退此锚。
-3. **equity_fallback（非银行金融企业；无三大报表者）**——金融企业按三大报表模板（银行／券商／保险）识别；一般企业模板中，最新年报的金融中介负债（代理买卖证券款、代理承销证券款、卖出回购金融资产款、拆入资金、吸收存款、同业存放、向中央银行借款）合计 ≥ 总资产 20% 的公司同样按非银行金融企业处理（OI-200），唯一实现 `roic_inputs.FINANCIAL_INTERMEDIATION_FIELDS`／`FINANCIAL_INTERMEDIATION_MIN`。同一折现引擎喂权益口径：`roe0` 与 growth 路径的 `ratio0` 同式，比率取年报加权 ROE——增长态信任度 λ、非周期锚 = 三年中位 + λ ×（当期 − 三年中位）、季报行当期 = 最新年报 ROE × TTM 因子、峰／谷坡道按当期 ÷ 十年中位混向五年中位，B2 口径的 λ 前滚同 growth 路径（OI-200，`--equity-anchor guarded`；旧式五年锚 × 单边 λ=2 上抬、无守卫只作复现）；`eps0 = roe0 × BPS_op`（清洁盈余；`BPS_op` 与外生权益见下文股本口径段）、`g0 = roe0 × (1 − 近三年派息率)` 夹 `[0, 25%]`、`ROE_T = min(12%, roe0)`。**派息率**（OI-260）= 近三个已披露财年「该财年全部现金分红每股 ÷ 基本 EPS」（夹 `[0, 1]`）的逐年均值；分红按 `report_date` 归入财年、含中期、三季与特别分红，自预案公告日（缺失时除权日）起计入，与第 4 条 `V_D0` 分子同一归属（建带 `--payout-basis fiscal`；`annual` 只计年报期分配，只作复现；唯一实现 `build_historical_valuation_bands.payout_ratio`）。
-4. **bank_divspread（银行与保险）**——保险 `V = V_DDM × Ḡ`（OI-232）：`Ḡ` 为当日所在月之前 36 个自然月末银行截面 G 的中位（各月末按当日国债、分红与带、全部银行同法计算，保险不进截面），可算的月末不足 12 个或该行 `V_DDM` 不可估时退回 `V_D0`（常数 `bank_valuation.INSURER_G_MONTHS`／`INSURER_G_MIN`，实现 `smoothed_g`／`insurer_value`）；银行 `V = V_DDM × G`（OI-207），当日两者都可估的银行不足 5 只或该行 `V_DDM` 不可估时退回 `V_D0`，`V_D0` 不可得而 `V_DDM` 可估的银行照用当日 G（OI-230）；银行与保险都不再乘同尺系数（唯一常数 `bank_valuation.BANK_SCALE = 1`，OI-244）。`G = exp(当日两者都可估的银行 ln(V_D0 ÷ V_DDM) 的均值)`：截面水平随股利利差、银行之间的相对高低随 DDM，价格不进 V。`V_DDM` 为同一 ROE／BV 路径上的股利贴现（COE 10%，ROE 自 roe0 十年线性衰减到 min(roe0, COE + 2pp)，银行 BV 按留存滚存、年增速以 7% 为上限（超出部分视为被资本要求吸收，派息率不变；常数 `bank_valuation.BV_GROWTH_CAP = 0.07`；保险不封顶，其平滑 Ḡ 取不封顶的银行截面 G（`INSURER_G_UNCAPPED`）；历史逐日 `h2` 第 5 段 `bvoff` 复现改前，OI-269），派息率（口径见第 3 条）与 bps 取 `roic_bands.csv` 可得日不晚于当日的最近一行，终值增长 g_T = min(3%, ROE_T × 留存)，终值期派息率取与之相符的可持续派息率 `1 − g_T ÷ ROE_T`（与同一路径的剩余收益相等，派息率为 0 也可估；OI-230）），按除权参考价折到当日。唯一实现 `scripts/bank_valuation.py`，历史逐日 `rebuild_bank_bands.py h2:0.02:0.10`、实盘扫描 `resolve_live_band`／`bank_live_value`、§6.7 第 4 步池带与池外档案同读（池带与档案按信号日计算，与扫描同值）。`V_D0 = 最近已知完整财年每股现金分红合计 ÷（十年期国债收益率 + 2%）`。每笔现金分红按东财 `report_date`（分红所属报告期）归入财年，自董事会预案公告日（`plan_notice_date`，缺失时退除权日）起计入；财年在「已知该年 12-31 期分配」或「已过次年 4-30」之一成立时算完整，取最新完整财年，合计 ≤ 0 判无法估值。分子实现唯一落点 `scripts/divspread_dividend.py`，历史逐日与实盘扫描同读。天然现价口径，除权归一化对银行/保险行跳过（§6.5.2.3）。保险与银行同口径；名单与名称判定统一在 `scripts/divspread_names.py`。
+3. **equity_fallback（非银行金融企业；无三大报表者）**——金融企业按三大报表模板（银行／券商／保险）识别；一般企业模板中，最新年报的金融中介负债（代理买卖证券款、代理承销证券款、卖出回购金融资产款、拆入资金、吸收存款、同业存放、向中央银行借款）合计 ≥ 总资产 20% 的公司同样按非银行金融企业处理，唯一实现 `roic_inputs.FINANCIAL_INTERMEDIATION_FIELDS`／`FINANCIAL_INTERMEDIATION_MIN`。同一折现引擎喂权益口径：`roe0` 与 growth 路径的 `ratio0` 同式，比率取年报加权 ROE——增长态信任度 λ、非周期锚 = 三年中位 + λ ×（当期 − 三年中位）、季报行当期 = 最新年报 ROE × TTM 因子、峰／谷坡道按当期 ÷ 十年中位混向五年中位，B2 口径的 λ 前滚同 growth 路径（建带 `--equity-anchor guarded`）；`eps0 = roe0 × BPS_op`（清洁盈余；`BPS_op` 与外生权益见下文股本口径段）、`g0 = roe0 × (1 − 近三年派息率)` 夹 `[0, 25%]`、`ROE_T = min(12%, roe0)`。**派息率** = 近三个已披露财年「该财年全部现金分红每股 ÷ 基本 EPS」（夹 `[0, 1]`）的逐年均值；分红按 `report_date` 归入财年、含中期、三季与特别分红，自预案公告日（缺失时除权日）起计入，与第 4 条 `V_D0` 分子同一归属（建带 `--payout-basis fiscal`；唯一实现 `build_historical_valuation_bands.payout_ratio`）。
+4. **bank_divspread（银行与保险）**——保险 `V = V_DDM × Ḡ`：`Ḡ` 为当日所在月之前 36 个自然月末银行截面 G 的中位（各月末按当日国债、分红与带、全部银行同法计算，保险不进截面），可算的月末不足 12 个或该行 `V_DDM` 不可估时退回 `V_D0`（常数 `bank_valuation.INSURER_G_MONTHS`／`INSURER_G_MIN`，实现 `smoothed_g`／`insurer_value`）；银行 `V = V_DDM × G`，当日两者都可估的银行不足 5 只或该行 `V_DDM` 不可估时退回 `V_D0`，`V_D0` 不可得而 `V_DDM` 可估的银行照用当日 G。`G = exp(当日两者都可估的银行 ln(V_D0 ÷ V_DDM) 的均值)`。`V_DDM` 为同一 ROE／BV 路径上的股利贴现（COE 10%，ROE 自 roe0 十年线性衰减到 min(roe0, COE + 2pp)，银行 BV 按留存滚存、年增速以 7% 为上限、派息率不变（`bank_valuation.BV_GROWTH_CAP = 0.07`）；保险不封顶，其平滑 Ḡ 取不封顶的银行截面 G（`INSURER_G_UNCAPPED`）；派息率（口径见第 3 条）与 bps 取 `roic_bands.csv` 可得日不晚于当日的最近一行，终值增长 g_T = min(3%, ROE_T × 留存)，终值期派息率取 `1 − g_T ÷ ROE_T`，派息率为 0 也可估），按除权参考价折到当日。唯一实现 `scripts/bank_valuation.py`，历史逐日 `rebuild_bank_bands.py h2:0.02:0.10`、实盘扫描 `resolve_live_band`／`bank_live_value`、§6.7 第 4 步池带与池外档案同读（池带与档案按信号日计算，与扫描同值）。`V_D0 = 最近已知完整财年每股现金分红合计 ÷（十年期国债收益率 + 2%）`。每笔现金分红按东财 `report_date`（分红所属报告期）归入财年，自董事会预案公告日（`plan_notice_date`，缺失时退除权日）起计入；财年在「已知该年 12-31 期分配」或「已过次年 4-30」之一成立时算完整，取最新完整财年，合计 ≤ 0 判无法估值。分子实现唯一落点 `scripts/divspread_dividend.py`，历史逐日与实盘扫描同读。天然现价口径，除权归一化对银行/保险行跳过（§6.5.2.3）。名单与名称判定统一在 `scripts/divspread_names.py`。
 
 **每股锚的股本口径**：两条非银路径的每股分子 = 归一化比率 × 当期经营每股净资产；增发／配股／H 股／可转债转股（+）与回购注销（−）形成的外生权益不得按比率放大，按以下口径处理：
 
-1. **经营账面 `BPS_op` = 当期 BPS − 外生权益/股 `x`**；`x = BPS_当期 − (最新年报普通股权益 + 其后归母净利 − 其后现金分红) ÷ 当期股数`；「其后现金分红」= 除权日在 (年报期末, 本期期末] 的现金分红；已结束财年的年度分配中预案公告日 ≤ 本期期末、除权日晚于本期期末者（仅本期为 06-30 或 09-30 行；股东大会通过即应入账，但有期末未入账的，华荣 2026 半年报，OI-262）、预案公告日 ≤ 年报期末而除权日在其后的中期分红、预案在本期内而除权日晚于期末的中期分红，逐笔按使 `|x|` 更小的解释决定是否计入（建带 `--dividend-timing post_period`；`legacy` 把上述年度分配一律计入，只作复现）；每股现金按同日及其后的送转折到本行 BPS 的股本基准；股数 = 年报期末股数（年报普通股权益 ÷ 年报 BPS；普通股权益 = 归母权益 − 其他权益工具 `OTHER_EQUITY_TOOL`，永续债与优先股不进股数，OI-262，建带 `--share-equity common`；`parent` 用归母权益，只作复现）× 期间送转因子；「归母净利 ÷ EPS」隐含股数的**相对年报行的倍数**承接稀释／注销的股数变化，采用前先除掉本行之后各次送转的累计因子，且须同时满足三道守卫：EPS 小数位精度（舍入误差 ≤2%）、账面先动（`|x_假定| ≥ 3% BPS`）、方向一致（增发 x>0 且股数增／注销 x<0 且股数减）。合理性边界：`x ≤ 95% BPS`（封顶）、`x < −25% BPS` 视为主体重述／数据错位不调整（记 `x_implausible_negative`）。年报行 `x = 0`；年报行 BPS 被按后来的送转折到之后股本的，由 `bps_restated_factor` 按上一行核对并乘回当时口径。
-2. **年报之间的外生权益逐年识别**：`X_y = ΔE − (归母综合收益 − 现金分红)`（无综合收益时用归母净利），只计 `|X_y| ≥ 5%` 上年母公司权益的年份。比率窗口与十年守卫窗口内各年比率一律按**经营账面** `E_op = E − 未花的募资 − 累计注销` 计，增长态／中位／周期守卫同式。「未花的募资」按先进先出判：每笔募资只在「超额现金较募资前一年持续高出的部分」内算未花，一旦回落即视为已投入经营、此后积累的现金是经营所得（与 ROIC 路径「投入资本剔除超额现金」同一口径）；注销的现金已流出，经营账面按注销前计。**结构断点**：某年 `E_op < 20% × E`（或权益 ≤ 0）时，比率窗口与十年守卫窗口一律从该年重起。权益退路（无三大报表）只做第 1 条。
-3. **外生权益按面值进每股净现金，少数股东按盈利份额扣减**：ROIC 路径 `每股净金融负债 fin_nd = (有息负债 − 超额现金) ÷ E_op × BPS_op + d_post`。**公告前已派的分红**（OI-262、OI-261，建带 `--dividend-timing post_period`）：除权日在 (本期期末, 本行公告日] 的现金分红在带可用前已派出，而除权归一化自公告日起算（第 5 条）——期末未入账的部分从 `BPS_op` 扣除，锚按派后账面计（年报行按预案公告日晚于期末判，季报行按第 1 条 `|x|` 更小的解释判）；年报行的报表现金是实数，`d_post` = 该窗口全部派现每股（折到本行 BPS 基准，期末已宣派未付的应付股利同此），上式 `BPS_op` 取扣除前；季报行的净金融负债随派后 `BPS_op` 缩放，`d_post` = 0；非经营金融资产与金融收益口径（OI-201，唯一实现 `roic_inputs._year_from_parts`，建带 `--cash-caliber nonop`；`legacy` 只作复现）：超额现金 = `max(0, 现金类 − 客户资金 − 2% × 营收) + 其他金融资产`，现金类 = 货币资金、交易性金融资产、拆出资金、买入返售金融资产、债权投资、其他债权投资、持有至到期投资，以及年报附注核定的其他流动资产、一年内到期的非流动资产、其他非流动资产中的存款、存单、理财（`data/reference/cash_note_items.csv`，由 §6.7 第 1 步 `fetch_cash_note_items.py` 按原年报抽取，附注合计与报表行相符才计入；原文无法抽取的——文本层无字符映射、上市前只有招股说明书——按原文人工核定，逐行记来源、页码与依据，登记在 `data/reference/cash_note_manual.csv`，抽取时并入，报表行值其后变动超出抽取容差即失效；按规定只能用于弃置等经营义务的专户存款按经营资产，`--note-debt notes` 时现金行之外的弃置专户改计超额现金、与弃置义务对冲，见下文）；年报受限资产附注（标题含「所有权或使用权受到限制」或「使用权受到限制」，表头单位千元／万元照折，无合计行时逐行之和须不超过所在报表行，受限原因可写在 (a)(b) 等字母脚注；OI-263，`fetch_restricted_cash_items.py --parser v2`）中受限原因写票据、承兑汇票、信用证或保函的现金类（同一行混写借款的整行计入；只写借款，或只写笼统的质押、保证金、冻结的不计）按经营资产计入投入资本、不计超额现金；货币资金类行原因笼统时，改读同一年报货币资金附注或「现金和现金等价物」附注列出的受限货币资金分项（分项期末值之和须与该行受限额相符），分项名含票据、承兑、汇票、信用证或保函的同样计入，其中混有借款质押保证金的先减去其余额（年报未列余额的，按筹资活动「借款质押保证金」逐年增减累计，人工核定登记 `data/reference/restricted_cash_manual.csv`；OI-257）；扣除额 = min(计入额, 当期应付票据, 现金类)，其利息 = 扣除额 × 利息收入 ÷ (货币资金 + 附注核定存款)（夹 `[0, 5%]`；2018 年前未单列利息收入时取当年末一年期存款基准利率）并回 EBIT，应付票据仍为经营负债、不进 WACC；扣除额同时计入经营营运资金（§6.3 第 6 条），再投资率计入其变动（OI-219／OI-220）。**财务公司存放中央银行的法定存款准备金**（货币资金附注、受限分项或受限资产表写明的期末额；同一受限行另写票据类原因而整行计入的，先从该行拆出）不计超额现金、不进营运资金，按经营资产计入投入资本，利息按上式并回 EBIT（OI-257）。两项由 §6.7 第 1 步 `fetch_restricted_cash_items.py` 抽取到 `data/reference/restricted_cash_items.csv`（受限资产表逐行期末值之和与合计相符才计；抽取范围为应付票据 ≥ 归母权益 2% 的一般企业年报，另加报表有吸收存款、发放贷款或财务公司利息收入的年报；准备金不以受限资产表为前提）；建带 `--restricted-cash notes_wc`，`notes` 不计营运资金，只作复现；其他金融资产 = 发放贷款及垫款、其他权益工具投资、其他非流动金融资产、可供出售金融资产、衍生金融资产，按账面计；客户资金 = 代理买卖证券款 + 代理承销证券款（属客户所有，不是公司现金；OI-200）；有息负债另计应付短期融资款、吸收存款、同业存放、拆入资金、卖出回购、向中央银行借款、交易性与衍生金融负债，以及年报附注核定的类债务项目（OI-261，建带 `--note-debt notes`；`off` 只作复现）：其他流动负债中的短期应付债券、短期融资券、超短期融资券、可转换债券负债成分等债务工具与明写的借款（含质押式回购借入资金），其他应付款「按款项性质列示」中的借款、资金拆借（含企业借款及利息），两科目中的财务公司吸收存款、供应链融资、反向保理、资产支持专项计划与保理转付款、票据融资、已贴现未到期票据、贵金属租借，按附注期末值计入；预计负债中的弃置、复垦、环境恢复类义务按 `期末值 × (1 − 税率)` 计入（表内「减：一年内到期」部分已在一年内到期的非流动负债），报表现金行之外的弃置专户存款计超额现金与之对冲。三者由 §6.7 第 1 步 `fetch_debt_note_items.py`（专户加 `--funds`）按原年报抽取到 `data/reference/debt_note_items.csv`／`decom_fund_items.csv`（该行 ≥ 归母权益 2% 的一般企业年报；附注合计与报表行相符、逐行之和与合计相符、计入类不与其他性质混写才计；原文无法抽取的按原文人工核定登记 `data/reference/debt_note_manual.csv`）；`EBIT = 利润总额 + 财务费用净额 − (投资收益 − 权益法投资收益) − 公允价值变动收益 − (财务公司利息收入 − 利息支出)`，即上述资产的收益不进 NOPAT、只按账面计入股权桥；`NOPAT = EBIT × (1 − 税率)`，税率 = 所得税 ÷ 利润总额、夹 `[0, 40%]`，利润总额非正时取法定 25%；实际税率低于 −5% 的年份（所得税抵免超过税前利润 5%，多为确认递延所得税资产的一次性收益）改按前三个财年观测税率（非负原值）的中位计当年 NOPAT，前三年无非负观测的不改（OI-264，建带 `--tax-anomaly median3`；`off` 只作复现；唯一实现 `roic_inputs.correct_tax_anomalies`）；`少数股东扣减 = max(0, 少数股东权益 ÷ E_op × BPS_op, m × max(EV − fin_nd, 0))`，`m` = 比率窗口内合并净利为正财年的 `少数股东损益 ÷ 合并净利` 中位、夹 `[0, 0.95]`，无可用财年取最新财年 `少数股东权益 ÷ 权益合计`；`V = EV − fin_nd − 少数股东扣减 + x`；带文件 `net_debt_ps = fin_nd + 少数股东扣减 − x`，另落 `fin_net_debt_ps`／`minority_book_ps`／`minority_share`／`minority_share_basis`；薄权益守卫的放大倍数只按不随 EV 缩放的扣减计（`fin_nd`，账面下界生效时再加账面额）；§6.4 叠加重算 `IV = (EV × scale − fin_nd) − max(0, 账面, m × max(EV × scale − fin_nd, 0)) + x`。权益路径 `V = V(eps0 = roe0 × BPS_op) + x`；零增长锚与敏感度带同式。§6.8 海外链同式，`m` 取 `少数股东权益 ÷ 权益合计`。建带命令 `--minority-basis earnings`（缺省）；`book` 为研究开关，同样保留零下界。`minority_book_ps` 保留有符号的原始账面值；负账面不形成母公司可收取的现金请求权，普通少数股东扣减与薄权益守卫的账面部分均不得低于零。历史状态须与本条公式同步，同步前输入只保存在冻结的实验对照目录中。
+1. **经营账面 `BPS_op` = 当期 BPS − 外生权益/股 `x`**；`x = BPS_当期 − (最新年报普通股权益 + 其后归母净利 − 其后现金分红) ÷ 当期股数`；「其后现金分红」= 除权日在 (年报期末, 本期期末] 的现金分红；已结束财年的年度分配中预案公告日 ≤ 本期期末、除权日晚于本期期末者（仅本期为 06-30 或 09-30 行）、预案公告日 ≤ 年报期末而除权日在其后的中期分红、预案在本期内而除权日晚于期末的中期分红，逐笔按使 `|x|` 更小的解释决定是否计入（建带 `--dividend-timing post_period`）；每股现金按同日及其后的送转折到本行 BPS 的股本基准；股数 = 年报期末股数（年报普通股权益 ÷ 年报 BPS；普通股权益 = 归母权益 − 其他权益工具 `OTHER_EQUITY_TOOL`，建带 `--share-equity common`）× 期间送转因子；「归母净利 ÷ EPS」隐含股数的**相对年报行的倍数**承接稀释／注销的股数变化，采用前先除掉本行之后各次送转的累计因子，且须同时满足三道守卫：EPS 小数位精度（舍入误差 ≤2%）、账面先动（`|x_假定| ≥ 3% BPS`）、方向一致（增发 x>0 且股数增／注销 x<0 且股数减）。合理性边界：`x ≤ 95% BPS`（封顶）、`x < −25% BPS` 视为主体重述／数据错位不调整（记 `x_implausible_negative`）。年报行 `x = 0`；年报行 BPS 被按后来的送转折到之后股本的，由 `bps_restated_factor` 按上一行核对并乘回当时口径。
+2. **年报之间的外生权益逐年识别**：`X_y = ΔE − (归母综合收益 − 现金分红)`（无综合收益时用归母净利），只计 `|X_y| ≥ 5%` 上年母公司权益的年份。比率窗口与十年守卫窗口内各年比率一律按**经营账面** `E_op = E − 未花的募资 − 累计注销` 计，增长态／中位／周期守卫同式。「未花的募资」按先进先出判：每笔募资只在「超额现金较募资前一年持续高出的部分」内算未花，一旦回落即视为已投入经营、此后积累的现金是经营所得；经营账面按注销前计。**结构断点**：某年 `E_op < 20% × E`（或权益 ≤ 0）时，比率窗口与十年守卫窗口一律从该年重起。权益退路（无三大报表）只做第 1 条。
+3. **外生权益按面值进每股净现金，少数股东按盈利份额扣减**：ROIC 路径 `每股净金融负债 fin_nd = (有息负债 − 超额现金) ÷ E_op × BPS_op + d_post`。**公告前已派的分红**（建带 `--dividend-timing post_period`）：除权日在 (本期期末, 本行公告日] 的现金分红，期末未入账的部分从 `BPS_op` 扣除，锚按派后账面计（年报行按预案公告日晚于期末判，季报行按第 1 条 `|x|` 更小的解释判）；年报行 `d_post` = 该窗口全部派现每股（折到本行 BPS 基准，期末已宣派未付的应付股利同此），上式 `BPS_op` 取扣除前；季报行的净金融负债随派后 `BPS_op` 缩放，`d_post` = 0；非经营金融资产与金融收益口径（唯一实现 `roic_inputs._year_from_parts`，建带 `--cash-caliber nonop`）：超额现金 = `max(0, 现金类 − 客户资金 − 2% × 营收) + 其他金融资产`，现金类 = 货币资金、交易性金融资产、拆出资金、买入返售金融资产、债权投资、其他债权投资、持有至到期投资，以及年报附注核定的其他流动资产、一年内到期的非流动资产、其他非流动资产中的存款、存单、理财（`data/reference/cash_note_items.csv`，由 §6.7 第 1 步 `fetch_cash_note_items.py` 按原年报抽取，附注合计与报表行相符才计入；原文无法抽取的按原文人工核定，逐行记来源、页码与依据，登记在 `data/reference/cash_note_manual.csv`，抽取时并入，报表行值其后变动超出抽取容差即失效；按规定只能用于弃置等经营义务的专户存款按经营资产，`--note-debt notes` 时现金行之外的弃置专户改计超额现金、与弃置义务对冲，见下文）；年报受限资产附注（标题含「所有权或使用权受到限制」或「使用权受到限制」，表头单位千元／万元照折，无合计行时逐行之和须不超过所在报表行，受限原因可写在 (a)(b) 等字母脚注；`fetch_restricted_cash_items.py --parser v2`）中受限原因写票据、承兑汇票、信用证或保函的现金类（同一行混写借款的整行计入；只写借款，或只写笼统的质押、保证金、冻结的不计）按经营资产计入投入资本、不计超额现金；货币资金类行原因笼统时，改读同一年报货币资金附注或「现金和现金等价物」附注列出的受限货币资金分项（分项期末值之和须与该行受限额相符），分项名含票据、承兑、汇票、信用证或保函的同样计入，其中混有借款质押保证金的先减去其余额（年报未列余额的，按筹资活动「借款质押保证金」逐年增减累计，人工核定登记 `data/reference/restricted_cash_manual.csv`）；扣除额 = min(计入额, 当期应付票据, 现金类)，其利息 = 扣除额 × 利息收入 ÷ (货币资金 + 附注核定存款)（夹 `[0, 5%]`；2018 年前未单列利息收入时取当年末一年期存款基准利率）并回 EBIT，应付票据仍为经营负债；扣除额同时计入经营营运资金（§6.3 第 6 条），再投资率计入其变动。**财务公司存放中央银行的法定存款准备金**（货币资金附注、受限分项或受限资产表写明的期末额；同一受限行另写票据类原因而整行计入的，先从该行拆出）不计超额现金、不进营运资金，按经营资产计入投入资本，利息按上式并回 EBIT。两项由 §6.7 第 1 步 `fetch_restricted_cash_items.py` 抽取到 `data/reference/restricted_cash_items.csv`（受限资产表逐行期末值之和与合计相符才计；抽取范围为应付票据 ≥ 归母权益 2% 的一般企业年报，另加报表有吸收存款、发放贷款或财务公司利息收入的年报；准备金不以受限资产表为前提）；建带 `--restricted-cash notes_wc`；其他金融资产 = 发放贷款及垫款、其他权益工具投资、其他非流动金融资产、可供出售金融资产、衍生金融资产，按账面计；客户资金 = 代理买卖证券款 + 代理承销证券款；有息负债另计应付短期融资款、吸收存款、同业存放、拆入资金、卖出回购、向中央银行借款、交易性与衍生金融负债，以及年报附注核定的类债务项目（建带 `--note-debt notes`）：其他流动负债中的短期应付债券、短期融资券、超短期融资券、可转换债券负债成分等债务工具与明写的借款（含质押式回购借入资金），其他应付款「按款项性质列示」中的借款、资金拆借（含企业借款及利息），两科目中的财务公司吸收存款、供应链融资、反向保理、资产支持专项计划与保理转付款、票据融资、已贴现未到期票据、贵金属租借，按附注期末值计入；预计负债中的弃置、复垦、环境恢复类义务按 `期末值 × (1 − 税率)` 计入（表内「减：一年内到期」部分已在一年内到期的非流动负债），报表现金行之外的弃置专户存款计超额现金与之对冲。三者由 §6.7 第 1 步 `fetch_debt_note_items.py`（专户加 `--funds`）按原年报抽取到 `data/reference/debt_note_items.csv`／`decom_fund_items.csv`（该行 ≥ 归母权益 2% 的一般企业年报；附注合计与报表行相符、逐行之和与合计相符、计入类不与其他性质混写才计；原文无法抽取的按原文人工核定登记 `data/reference/debt_note_manual.csv`）；`EBIT = 利润总额 + 财务费用净额 − (投资收益 − 权益法投资收益) − 公允价值变动收益 − (财务公司利息收入 − 利息支出)`；`NOPAT = EBIT × (1 − 税率)`，税率 = 所得税 ÷ 利润总额、夹 `[0, 40%]`，利润总额非正时取法定 25%；实际税率低于 −5% 的年份改按前三个财年观测税率（非负原值）的中位计当年 NOPAT，前三年无非负观测的不改（建带 `--tax-anomaly median3`；唯一实现 `roic_inputs.correct_tax_anomalies`）；`少数股东扣减 = max(0, 少数股东权益 ÷ E_op × BPS_op, m × max(EV − fin_nd, 0))`，`m` = 比率窗口内合并净利为正财年的 `少数股东损益 ÷ 合并净利` 中位、夹 `[0, 0.95]`，无可用财年取最新财年 `少数股东权益 ÷ 权益合计`；`V = EV − fin_nd − 少数股东扣减 + x`；带文件 `net_debt_ps = fin_nd + 少数股东扣减 − x`，另落 `fin_net_debt_ps`／`minority_book_ps`／`minority_share`／`minority_share_basis`；薄权益守卫的放大倍数只按不随 EV 缩放的扣减计（`fin_nd`，账面下界生效时再加账面额）；§6.4 叠加重算 `IV = (EV × scale − fin_nd) − max(0, 账面, m × max(EV × scale − fin_nd, 0)) + x`。权益路径 `V = V(eps0 = roe0 × BPS_op) + x`；零增长锚与敏感度带同式。§6.8 海外链同式，`m` 取 `少数股东权益 ÷ 权益合计`。建带 `--minority-basis earnings`。`minority_book_ps` 保留有符号的原始账面值；少数股东扣减与薄权益守卫的账面部分均不得低于零。
 4. 带文件写 `bps_operating`／`external_equity_ps`／`external_equity_cum_ps`／`shares_est`／`bps_basis_date`／`equity_anchor_mode` 列；建带结尾打印 `|x|/BPS` 分布、超过 10% 的最新带名单与各退化模式计数（§13 第 3 条）。
 5. **BPS 的股本基准按数据判定**：`bps_basis_date` 由本行与上一行 BPS 之比对照送转因子按对数距离判定；回测逐日展开、生产带除权归一化、档案折算三处的**送转**窗口一律自 `bps_basis_date` 起算，**现金分红**窗口自公告日起算。
 
@@ -282,15 +281,15 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 - 事件期间的经营分子按合并 NOPAT 总额归一化后除以快照股数；历史分子折到同一股数，沿用增长信任、峰谷守卫、增长与折现参数。季报当期化只用合并净利 TTM／年报合并净利，禁止将买入少数股权带来的归母增厚当作合并经营增长；无合并 TTM 则使用年报锚并注明。债务与权益权重取同一快照，现金已含交割付款，不再叠加外生权益残差。需同口径完整快照而尚未补齐时判不可估。
 - 候选、B2、零增长及敏感度共用 `scripts/minority_claims.py` 的股权桥；预告仅披露归母利润时不对事件带作比例叠加。新拒绝必须阻断旧带回退，档案／阅读页显示具体原因；事实更新后重算恢复，禁止手填估值带。事件表只登记财报事实和合同权利，不接受 `m`、EV、IV、估值倍数或目标价。
 
-统一参数：折现率 `r = 10%`（统一要求回报率，不逐公司调整）；r 是资产要求回报、不随资本结构变，企业价值与零增长锚一律按 r 折现，即 WACC = r，不按账面或市值加权、不计债务税盾，债务只经股权桥按净额扣减（OI-217，建带 `--wacc-weights unlevered`；`book` 只作改前状态复现）；`g_T = 3%`；增速 10 年线性 fade `g0 → g_T`，其后保持 `g_T`；**整本资本**的回报按指数衰减 `ROIC_t = ROIC_T + (ROIC0 − ROIC_T)·e^(−0.12t)`（ROE 同式），走满 50 年再接终值；每年留存按清洁盈余取维持该增速所需的比例、夹 `[0, 1]`（`intrinsic_value(consistent=True, roe_lam=0.12, horizon=50)`）。护栏拒绝（亏损、`ROE_T/ROIC_T` 贴 `g_T`、零增长股权价值 ≤ 0、**薄权益**——每股净负债 ≥ 50% 每股企业价值）统一判「无法估值」（§6.5.2.4）。生产参数由 §6.7 的建带命令唯一给出，不在逐票档案临时改写。
+统一参数：折现率 `r = 10%`，不逐公司调整；企业价值与零增长锚一律按 r 折现，即 WACC = r，不按资本结构加权、不计债务税盾，债务只经股权桥按净额扣减（建带 `--wacc-weights unlevered`）；`g_T = 3%`；增速 10 年线性 fade `g0 → g_T`，其后保持 `g_T`；**整本资本**的回报按指数衰减 `ROIC_t = ROIC_T + (ROIC0 − ROIC_T)·e^(−0.12t)`（ROE 同式），走满 50 年再接终值；每年留存按清洁盈余取维持该增速所需的比例、夹 `[0, 1]`（`intrinsic_value(consistent=True, roe_lam=0.12, horizon=50)`）。护栏拒绝（亏损、`ROE_T/ROIC_T` 贴 `g_T`、零增长股权价值 ≤ 0、**薄权益**——每股净负债 ≥ 50% 每股企业价值）统一判「无法估值」（§6.5.2.4）。生产参数由 §6.7 的建带命令唯一给出，不在逐票档案临时改写。
 
-所有正常模型带均为 `[0.90×V, 1.10×V]`，中值即 `V`；带宽只作区间展示，不代表统计置信区间。
+所有正常模型带均为 `[0.90×V, 1.10×V]`，中值即 `V`；带宽只作区间展示。
 
 #### 6.5.2 逐票估值档案
 
 ##### 6.5.2.1 P/V 与带宽
 
-正常生产带的中值必须等于模型内在价值。生产 `P/V` 与回测 `valuation_ratio` 在未叠加的行上使用同一分母（`scripts/pv_ratio.py` 与逐日状态同式）；被 §6.4 叠加过的行、采用研究数与存量型 g0 截断的行（§6.5.2.2）是成文例外，前者生产分母比回测分母新，后两者按研究盈利或截断后的增长计。
+正常生产带的中值必须等于模型内在价值。生产 `P/V` 与回测 `valuation_ratio` 必须逐位一致（`scripts/pv_ratio.py` 与逐日状态同式）；被 §6.4 叠加过的行、采用研究数与存量型 g0 截断的行（§6.5.2.2）是成文例外。
 
 叠加只写生产带 `a_share_pool_model_bands_adopted.csv`，**回测输入 `roic_bands.csv`／`roic_daily_raw.csv`／`a_share_daily_states_adopted.csv` 一律不碰**。带文件的 `forecast_overlay` 列非空即表示该行已叠加预告或快报，`research_overlay` 列非空即表示该行采用研究数，`growth_cap_note` 列非空即表示该行 g0 按存量型上限截断；引用回测读数论证生产行为时先看这三列。
 
@@ -298,25 +297,25 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 模型计算统一由 §6.7 命令完成；档案不得覆盖模型参数或为希望得到的 `P/V` 反推输入。
 
-**研究正常化盈利（OI-209）**：档案 `a_share_valuation_dossiers.csv` 可登记研究估计的正常化盈利 `research_nopat_yi`（亿元，与模型同口径：税后经营利润，剔除金融收益，含权益法损益与少数股东份额），同时填 `research_evidence_date`（所依据证据的公开可得日）、`research_falsifier`（可证伪条件）、`research_source`（出处；研究原文为归母净利时按模型股权桥反解：`归母 ÷ (1 − 生产带 minority_share) + (最新年报 NOPAT − 合并净利)`，注明两项取值；唯一实现 `build_report_update_queue.research_nopat_from_parent`）。研究数须与模型锚同一产能口径：以未来产量或未建成产能为基础的盈利按现有已投产产能重述，扩产由模型增速腿计价。商品价格接受者（个人投资体系第 5.12 节）的研究数按概率加权的长期商品价格计、不取现价，可证伪条件写成价格指标。模型盈利锚 = 生产带机械每股 NOPAT × `shares_est`（亿元，ROIC 路径；采用研究数的行取 `model_nopat_ps`）；差距 = 两数较大者 ÷ 较小者 − 1，超过 30% 按 §7.3 入队。
+**研究正常化盈利**：档案 `a_share_valuation_dossiers.csv` 可登记研究估计的正常化盈利 `research_nopat_yi`（亿元，与模型同口径：税后经营利润，剔除金融收益，含权益法损益与少数股东份额），同时填 `research_evidence_date`（所依据证据的公开可得日）、`research_falsifier`（可证伪条件）、`research_source`（出处；研究原文为归母净利时按模型股权桥反解：`归母 ÷ (1 − 生产带 minority_share) + (最新年报 NOPAT − 合并净利)`，注明两项取值；唯一实现 `build_report_update_queue.research_nopat_from_parent`）。研究数须与模型锚同一产能口径：以未来产量或未建成产能为基础的盈利按现有已投产产能重述，扩产由模型增速腿计价。商品价格接受者（个人投资体系第 5.12 节）的研究数按概率加权的长期商品价格计、不取现价，可证伪条件写成价格指标。模型盈利锚 = 生产带机械每股 NOPAT × `shares_est`（亿元，ROIC 路径；采用研究数的行取 `model_nopat_ps`）；差距 = 两数较大者 ÷ 较小者 − 1，超过 30% 按 §7.3 入队。
 
 **采用研究数**：差距复核结论（档案 `divergence_review_conclusion`）为「采用研究数」时，§6.7 第 4 步的叠加脚本在 §6.4 叠加之后、除权归一化之前改写候选侧与 B2 池带：每股 NOPAT 换成 `research_nopat_yi × 1e8 ÷ shares_est`，投入资本不变（`roic0` 同比例），其余参数与股权桥照带，企业价值按 `ev_ps × EV(研究) ÷ EV(机械)` 重算（`zero_growth` 路径 EV 与 NOPAT 同比例），再重算 V 与区间；机械值留在 `model_nopat_ps`／`model_roic0`／`pre_research_iv`，`research_overlay` 记采用日。唯一实现 `apply_forecast_band_overlay.apply_research_overlay`。只改生产带，回测输入不动；结论为「维持模型」时研究数不进模型、不改带。采用一直有效到复核把结论改回「维持模型」。
 
-**研究增长**：结论为采用研究数的 `growth` 路径行，档案可另登记 `research_g0`（小数，替代生产带 g0）与 `research_g0_basis`（窗口、两数与可证伪条件）。研究增长只取本公司已实现的资本腿读数：按 §6.5.1 同式 `min(增量 ROIC, 40%) × 再投资率`，增量 ROIC 的窗口起点移到结构性变化（毛利率台阶、主体重置、并购）之后的年报、终点照带，再投资率照带（台阶扭曲的是增量 ROIC 的分子，不是再投资强度）；不得取行业或预测增速，不得为希望的 `P/V` 反推。叠加时 EV(研究) 以研究 NOPAT 与研究增长同算，机械 g0 留在 `model_g0`；未登记时 g0 照带，`zero_growth` 路径不适用。
+**研究增长**：结论为采用研究数的 `growth` 路径行，档案可另登记 `research_g0`（小数，替代生产带 g0）与 `research_g0_basis`（窗口、两数与可证伪条件）。研究增长只取本公司已实现的资本腿读数：按 §6.5.1 同式 `min(增量 ROIC, 40%) × 再投资率`，增量 ROIC 的窗口起点移到结构性变化（毛利率台阶、主体重置、并购）之后的年报、终点照带，再投资率照带；不得取行业或预测增速，不得为希望的 `P/V` 反推。叠加时 EV(研究) 以研究 NOPAT 与研究增长同算，机械 g0 留在 `model_g0`；未登记时 g0 照带，`zero_growth` 路径不适用。
 
-**存量型增长上限（OI-272）**：业务属性登记表（个人投资体系第 5.12 节，`data/processed/a_share_business_attributes.csv`）`demand_runway = 存量` 的池成员，`growth` 路径池带的 g0（含研究增长）超过 10% 时按 10% 计。§6.7 第 4 步叠加脚本在采用研究数之后、除权归一化之前，以同一引擎按截断后的 g0 重算企业价值比例与股权桥，改写候选侧与 B2 池带（持仓侧随之）；截断前的 g0 留在 `model_g0`（研究增长行已存的机械值不改），`growth_cap_note` 记截断。常数 `apply_forecast_band_overlay.STOCK_G0_CAP = 0.10`，唯一实现 `apply_forecast_band_overlay.apply_stock_growth_cap`。业务属性不是时点数据，本条只在生产执行，回测输入不动（成文差异，§12.1 读数不适用）。
+**存量型增长上限**：业务属性登记表（个人投资体系第 5.12 节，`data/processed/a_share_business_attributes.csv`）`demand_runway = 存量` 的池成员，`growth` 路径池带的 g0（含研究增长）超过 10% 时按 10% 计。§6.7 第 4 步叠加脚本在采用研究数之后、除权归一化之前，以同一引擎按截断后的 g0 重算企业价值比例与股权桥，改写候选侧与 B2 池带（持仓侧随之）；截断前的 g0 留在 `model_g0`（研究增长行已存的机械值不改），`growth_cap_note` 记截断。常数 `apply_forecast_band_overlay.STOCK_G0_CAP = 0.10`，唯一实现 `apply_forecast_band_overlay.apply_stock_growth_cap`。本条只在生产执行，回测输入不动（成文差异）。
 
 ##### 6.5.2.3 生产带落地
 
-`data/processed/a_share_pool_model_bands_adopted.csv` 是生产模型带唯一来源，**只含池成员**（分层表 worth_attention L1-L3；池外档案的带由 `apply_model_bands_to_dossiers.py` 直接取自全市场模型带、只落档案），**其带值恒为现价口径**：§6.7 第 4 步的叠加脚本末段按除权事件（现金自带公告日起、送转自 `bps_basis_date` 起，§6.5.1 第 5 条）归一化，`exright_note` 列非空即已折算。池外原始模型带也由档案写入脚本调用相同除权实现，事件截止取信号日；银行与保险（池内、池外）的带值按 §11.3 的信号日口径由 `bank_live_value` 计算，不取逐日状态末行（OI-269）。逐票档案只承载研究结论和当前带；`apply_model_bands_to_dossiers.py` 只覆盖带相关字段，保留 `key_metrics`、`review_triggers`、高频指标和研究备注。README 第八节「现价隐含了什么」的首段由 `build_company_dossier_readmes.py` 按生产带与池内现价机械生成（`现价 ÷ 中值 = P/V`、路径与增长/折现假设、归一化盈利倍数），`implied_growth_years` 的新增研究只记录可证伪命题与方法分歧；已有原文在折叠区标明证据须复核，不作为当前估值或交易依据。带变更历史留在 CSV 的 `notes`，不重复铺陈于 README；页面分别标注估值更新日与质量证据日。
+`data/processed/a_share_pool_model_bands_adopted.csv` 是生产模型带唯一来源，**只含池成员**（分层表 worth_attention L1-L3；池外档案的带由 `apply_model_bands_to_dossiers.py` 直接取自全市场模型带、只落档案），**其带值恒为现价口径**：§6.7 第 4 步的叠加脚本末段按除权事件（现金自带公告日起、送转自 `bps_basis_date` 起，§6.5.1 第 5 条）归一化，`exright_note` 列非空即已折算。池外原始模型带也由档案写入脚本调用相同除权实现，事件截止取信号日；银行与保险（池内、池外）的带值按 §11.3 的信号日口径由 `bank_live_value` 计算，不取逐日状态末行。逐票档案只承载研究结论和当前带；`apply_model_bands_to_dossiers.py` 只覆盖带相关字段，保留 `key_metrics`、`review_triggers`、高频指标和研究备注。README 第八节「现价隐含了什么」的首段由 `build_company_dossier_readmes.py` 按生产带与池内现价机械生成（`现价 ÷ 中值 = P/V`、路径与增长/折现假设、归一化盈利倍数），`implied_growth_years` 的新增研究只记录可证伪命题与方法分歧；已有原文在折叠区标明证据须复核，不作为当前估值或交易依据。带变更历史留在 CSV 的 `notes`，不重复铺陈于 README；页面分别标注估值更新日与质量证据日。
 
 **持仓侧带** `data/processed/a_share_pool_model_bands_hold.csv`：§6.7 第 4 步由候选侧生产带与 B2 池带（§6.5.1 B2 口径）逐票取 `intrinsic_value` 较高的一行，两侧各自完成预告叠加与除权归一化后再取，`hold_source` 列标明来源；成员与候选侧生产带相同。§9.3.1 换仓来源读持仓侧带；买入线、候选排序、档案、阅读版与 §6 其余判定只读候选侧生产带。回测同构：候选侧读 `a_share_daily_states_adopted.csv`，持仓侧读 `a_share_daily_states_hold.csv`（§6.7 第 3 步逐 (代码, 日期) 取较高 V，`--hold-states`）。
 
-生产 `P/V` 与回测 `valuation_ratio` 必须逐位一致（§6.4 叠加行、采用研究数与存量型 g0 截断的行除外，§6.5.2.1）。**晚间披露报告的当晚吸收两侧同构**：生产在公告日戳的前一晚即用新带出信号；回测逐日状态里每条带自**可得日之前的最后一个市场交易日**起生效（`build_historical_valuation_bands.py --state-effective prev_trading_day`，缺省；前一交易日按上证指数日历取，行情库在该公告前已断的陈旧序列退回可得日生效）。带的可得日按 §6.3 第 2 条封顶（`--notice-cap statutory`，缺省）。回测的均线与建仓止损锚同样与实盘同构：均线按前复权口径折回当日股本／分红基准（§8.3），除权日止损锚与持有期峰价按 §11.4 同式折算（§9.3.5）。早于 §6.5.2.4 时点门槛的陈旧模型带不进任何一层：扫描器无 `P/V`、档案层判「无法估值」，两层同一结论。
+**晚间披露报告的当晚吸收两侧同构**：生产在公告日戳的前一晚即用新带出信号；回测逐日状态里每条带自**可得日之前的最后一个市场交易日**起生效（`build_historical_valuation_bands.py --state-effective prev_trading_day`，缺省；前一交易日按上证指数日历取，行情库在该公告前已断的陈旧序列退回可得日生效）。带的可得日按 §6.3 第 2 条封顶（`--notice-cap statutory`，缺省）。回测的均线与建仓止损锚同样与实盘同构：均线按前复权口径折回当日股本／分红基准（§8.3），除权日止损锚与持有期峰价按 §11.4 同式折算（§9.3.5）。
 
 ##### 6.5.2.4 主体重置与无法估值
 
-**主体重置**（重组、资产注入、并表或借壳使旧财务主体不可比）：在 `data/processed/entity_reset_dates.csv` 登记 `security_code,security_name,reset_report_date,growth_mode,known_from,reviewed_at,note`；`reset_report_date` 取新主体首个年报期末，`growth_mode` 取 `none`（不增长）或 `trend`（按季报趋势给增长），`known_from` 取重置后首份定期报告的可得日（可得日早于它的带不施加重置；留空即一律施加）。**触发**：§6.7 第 5.5 步检查⑦「股本事件复核」报出核心池内近 3 年非送转、单次变动 ≥ 5% 的股本事件（读 `data/raw/share_changes/a_share_share_changes.csv`）；逐条核对公告后登记 `data/processed/share_event_reviews.csv`（`security_code,security_name,effective_date,change_reason,decision,reviewed_at,note`，`decision` 取 `reset`／`no_reset`），判 `reset` 者同时登记本名册；已登记的事件不再报出。§6.7 第 2 步自动读取该表：报告期 ≥ 重置日的行把比率窗口、十年守卫窗口与经营账面基年截到重置日起；重置后不足三个年报时，锚 = 最新年报比率 × TTM 因子，周期守卫按 `data/reference/entity_reset_guard_anchor.csv` 登记的参照恢复（峰谷两侧，坡道同 §6.5.1；OI-212，建带 `--reset-guard both`）：`s = TTM 因子 × 最新年报回报 ÷ 十年中位`，周期锚 = 最新年报比率 ÷ (最新年报回报 ÷ 五年中位)；回报在 `anchor = pre_reset`（同类业务并入）时取重置前后连续年报的 ROIC，在 `anchor = peers`（重置前主体为壳、不可比）时取所列同业逐季面板年报加权 ROE 的位置中位（至少 2 家）；未登记参照或数据不足的行不设守卫；登记重置时同时登记参照。`none` 时 `g0 = 0`，`trend` 时 `g0 = min((TTM 因子 − 1) × 增速腿权重, g0 上限)`（TTM 因子 < 1 + `--ttm-trust-delta` 时为 0；现行增速腿权重为 0，`trend` 与 `none` 结果相同）；上年同期行早于重置日时由本行 `netprofit_yoy` 反推同期数。重置后满三个年报即回到通用路径，无需人工动作；早于重置日的行不受影响。
+**主体重置**（重组、资产注入、并表或借壳使旧财务主体不可比）：在 `data/processed/entity_reset_dates.csv` 登记 `security_code,security_name,reset_report_date,growth_mode,known_from,reviewed_at,note`；`reset_report_date` 取新主体首个年报期末，`growth_mode` 取 `none`（不增长）或 `trend`（按季报趋势给增长），`known_from` 取重置后首份定期报告的可得日（可得日早于它的带不施加重置；留空即一律施加）。**触发**：§6.7 第 5.5 步检查⑦「股本事件复核」报出核心池内近 3 年非送转、单次变动 ≥ 5% 的股本事件（读 `data/raw/share_changes/a_share_share_changes.csv`）；逐条核对公告后登记 `data/processed/share_event_reviews.csv`（`security_code,security_name,effective_date,change_reason,decision,reviewed_at,note`，`decision` 取 `reset`／`no_reset`），判 `reset` 者同时登记本名册；已登记的事件不再报出。§6.7 第 2 步自动读取该表：报告期 ≥ 重置日的行把比率窗口、十年守卫窗口与经营账面基年截到重置日起；重置后不足三个年报时，锚 = 最新年报比率 × TTM 因子，周期守卫按 `data/reference/entity_reset_guard_anchor.csv` 登记的参照恢复（峰谷两侧，坡道同 §6.5.1；建带 `--reset-guard both`）：`s = TTM 因子 × 最新年报回报 ÷ 十年中位`，周期锚 = 最新年报比率 ÷ (最新年报回报 ÷ 五年中位)；回报在 `anchor = pre_reset`（同类业务并入）时取重置前后连续年报的 ROIC，在 `anchor = peers`（重置前主体为壳、不可比）时取所列同业逐季面板年报加权 ROE 的位置中位（至少 2 家）；未登记参照或数据不足的行不设守卫；登记重置时同时登记参照。`none` 时 `g0 = 0`，`trend` 时 `g0 = min((TTM 因子 − 1) × 增速腿权重, g0 上限)`（TTM 因子 < 1 + `--ttm-trust-delta` 时为 0）；上年同期行早于重置日时由本行 `netprofit_yoy` 反推同期数。重置后满三个年报即回到通用路径，无需人工动作；早于重置日的行不受影响。
 
 **购买法收购当年分子年化**：非同一控制下企业合并的收购当年，在 `data/reference/consolidation_events.csv` 登记 `security_code,security_name,acquiree,acquisition_date,report_period,months_consolidated,acquiree_revenue_since,acquiree_net_profit_since,source,reviewed_at,note`：`report_period` 取收购当年年报期末，`months_consolidated` 取购买日至期末的并表月数（留空按购买日算，15 日前含当月；全年并表者不登记），两项贡献取该年报「企业合并」附注「被购买方自购买日至期末的收入／净利润」（元）。§6.7 第 2 步读取该表：该年报期的 NOPAT 与 EBIT 各加 `净利润贡献 × (12 ÷ 并表月数 − 1)`，权益、股本、现金流与归母／合并净利不动。**登记触发**：检查⑦报出的发股收购经核对为非同一控制下合并者，以及用户点名的现金收购；同一控制下合并不登记。
 
@@ -324,18 +323,14 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 #### 6.5.3 估值质量分与敏感度带（输出列，不进任何判定）
 
-建带命令对每条 ok 带另写四列，**只用于读带时判断参数敏感度与输入可信度，不进入 §9.3 任何买卖判定，也不改带值**：
+建带命令对每条 ok 带另写四列，只用于判断参数敏感度与输入可信度，不改带值：
 
 | 列 | 定义 |
 | --- | --- |
 | `valuation_quality_score`（0-100） | 五个分项各 20 分相加：①历史长度（可用财年 ≥8 → 20；5~7 → 12；≤4 → 5）；②回报稳定性（逐年 ROIC／ROE 的变异系数 ≤0.25 → 20；≤0.50 → 12；其余或不可算 → 5）；③终值占比（`terminal_share` = 增速 fade 期末即第 n1 + 10 年之后的现金流与终值占价值的比例；≤0.60 → 20；≤0.75 → 12；其余 → 5）；④路径与守卫（growth 未触 peak 守卫 → 20；growth 触守卫或 zero_growth → 10；equity_fallback → 5）；⑤两腿一致度（g 的资本腿与增速腿、权益口径的 g_sustainable 与 g_trailing：两腿可算且差 ≤5pp → 20；≤10pp → 12；只有一腿 → 12；差 >10pp 或皆无 → 5；增速腿权重为 0 时不计该腿）。`valuation_quality_notes` 记各分项得分 |
-| `v_bear` / `v_bull` | 同一引擎、五个参数同向扰动后的每股价值：Bear = g0×0.5、折现率 +1pp、终值回报 −1pp、fade 7 年（回报衰减速度 λ × 10／7）、g_T −0.5pp；Bull = g0×1.25（受 g0 上限）、折现率 −1pp、终值回报 +1pp（不高于起点回报）、fade 13 年（λ × 10／13）、g_T +0.5pp；zero_growth 只扰折现率 ±1pp；银行与保险（股利折现覆盖）不算。任一侧触护栏即留空。**Bull 不给交易层用**，带宽仍是 §6.5.1 的 ±10% |
+| `v_bear` / `v_bull` | 同一引擎、五个参数同向扰动后的每股价值：Bear = g0×0.5、折现率 +1pp、终值回报 −1pp、fade 7 年（回报衰减速度 λ × 10／7）、g_T −0.5pp；Bull = g0×1.25（受 g0 上限）、折现率 −1pp、终值回报 +1pp（不高于起点回报）、fade 13 年（λ × 10／13）、g_T +0.5pp；zero_growth 只扰折现率 ±1pp；银行与保险（股利折现覆盖）不算。任一侧触护栏即留空 |
 
 建带结尾另按「每只最新 ok 带」打印路径分布（只数、市值占比、前三行业）。
-
-#### 6.5.4 维持性现金占用研究开关
-
-`build_historical_valuation_bands.py --maintenance-weight` 缺省 0；非零只用于实验目录中的 ROIC 带，并须使用非 `legacy` 的营运资金口径（生产 `operating`；`reported` 只复现上轮研究）。代理估计、现金流衔接、缺失处理与测试设计统一读取 `data/experiments/exp_maintenance_cash_20260909/preregister.md`。候选侧、B2 与敏感度计算使用同一修正，金融与权益退路不应用；新增拒绝须在逐日状态生效后阻断陈旧带。按 §12 完成验证后再处理生产采纳。
 
 ### 6.6 人工复核职责
 
@@ -345,24 +340,24 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 ### 6.7 估值重建链
 
-以下顺序是当前唯一生产路径。重建全历史模型带属于重作业，必须独占运行。
+以下顺序是当前唯一生产路径。重建全历史模型带属于重作业，必须独占运行。命令中的参数取值即生产口径；脚本的其他取值只供研究复现，不得用于生产带、逐日状态与 `BASE`。
 
-本链需要日期的 A 股命令使用 `--signal-date`；无日期参数的构建工具读取上游产物。常设作业入口 `scripts/slurm/rebuild_chain_with_fetch.sbatch`（`SIGNAL_DATE`、`SINCE`，可选 `EXTRA_CODES` 点名补取三大报表）串行执行第 1 步十份取数、第 2／2b 步两侧建带与第 3 步银行保险覆盖及持仓侧逐日状态合成；第 4 步起按下文命令执行。证据日由 `scripts/a_share_signal_dates.py` 唯一推导为信号日之后的首个工作日（周一至周五）；调用方不得另行指定证据日。
+本链需要日期的 A 股命令使用 `--signal-date`；无日期参数的构建工具读取上游产物。常设作业入口 `scripts/slurm/rebuild_chain_with_fetch.sbatch`（`SIGNAL_DATE`、`SINCE`，可选 `EXTRA_CODES` 点名补取三大报表）串行执行第 1 步取数、第 2／2b 步两侧建带与第 3 步银行保险覆盖及持仓侧逐日状态合成；第 4 步起按下文命令执行。证据日由 `scripts/a_share_signal_dates.py` 唯一推导为信号日之后的首个工作日（周一至周五）；调用方不得另行指定证据日。
 
 ```bash
-# 1. 刷新财务输入与除权事件（逐季财务、三大报表、除权事件、rf/ERP 序列、股本变动事件、股债利差、附注现金类、受限资产、重述公告、行业大类十份缺一不可）
+# 1. 刷新财务输入与除权事件（逐项缺一不可）
 python3 scripts/fetch_a_share_quarterly_financials.py --signal-date YYYY-MM-DD --since <当前报告期末>
 python3 scripts/fetch_a_share_financial_statements.py --signal-date YYYY-MM-DD
 python3 scripts/fetch_ohlcv_history.py --signal-date YYYY-MM-DD --actions-only
-python3 scripts/fetch_cost_of_equity_inputs.py   # rf/ERP 序列：银行/保险股利折现（第 3 步、扫描器 --rf 缺省、档案层）与 §6.8 的 r 读它的最新行
-python3 scripts/fetch_a_share_share_changes.py --signal-date YYYY-MM-DD   # 股本变动事件表（第 5.5 步检查⑦读它）
-python3 scripts/fetch_equity_bond_inputs.py --refresh   # 沪深 300 TTM PE 与 10 年国债：§9.3.1 股债总仓位上限读不晚于信号日的最新观测（过期门槛见该行）
-python3 scripts/fetch_cash_note_items.py --workers 16   # 年报附注的现金类明细（§6.5.1，只下载新增年报、全量重解析并入人工核定表；原文缓存不入库）
-python3 scripts/fetch_restricted_cash_items.py --workers 16 --parser v2   # 年报受限资产、受限原因与法定存款准备金（§6.5.1 第 3 条，读附注现金类的核定额，须在其后）
-python3 scripts/fetch_debt_note_items.py --workers 16   # 年报附注的类债务与弃置义务（§6.5.1 第 3 条，OI-261；与附注现金类共用原文缓存，并入人工核定表）
-python3 scripts/fetch_debt_note_items.py --funds   # 弃置专项资金（读上一行的表，不联网）
-python3 scripts/scan_restatement_announcements.py --history --since <上年 01-01>   # 更正公告与定期报告更新版（§6.3 第 2 条）
-python3 scripts/fetch_csrc_industry.py --missing-only   # 证监会行业大类（§6.5.1 研发资本化的摊销年限），只补三大报表中新出现或未取到的代码
+python3 scripts/fetch_cost_of_equity_inputs.py   # rf/ERP 序列：银行与保险股利折现（第 3 步、档案层）与扫描器 `--rf` 缺省读最新行
+python3 scripts/fetch_a_share_share_changes.py --signal-date YYYY-MM-DD   # 股本变动事件（第 5.5 步检查⑦）
+python3 scripts/fetch_equity_bond_inputs.py --refresh   # 股债利差（§9.3.1）
+python3 scripts/fetch_cash_note_items.py --workers 16   # 附注现金类（§6.5.1 第 3 条）
+python3 scripts/fetch_restricted_cash_items.py --workers 16 --parser v2   # 受限资产与法定存款准备金，须在附注现金类之后
+python3 scripts/fetch_debt_note_items.py --workers 16   # 附注类债务与弃置义务
+python3 scripts/fetch_debt_note_items.py --funds   # 弃置专项资金
+python3 scripts/scan_restatement_announcements.py --history --since <上年 01-01>   # 更正公告（§6.3 第 2 条）
+python3 scripts/fetch_csrc_industry.py --missing-only   # 证监会行业大类（研发摊销年限）
 
 # 2. 构建 ROIC 带与逐日状态
 python3 scripts/build_historical_valuation_bands.py --all --value-model roic \
@@ -439,7 +434,7 @@ python3 scripts/build_company_dossier_readmes.py --check
 python3 scripts/check_swap_margin_scale_drift.py
 ```
 
-第 1 步不得跳过；披露窗未关的报告期由脚本强制重取并在结尾告警，除权事件库随第 1 步同批刷新。
+第 1 步不得跳过。
 
 公司 README 的价格为核心池 CSV 的估值物化快照，明确显示价格日期；每日执行价只读 §8 的已发布行情。README 在核心池物化后渲染；仅刷新阅读版行情不改变该快照。自动渲染不得改写人工研究证据日期。
 
@@ -462,11 +457,11 @@ python3 scripts/build_a_share_core_valuation_pool.py \
 
 **输入符号与拒绝传播**：SEC 的纯利息费用标签按每个年度／累计期间的费用金额正值统一，再合成 TTM；不得对合成结果取绝对值代替逐期统一，所得税收益及其他有经济含义的正负值保留。零增长与增长路径均在各自企业价值的股权桥之后执行 §6.5.1 薄权益守卫，固定扣减按该节的净金融负债与少数股东账面下界口径计算；拒绝后清空当前带、模型价值和 P/V，档案显示原因，不回退历史带。
 
-**海外估值**：模型价值按 §6.5.1 的 ROIC 引擎由三大报表重算，折现率、终值回报、终值增长、回报衰减、投入资本下限与零增长锚全部取 §6.5.1 与 §6.7 第 2 步的生产参数（r = 10%、`ROIC_T = min(WACC + 2pp, ROIC0)`、g_T = 3%、整本回报指数衰减、投入资本 ≥ 0.1 × 总权益），不按市场、国家或质量档调整；最新季报／中报按「最近完整财年＋本期累计−上年同期累计」合成 TTM 作为当前观察点，年度历史仍用于 ROIC0、增量 ROIC 与再投资率。报表币按 `data/reference/overseas_valuation_inputs.csv` 的汇率折到交易币、ADR 按普通股数折算；金融企业（`FINANCIAL_KEEP`）ROIC 不适用，沿用档案带并标明；ROIC 路径被拒或无三表源（韩股、未申报公司）一律「无法估值」。三表来源：美股 SEC XBRL companyfacts（标签按经济含义组合，唯一实现 `fetch_overseas_statements.compose_sum`／`compose_debt`：合并税前利润取合并标签，缺则境内＋境外、再缺持续经营净利＋所得税，不得由境内单项兜底；有息负债 = 非流动长期债务／票据 + 流动债务（`DebtCurrent` 存在即整体取用）+ 融资租赁负债，同一层级只取一次、含租赁标签不再叠加租赁、经营租赁不计；ifrs-full 非流动层有借款合计（`NoncurrentPortionOfNoncurrentBorrowings`）只取合计，否则长期借款与应付公司债两行相加，IFRS 16 租赁负债（非流动＋流动，缺拆分取合计）另加，2019-01-01 之前的期末按 IAS 17 经营租赁不计；折旧摊销取合计标签，缺则折旧＋无形资产摊销；年报与季报 TTM 同规，`tags_used` 记所用组合；每份申报的报表币取该申报货币条目最多的币种，其他币种条目（以外币标注的票据与借款、境外发行人的美元便利折算）不取；ifrs-full 与 us-gaap 并读，同一期末取最新报告该期末总资产的年报所用准则、最新报告该期的年报所用币种，与最新一行币种不同的早年行不连用，季报 TTM 按最新申报所用准则取标签，唯一实现 `fetch_overseas_statements.purify_currency`／`sec_extract`；美股历史状态不做汇率折算，报表币不是美元的申报点记无法估值）、港股东财 HK F10（有息负债 = 短期与长期贷款＋应付票据＋应付债券＋可转换票据及债券＋流动与非流动「融资租赁负债」；按美国会计准则列报的港股登记于 `HK_US_GAAP`，其「融资租赁负债」行是经营租赁负债、租赁成本已在经营溢利内扣除，不计有息负债，与 SEC us-gaap 经营租赁同口径；唯一实现 `fetch_overseas_statements.hk_debt_keys`）；SEC 结构化事实尚未覆盖的已披露季报（包括境外发行人 6-K 和 10-Q 提交前的官方业绩三表）按官方财报维护 `data/reference/overseas_statement_overrides.csv`（有息负债按上述层级规则填列，ifrs-full 的长期银行借款、应付公司债与租赁负债（含列在其他流动负债内的一年内到期部分）都计，以公允价值计量的金融负债填 `financial_liabilities`；原始文件不入库，提取结果 `data/interim/overseas_roic_years.csv` 入库）。F10 与 companyfacts 取不到的单项按年报／中报附注维护 `data/reference/overseas_statement_supplements.csv`：字段限 `ebit_financial_income_in_operating`（港股经营溢利内未拆出的金融资产收益）、`equity_method_income`（F10 无联营／合营行的港股权益法份额）、`other_financial_assets`（港股与美股的非流动金融资产，整值替换该期抽取值，TTM 期无值时沿用 15 个月内最近一期）、`rd_expense`（利润表不单列研发、年报附注披露研发开支的港股年报值）与 `customer_funds`（港股与美股的客户托管资金核定额，见下文受限现金）；每行只自 `evidence_date` 起生效，维护行中晚于该行 notice_date 公开的字段也登记于此表；损益项 TTM = 年报 + 本期累计 − 上年同期累计，三期缺一、公司或字段未知、键重复、缺来源或公开日早于期末即中止取数；唯一实现 `fetch_overseas_statements.load_statement_supplements`／`apply_balance_supplements`。港股 F10 分页按报告期与科目代码排序，下载后有重复行即视为不完整（`hk_download`）。
+**海外估值**：模型价值按 §6.5.1 的 ROIC 引擎由三大报表重算，折现率、终值回报、终值增长、回报衰减、投入资本下限与零增长锚全部取 §6.5.1 与 §6.7 第 2 步的生产参数，不按市场、国家或质量档调整；最新季报／中报按「最近完整财年＋本期累计−上年同期累计」合成 TTM 作为当前观察点，年度历史仍用于 ROIC0、增量 ROIC 与再投资率。报表币按 `data/reference/overseas_valuation_inputs.csv` 的汇率折到交易币、ADR 按普通股数折算；金融企业（`FINANCIAL_KEEP`）ROIC 不适用，沿用档案带并标明；ROIC 路径被拒或无三表源（韩股、未申报公司）一律「无法估值」。三表来源：美股 SEC XBRL companyfacts（标签按经济含义组合，唯一实现 `fetch_overseas_statements.compose_sum`／`compose_debt`：合并税前利润取合并标签，缺则境内＋境外、再缺持续经营净利＋所得税，不得由境内单项兜底；有息负债 = 非流动长期债务／票据 + 流动债务（`DebtCurrent` 存在即整体取用）+ 融资租赁负债，同一层级只取一次、含租赁标签不再叠加租赁、经营租赁不计；ifrs-full 非流动层有借款合计（`NoncurrentPortionOfNoncurrentBorrowings`）只取合计，否则长期借款与应付公司债两行相加，IFRS 16 租赁负债（非流动＋流动，缺拆分取合计）另加，2019-01-01 之前的期末按 IAS 17 经营租赁不计；折旧摊销取合计标签，缺则折旧＋无形资产摊销；年报与季报 TTM 同规，`tags_used` 记所用组合；每份申报的报表币取该申报货币条目最多的币种，其他币种条目不取；ifrs-full 与 us-gaap 并读，同一期末取最新报告该期末总资产的年报所用准则、最新报告该期的年报所用币种，与最新一行币种不同的早年行不连用，季报 TTM 按最新申报所用准则取标签，唯一实现 `fetch_overseas_statements.purify_currency`／`sec_extract`；美股历史状态不做汇率折算，报表币不是美元的申报点记无法估值）、港股东财 HK F10（有息负债 = 短期与长期贷款＋应付票据＋应付债券＋可转换票据及债券＋流动与非流动「融资租赁负债」；按美国会计准则列报的港股登记于 `HK_US_GAAP`，其「融资租赁负债」行不计有息负债；唯一实现 `fetch_overseas_statements.hk_debt_keys`）；SEC 结构化事实尚未覆盖的已披露季报（包括境外发行人 6-K 和 10-Q 提交前的官方业绩三表）按官方财报维护 `data/reference/overseas_statement_overrides.csv`（有息负债按上述层级规则填列，ifrs-full 的长期银行借款、应付公司债与租赁负债（含列在其他流动负债内的一年内到期部分）都计，以公允价值计量的金融负债填 `financial_liabilities`；原始文件不入库，提取结果 `data/interim/overseas_roic_years.csv` 入库）。F10 与 companyfacts 取不到的单项按年报／中报附注维护 `data/reference/overseas_statement_supplements.csv`：字段限 `ebit_financial_income_in_operating`（港股经营溢利内未拆出的金融资产收益）、`equity_method_income`（F10 无联营／合营行的港股权益法份额）、`other_financial_assets`（港股与美股的非流动金融资产，整值替换该期抽取值，TTM 期无值时沿用 15 个月内最近一期）、`rd_expense`（利润表不单列研发、年报附注披露研发开支的港股年报值）与 `customer_funds`（港股与美股的客户托管资金核定额，见下文受限现金）；每行只自 `evidence_date` 起生效，维护行中晚于该行 notice_date 公开的字段也登记于此表；损益项 TTM = 年报 + 本期累计 − 上年同期累计，三期缺一、公司或字段未知、键重复、缺来源或公开日早于期末即中止取数；唯一实现 `fetch_overseas_statements.load_statement_supplements`／`apply_balance_supplements`。港股 F10 分页按报告期与科目代码排序，下载后有重复行即视为不完整（`hk_download`）。
 
 **研发费用资本化（§6.5.1）**：同一实现 `roic_inputs.capitalize_rd`，财年按年报期末先后编号（`roic_inputs.fiscal_labels`，非 12 月年结同式）。研发取 SEC 研发标签（`ResearchAndDevelopmentExpense`，缺则取不含并购在研的研发标签）与港股 F10「研发费用」行；年报维护行未填的，按同一期末的 SEC 研发补入；利润表不单列研发的港股，按年报附注维护补充表字段 `rd_expense`。摊销年限按 `data/reference/overseas_industry.csv` 登记的证监会大类对应口径取（`roic_inputs.rd_life`）。季报观察点的 TTM 因子按资本化前的年报 NOPAT 计。唯一实现 `build_overseas_roic_bands.capitalized_years`。
 
-**非经营金融资产与 EBIT（§6.5.1 第 3 条的海外取数）**：超额现金 = max(0, 现金类 − 2% 营收) + 其他金融资产（现金类为流动项目，另含 SEC 现金合计标签内列在其他资产的非流动受限现金；其他金融资产为非流动项目，官方业绩稿维护行未列示时沿用 15 个月内最近年报的金额），EBIT 剔除这些资产的收益，以公允价值计量的金融负债与其他金融负债（ifrs-full、港股）计入有息负债；标签组与合并规则的唯一实现为 `fetch_overseas_statements.sec_financial_assets`／`hk_financial_assets`／`nonop_ebit`／`hk_ebit`，观察清单与美股历史状态共用。同一经济项目有多个候选标签时取最大者（正表合计行 ≥ 附注子项）；权益法投资（联营、合营）及其损益留在投入资本与 EBIT。
+**非经营金融资产与 EBIT（§6.5.1 第 3 条的海外取数）**：超额现金 = max(0, 现金类 − 2% 营收) + 其他金融资产（现金类为流动项目，另含 SEC 现金合计标签内列在其他资产的非流动受限现金；其他金融资产为非流动项目，官方业绩稿维护行未列示时沿用 15 个月内最近年报的金额），EBIT 剔除这些资产的收益，以公允价值计量的金融负债与其他金融负债（ifrs-full、港股）计入有息负债；标签组与合并规则的唯一实现为 `fetch_overseas_statements.sec_financial_assets`／`hk_financial_assets`／`nonop_ebit`／`hk_ebit`，观察清单与美股历史状态共用。同一经济项目有多个候选标签时取最大者；权益法投资（联营、合营）及其损益留在投入资本与 EBIT。
 
 | 来源 | 现金类 | 其他金融资产 | EBIT |
 | --- | --- | --- | --- |
@@ -474,7 +469,7 @@ python3 scripts/build_a_share_core_valuation_pool.py \
 | SEC ifrs-full | 现金及等价物＋以摊余成本、公允价值计量的流动金融资产（其他流动金融资产按其他应收款不计） | 以摊余成本、公允价值计量的非流动金融资产 | 经营利润＋权益法投资份额 |
 | 港股 F10 | 现金及等价物＋受限制存款及现金＋短期存款＋短期投资＋以公允价值记账与其他的流动金融资产 | 非流动现金及等价物＋中长期存款＋证券投资＋以公允价值记账与其他的非流动金融资产 | 经营溢利 − 其他收益 − 补充表经营溢利内金融资产收益＋应占联营／合营公司溢利（F10 无此行时取补充表权益法份额）；无经营溢利时为除税前溢利＋融资成本 − 利息收入（F10 无此行时取补充表值）− 其他收益 |
 
-受限现金（§6.5.1 第 3 条 OI-219）：港股 F10「应付票据」计入有息负债，担保它的受限制存款照计现金类、与之相抵，不重复计；其余受限现金（含 SEC 列在其他资产的非流动部分）照计现金类：为应付票据以外事项质押的与 A 股同计，SEC 与港股无受限原因的结构化来源时与 A 股未核定的年报同。年报附注写明代客户、商户收付或专户存放、只能用于结算或赔付的托管资金（平台代收待付商家款、商户缴存的消费者保障金）与 §6.5.1 客户资金同理，不计超额现金：按附注核定额（以对应且未计入有息负债的经营负债为上限）登记补充表字段 `customer_funds`，从现金类扣除，投入资本同式重算；季报观察点未拆分的沿用 15 个月内最近一期核定额；唯一实现 `fetch_overseas_statements.apply_customer_funds`。
+受限现金（§6.5.1 第 3 条）：港股 F10「应付票据」计入有息负债，担保它的受限制存款照计现金类、与之相抵，不重复计；其余受限现金（含 SEC 列在其他资产的非流动部分）照计现金类。年报附注写明代客户、商户收付或专户存放、只能用于结算或赔付的托管资金不计超额现金：按附注核定额（以对应且未计入有息负债的经营负债为上限）登记补充表字段 `customer_funds`，从现金类扣除，投入资本同式重算；季报观察点未拆分的沿用 15 个月内最近一期核定额；唯一实现 `fetch_overseas_statements.apply_customer_funds`。
 
 金融中介负债（客户存款、应付客户款、同业存放、拆入、卖出回购、向中央银行借款）≥ 总资产 20% 的公司按类金融处理：不在 `FINANCIAL_KEEP` 者判「无法估值」；受监管隔离的客户资金不计超额现金。
 
@@ -488,7 +483,7 @@ python3 scripts/build_a_share_core_valuation_pool.py --md-only --quotes fetch --
 
 阅读版 `000_a_share_core_valuation_pool.md` 两表列：代码／名称／质量／参考分／估值／估值路径／现价／**模型价值 V**／**`P/V`**／估值时间／估值事件（模型价值区间、空间、策略标签、PE、PB 只在 CSV）。表前只保留字段含义与交易边界；估值路径只显示方法名，不带章节号或口径注记。
 
-**回购与分红的处理**：估值只看「可分配现金 = NOPAT × (1 − 维持增长所需留存)」，分红与回购同属可分配现金、不区分、不另按股数缩减重复计量，未来回购计划不进模型。海外引擎的锚按以下口径计算：年报间外生权益按股本口径第 2 条逐年识别（`X_y = ΔE − (归母综合收益 − 已付股息)`，综合收益缺失用归母净利，已付股息取现金流量表；权益缺失的年份不计、不作断点），比率 = 各年 NOPAT ÷ 当年经营账面 `E_op`，季报观察点当期 = 最新年报比率 × (NOPAT TTM ÷ 最新年报 NOPAT)，λ 与三年／五年／十年中位只取年报，周期守卫坡道与谷底守卫同式；每股 NOPAT 锚 = ratio0 × 经营账面 `BPS_op = 当期 BPS − x − X_cum/股`，`x = 当期 BPS − (最新年报母公司权益 + 其后归母净利 − 其后已付股息) ÷ 申报稀释股数`（年报行 `x = 0`；`x` 封顶 95% BPS；其后归母净利或已付股息不可得时 `x = 0`）；净负债与少数股东取季报资产负债表，`x` 不另进股权桥；增速腿权重 0。`overseas_statement_overrides.csv` 维护行的 `net_income`／`tci`（年报行）与 `net_income_ytd`／`dividends_paid_ytd`（TTM 行）留空时，取数脚本按东财 `RPT_USF10_FN_INCOME`／`RPT_USF10_INFO_DIVIDEND` 补入；港股现金流量表缺「已付股息」行时按 `RPT_HKF10_INFO_DIVIDEND` 分红事件补入（除净日落在期内，每股派 × 最新已发行股数，按 `overseas_valuation_inputs.csv` 汇率折报表币）；补缺来源写入 `tags_used`。A 股分红按 §11.4 除权归一化处理，银行股利折现只计现金股利。
+**回购与分红的处理**：分红与回购同属可分配现金，不另按股数缩减，未来回购计划不进模型。海外引擎的锚按以下口径计算：年报间外生权益按股本口径第 2 条逐年识别（`X_y = ΔE − (归母综合收益 − 已付股息)`，综合收益缺失用归母净利，已付股息取现金流量表；权益缺失的年份不计、不作断点），比率 = 各年 NOPAT ÷ 当年经营账面 `E_op`，季报观察点当期 = 最新年报比率 × (NOPAT TTM ÷ 最新年报 NOPAT)，λ 与三年／五年／十年中位只取年报，周期守卫坡道与谷底守卫同式；每股 NOPAT 锚 = ratio0 × 经营账面 `BPS_op = 当期 BPS − x − X_cum/股`，`x = 当期 BPS − (最新年报母公司权益 + 其后归母净利 − 其后已付股息) ÷ 申报稀释股数`（年报行 `x = 0`；`x` 封顶 95% BPS；其后归母净利或已付股息不可得时 `x = 0`）；净负债与少数股东取季报资产负债表，`x` 不另进股权桥；增速腿权重 0。`overseas_statement_overrides.csv` 维护行的 `net_income`／`tci`（年报行）与 `net_income_ytd`／`dividends_paid_ytd`（TTM 行）留空时，取数脚本按东财 `RPT_USF10_FN_INCOME`／`RPT_USF10_INFO_DIVIDEND` 补入；港股现金流量表缺「已付股息」行时按 `RPT_HKF10_INFO_DIVIDEND` 分红事件补入（除净日落在期内，每股派 × 最新已发行股数，按 `overseas_valuation_inputs.csv` 汇率折报表币）；补缺来源写入 `tags_used`。
 
 **点名建档**：用户点名的港股／美股／韩股公司，无论初筛结论如何，一律完成以下六步：
 
@@ -550,9 +545,9 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 
 `valuation_reviewed_at` 取生产带文件 `model_evaluated_at`（模型最近评估过的报告期可得日，含护栏拒绝行）与采纳带可得日的较大者；`evidence_available_at` 取采纳带可得日。
 
-**研究与模型差距（OI-209）**：估值范围内 ROIC 路径的池成员，档案研究正常化盈利与模型盈利锚差距超过 30%（§6.5.2.2）即入队；生产所用的锚高于另一数时（维持模型：研究数低于模型锚；采用研究数：研究数高于模型锚）同时按 §7.5 冻结新增买入，否则只入队复核、不冻结。复核在档案记 `divergence_reviewed_at`、`divergence_review_conclusion`（维持模型或采用研究数）、`divergence_review_note`（理由，修订研究数时写明）与复核时两数 `divergence_reviewed_model_yi`／`divergence_reviewed_research_yi` 后解除；此后维持模型的行在任一数较复核时变动超过 10% 且差距仍超过 30% 时重新入队，采用研究数的行在任一数变动超过 10% 或复核日之后公告新年报时重新入队。档案研究数、研究增长或复核结论在当日执行清单发布之后才登记或改变的，**当晚以同一信号日生效，不等下一次扫描**：先把登记与复核行追加到决策日志，再跑 §6.7 第 4～6 步（`scripts/slurm/refresh_pool_from_bands.sbatch`，含队列重建与证据凭据），然后重跑当日扫描并重新发布（§9.1 第 5 步）。
+**研究与模型差距**：估值范围内 ROIC 路径的池成员，档案研究正常化盈利与模型盈利锚差距超过 30%（§6.5.2.2）即入队；生产所用的锚高于另一数时（维持模型：研究数低于模型锚；采用研究数：研究数高于模型锚）同时按 §7.5 冻结新增买入，否则只入队复核、不冻结。复核在档案记 `divergence_reviewed_at`、`divergence_review_conclusion`（维持模型或采用研究数）、`divergence_review_note`（理由，修订研究数时写明）与复核时两数 `divergence_reviewed_model_yi`／`divergence_reviewed_research_yi` 后解除；此后维持模型的行在任一数较复核时变动超过 10% 且差距仍超过 30% 时重新入队，采用研究数的行在任一数变动超过 10% 或复核日之后公告新年报时重新入队。档案研究数、研究增长或复核结论在当日执行清单发布之后才登记或改变的，**当晚以同一信号日生效，不等下一次扫描**：先把登记与复核行追加到决策日志，再跑 §6.7 第 4～6 步（`scripts/slurm/refresh_pool_from_bands.sbatch`，含队列重建与证据凭据），然后重跑当日扫描并重新发布（§9.1 第 5 步）。
 
-**结构性增长复核（OI-249、OI-250）**：估值范围内 ROIC 路径的池成员，候选侧池带峰守卫权重 w > 0，且峰守卫使每股 NOPAT 较不设峰守卫低 40% 以上时，满足下列之一即入队复核，不冻结：
+**结构性增长复核**：估值范围内 ROIC 路径的池成员，候选侧池带峰守卫权重 w > 0，且峰守卫使每股 NOPAT 较不设峰守卫低 40% 以上时，满足下列之一即入队复核，不冻结：
 - 量驱动：最新年报营收较两年前年报年复合 ≥ 25%、毛利率两年升幅 ≤ 5pp，两年窗口内无外生权益变动、购买法收购与主体重置；
 - 业务属性登记为 `结构成长型`（个人投资体系第 5.12 节）。
 
@@ -560,7 +555,7 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 - 判定由 `scripts/structural_growth_review.py` 按 §6.7 第 2 步参数当晚重建三次得出：原样、研究开关 `--peak-relax volume`（判量驱动）、`--roic-peak-k 99`（不设峰守卫）。输出另标东财 2016 行业属商品定价型的公司与业务类别，供复核参考。
 - 复核按 §6.5.2.2 登记研究正常化盈利与可证伪条件；登记后改由研究与模型差距规则管理，未登记前每次扫描照常入队。
 
-**谷底侧复核（OI-265）**：估值范围内 ROIC 路径的池成员，候选侧池带的机械盈利锚（§6.5.2.2 模型盈利锚，采用研究数的行取 `model_nopat_ps`）≥ 1.5 倍 TTM 等价 NOPAT，且带 `growth_trust`（λ）= 0 或 `trough_weight`（v）> 0 的，即入队并按 §7.5 冻结新增买入。TTM 等价 NOPAT = 可得日不晚于带可得日的最新年报 NOPAT（与建带同口径：§6.5.1 第 3 条现金口径与受限现金、研发资本化，起用日前不资本化）× 带 `ttm_factor`。
+**谷底侧复核**：估值范围内 ROIC 路径的池成员，候选侧池带的机械盈利锚（§6.5.2.2 模型盈利锚，采用研究数的行取 `model_nopat_ps`）≥ 1.5 倍 TTM 等价 NOPAT，且带 `growth_trust`（λ）= 0 或 `trough_weight`（v）> 0 的，即入队并按 §7.5 冻结新增买入。TTM 等价 NOPAT = 可得日不晚于带可得日的最新年报 NOPAT（与建带同口径：§6.5.1 第 3 条现金口径与受限现金、研发资本化，起用日前不资本化）× 带 `ttm_factor`。
 - 判定由 `scripts/structural_growth_review.py` 与结构性增长复核同跑，写 `data/interim/trough_anchor_review.csv`。
 - 档案登记研究正常化盈利后改由研究与模型差距规则管理，未登记前每次扫描照常入队。
 - 买入区内（候选侧 `P/V` ≤ §9.3.1 买入线）的入队行须按 §6.5.2.2 登记研究数复核；买入区外的冻结不影响交易，不要求复核，进入买入区时在当日报告「需人工处理」列出。
@@ -579,7 +574,7 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 
 估值或事件复核触发后（§7.3 生产所用锚较低的差距复核除外），将 `buy_blocked` 设为 `review_pending`，冻结新增买入但继续持仓跟踪。完成复核、更新证据与复核日期并重建队列后自动解除。
 
-**用户裁定的临时冻结（OI-265）**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
+**用户裁定的临时冻结**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
 
 **预告与快报触发的估值复核由 §6.4 的叠加机械完成**：叠加把带与 `valuation_reviewed_at` 一并推进到公告日，队列重建后冻结自动解除。叠加覆盖不到的行（银行与保险、`zero_growth` 路径输入不全、股本多期倒推不一致；脚本逐行打印跳过原因）走人工复核。
 
@@ -688,7 +683,7 @@ P/V 前十从当日扫描的 `worth_attention` 中，按候选侧 `model_pv` 升
 
 ### 9.3 唯一交易口径
 
-输入边界：名单只来自 §5，模型价值只来自 §6，行情只来自 §8。账户级只剩个人投资体系 §4 的两条外生硬约束，不在本节重复。
+输入边界：名单只来自 §5，模型价值只来自 §6，行情只来自 §8；账户约束见 §10.2。
 
 #### 9.3.1 当前参数
 
@@ -704,10 +699,10 @@ P/V 前十从当日扫描的 `worth_attention` 中，按候选侧 `model_pv` 升
 | L3 战术闸门 | `quality_tier = L3` 且分层表 `tactical_thesis` 为空或判「无／暂无／不可买」者不进合格集（新建仓与加仓同，持仓照常跟踪与卖出）；战术理由的判据、里程碑写法见 `docs/Ashare_quality_rubric.md` §8，补判为条件式后自动重入。回测不复现（成文差异） |
 | 单次买入 | 当日净资产 `N × 5.0%` |
 | 持仓只数上限 | 无 |
-| 单票机械上限 | 单票市值 ÷ 当日净资产 `N` ≥ 60% 时不再加仓；不足 60% 时本档只补到 60%（可小于一档，按一手向下取整，不足一手跳过）。**只挡加仓，不触发任何卖出**：已有持仓因上涨越限不回削，涨幅减持／换仓各按本表规则；新建仓（一档 5%）与换仓目标（必为未持仓票）不受影响。按信号日收盘市值与信号日净资产 `N` 判（回测 `--cap-equity signal` 同，OI-243） |
+| 单票机械上限 | 单票市值 ÷ 当日净资产 `N` ≥ 60% 时不再加仓；不足 60% 时本档只补到 60%（可小于一档，按一手向下取整，不足一手跳过）。**只挡加仓，不触发任何卖出**。按信号日收盘市值与信号日净资产 `N` 判（回测 `--cap-equity signal`） |
 | 成长股总额上限 | 成长股（§9.3.6）持仓市值合计 ÷ 当日净资产 `N` ≥ 20% 时不再买入成长股；不足 20% 时本档只补到 20%（按一手向下取整，不足一手跳过）。只挡买入，不触发卖出；按信号日收盘市值与当日 `N` 判。回测不复现（成文差异） |
-| 股债总仓位上限 | 沪深 300 股债利差（`1/PE_TTM − 10 年国债收益率`，信号日已知的最新观测）`< 3%` 时触发总仓位（持仓市值 ÷ 当日净资产 `N`）上限 `30%`；触发后须 `≥ 3.5%` 才解除，处于 `[3%, 3.5%)` 时沿用上一状态，已解除时仅跌破触发线才重新受限。状态从全部可得观测按日期重建，不随扫描重启或回测起点重置；序列开始前不施加上限。受限期间不新增融资、现金与卖出款先偿还融资负债；常规卖出后仍超限则按可交易持仓市值比例减仓至上限内（按手向上取整，停牌者延后），每笔买入以买后总仓位 ≤ 上限为限。解除后恢复本表原融资与买入规则，不强制补仓、不额外设总仓位上限。数据 `data/reference/equity_bond_csi300.csv`，观测过期超过 45 天报错不放行；当日报告同时列触发线、恢复线和当前状态 |
-| 涨幅减持 | 收盘较持仓均价涨幅 `≥ 110%`（收盘 ≥ 均价 × 2.10），减一档，不看走势；持仓均价 = 买入按股数加权、减持不变、除权按 §11.4 折算（持仓表 `cost_basis`）；成长股持仓不适用（见成长股卖出行） |
+| 股债总仓位上限 | 沪深 300 股债利差（`1/PE_TTM − 10 年国债收益率`，信号日已知的最新观测）`< 3%` 时触发总仓位（持仓市值 ÷ 当日净资产 `N`）上限 `30%`；触发后须 `≥ 3.5%` 才解除，处于 `[3%, 3.5%)` 时沿用上一状态，已解除时仅跌破触发线才重新受限。状态从全部可得观测按日期重建，不随扫描重启或回测起点重置；序列开始前不施加上限。受限期间不新增融资、现金与卖出款先偿还融资负债；常规卖出后仍超限则按可交易持仓市值比例减仓至上限内（按手向上取整，停牌者延后），每笔买入以买后总仓位 ≤ 上限为限。解除后恢复本表原融资与买入规则，不强制补仓、不额外设总仓位上限。数据 `data/reference/equity_bond_csi300.csv`，观测过期超过 45 天报错不放行；当日报告列利差、观测日、触发线、恢复线和当前状态 |
+| 涨幅减持 | 收盘较持仓均价涨幅 `≥ 110%`（收盘 ≥ 均价 × 2.10），减一档，不看走势；持仓均价即持仓表 `cost_basis`（§11.2）；成长股持仓不适用（见成长股卖出行） |
 | 换仓 | 只由**未持仓**的合格候选触发（已持仓候选加仓不触发），按 `P/V` 升序逐个判：可用资金不足一档时先换出**满足涨幅减持条件**的持仓一档（涨幅最大者）；否则换出**盈利 ≥ 30%（T 日收盘 ≥ 持仓均价 × 1.30）且 T 日收盘 ≥ MA20 × 1.15** 的持仓一档（收盘 ÷ MA20 最大者先，同则盈利大者先）；两类都不比 `P/V` 边际、不要求弱势，都没有即停止换仓；成长股持仓（§9.3.6）不作两类卖出源；卖一档、买一档；当日已涨幅减持的持仓不作卖出源，同一持仓每日合计至多减一档。卖出款不定向给触发候选，与其它可用资金一并按 §9.3.2 第 5 步 `P/V` 升序买入 |
 | 成长股卖出 | 成长股（§9.3.6）持仓不做涨幅减持、不作换仓卖出源；持仓侧 `P/V ≥ 2.0` 时每日减一档；复核改判后每日减一档直至清空，期间不再买入；出名单与股债总仓位上限照常。回测不复现（成文差异） |
 | 止损 | 不设价格止损；持仓表 `entry_stop_price` 只存历史锚，不进任何判定（§9.3.5） |
@@ -734,7 +729,7 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 
 配置文件只写相对 `BASE` 的变化，不手抄完整基准命令。回测宇宙固定读取 `data/processed/pit_attention/panel_moat_bank_v6b.csv`，估值状态固定读取 `data/processed/a_share_daily_states_adopted.csv`（候选侧）与 `data/processed/a_share_daily_states_hold.csv`（持仓侧，`--hold-states`：换仓来源、簇内升级与 T+1 换仓确认读它）。
 
-回测基准的融资口径：本金 300 万；授信比例与强平线同 §10.2 与个人投资体系 §4；融资年利率 3.5%；资金顺序按 §10.2（授信每日按净资产重定，所有卖出款先偿还超出额度的负债，负债回到额度内才可买入，换仓与买入按现金＋剩余授信判）。实盘与回测同口径。
+回测基准的融资口径：本金 300 万；授信比例与强平线同 §10.2 与个人投资体系 §4；融资年利率 3.5%；资金顺序按 §10.2，实盘与回测同口径。
 
 回测的执行与公司行动口径：T+1 成交日无价（停牌、末日）该笔跳过、不回落信号日成交（与 §9.1 同）；除权按 §11.4 同式折算，配股全额认购、认购款不足部分计融资负债；现金红利按除权日计入现金（不模拟到账日，成文差异）；差别化股息税按卖出时持有期对所卖股份持有期内已收现金红利结算（≤1 个月 20%、≤1 年 10%、>1 年免，FIFO；送股面值部分不计，成文差异）；差异化分派的实付与价格参数按 §11.4 分流。
 
@@ -744,13 +739,13 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 2. 形成走势合格集：新建仓与加仓分别使用 §9.3.1 的条件。
 3. 按 `P/V` 升序计算相关性，只列报告、不过滤。
 4. 先卖：
-   - 触发涨幅减持条件（§9.3.1 涨幅减持行）：减一档。
-   - 成长股（§9.3.1 成长股卖出行）：持仓侧 `P/V` 达线减一档；复核改判的每日减一档直至清空；不按涨幅减持，也不作换仓卖出源。
+   - 涨幅减持：按 §9.3.1 涨幅减持行减一档。
+   - 成长股：按 §9.3.1 成长股卖出行。
    - 已移出 `worth_attention`：每日减一档直至清空，不加走势条件。
-   - 未持仓合格候选想买但资金不足且满足换仓条件（已持仓候选加仓不触发）：先按 §9.3.1 涨幅减持条件选持仓减一档，否则按 §9.3.1 换仓行的盈利与偏离条件选偏离 MA20 最大的持仓减一档；当日已涨幅减持的持仓不作卖出源，同一持仓每日合计至多减一档，无其他卖出源即停止换仓。
+   - 换仓：按 §9.3.1 换仓行选卖出源，每个源减一档。
    - 任何减档后的余仓不足一手时清空。
-   - 股债总仓位上限（§9.3.1）受限期间：以上卖出后总仓位仍超上限，按可交易持仓市值比例减仓至上限内（按手向上取整），先于换仓与买入，卖出款先偿还融资负债。
-5. 后买：对合格集按 `P/V` 升序逐个买一档（含换仓卖出款，不定向给触发候选），按手向下取整，可用资金耗尽即停；股债总仓位上限受限期间不新增融资，每笔买入以买后总仓位 ≤ 上限为限；成长股另以 §9.3.1 成长股总额上限为限。
+   - 股债总仓位上限受限期间：常规卖出后仍超上限的，按 §9.3.1 该行减仓，先于换仓与买入。
+5. 后买：对合格集按 `P/V` 升序逐个买一档（含换仓卖出款），按手向下取整，可用资金耗尽即停；单票上限、成长股总额上限与股债总仓位上限按 §9.3.1。
 6. 同日对冲：同一只股票当日买卖并存时按较小者抵消，只执行净额，被抵消部分不计佣金、印花税与股息税。适用涨幅减持与换仓；出名单为强制退出，不抵消，同日买入清单里出现该股即在报告显式提示。
 
 股数以 T 日收盘估算；T+1 按实际成交价调整手数，一档金额不变。
@@ -777,7 +772,7 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 
 #### 9.3.6 成长股模块（独立于回测）
 
-对象：业务属性登记表（个人投资体系第 5.12 节，`data/processed/a_share_business_attributes.csv`）中 `derived_class = 结构成长型` 的池成员，下称成长股。本节与 §9.3.1 成长股两行只在生产执行，回测不复现（成文差异）：业务属性与研究数不是时点数据，规则由用户按原则裁定，§12.1 读数不适用。
+对象：业务属性登记表（个人投资体系第 5.12 节，`data/processed/a_share_business_attributes.csv`）中 `derived_class = 结构成长型` 的池成员，下称成长股。本节与 §9.3.1 成长股两行只在生产执行，回测不复现（成文差异）。
 
 1. **识别**：池内 ROIC 路径成员逐只登记业务属性，新入池的当晚补登；`structural_growth_review.py` 打印峰守卫生效而未登记的家数。可复制性判定另记把握 `replicability_confidence`，把握为低的 `难复制` 判定保留，按第 3 条复核时须用新证据重判。
 2. **研究数**：峰守卫砍掉 40% 以上的按 §7.3 结构性增长复核登记研究正常化盈利（§6.5.2.2）。复核结论（维持模型或采用研究数）由用户裁定，采用后生产带按研究数计；成长股的 `P/V` 一律读生产带。
@@ -806,13 +801,13 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 
 ### 10.2 账户级防护
 
-账户级有两条外生硬约束——券商授信额度与强平线——和一条估值型内生约束——§9.3.1 股债总仓位上限，口径见个人投资体系 §4。授信额度 = 当日净资产 `N` × 66.6%，不设金额上限；融资负债读 §2 的账户快照台账。每日实际可用资金为：
+账户级约束为券商授信额度、强平线（个人投资体系 §4）与 §9.3.1 股债总仓位上限。授信额度 = 当日净资产 `N` × 66.6%，不设金额上限；融资负债读 §2 的账户快照台账。每日实际可用资金为：
 
 ```text
 现金 + N × 66.6% − 当前融资负债
 ```
 
-该值作为 §8.2 的 `--funds`。用户回报券商可用保证金时，`--funds` = 券商可用保证金 + 现金（现金另计，用户未报现金即记 0），不按上式估算；上式只在未回报时使用。负债超过授信额度时不可新增买入，卖出款先偿还超额负债：可用资金为负时 `--funds` 照给负值、不取 0，扫描器以当日卖出款先补足该缺口，余额才进 §9.3.2 第 5 步买入。触及账户级阈值时在当日报告显式提示；未触及时不重复展开。股债总仓位上限受限期间授信视为 0：可用资金 = 现金 − 融资负债（扫描器 `--cash`／`--debt`，未给时读账户快照台账），为负时卖出款先偿债；当日报告列出利差、观测日、触发线、恢复线与上限状态。
+该值作为 §8.2 的 `--funds`。用户回报券商可用保证金时，`--funds` = 券商可用保证金 + 现金（现金另计，用户未报现金即记 0），不按上式估算；上式只在未回报时使用。负债超过授信额度时不可新增买入，卖出款先偿还超额负债：可用资金为负时 `--funds` 照给负值、不取 0，扫描器以当日卖出款先补足该缺口，余额才进 §9.3.2 第 5 步买入。触及账户级阈值时在当日报告显式提示；未触及时不重复展开。股债总仓位上限受限期间授信视为 0：可用资金 = 现金 − 融资负债（扫描器 `--cash`／`--debt`，未给时读账户快照台账），为负时卖出款先偿债。
 
 ### 10.3 策略收益跟踪
 
@@ -827,7 +822,7 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 | `strategy_return_pct` | (`strategy_unit_nav` − 1) × 100，保留两位 |
 | `account_peak_net_assets_cny` | 基准日起 `strategy_unit_nav` 最高值 × 基准净资产 |
 | `drawdown_from_peak_pct` | (`strategy_unit_nav` ÷ 基准日起最高单位净值 − 1) × 100，保留两位 |
-| `strategy_epoch` | 策略纪元标签；影响估值、选股或下单的实质规则变动自生效日起换新标签：纪元表落在 `strategy_return_tracker.EPOCHS`（标签、生效日），`--write` 按行日期自动标段，`--epoch <标签> --from <日期>` 只作一次性覆盖；单位净值、峰值与回撤连续不重置；文档、展示与指标算法修订不换纪元。`E2` 对应 2026-09-10；`E3` 自 2026-09-11 起（2026-09-10 收盘后采纳）；`E4` 自 2026-09-15 起，使用 §9.3.3 确认成交冷却（2026-09-14 收盘后确认，T+1首个执行日）；`E5` 自 2026-09-30 起，使用 §9.3.1 前低企稳建仓、不设价格止损与盈利偏离让位换仓（2026-09-29 收盘后采纳，T+1首个执行日）；`E6` 自 2026-10-08 起，§6.5.1 第 4 条取消银行同尺系数、保险改按 `V_DDM × Ḡ`（均为 2026-09-30 收盘后采纳）与 §9.3.6 成长股模块（2026-10-01 采纳），国庆休市后首个执行日 |
+| `strategy_epoch` | 策略纪元标签；影响估值、选股或下单的实质规则变动自生效日起换新标签：纪元表落在 `strategy_return_tracker.EPOCHS`（标签、生效日），`--write` 按行日期自动标段，`--epoch <标签> --from <日期>` 只作一次性覆盖；单位净值、峰值与回撤连续不重置；文档、展示与指标算法修订不换纪元 |
 
 基准日前各行的策略列只存历史数据，不参与计算。快照日期不连续时按相邻两行链乘。当日报告账户段列出策略收益率、策略期回撤与纪元。
 
@@ -897,11 +892,11 @@ python3 scripts/record_cooldown_execution.py \
 
 ## 12. 改参数与回测验证
 
-参数依据与全部历史读数只查 `docs/Ashare_backtest_log.md`。工作流正文只保存 §9.3.1 当前选择。
+参数依据、在册合格面、基准读数与全部历史读数只查 `docs/Ashare_backtest_log.md`；正文只保存 §9.3.1 当前选择。
 
 ### 12.1 验证纪律
 
-**回测定位**：回测检查一个策略或一种估值算法能否较准确地捕捉历史上出现过的优秀便宜机会、避开历史上典型的便宜陷阱，兼查实现正确性（对照复现、无前视、可执行）与路径风险（回撤、集中度、杠杆安全、换手）。回测收益率不是本流程的目标，也不作优化目标：不按收益读数高低挑选参数、口径或臂，不为抬高读数调参。估值口径、交易规则、参数、风险约束，以及改变生产产物（V、`P/V`、合格集、执行清单、`BASE`）的代码修正，一律经用户人工审核后裁定；本节各项读数只作裁定参考，任何读数都不自动采纳、也不自动否决。按现行规则的日常取数、重建与扫描不属修正。成长股模块（§9.3.6）依赖业务属性与研究数，历史上无法复现，不进回测，本节读数不适用。
+**回测定位**：回测检查一个策略或一种估值算法能否较准确地捕捉历史上出现过的优秀便宜机会、避开历史上典型的便宜陷阱，兼查实现正确性（对照复现、无前视、可执行）与路径风险（回撤、集中度、杠杆安全、换手）。回测收益率不是本流程的目标，也不作优化目标：不按收益读数高低挑选参数、口径或臂，不为抬高读数调参。估值口径、交易规则、参数、风险约束，以及改变生产产物（V、`P/V`、合格集、执行清单、`BASE`）的代码修正，一律经用户人工审核后裁定；本节各项读数只作裁定参考，任何读数都不自动采纳、也不自动否决。按现行规则的日常取数、重建与扫描不属修正。成长股模块（§9.3.6）与存量型增长上限（§6.5.2.2）不进回测，本节读数不适用，由用户按原则裁定。
 
 新候选先写预登记：修正依据、要看的读数与案例在跑数之前定下，跑完不得更换。修正依据须是下列一项或几项，并指向证据：
 
@@ -915,11 +910,11 @@ python3 scripts/record_cooldown_execution.py \
 1. 先确认数据、股票池有效期、复权、手续费、整手、融资和执行延迟均与 `BASE` 一致。
 2. 预先按预计实盘持有期选收益主窗口，缺省取 5 年。滚动窗口**月末锚定**：窗口末日 = 每个自然月最后一个交易日，首日 = 60 个月前同月末，年化按实际日历年数，回撤与 Sharpe 用窗口内逐日净值。
 
-   **计量口径（summary 与扫描输出行均带 `计量版本`，现行 m3）**：全期 CAGR = (期末净资产 ÷ 初始资本)^(365.25 ÷ 首个与末次净值日的日历天数) − 1；全期 Calmar = 全期 CAGR ÷ 全期最大回撤；Sharpe（全期与滚动窗口同一函数）= 逐日超额简单收益均值 ÷ 样本标准差 × √244，超额收益 = 净值日收益 − 无风险日收益，无风险日收益 = `data/reference/cost_of_equity_inputs.csv` 中 `observed_on` ≤ 前一净值日的最新年率 × 相邻净值日日历天数 ÷ 365.25，无可得利率的区间按 0 计并报 `rf覆盖率`。`--report` 按文件首行 `#METRIC` 解析，不同计量版本的读数不配对；计量版本变更时 `BASE` 与在评候选的全样本／A／U 同批重算，旧读数留台账、新旧差异与标记翻转表写回测日志，再重登在册读数。m3：水平读数与交易路径同 m2，只把主读数改为同窗口配对；summary 增 `滚动5年窗口年化`（`YYYY-MM=年化;…`，月末锚定窗口按末月配对），扫描文件在每条数字行后落 `#WIN5|标签|起点|序列` 行；m2 读数只读，不与 m3 配对。
+   **计量口径（summary 与扫描输出行均带 `计量版本`，现行 m3）**：全期 CAGR = (期末净资产 ÷ 初始资本)^(365.25 ÷ 首个与末次净值日的日历天数) − 1；全期 Calmar = 全期 CAGR ÷ 全期最大回撤；Sharpe（全期与滚动窗口同一函数）= 逐日超额简单收益均值 ÷ 样本标准差 × √244，超额收益 = 净值日收益 − 无风险日收益，无风险日收益 = `data/reference/cost_of_equity_inputs.csv` 中 `observed_on` ≤ 前一净值日的最新年率 × 相邻净值日日历天数 ÷ 365.25，无可得利率的区间按 0 计并报 `rf覆盖率`。`--report` 按文件首行 `#METRIC` 解析，不同计量版本的读数不配对；计量版本变更时 `BASE` 与在评候选的全样本／A／U 同批重算，旧读数留台账、新旧差异与标记翻转表写回测日志，再重登在册读数。summary 含 `滚动5年窗口年化`（`YYYY-MM=年化;…`，月末锚定窗口按末月配对），扫描文件在每条数字行后落 `#WIN5|标签|起点|序列` 行；m2 读数只读，不与 m3 配对。
 
    标准起点集 = 路径长度 ≥ 10 年的全部半年档起点，执行列表读取 `sweep_backtest_configs.DEFAULT_STARTS`；数据末端推进使新档满 10 年时补入并重登读数。标准起点集上**参考读数以五项为首**：主读数 = 同起点同窗口的滚动 5 年 CAGR 先相减、起点内取中位，再取跨起点配对差中位；复利读数 = **全期 CAGR** 的配对差中位；坏情形 = 滚动 5 年 CAGR P25（**起点内**月末窗口的分位；P10 不上首页）的配对差中位；回撤读数 = 滚动 5 年回撤中位的配对差中位，变深超过 3pp 标「回撤变深」；负窗读数 = 滚动 5 年负收益窗口占比由 0 转正的起点数，过半标「负窗转正」（对照已有负窗的起点不计）。标记前先校验两表两臂的起点集合等于标准起点集、每个起点的同窗窗口集合相同、首页读数字段均为有限值，任一不满足即「不可判」并列出缺陷；取交集的共同覆盖读数只作诊断、须单独注明，不进标记。坏情形、回撤读数、负窗读数取全样本表；**主读数与复利读数在全样本表与去赢家表（剔除集 A）各取一份，四个读数按下式给读数标记**：均 ≥ −0.15pp → 未见劣化；**回撤改善**：主读数两表均 ≥ −1pp、复利读数两表均 ≥ −0.15pp、全期最大回撤配对差中位两表均 ≤ −5pp（更浅）、滚 5 最差窗口配对差中位（全样本）≥ −0.15pp，且两表各起点 `BASE` 最大回撤区间按日期重叠归并后、候选更浅 ≥ 5pp 的区间不少于两段；一表的某项落在 [−1pp, −0.15pp) 且另一表同项 ≥ +1pp → 两表反向；其余 → 劣化。回撤变深或负窗转正时一律记劣化并注明。**读数标记只概括回测读数，不构成采纳或否决。**正号起点数只报。**臂间比较与「未来年化表现」的表述基准一律为复利读数**，对照表按 Δ年化 排序。未来年化的水平引用只用全期口径读数——年化（全期 CAGR）、互不重叠 5 年块中位、长跑年化；滚动重叠窗口的水平值只描述窗口分布，不作未来预期引用。Δ 读数与符号数描述已过历史，不作未来 Δ 的点预测引用。
 
-   **标准指标集**（每轮扫描必报，全样本与去赢家两个口径各出一份、同表并列，一个口径的读数不得替代另一个）：滚 5 中位／P25／最差／回撤中位／Calmar 中位／Sharpe 中位／负收益窗口占比；全期 CAGR 中位／最大回撤中位／Calmar 中位／Sharpe 中位；互不重叠 5 年块中位（自最新窗口末月往回每 60 个月一窗、首尾相接零重叠，取中位）；长跑锚点 2009-11-01 与 2011-11-01 各自的全期 CAGR 与最大回撤，两个锚点都报；滚 3 中位与回撤中位；逐年收益中位与最差；年均换手（不进第 4 款标记）；平均仓位（＝持仓市值 ÷ 净资产，融资下可超 100%）。每项报三个数：水平值、逐起点配对差中位、正号起点数——长跑锚点是单起点，只报水平与配对差，不报符号数、不进任何标记。滚 5 中位的逐起点配对差是 m2 主读数，自 m3 起只描述。另出集中度表（持仓数、单票权重中位／P90／最大、前三权重中位、单票超 60% 天数占比）与滚动 10 年 CAGR，只描述不排序。集内除五项参考读数外一律只描述不排序；两臂比较一律取逐起点配对差，不比较两个水平值。不得看完结果再换主窗口或换读数。两层分位不要混：符号数是标准起点集层，P25／最差是起点内窗口层。
+   **标准指标集**（每轮扫描必报，全样本与去赢家两个口径各出一份、同表并列，一个口径的读数不得替代另一个）：滚 5 中位／P25／最差／回撤中位／Calmar 中位／Sharpe 中位／负收益窗口占比；全期 CAGR 中位／最大回撤中位／Calmar 中位／Sharpe 中位；互不重叠 5 年块中位（自最新窗口末月往回每 60 个月一窗、首尾相接零重叠，取中位）；长跑锚点 2009-11-01 与 2011-11-01 各自的全期 CAGR 与最大回撤，两个锚点都报；滚 3 中位与回撤中位；逐年收益中位与最差；年均换手（不进第 4 款标记）；平均仓位（＝持仓市值 ÷ 净资产，融资下可超 100%）。每项报三个数：水平值、逐起点配对差中位、正号起点数——长跑锚点是单起点，只报水平与配对差，不报符号数、不进任何标记。另出集中度表（持仓数、单票权重中位／P90／最大、前三权重中位、单票超 60% 天数占比）与滚动 10 年 CAGR，只描述不排序。集内除五项参考读数外一律只描述不排序；两臂比较一律取逐起点配对差，不比较两个水平值。不得看完结果再换主窗口或换读数。两层分位不要混：符号数是标准起点集层，P25／最差是起点内窗口层。
 
    **跨起点尾部**（每轮必报，只描述不判，直接取标准起点集的最值）：实际最差滚 5 CAGR 及其起点与窗口末日；最深全期最大回撤及其起点与区间；最低担保比例及其起点与日期；最低股票同跌缓冲及其起点与日期；最低现金及其起点与日期、负现金日数合计；强平模拟路径次数合计与受影响起点数；出现 5 年亏损窗口的起点数；`rf覆盖率` 最小值；数据末端 = 各起点末次净值日的最大值。
 
@@ -934,7 +929,7 @@ python3 scripts/record_cooldown_execution.py \
 6. 增加互不重叠的持有期或逐年检验；共享终点的多个起点与重叠滚动窗口不视为独立样本。
 7. 检查可执行性、幸存者偏差、未来信息和多重比较；绝对收益不当作未来预期。
 
-   **执行成本压力**（仅用户明确要求时运行）：默认回测使用 `--slippage-bp 0`，手续费、税费与融资成本照常计入；参数初筛、机制修复及采纳前验证均不主动安排滑点测试，未运行不构成材料缺失或采纳阻碍。保留滑点代码、配置与报表功能；复用历史实验批处理时也须按本条触发条件选择测试项，不自动附带滑点测试。
+   **执行成本压力**（仅用户明确要求时运行）：默认回测使用 `--slippage-bp 0`，手续费、税费与融资成本照常计入；参数初筛、机制修复及采纳前验证均不主动安排滑点测试，未运行不构成材料缺失或采纳阻碍；复用历史实验批处理时也不自动附带滑点测试。
 
    用户明确要求后，候选与 `BASE` 各按每边滑点 0／10／20／30bp（`--slippage-bp`：买入成交价 × (1 + bp/1e4)、卖出 × (1 − bp/1e4)，进股数、整手、可用现金、成本、费税；盯市价与信号价不变；同日买卖先净额对冲、只对净额收；强平与退市清仓同样收；分红、送转、配股认购不收）跑标准起点集两遍，同档配对，剔除集 A／U 按 0bp 锚点固定（`--exclude-codes` 单遍）；报各档主读数与复利读数的 Δ、滚 5 回撤／最低担保比例／强平次数的变化，以及第 2 款读数标记是否随档位翻转；`BASE` 各档对 0bp 的配对差同表列出；档位不作否决线。入口 `scripts/slurm/oi148_slippage.sbatch`，报表 `scripts/experimental/oi148_slippage_report.py`。
 8. 第 1、6、7 款的有效性要求满足、裁定材料齐备，且用户人工审核裁定后，才修改估值口径、§9.3.1、生产常量和回测 `BASE`；裁定写入决策日志。
@@ -945,7 +940,7 @@ python3 scripts/record_cooldown_execution.py \
 
 11. **案例归因**：候选报 `scripts/experimental/delta_attribution.py` 的前三只贡献占比（按 trades `contrib` 列，与第 3 款同一把尺），并就正负两个方向贡献最大的各五只股票逐只列出：两臂的建仓与清仓日期、信号日 `P/V`、持有期内与其后 3 年模型价值 V 的变化、其后 3 年含分红总回报；逐只归为捕捉便宜机会、错过便宜机会、踩中便宜陷阱、避开便宜陷阱或与估值无关，并写明依据。前三只贡献占比超过 100%（扣除后 Δ 反号）时，裁定材料须注明读数由这几只决定。
 12. 引用正读数时同报本族已试臂数，按 `data/backtest/scan_arms_index.csv` 的臂名计（`clean_derived_artifacts.py` 归并后自动重建）；当前逐路径读数取 `data/backtest/scan_summaries.csv`。
-13. **机会／陷阱读数**（OI-222）：
+13. **机会／陷阱读数**：
     * **答案卷** `data/backtest/opportunity_trap_labels_v1.csv` 只用价格与财报、不读任何估值方法的 `P/V`，由 `scripts/experimental/opportunity_trap_labels.py` 生成：回测宇宙在册期内每只股票每月最后交易日一行，记其后 3 年含分红再投年化 `f3`、超额（`f3` 减同月在册股票 `f3` 的中位）与归母净利 TTM 在 3 年、5 年后的变化（可得日按法定截止日封顶）。
     * **分类**：**机会** = `f3` ≥ 20%、超额 ≥ +10pp，且 3 年或 5 年后盈利不低于当时；**陷阱** = `f3` ≤ 0、超额 ≤ −10pp，且 3 年后盈利降 ≥ 20%；涨幅同机会但 3 年、5 年后盈利都更低的记估值扩张，其余记一般。同一股票相邻月份（中断不超过 1 个月）的同类标签合为一段。
     * **具名案例** `data/reference/opportunity_trap_cases.csv`（机会与陷阱各一组，区间落在同类标签段内）。
@@ -954,19 +949,13 @@ python3 scripts/record_cooldown_execution.py \
 
 历史面板 `effective_from` 与 `effective_to` 均为有效期边界，结束日包含在内。禁止把区间起点当成完整快照，也禁止手工修改面板 CSV；名单变化先改判定源，再运行装配脚本。换码主体的双代码区间约束见 §8.3。
 
-换估值口径或换宇宙做 A/B 时，使用 `scripts/experimental/align_buy_line.py` 把买入线重解到同一在册合格面，保留四位小数。**对齐容差**：先在新口径逐日状态上计算原买入线的下侧合格面，它与在册合格面之差的绝对值 < 0.2pp 时保留原线（脚本 `--tolerance-pp 0.2` 缺省判定并打印两侧合格面），在册合格面不随之改写、仍取上次实际重解时的值，避免多次容差内漂移累积；达到或超过容差才取对齐解并重登在册合格面；只为使某一类公司与其余公司同尺的缩放不做对齐，保留原线，按新口径的原线合格面重登在册合格面。换仓边际按 0.01 一档重新扫描，不随买入线缩放。
+换估值口径或换宇宙做 A/B 时，使用 `scripts/experimental/align_buy_line.py` 把买入线重解到同一在册合格面，保留四位小数。**对齐容差**：先在新口径逐日状态上计算原买入线的下侧合格面，它与在册合格面之差的绝对值 < 0.2pp 时保留原线（脚本 `--tolerance-pp 0.2` 缺省判定并打印两侧合格面），在册合格面不随之改写、仍取上次实际重解时的值；达到或超过容差才取对齐解并重登在册合格面；只为使某一类公司与其余公司同尺的缩放不做对齐，保留原线，按新口径的原线合格面重登在册合格面。换仓边际按 0.01 一档重新扫描，不随买入线缩放。
 
 **买入线独立剂量扫描**：固定估值口径与股票池，把买入线作为待测参数，不作合格面对齐或容差回退；逐档报告实际合格比例，其他交易参数固定，以当前 `BASE` 做同起点全/A/U对照。范围、步长与诊断档先登记；按本节判断相邻平台和风险，不以扫描最高单点自动修改生产。
 
-**横截面比例买入研究**：`--buy-top-pct q`（0关闭，q∈(0,1]）替代固定P/V准入上限。分母为信号日有效面板中候选侧价格、价值、P/V均有限且为正的公司；按P/V升序、同值按代码升序，取前⌊q×N⌋只，再走原走势、持仓及执行约束，不补齐被后续条件挡下的名额。T+1只执行T日选中且成交日仍在册的公司；掉出排名不新增卖出规则。A/U剔除后在剩余信号日宇宙重算排名与分母；换仓仍用原P/V与原边际。必须报告逐日人数、实际比例、隐含P/V门槛分布和逐年读数，按本节预登记、同起点对照和平台标准筛查；生产缺省关闭。
+**股债总仓位上限的回测参数**：`BASE` 显式带 `--equity-bond-mode cap --equity-bond-metric spread --equity-bond-restore-above` 与三个数值参数 `--equity-bond-threshold`（触发线）、`--equity-bond-lower`（上限）、`--equity-bond-release-threshold`（恢复线），取值只在 §9.3.1 股债总仓位上限行；恢复门槛须有限且不低于触发门槛。输入 `--equity-bond-data` 的股债利差 = 宽基指数整体滚动盈利收益率（1/PE_TTM）− 中国10年国债到期收益率，利率用小数，不用成本输入表里的常数ERP；数据注明指数、来源、观测日与债息观测日，PE须有限且正，债息须有限；禁止未来回填。信号取T日收盘已知观测，T+1执行；序列开始前保留原策略并记覆盖；序列开始后的估值观测过期（门槛见 §9.3.1）或债息在估值日已过期超过10天时报错，禁止静默放行。总仓位分母为当日净资产；上限只限制买入，不强制补仓。主动约束在常规卖出后按可交易持仓比例减仓、向上取整到一手并先偿债；停牌延后、记录未满足上限，不用陈旧价格成交。买入在整手/兜底及同日对冲前后校验总仓位与费用后的资金余量，禁止绕限。
 
-**股债性价比仓位约束**：生产规则见 §9.3.1 股债总仓位上限行，`BASE` 显式带 `--equity-bond-mode cap --equity-bond-metric spread --equity-bond-restore-above` 与三个数值参数 `--equity-bond-threshold`（触发线）、`--equity-bond-lower`（上限）、`--equity-bond-release-threshold`（恢复线），取值只在 §9.3.1 股债总仓位上限行；恢复门槛只支持 `cap/spread/restore-above`，须有限且不低于触发门槛。未给恢复门槛时保留同阈值切换的历史研究语义；其他模式与参数为研究开关。输入 `--equity-bond-data` 的股债利差 = 宽基指数整体滚动盈利收益率（1/PE_TTM）− 中国10年国债到期收益率，利率用小数；不用成本输入表里的常数ERP。数据注明指数、来源、观测日与债息观测日，PE须有限且正，债息须有限；禁止未来回填。信号取T日收盘已知观测，T+1执行；分位为当前利差在信号观测日前最多60个有效月观测中的中秩，至少12条，当前观测不参与历史分布。上市前/历史不足时保留原策略并记覆盖；序列开始后的估值观测过期（门槛见 §9.3.1）或债息在估值日已过期超过10天时报错，禁止静默放行。
-
-研究动作分开标记：`credit`低于阈值时授信归零、现金与后续卖出款先偿债，不主动卖券；`cap`按绝对利差或历史分位阈值切换总仓位上限；`ramp`将历史分位在两端点间线性映射到上下仓位上限。总仓位分母为当日净资产，配置范围0～160%；上限只限制买入，不强制补仓。主动约束在常规卖出后按可交易持仓比例减仓、向上取整到一手并先偿债；停牌延后、记录未满足上限，不用陈旧价格成交。买入在整手/兜底及同日对冲前后校验总仓位与费用后的资金余量，禁止绕限；仅在显式启用股债约束时生效，生产BASE已启用。融资利息、交易费税、滑点、强平与股票选择继承BASE。实验须预登记相邻阈值、固定仓位对照、覆盖及触发频率，按本节做全/A/U同起点配对；生产采纳仍走第8款。阈值以上完整恢复的分支即引擎 `--equity-bond-restore-above`（研究批次的 `high_base_engine.py` 与之等价）。
-
-**融资约束替代规则研究**：独立研究入口 `data/experiments/exp_equity_bond_opt_20260910/engine.py --eb-policy <臂名>`，规则与扫描网格先冻结于该目录 `preregister.md`／`grid.json`。可测试利差触发后的总仓位上限、恢复融资的较高利差门槛或连续月数／趋势确认、指数整体 PE 及其历史分位、指数价格相对 60 个月均线的偏离。均使用信号日前已知月观测；均线取已完成月份收盘价，缺少所需历史时回退当前 BASE 并记录覆盖；状态从全部可得历史逐月重建，不随回测起点重置。恢复条件仅恢复融资与原买入规则，不强制补仓。逐臂记录触发和恢复日期、受限日数、实际仓位及完整全/A/U结果；严格核验全部标准起点与配对窗口一致，负窗转正按本节“由 0 转正”计数。研究不改变生产参数，采纳仍走第 8 款。
-
-当前参数读取 §9.3.1；在册合格面、基准读数和实验证据从 `docs/Ashare_backtest_log.md` 查找。配对只使用同纪元、同计量口径、同起点和同剔除集的基准。报告参数选择依据及取舍，不将历史最优读数作为未来收益承诺。
+配对只使用同纪元、同计量口径、同起点和同剔除集的基准。
 
 ## 13. 改规则前自检
 
@@ -994,4 +983,4 @@ python3 scripts/record_cooldown_execution.py \
 
 ## 15. 版本与历史
 
-当前版本只认第 1 行。版本变化记入 `docs/Ashare_workflow_changelog.md`，回测依据记入 `docs/Ashare_backtest_log.md`；两者只保留当前纪元，旧纪元在 `docs/archive/`；完整旧正文可从 Git 历史恢复，不复制回本文件。
+当前版本只认第 1 行。版本变化记入 `docs/Ashare_workflow_changelog.md`，回测依据记入 `docs/Ashare_backtest_log.md`；两者只保留当前纪元，旧纪元与旧正文从 Git 历史取回（`docs/archive/README.md`），不复制回本文件。

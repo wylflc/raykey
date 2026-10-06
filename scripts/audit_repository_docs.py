@@ -4,13 +4,74 @@ from __future__ import annotations
 
 import csv
 import re
+import subprocess
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = [
     "AGENTS.md", "CLAUDE.md", "README.md", "docs/000_Ashare_workflow.md",
     "docs/000_personal-investment-system-v1.zh.md", "docs/Ashare_quality_rubric.md",
+    "docs/repository_cleanup_rules.md", "docs/000_Ashare_workflow_open_issues.md", "docs/archive/README.md",
 ]
+
+
+def tracked(prefix: str) -> list[str]:
+    return subprocess.run(["git", "ls-files", "--", prefix], cwd=ROOT, capture_output=True,
+                          text=True, check=True).stdout.split()
+
+
+def audit_cleanup_rules(today: str) -> tuple[list[str], list[str]]:
+    """docs/repository_cleanup_rules.md 中可机械判定的条目；返回 (错误, 提示)。"""
+    errors: list[str] = []
+    notices: list[str] = []
+    for name in ACTIVE[3:5]:
+        body = (ROOT / name).read_text(encoding="utf-8").split("\n", 1)[1]
+        for pattern in (r"OI-\d+", r"只作(?:研究)?复现|复现改前"):
+            if re.search(pattern, body):
+                errors.append(f"{name}: issue number or reproduction-only switch in execution body: {pattern}")
+    opened = (ROOT / "docs/000_Ashare_workflow_open_issues.md").read_text(encoding="utf-8")
+    pending = opened.split("\n## 待处理", 1)[-1].split("\n", 1)[-1]
+    if pending.split("\n### ", 1)[0].strip() not in ("", "无。"):
+        errors.append("open issues: narrative outside ### items under 待处理; move closure history to the closed index")
+    log = (ROOT / "docs/Ashare_backtest_log.md").read_text(encoding="utf-8")
+    for section in re.split(r"(?m)^(?=### )", log)[1:]:
+        if len(section.rstrip().encode()) > 1536:
+            errors.append(f"backtest log section over 1.5 KB: {section.splitlines()[0][:60]}")
+    copies = sorted(p.name for p in (ROOT / "docs/archive").iterdir() if p.name != "README.md")
+    if copies:
+        errors.append(f"docs/archive keeps full-text copies: {', '.join(copies)}")
+
+    readme = (ROOT / "scripts/archive/README.md").read_text(encoding="utf-8")
+    for rel in tracked("scripts/archive"):
+        if Path(rel).name != "README.md" and Path(rel).name not in readme:
+            errors.append(f"archived script not registered in scripts/archive/README.md: {rel}")
+    due, section = [], None
+    for line in readme.splitlines():
+        heading = re.match(r"^#{2,4} .*?(\d{4}-\d\d-\d\d) 可永久删除", line)
+        if heading:
+            section = heading.group(1)
+            if section <= today:
+                due.append(line.lstrip("# "))
+            continue
+        row = re.match(r"^\| (.+?) \| \d{4}-\d\d-\d\d \| (\d{4}-\d\d-\d\d) \|", line)
+        if row and row.group(2) <= today:
+            due.append(f"{row.group(1)}（{row.group(2)}）")
+    if due:
+        notices.append("scripts/archive entries past their deletion date: " + "; ".join(due))
+
+    callers = [ROOT / name for name in ACTIVE] + [ROOT / rel for rel in tracked("scripts")
+                                                  if rel.endswith((".py", ".md", ".sh"))
+                                                  and not rel.startswith(("scripts/archive/", "scripts/slurm/"))]
+    text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in callers)
+    jobs = {rel: (ROOT / rel).read_text(encoding="utf-8", errors="ignore") for rel in tracked("scripts/slurm")}
+    idle = [Path(rel).name for rel in jobs if Path(rel).name not in text
+            and not any(Path(rel).name in other for key, other in jobs.items() if key != rel)]
+    if idle:
+        notices.append("scripts/slurm jobs not referenced by any document or script (archive once closed): "
+                       + ", ".join(idle))
+    return errors, notices
 
 
 def read_rows(name: str) -> list[dict[str, str]]:
@@ -40,7 +101,7 @@ def audit_processed_products(workflow: str) -> list[str]:
     return errors
 
 
-def audit() -> tuple[list[str], dict[str, int]]:
+def audit() -> tuple[list[str], dict[str, int], list[str]]:
     errors: list[str] = []
     texts = {name: (ROOT / name).read_text() for name in ACTIVE}
     for name, text in texts.items():
@@ -119,17 +180,21 @@ def audit() -> tuple[list[str], dict[str, int]]:
     warning = version_sync_warning()
     if warning:
         errors.append(warning)
+    cleanup_errors, notices = audit_cleanup_rules(datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat())
+    errors.extend(cleanup_errors)
     return sorted(set(errors)), {"active_docs": len(texts), "a_share_tiers": len(tiers),
                                 "overseas_rows": len(overseas), "index_rows": len(index),
-                                "calibration_notes": len(calibration) - 1}
+                                "calibration_notes": len(calibration) - 1}, notices
 
 
 def main() -> int:
-    errors, counts = audit()
+    errors, counts, notices = audit()
     print("Documentation audit:", ", ".join(f"{key}={value}" for key, value in counts.items()))
     for error in errors:
         print("ERROR:", error)
-    print(f"{len(errors)} error(s)")
+    for notice in notices:
+        print("NOTICE:", notice)
+    print(f"{len(errors)} error(s), {len(notices)} notice(s)")
     return int(bool(errors))
 
 

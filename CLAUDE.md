@@ -17,6 +17,7 @@ Treat the latest user request and current project standards as the source of tru
 
 - Keep the workflow and investment system execution-only: commands, thresholds, procedures and paths. Put rationale, cases, version comparisons and measured results in logs or reports. Keep version metadata in the title only. Recover old text from Git; do not create full-document historical copies.
 - Define each rule in one place. Change that standard before its implementation; other documents link to it instead of copying thresholds. Run `python3 scripts/audit_repository_docs.py` after instruction or document changes.
+- Clean up the repository and trim documents by [docs/repository_cleanup_rules.md](docs/repository_cleanup_rules.md); the user does not need to restate those rules.
 - Keep changes scoped. Do not add dependencies, providers, databases, schedulers or services unless the task needs them.
 - `docs/xzy/` contains another person's materials. Do not read, use or edit it unless the user explicitly cites it.
 - Reserve the `000_` filename prefix for documents the user opens directly.

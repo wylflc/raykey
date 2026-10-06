@@ -19,9 +19,10 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 | [质量评分细则](docs/Ashare_quality_rubric.md) | 四维打分方法与证据字段；层级与交易规则读取工作流程 |
 | [版本记录](docs/Ashare_workflow_changelog.md)、[回测日志](docs/Ashare_backtest_log.md) | 当前纪元的变更与实验证据索引，按需检索 |
 | [结案索引](docs/Ashare_workflow_open_issues_closed.md) | 已处理缺陷与待办的处置 |
+| [仓库清理规则](docs/repository_cleanup_rules.md) | 文档精简与文件清理的判定、处置和校验 |
 | `docs/reports/` | 各次实验与审计报告；报告日期对应当时状态 |
 | [行业校准记录](docs/peer-group-calibration/README.md) | 历史行业研究线索；使用前核对当前名单与原始证据 |
-| [文档归档](docs/archive/README.md) | 已完成的研究过程与旧纪元记录；旧正文从 Git 历史读取 |
+| [文档归档](docs/archive/README.md) | 已删除历史文档的 Git 取回索引 |
 
 ## 数据与代码
 
@@ -35,7 +36,7 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 | `data/experiments/`、`data/backtest/` | 实验配置、摘要与扫描台账 |
 | [数据归档](data/archive/README.md) | 已完成轮次的证据与历史记录 |
 | `scripts/` | 生产脚本、数据工具与本地检查 |
-| `scripts/slurm/` | 长时作业入口；资源规范见代理工作规则 |
+| `scripts/slurm/` | 常设长时作业入口；资源规范见代理工作规则 |
 | [实验脚本](scripts/experimental/README.md) | 常设回测核验工具及实验复现代码 |
 | [脚本归档](scripts/archive/README.md) | 退役工具与保留期限 |
 | `notebooks/` | 估值与成交诊断可视化 |
@@ -44,4 +45,4 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 
 生产命令链只维护在工作流程中。文档一致性检查运行 `python3 scripts/audit_repository_docs.py`；生产与回测参数同步检查运行 `python3 scripts/test_strategy_parameter_sync.py`。 回归测试是 `scripts/test_*.py` 各自独立的 `unittest` 脚本，改动某模块时运行同名测试（`python3 scripts/test_<名>.py`）；全量 `python3 -m unittest discover -s scripts -p 'test_*.py'` 在交互会话 15 分钟内跑不完，须经 sbatch。
 
-可重建的大型派生产物不入库。`python3 scripts/clean_derived_artifacts.py closed` 预览已结案实验的清理清单；确认无相关运行作业后加 `--apply`。保留原始证据、配置、摘要与生产输入。
+可重建的大型派生产物不入库。清理仓库、精简文档按[仓库清理规则](docs/repository_cleanup_rules.md)执行。

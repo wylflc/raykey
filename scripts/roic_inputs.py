@@ -1078,7 +1078,7 @@ class MaintenanceEstimate:
 
 
 def maintenance_cash_ratio(history: list[RoicYear]) -> MaintenanceEstimate:
-    """Growth-adjusted persistent cash need; research definition in §6.5.4.
+    """Growth-adjusted persistent cash need; research definition in data/experiments/exp_maintenance_cash_20260909/preregister.md.
 
     Callers supply only point-in-time annual versions after entity resets.
     Missing data are unknown, not zero. This proxy is not observed maintenance capex.

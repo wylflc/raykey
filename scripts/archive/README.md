@@ -23,24 +23,26 @@
 | `build_a_share_full_rescan_queue.py` | 2026-08-02 | 2026-11-02 | 全市场第一轮三类初筛重扫的工作队列生成器。该轮已于 **2026-07-09 完成**（5,653 家：261 worth_attention / 5,332 boundary_pending / 60 garbage），队列不再需要重建 | 季度审查走 `build_quarterly_quality_review_queue.py`（§5.3）；全量重扫见 OI-036 |
 | `fetch_a_share_research_evidence.py` | 2026-08-02 | 2026-11-02 | 早期研报证据抓取，产物 `a_share_research_queue.csv` 停在 2026-05-14（已删除），且其字段口径不含建带所需的一致预期覆盖机构数 | `fetch_a_share_valuation_evidence.py`（§6.3 一致预期覆盖机构数由它产出） |
 | `apply_evidence_review.py` | 2026-08-02 | 2026-11-02 | 2026-08-01 分层证据复核轮的一次性回写工具，该轮已闭环（261 家全部 evidence-reviewed），复核记录见 `data/archive/completed-queues/evidence_review_log.md` | 无——后续分层变更走 §7.2 质量复核触发，逐票写入 |
-
-| `build_pit_judgment_queue.py`<br>`fetch_delisted_financials.py` | 2026-08-14 | 2026-11-14 | **OI-040（幸存者偏差）配套的两个工具**。该轮已查实为**不可测的数据缺口**——本地行情与财务两侧均不含退市公司，九只已知退市股五项数据全缺，`data/raw/ohlcv` 的 5,210 个文件无一在 2026 年前终止。**队列造不出来、退市财务也补不齐**，两个脚本因而无对象可跑 | 无。OI-040 已于 2026-08-21 结案（回测日志 §12.106），协议在 `docs/archive/Ashare_pit_judgment_protocol.md` |
+| `build_pit_judgment_queue.py`<br>`fetch_delisted_financials.py` | 2026-08-14 | 2026-11-14 | **OI-040（幸存者偏差）配套的两个工具**。该轮已查实为**不可测的数据缺口**——本地行情与财务两侧均不含退市公司，九只已知退市股五项数据全缺，`data/raw/ohlcv` 的 5,210 个文件无一在 2026 年前终止。**队列造不出来、退市财务也补不齐**，两个脚本因而无对象可跑 | 无。OI-040 已于 2026-08-21 结案（回测日志 §12.106），协议在 `docs/archive/Ashare_pit_judgment_protocol.md`（已删，按 `docs/archive/README.md` 取回） |
 | `fetch_sina_original_financials.py` | 2026-08-14 | 2026-11-14 | 取原始披露口径财务以对冲东财的追溯重述污染。**该问题仍未验证**（登记在 §12.39 的效力边界里），但本脚本自 2026-08-11 起未再被任何口径调用 | 无现行替代。**若日后要查重述污染，从这里恢复**，不要重写 |
 | `fetch_hk_annual_financials.py` | 2026-08-14 | 2026-11-14 | 港股逐年财务抓取。§6.8 海外关注清单只对**用户点名**的公司逐票定带，取数走 §6.8 三表重算，本脚本的全量年度指标无处消费 | `fetch_overseas_statements.py` + `build_overseas_roic_bands.py` + `overseas_quotes.py`（§6.8） |
 | `cleanup_dossier_implied_growth_oi078.py` | 2026-08-21 | 2026-11-21 | **OI-078 的一次性回写工具**（v4.30 已执行）：把 `a_share_valuation_dossiers.csv` 的 `implied_growth_years` 178 份旧口径文本按句清理为只含手写可证伪命题；规则与人工核定项都在脚本里，清理前原文在 git 父提交 | 无——第八节首段此后由 `build_company_dossier_readmes.py` 机械生成，手写列不再承载带值 |
 | `measure_pool_selection_bias.py` | 2026-08-14 | 2026-11-14 | 2010 年时点名单「进池 vs 未进池」此后收益的一次性度量，结论已写入 §12.25 并转为 OI-040 | 无——一次性度量，结论已沉淀 |
 | `build_metric_states.py` | 2026-08-16 | 2026-11-16 | §12.61「每只股票只跟自己比」实验的指标层（pb／pe／pbroe 逐日状态，产物 `data/processed/metric_states/` 已随清理删除） | 无——§12.61 结论：自身分位无前瞻信息 |
 | `fix_panel_entry_lookahead.py` | 2026-08-16 | 2026-11-16 | 把 v4 面板「入选早于证据可得日」的成员推迟到合法日、产出 v5 面板的一次性修复（§12.71 前置） | 无——v5 已固化为 `build_moat_panel.py` 的基座 |
-| `build_pit_attention_candidates.py`<br>`build_pit_attention_yearly.py`<br>`build_point_in_time_universe.py`<br>`pit_panel.py`<br>`build_judgment_input.py`<br>`analyze_survivorship_bias.py` | 2026-08-24 | 2026-11-24 | **时点关注度判定（OI-034/OI-040）全链工具**。判定轮 2026-08-12 完成、退市二遍盲判 08-21 完成，回测宇宙固化为 `panel_moat_bank_v6b.csv`（装配走 `build_moat_panel.py`）；中间产物在 `data/archive/pit-judgment-2026-08/`，协议在 `docs/archive/Ashare_pit_judgment_protocol.md`。重开判定按协议 §12，从这里取回工具 | `build_moat_panel.py`（面板装配唯一入口） |
+| `build_pit_attention_candidates.py`<br>`build_pit_attention_yearly.py`<br>`build_point_in_time_universe.py`<br>`pit_panel.py`<br>`build_judgment_input.py`<br>`analyze_survivorship_bias.py` | 2026-08-24 | 2026-11-24 | **时点关注度判定（OI-034/OI-040）全链工具**。判定轮 2026-08-12 完成、退市二遍盲判 08-21 完成，回测宇宙固化为 `panel_moat_bank_v6b.csv`（装配走 `build_moat_panel.py`）；中间产物在 `data/archive/pit-judgment-2026-08/`，协议在 `docs/archive/Ashare_pit_judgment_protocol.md`（已删，按 `docs/archive/README.md` 取回）。重开判定按协议 §12，从这里取回工具 | `build_moat_panel.py`（面板装配唯一入口） |
 | `build_full_market_screen_queue.py`<br>`test_full_market_screen_queue.py` | 2026-09-05 | 2026-12-05 | OI-036 全市场重筛的取数与排队工具，该轮已于 2026-08-31 收口（v4.102），产物归 `data/archive/full_market_screen/` | 季度审查走 `build_quarterly_quality_review_queue.py`（§5.3） |
 | `analyze_research_expectation_signal.py` | 2026-08-24 | 2026-11-24 | 研报预期方向的前瞻收益检验（OI-034 第 8 步配套）。结论已沉淀，研报门槛未进任何现行规则 | 无；回测研究开关 `--research-gate` 仍在引擎 |
 | `backtest_signal_replay.py` | 2026-08-24 | 2026-11-24 | 量价信号历史回放器。其对象（扫描器信号动物园）已于 v4.18（OI-063）整体删除，回放无信号可回放 | 无 |
 | `report_backtest_yearly.py` | 2026-08-24 | 2026-11-24 | 按自然年拆解回测净值。逐年读数已由引擎汇总与 `scan_summaries.csv` 承载 | `backtest_valuation_strategy.py` 自带逐年输出 |
 | `justified_multiple.py` | 2026-08-24 | 2026-11-24 | 合理倍数第二层（OI-023 沉淀件）。生产估值统一走 ROIC 引擎后无消费方 | `intrinsic_value.py` + `build_historical_valuation_bands.py` |
 | `apply_quality_tier_column_backfill.py` | 2026-08-24 | 2026-11-24 | OI-024 的一次性回填（L1 `q2_moat_type`、L3 `tactical_thesis`，逐票常量表）。已执行；剩余三列按 §5.7 随季度复核逐票手工回填 | `backfill_quality_tier_columns.py`（六列建列与填充率自检，仍在用） |
+
 ## 一次性作业脚本（`scripts/archive/slurm/`）
 
-2026-09-19 归档、**2026-12-19 可永久删除**。这些 `sbatch` 是已结案课题（OI 编号或回测日志节号）的一次性提交包装：工作流程未引用、无脚本引用、结果已写入回测日志或 `docs/reports/`，正文可从 Git 取回。常设入口只剩 `scripts/slurm/` 下的 `daily_postclose.sbatch`、`rebuild_chain_with_fetch.sbatch`、`oi148_slippage.sbatch` 及仍被脚本引用的少数作业。重跑时按回测日志节号取回对应文件，先核对路径与输入是否仍可重建。
+已结案课题（OI 编号或回测日志节号）的一次性提交包装：工作流程未引用、无未归档脚本引用、结果已写入回测日志或报告。常设入口见 `scripts/slurm/`。重跑时按回测日志节号取回对应文件，先核对路径与输入是否仍可重建。
+
+### 2026-09-19 归档，2026-12-19 可永久删除
 
 | 家族（件数） | 文件 |
 | --- | --- |
@@ -99,5 +101,62 @@
 | whipsaw_*（7） | `whipsaw_joint.sbatch`, `whipsaw_joint_census.sbatch`, `whipsaw_joint_signal_audit.sbatch`, `whipsaw_joint_validate.sbatch`, `whipsaw_swap_diag.sbatch`, `whipsaw_swap_r1.sbatch`, `whipsaw_swap_sweep.sbatch` |
 | 其他单件（14） | `buyline_swapdir_sweep.sbatch`, `corr_filter_arm.sbatch`, `drawdown_review_20260911.sbatch`, `m3_rereg_20260910.sbatch`, `metric_m2_reregister.sbatch`, `open_issue_dose.sbatch`, `panel_tier_forward_baseline.sbatch`, `pv_episode_20260914.sbatch`, `rank_episode_20260914.sbatch`, `risk_budget_20260911.sbatch`, `rolling_metric_audit_20260909.sbatch`, `startset14_reregister.sbatch`, `stop_max_20260916.sbatch`, `watchlist_restore_20260907.sbatch` |
 
-同类归档：`docs/archive/`（已完成的过程记录与已实施的方案设计）、
-`data/archive/`（已跑完的工作队列与已结束轮次的产物）。
+### 2026-10-07 归档，2027-01-07 可永久删除
+
+| 家族（件数） | 文件 |
+| --- | --- |
+| land_v42xx_*（19） | `land_v4213_backtest.sbatch`, `land_v4213_install.sbatch`, `land_v4213_states.sbatch`, `land_v4215_backtest.sbatch`, `land_v4215_install.sbatch`, `land_v4215_states.sbatch`, `land_v4216_install.sbatch`, `land_v4219_backtest.sbatch`, `land_v4219_install.sbatch`, `land_v4219_states.sbatch`, `land_v4222_bank_check.sbatch`, `land_v4222_reproduce.sbatch`, `land_v4224.sbatch`, `land_v4224_attrib.sbatch`, `land_v4224_install.sbatch`, `land_v4224_recheck.sbatch`, `land_v4225.sbatch`, `land_v4225_install.sbatch`, `land_v4225_verify.sbatch` |
+| oi141_*（1） | `oi141_coverage.sbatch` |
+| oi168_*（2） | `oi168_land_build.sbatch`, `oi168_land_scan.sbatch` |
+| oi192_*（1） | `oi192_code_succession_20260919.sbatch` |
+| oi196_*（4） | `oi196_audit.sbatch`, `oi196_backtest.sbatch`, `oi196_publish.sbatch`, `oi196_states.sbatch` |
+| oi197_*（4） | `oi197_audit_20260921.sbatch`, `oi197_backtest.sbatch`, `oi197_publish.sbatch`, `oi197_states.sbatch` |
+| oi198_*（3） | `oi198_backtest.sbatch`, `oi198_publish.sbatch`, `oi198_states.sbatch` |
+| oi200_*（5） | `oi200_203_backtest.sbatch`, `oi200_203_land.sbatch`, `oi200_203_rescan.sbatch`, `oi200_203_states.sbatch`, `oi200_203_verify.sbatch` |
+| oi201_*（1） | `oi201_notes_fetch.sbatch` |
+| oi203_*（1） | `oi203_restatement_scan.sbatch` |
+| oi204_*（4） | `oi204_211_backtest.sbatch`, `oi204_211_land.sbatch`, `oi204_211_landstates.sbatch`, `oi204_211_states.sbatch` |
+| oi205_*（6） | `oi205_analyze.sbatch`, `oi205_backtest.sbatch`, `oi205_states.sbatch`, `oi205b_backtest.sbatch`, `oi205b_fairness.sbatch`, `oi205b_states.sbatch` |
+| oi206_*（3） | `oi206_backtest.sbatch`, `oi206_fairness.sbatch`, `oi206_states.sbatch` |
+| oi207_*（3） | `oi207_banks.sbatch`, `oi207_h2.sbatch`, `oi207_h2_readings.sbatch` |
+| oi210_*（1） | `oi210_us_rebuild.sbatch` |
+| oi213_*（3） | `oi213_backtest.sbatch`, `oi213_fairness.sbatch`, `oi213_states.sbatch` |
+| oi215_*（5） | `oi215_backtest.sbatch`, `oi215_inputs.sbatch`, `oi215_land.sbatch`, `oi215_reparse.sbatch`, `oi215_states.sbatch` |
+| oi217_*（10） | `oi217_backtest.sbatch`, `oi217_land.sbatch`, `oi217_states.sbatch`, `oi217f2_fairness.sbatch`, `oi217f_build.sbatch`, `oi217f_fairness.sbatch`, `oi217u2_backtest.sbatch`, `oi217u2_states.sbatch`, `oi217u_backtest.sbatch`, `oi217u_states.sbatch` |
+| oi219_*（4） | `oi219_backtest.sbatch`, `oi219_land.sbatch`, `oi219_restricted_fetch.sbatch`, `oi219_states.sbatch` |
+| oi220_*（4） | `oi220_backtest.sbatch`, `oi220_land.sbatch`, `oi220_pledged_wc.sbatch`, `oi220_states.sbatch` |
+| oi222_*（1） | `oi222_first_reading.sbatch` |
+| oi223_*（3） | `oi223_backtest.sbatch`, `oi223_fairness.sbatch`, `oi223_states.sbatch` |
+| oi224_*（5） | `oi224_batch1.sbatch`, `oi224_batch2.sbatch`, `oi224_smoke.sbatch`, `oi224_smoke2.sbatch`, `oi224_traps.sbatch` |
+| oi226_*（1） | `oi226_us_rebuild.sbatch` |
+| oi227_*（4） | `oi227_backtest.sbatch`, `oi227_calibrate.sbatch`, `oi227_recalibrate.sbatch`, `oi227_smoke.sbatch` |
+| oi228_*（1） | `oi228_us_states.sbatch` |
+| oi229_*（1） | `oi229_traps.sbatch` |
+| oi230_*（3） | `oi230_backtest.sbatch`, `oi230_install.sbatch`, `oi230_states.sbatch` |
+| oi231_*（1） | `oi231_269_bank.sbatch` |
+| oi232_*（1） | `oi232_insurer_candidates.sbatch` |
+| oi233_*（3） | `oi233_detail.sbatch`, `oi233_run.sbatch`, `oi233_smoke.sbatch` |
+| oi234_*（5） | `oi234_land.sbatch`, `oi234_land130.sbatch`, `oi234_readings.sbatch`, `oi234_run.sbatch`, `oi234b_run.sbatch` |
+| oi235_*（3） | `oi235_readings.sbatch`, `oi235_run.sbatch`, `oi235_smoke.sbatch` |
+| oi236_*（3） | `oi236_readings.sbatch`, `oi236_run.sbatch`, `oi236_smoke.sbatch` |
+| oi237_*（3） | `oi237_detail.sbatch`, `oi237_readings.sbatch`, `oi237_run.sbatch` |
+| oi238_*（2） | `oi238_readings.sbatch`, `oi238_run.sbatch` |
+| oi239_*（2） | `oi239_readings.sbatch`, `oi239_run.sbatch` |
+| oi240_*（2） | `oi240_readings.sbatch`, `oi240_run.sbatch` |
+| oi241_*（2） | `oi241_readings.sbatch`, `oi241_run.sbatch` |
+| oi242_*（2） | `oi242_readings.sbatch`, `oi242_run.sbatch` |
+| oi245_*（3） | `oi245_full_pool.sbatch`, `oi245b.sbatch`, `oi245c.sbatch` |
+| oi246_*（3） | `oi246b_oi248_smoke.sbatch`, `oi246b_readings.sbatch`, `oi246b_run.sbatch` |
+| oi247_*（2） | `oi247_readings.sbatch`, `oi247_run.sbatch` |
+| oi248_*（2） | `oi248_readings.sbatch`, `oi248_run.sbatch` |
+| oi249_*（1） | `oi249_run.sbatch` |
+| oi252_*（1） | `oi252_268_tests.sbatch` |
+| oi257_*（1） | `oi257_land.sbatch` |
+| oi260_*（1） | `oi260_264_land.sbatch` |
+| oi261_*（1） | `oi261_263_land.sbatch` |
+| oi269_*（3） | `oi269_bank_land.sbatch`, `oi269_bank_land_v2.sbatch`, `oi269_bank_line.sbatch` |
+| oi270_*（3） | `oi270_quant.sbatch`, `oi270_test.sbatch`, `oi270_test_read.sbatch` |
+| oi271_*（1） | `oi271_quant.sbatch` |
+| 其他单件（10） | `aima_growth_land.sbatch`, `audit2010.sbatch`, `base_longrun_attrib.sbatch`, `cbbi_temperature_20260922.sbatch`, `longrun_now.sbatch`, `ma60_clause4_20260919.sbatch`, `pv_cap_20260922.sbatch`, `reaudit_minority_val_arm.sbatch`, `reaudit_minority_val_sweep.sbatch`, `submit_oi141_coverage.sh` |
+
+同类归档：`docs/archive/`（历史文档取回索引）、`data/archive/`（已跑完的工作队列与已结束轮次的产物）。

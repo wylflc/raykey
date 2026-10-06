@@ -3590,7 +3590,7 @@ def main() -> int:
                              " min(记录公告日, 法定截止日)（缺省）；off=按东财记录日原样（只用于复现旧产物）")
     parser.add_argument("--out-bands", type=Path)
     parser.add_argument("--maintenance-weight", type=float, default=0.0,
-                        help="§6.5.4 维持性现金占用代理强度（研究开关，0=关闭）")
+                        help="维持性现金占用代理强度（研究开关，0=关闭；定义见 data/experiments/exp_maintenance_cash_20260909/preregister.md）")
     parser.add_argument("--wc-aggregation", choices=("legacy", "reported", "operating"), default="operating",
                         help="§6.3 第 6 条营运资金口径（OI-168，v4.169 起生产 operating）：operating 去重并含应收款项融资；"
                              "reported 复现仅去重；legacy 复现 v4.168 前的合计与明细相加")

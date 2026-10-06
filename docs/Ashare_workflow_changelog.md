@@ -2,10 +2,11 @@
 
 自 v1.00 起版本记录移至本文件维护，工作流正文只保留指针。编号沿革：v1-v31 为初期整数系列，v0.31 起切换 v0.x 格式，v1.00 为四袖架构定版。
 
-每行只写规则变化与落点（章节、文件、常量），依据只给回测日志节号；不写用户原话、读数与过程。v4.65 以前的行在 `docs/archive/Ashare_workflow_changelog_v1.00-v4.65.md`；本表 2026-09-05 精简前的原文用 `git show 0f67c53c:docs/Ashare_workflow_changelog.md` 取回。
+每行只写规则变化与落点（章节、文件、常量），依据只给回测日志节号；不写用户原话、读数与过程。v4.65 以前的行用 `git show e56765c2:docs/archive/Ashare_workflow_changelog_v1.00-v4.65.md` 取回；本表 2026-09-05 精简前的原文用 `git show 0f67c53c:docs/Ashare_workflow_changelog.md` 取回。
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.237 | 2026-10-07 | 文档精简，规则不变：正文删去 `OI-` 编号、理由与举例、逐项「只作复现」说明（§6.7 改为一句统一约束）、§6.5.4 维持性现金研究开关与 §12.1 已结案研究段落、各处重复表述，§10.3 纪元沿革改读 `strategy_return_tracker.EPOCHS`；§0 增仓库清理路由，规则落在 `docs/repository_cleanup_rules.md`，`audit_repository_docs.py` 增对应检查；个人投资体系 v1.34 账户约束改为指向工作流程、章节重编号；`docs/archive/` 全文副本删除、改为 Git 取回索引，一次性作业移入 `scripts/archive/slurm/` |
 | v4.236 | 2026-10-07 | §6.5.2.2 新增存量型增长上限：业务属性 `demand_runway = 存量` 的池成员，`growth` 路径池带的 g0（含研究增长）至多 10%；§6.7 第 4 步叠加脚本在采用研究数之后、除权归一化之前按截断后的 g0 重算企业价值比例与股权桥，截断前 g0 留在 `model_g0`，`growth_cap_note` 记截断（`apply_forecast_band_overlay.STOCK_G0_CAP`／`apply_stock_growth_cap`，`--business`）；§6.5.2.1 成文例外与 §6.7 第 4 步注释同步，档案推导文字标注截断。只在生产执行，回测输入与 BASE 不变（OI-272）。依据 §12.330 |
 | v4.235 | 2026-10-06 | §6.5.1 第 4 条：银行 V_DDM 路径 BV 年增速以 7% 为上限（`bank_valuation.BV_GROWTH_CAP = 0.07`，超出部分视为被资本要求吸收、派息率不变），保险不封顶且平滑 Ḡ 取不封顶的银行截面 G（`INSURER_G_UNCAPPED`）；历史逐日 `rebuild_bank_bands.py h2` 第 5 段 `bvoff` 复现改前（OI-269）。买入线 1.0034 按用户裁定不做对齐（只动银行），在册合格面重登为 16.687%；BASE 重登（剔除集 A 按本版锚点前五，茅台替陕煤）。依据 §12.324、§12.326 |
 | v4.234 | 2026-10-06 | §6.5.1 第 4 条与 §6.7 第 4 步：池内银行与保险的池带值改按信号日由 `bank_live_value` 计算（与实盘扫描、池外档案同值），不再取逐日状态末行（随历史行情缓存滞后，招行停在一季报口径，OI-269 实现修正）；国债或完整财年分红不可得时才退回末行。`build_pool_model_bands.py`；档案第八节银行口径说明同步为 `V_DDM × G`／`V_DDM × Ḡ`。依据 OI-269 |
