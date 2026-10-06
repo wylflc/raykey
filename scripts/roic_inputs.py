@@ -70,6 +70,11 @@ RESTATE_ANNOUNCEMENTS = ROOT / "data/interim/restatement_announcements.csv"   # 
 OPERATING_CASH_RATIO = 0.02      # 营运现金 ≈ 2% 营收，其余视为超额现金
 DEFAULT_TAX_RATE = 0.25          # 法定税率，利润总额非正时回退
 TAX_RATE_BOUNDS = (0.0, 0.40)
+# §6.5.1 第 3 条（OI-264）：实际税率为负、或低于前三个财年中有观测年份的原始税率中位 10pp 以上的年份改按该中位；
+# 前三年无观测时只改负税率（取法定）；高于中位的不调。建带 `--tax-anomaly median3`；off 只作复现。
+TAX_ANOMALY_MODES = ("off", "median3")
+TAX_ANOMALY_GAP = 0.10
+TAX_ANOMALY_YEARS = 3
 COST_OF_DEBT_BOUNDS = (0.02, 0.12)
 DEFAULT_COST_OF_DEBT = 0.045
 
@@ -215,6 +220,9 @@ class RoicYear:
     superseded: list = field(default_factory=list)   # OI-130：[(superseded_at, 重述前版本 RoicYear)]，按日期升序
     delayed_until: str = ""                            # OI-130：有重述日而无存档版本时，现行值自此日起才可用
     tax_rate_observed: bool = False   # True=税率来自本期 所得税/利润总额；False=利润总额非正时回退法定税率
+    tax_rate_raw: float | None = None  # 未夹 [0,40%] 的 所得税/利润总额（OI-264 识别负税率）
+    tax_anomaly_ref: float | None = None   # OI-264 改按的参照税率（未改为 None）
+    other_equity_tool: float = 0.0    # 其他权益工具（永续债、优先股，`OTHER_EQUITY_TOOL`）：§6.5.1 股本口径推股数时从归母权益扣除（OI-262）
     annualized_months: int = 0        # OI-132：购买法收购当年 NOPAT／EBIT 已按并表月数年化（0 = 未调整）
     cash_inputs_complete: bool = False  # Strict availability for the optional maintenance proxy.
 
@@ -248,6 +256,7 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
     year.parent_tci = _num(inc.get("PARENT_TCI"))
     year.total_equity = _num(bal.get("TOTAL_EQUITY"))
     year.parent_equity = _num(bal.get("TOTAL_PARENT_EQUITY"))
+    year.other_equity_tool = _num(bal.get("OTHER_EQUITY_TOOL")) or 0.0
     year.minority_equity = _num(bal.get("MINORITY_EQUITY")) or 0.0
     year.treasury_shares = _num(bal.get("TREASURY_SHARES")) or 0.0
     year.interest_debt = _sum(bal, DEBT_FIELDS) + (_sum(bal, FIN_LIAB_FIELDS) if caliber == "nonop" else 0.0)
@@ -290,6 +299,7 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
                      else total_profit + year.interest_expense)
         if total_profit > 0 and income_tax is not None:
             rate = income_tax / total_profit
+            year.tax_rate_raw = rate
             lo, hi = TAX_RATE_BOUNDS
             year.tax_rate = min(max(rate, lo), hi)
             year.tax_rate_observed = True
@@ -392,7 +402,8 @@ def load_statements(codes: set[str] | None = None,
                     ic_floor: float = 0.0,
                     notice_cap: bool = True,
                     caliber: str = "nonop",
-                    restricted_cash: str = "off") -> dict[str, dict[str, RoicYear]]:
+                    restricted_cash: str = "off",
+                    tax_anomaly: str = "off") -> dict[str, dict[str, RoicYear]]:
     """读三大报表 → `{代码: {财年: RoicYear}}`。缺表即返回空，由调用方降级。
 
     `notice_cap`（OI-042，缺省开）：财年公告日按 `disclosure_dates.available_at` 封顶到法定截止日
@@ -424,6 +435,8 @@ def load_statements(codes: set[str] | None = None,
         raise ValueError(f"caliber {caliber!r} 不在 {CASH_CALIBERS}")
     if restricted_cash not in RESTRICTED_CASH_MODES:
         raise ValueError(f"restricted_cash {restricted_cash!r} 不在 {RESTRICTED_CASH_MODES}")
+    if tax_anomaly not in TAX_ANOMALY_MODES:
+        raise ValueError(f"tax_anomaly {tax_anomaly!r} 不在 {TAX_ANOMALY_MODES}")
     note_cash = load_cash_note_items(codes) if caliber == "nonop" else {}
     restricted = (load_restricted_cash_items(codes, mode=restricted_cash)
                   if caliber == "nonop" and restricted_cash != "off" else {})
@@ -438,7 +451,66 @@ def load_statements(codes: set[str] | None = None,
                 out.setdefault(code, {})[period] = year
     attach_superseded_versions(out, raw, codes, stmt_dir, notice_cap, ic_floor, caliber, note_cash, restricted,
                                restricted_cash == "notes_wc", reserves)
+    if tax_anomaly == "median3":
+        for years in out.values():
+            CAP_STATS["tax_anomaly_corrected"] += correct_tax_anomalies(years)
     annualize_consolidation(out, load_consolidation_events(codes=codes))
+    return out
+
+
+def _observed_rate(year: RoicYear) -> float | None:
+    """该年观测到的原始税率（夹 [0,40%]，不取 OI-264 改后值）；利润总额非正的年份无观测。"""
+    if not year.tax_rate_observed or year.tax_rate_raw is None:
+        return None
+    lo, hi = TAX_RATE_BOUNDS
+    return min(max(year.tax_rate_raw, lo), hi)
+
+
+def _correct_tax(year: RoicYear, prior: list[RoicYear]) -> int:
+    rate = _observed_rate(year)
+    if rate is None or year.ebit is None:
+        return 0
+    rates = [r for r in (_observed_rate(p) for p in prior) if r is not None]
+    if rates:
+        ref = statistics.median(rates)
+        anomalous = year.tax_rate_raw < 0.0 or rate < ref - TAX_ANOMALY_GAP
+    else:
+        ref, anomalous = DEFAULT_TAX_RATE, year.tax_rate_raw < 0.0
+    if not anomalous:
+        return 0
+    year.tax_rate, year.tax_anomaly_ref = ref, ref
+    year.nopat = year.ebit * (1 - ref)
+    return 1
+
+
+def correct_tax_anomalies(years: dict[str, RoicYear]) -> int:
+    """§6.5.1 第 3 条（OI-264）：实际税率为负、或低于前三个财年中有观测年份的原始税率中位 10pp 以上的年份（递延所得税确认等
+    一次性优惠），改按该中位重算当年 NOPAT；前三年无观测时只改负税率（取法定 25%）；高于中位的不调（优惠取消多为持续变化，另议）。
+    参照一律取各年原始税率、不取改后值——税率永久下台阶（取得优惠）时最多改两年即随中位回落，不会逐年连锁。
+    重述前版本同式（参照取现行前三年）。原地修改，返回改动的年数。"""
+    ordered = sorted(years.values(), key=lambda y: y.period)
+    changed = 0
+    for i, year in enumerate(ordered):
+        prior = ordered[max(0, i - TAX_ANOMALY_YEARS):i]
+        changed += _correct_tax(year, prior)
+        for _superseded_at, old in year.superseded:
+            changed += _correct_tax(old, prior)
+    return changed
+
+
+def load_balance_fields(codes: set[str] | None, fields: tuple[str, ...],
+                        stmt_dir: Path = STMT_DIR) -> dict[tuple[str, str], dict[str, float | None]]:
+    """现行资产负债表各报告期的指定字段 → `{(代码, 报告期): {字段: 值}}`（OI-262 重述前版本 BPS 按普通股权益折算用）。"""
+    out: dict[tuple[str, str], dict[str, float | None]] = {}
+    path = stmt_dir / "balance.csv"
+    if not path.exists():
+        return out
+    with path.open(encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            code = (row.get("security_code") or "").zfill(6)
+            if codes is not None and code not in codes:
+                continue
+            out[(code, (row.get("REPORT_DATE") or "")[:10])] = {f: _num(row.get(f)) for f in fields}
     return out
 
 

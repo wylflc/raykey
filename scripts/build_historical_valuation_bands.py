@@ -191,6 +191,10 @@ GUARD_CODES: set[str] | None = None
 # 缺省为空＝现行逐位不变。
 DEMAND_CYCLE_CODES: set[str] = set()
 DEMAND_CYCLE_G0_ZERO = False
+# §6.5.1（OI-260、OI-262、OI-261）由 `main()` 按建带开关设定；缺省为改前口径（逐位复现），生产值由 §6.7 命令显式给出。
+PAYOUT_BASIS = "annual"        # annual：只计年报期分配；fiscal：财年全部现金分红（含中期），预案公告日起计
+SHARE_EQUITY = "parent"        # parent：推股数用归母权益；common：扣除其他权益工具（永续债、优先股）
+DIVIDEND_TIMING = "legacy"     # legacy：已结束财年年度分配一律视为期末已入账；post_period：按 |x| 更小解释，并补扣期后除息 d_post
 
 
 def guard_applies(code: str) -> bool:
@@ -378,6 +382,8 @@ def attach_panel_versions(out: dict[str, dict[str, dict]], codes: set[str] | Non
         versions[(code, period)][sa] = old
         roic_inputs.CAP_STATS["financials_filing_versions"] += 1
     stmt_versions = roic_inputs.load_superseded_raw(codes)
+    current_bal = (roic_inputs.load_balance_fields(codes, ("TOTAL_PARENT_EQUITY", "OTHER_EQUITY_TOOL", "SHARE_CAPITAL"))
+                   if SHARE_EQUITY == "common" and stmt_versions else {})
     for (code, period), items in stmt_versions.items():
         row = out.get(code, {}).get(period)
         if row is None:
@@ -391,9 +397,9 @@ def attach_panel_versions(out: dict[str, dict[str, dict]], codes: set[str] | Non
             old = dict(row)
             changed = False
             if bal:
-                eq, sc = _num(bal.get("TOTAL_PARENT_EQUITY")), _num(bal.get("SHARE_CAPITAL"))
-                if eq and sc and sc > 0 and cur_bps and abs(cur_bps / (eq / sc) - 1) > 1e-3:
-                    old["bps"] = f"{eq / sc:.6f}"
+                derived = version_bps(bal, cur_bps, current_bal.get((code, period)))
+                if derived is not None and cur_bps and abs(cur_bps / derived - 1) > 1e-3:
+                    old["bps"] = f"{derived:.6f}"
                     changed = True
             if inc:
                 for src, dst in (("BASIC_EPS", "basic_eps"), ("PARENT_NETPROFIT", "parent_netprofit"),
@@ -415,13 +421,38 @@ def attach_panel_versions(out: dict[str, dict[str, dict]], codes: set[str] | Non
             continue
         bal_old = [r for _, k, r in stmt_versions.get((code, period), []) if k == "balance"]
         if bal_old:
-            eq, sc = _num(bal_old[0].get("TOTAL_PARENT_EQUITY")), _num(bal_old[0].get("SHARE_CAPITAL"))
             cur_bps = _num(row.get("bps"))
-            if eq and sc and sc > 0 and cur_bps and abs(cur_bps / (eq / sc) - 1) <= 1e-3:
+            derived = version_bps(bal_old[0], cur_bps, current_bal.get((code, period)))
+            if derived is not None and cur_bps and abs(cur_bps / derived - 1) <= 1e-3:
                 continue      # 面板仍是重述前口径，当时即可用
         if (row.get("notice_date") or "") < when:
             row["notice_date"] = when
             roic_inputs.CAP_STATS["financials_delayed"] += 1
+
+
+VERSION_SHARE_TOL = 0.02     # OI-262：股本推得的 BPS 与面板 BPS 相差超过此比例即判股本不是股数（面值非 1 元或含溢价）
+
+
+def version_bps(bal_old: dict, cur_bps: float | None, bal_now: dict | None) -> float | None:
+    """§6.3 第 2 条：三表存档推得的重述前 BPS。parent（只作复现）= 归母权益 ÷ 股本；common（OI-262）= 普通股权益
+    （归母权益 − 其他权益工具）÷ 期末股数，股数取股本——重述前或现行三表普通股权益 ÷ 股本与面板 BPS 都相差超过 2% 时
+    （面值非 1 元或股本含溢价：中国海油股本 751.8 亿元对 475.3 亿股），改取现行普通股权益 ÷ 面板 BPS。"""
+    eq, sc = _num(bal_old.get("TOTAL_PARENT_EQUITY")), _num(bal_old.get("SHARE_CAPITAL"))
+    if SHARE_EQUITY != "common":
+        return eq / sc if eq and sc and sc > 0 else None
+    if not eq:
+        return None
+    common_old = eq - (_num(bal_old.get("OTHER_EQUITY_TOOL")) or 0.0)
+    eq_now = (bal_now or {}).get("TOTAL_PARENT_EQUITY")
+    common_now = eq_now - ((bal_now or {}).get("OTHER_EQUITY_TOOL") or 0.0) if eq_now else None
+    sc_now = (bal_now or {}).get("SHARE_CAPITAL") or sc
+    shares = sc if sc and sc > 0 else None
+    if cur_bps and cur_bps > 0:
+        fits = [abs(c / s / cur_bps - 1) <= VERSION_SHARE_TOL for c, s in ((common_old, sc), (common_now, sc_now))
+                if c and s and s > 0]
+        if not any(fits) and common_now and common_now > 0:
+            shares = common_now / cur_bps
+    return common_old / shares if shares and common_old > 0 else None
 
 
 def series_as_of(series: dict[str, dict], as_of: str) -> dict[str, dict]:
@@ -927,12 +958,20 @@ def payout_ratio(series: dict[str, dict], actions: list[dict], available_at: str
     逐年算再平均、而不是三年现金合计除三年 EPS 合计——后者在期间发生送转时不同基。
     """
     ratios = []
+    if PAYOUT_BASIS == "fiscal":
+        from divspread_dividend import available_at_of
     for period in fiscal_years_before(series, available_at, years):
         eps = _num(series[period].get("basic_eps"))
         if eps is None or eps <= 0:
             continue
-        cash = sum(_num(a.get("cash_per_share")) or 0.0
-                   for a in actions if a.get("report_date") == period)
+        if PAYOUT_BASIS == "fiscal":
+            # §6.5.1 第 3 条（OI-260）：财年全部现金分红（中期、三季、特别分红按 report_date 归入），预案公告日起计入，与 V_D0 分子同一归属
+            cash = sum(_num(a.get("cash_per_share")) or 0.0 for a in actions
+                       if (a.get("report_date") or "")[:4] == period[:4]
+                       and len(available_at_of(a)) == 10 and available_at_of(a) <= available_at)
+        else:
+            cash = sum(_num(a.get("cash_per_share")) or 0.0
+                       for a in actions if a.get("report_date") == period)
         ratios.append(min(max(cash / eps, 0.0), 1.0))
     return (statistics.fmean(ratios) if ratios else None), len(ratios)
 
@@ -1171,7 +1210,24 @@ def _fold_cash_to_basis(actions: list[dict], cash: float, ex: str, basis_now: st
     return cash / factor
 
 
-def dividends_booked_since(actions: list[dict], ref_period: str, period: str, basis_now: str) -> tuple[float, list[float]]:
+def post_period_dividends(actions: list[dict], period: str, notice: str, basis_now: str,
+                          declared_after: str | None = None) -> float:
+    """§6.5.1 第 3 条 `d_post`（OI-262、OI-261）：除权日在 (本期期末, 本行公告日] 的现金分红每股（折到本行 BPS 基准）。
+    其现金仍在期末报表内，而除权归一化自公告日起算，不补扣即多计；期末已宣派未付的应付股利同此。
+    `declared_after` 给出时只计预案公告日晚于该日（期末尚未入账、账面未扣）的分红。"""
+    from corporate_actions import accounting_cash, company_events
+    total = 0.0
+    for action in company_events([{**a, "cash_per_share": accounting_cash(a)} for a in actions]):
+        ex = (action.get("ex_dividend_date") or "")[:10]
+        cash = _num(action.get("cash_per_share")) or 0.0
+        plan = (action.get("plan_notice_date") or "")[:10]
+        if cash > 0 and ex and period < ex <= notice and (declared_after is None or plan > declared_after):
+            total += _fold_cash_to_basis(actions, cash, ex, basis_now)
+    return total
+
+
+def dividends_booked_since(actions: list[dict], ref_period: str, period: str, basis_now: str,
+                           dated: bool = False) -> tuple[float, list]:
     """§6.5.1 第 1 条「其后现金分红」/股（折到本行 BPS 股本基准 `basis_now`）：年报期末 `ref_period` 之后、本期期末 `period`
     的权益里已扣的现金分红。返回 `(确定计入的合计, 确认日不可知的逐笔金额)`，后者由调用方按 |x| 更小的解释取舍。
       ①除权日在 (年报期末, 本期期末]：预案公告日晚于年报期末的确定计入（年报权益未扣）；预案日 ≤ 年报期末的不可知（预案日缺失时年度分配视为确定、中期分配视为不可知）
@@ -1191,10 +1247,12 @@ def dividends_booked_since(actions: list[dict], ref_period: str, period: str, ba
         plan = (action.get("plan_notice_date") or "")[:10]
         report = (action.get("report_date") or "")[:10]
         annual = report.endswith("12-31")
+        prior = True                                   # 不可知笔的先验（只用于 |x| 并列时取舍）：多半已从本期期末权益扣除
         if ref_period < ex <= period:
             certain = plan > ref_period if plan else (not report or annual)
+            prior = False                              # 预案早于年报期末：多半已计入年报权益（应付股利），不属「其后」
         elif ex > period and annual and period[5:7] >= "06" and report < period and (not plan or plan <= period):
-            certain = True
+            certain = DIVIDEND_TIMING == "legacy"      # OI-262：股东大会通过即应入账，但有期末未入账的（华荣 2026H1），post_period 按 |x| 更小解释
         elif ex > period and not annual and plan and ref_period < plan <= period:
             certain = False
         else:
@@ -1203,7 +1261,7 @@ def dividends_booked_since(actions: list[dict], ref_period: str, period: str, ba
         if certain:
             sure += amount
         else:
-            ambiguous.append(amount)
+            ambiguous.append((amount, ex, prior) if dated else amount)
     return sure, ambiguous
 
 
@@ -1212,7 +1270,7 @@ EXT_EQUITY_TOP: list[tuple[float, str, str, str]] = []   # (|x|/BPS, 代码, 名
 
 
 def external_equity_intra(series: dict[str, dict], actions: list[dict], period: str,
-                          ref_period: str | None, ref_equity: float | None
+                          ref_period: str | None, ref_equity: float | None, pending_out: list | None = None
                           ) -> tuple[float, float | None, str, str]:
     """§6.5.1 第 1 条：最新年报之后的**外生权益/股** `x` 与当期股数估计。
 
@@ -1256,7 +1314,7 @@ def external_equity_intra(series: dict[str, dict], actions: list[dict], period: 
         return 0.0, shares_assumed, basis_now, "np_gap"
     np_since += np_ytd
     # 其后现金分红（每股，折到本行 BPS 基准）：按「期末权益是否已扣」判，见 dividends_booked_since
-    div_ps, div_ambiguous = dividends_booked_since(actions, ref_period, period, basis_now)
+    div_ps, div_ambiguous = dividends_booked_since(actions, ref_period, period, basis_now, dated=True)
     # 股数：年报期末 × 送转 为缺省（`shares_ref`）；用「归母净利 ÷ EPS」的隐含股数**相对年报行的变化倍数**
     # 承接稀释／注销（`shares_eps`）——只比倍数、不比水平：E/BPS 与 净利/EPS 的水平可差 5~10%（其他权益
     # 工具、加权平均），但两者都按同一倍数动；且东财会按后来的送转重述历史 EPS（比亚迪 2024 年报 4.61 =
@@ -1264,10 +1322,28 @@ def external_equity_intra(series: dict[str, dict], actions: list[dict], period: 
     # 余下的倍数超过 3% 才算真实的股数变化。
     shares_now, mode = shares_assumed, "shares_ref"
     x_assumed = bps_now - (ref_equity + np_since) / shares_assumed + div_ps
-    for amount in div_ambiguous:                 # 确认日不可知的分红：取使 |x| 更小的解释（计入即 x 增大 amount）
-        if abs(x_assumed + amount) < abs(x_assumed):
-            x_assumed += amount
-            div_ps += amount
+    if DIVIDEND_TIMING == "post_period" and len(div_ambiguous) > 1:
+        # OI-262：多笔确认日不可知时穷举取使 |x| 最小的组合（逐笔贪心依顺序会选次优：格力 2026H1 先计了中期分红、漏计已入账的年度分配），
+        # 同为最小时取计入笔数多者
+        n, tol = len(div_ambiguous), 1e-6 * bps_now
+        def fit(mask: int) -> tuple:
+            err = abs(x_assumed + sum(div_ambiguous[i][0] for i in range(n) if mask >> i & 1))
+            misses = sum(bool(mask >> i & 1) != div_ambiguous[i][2] for i in range(n))   # 并列（金额相同）时按先验取舍
+            return round(err / tol), misses, mask
+        best = min(range(1 << n), key=fit)
+        for i, (amount, ex, _prior) in enumerate(div_ambiguous):
+            if best >> i & 1:
+                x_assumed += amount
+                div_ps += amount
+            elif pending_out is not None and period < ex <= notice_now:
+                pending_out.append(amount)
+    else:
+        for amount, ex, _prior in div_ambiguous:  # 确认日不可知的分红：取使 |x| 更小的解释（计入即 x 增大 amount）
+            if abs(x_assumed + amount) < abs(x_assumed):
+                x_assumed += amount
+                div_ps += amount
+            elif pending_out is not None and period < ex <= notice_now:
+                pending_out.append(amount)       # OI-262：期末未入账、公告前已派——经营账面按派后计（调用方扣）
     np_row, eps_row = np_ytd, _num(row.get("basic_eps"))
     np_ref, eps_ref = _num(ref_row.get("parent_netprofit")), _num(ref_row.get("basic_eps"))
     # 三道守卫（全市场实测后加）：①EPS 精度——按该行 EPS 的小数位数估舍入误差，相对误差 >2% 的行不用
@@ -1345,7 +1421,7 @@ def annual_external_equity(history: list, series: dict[str, dict], actions: list
     # 各年期末股数：先按各年自己的行算，缺的先向后（下一已知年 ÷ 期间送转）再向前补，分红总额才不缺年
     shares: dict[str, float] = {}
     for year in ordered:
-        val = shares_at_period_end(series, actions, year.period, year.parent_equity)
+        val = shares_at_period_end(series, actions, year.period, share_equity(year))
         if val:
             shares[year.period] = val
     for i, year in enumerate(ordered):
@@ -1405,6 +1481,15 @@ def annual_external_equity(history: list, series: dict[str, dict], actions: list
     return out, ",".join(sorted(notes)), break_period
 
 
+def share_equity(year) -> float | None:
+    """§6.5.1 股本口径：推股数用的期末权益。common（生产）= 归母权益 − 其他权益工具（OI-262）；parent = 归母权益（只作复现）。"""
+    if year is None or year.parent_equity is None:
+        return None
+    if SHARE_EQUITY == "common":
+        return year.parent_equity - (getattr(year, "other_equity_tool", 0.0) or 0.0)
+    return year.parent_equity
+
+
 def operating_equity(year, x_cum: dict[str, float], base_year=None) -> float | None:
     """§6.5.1 第 2 条的**经营账面** `E_op = E − 未花的募资 − 累计注销`（`annual_external_equity` 的 `_deduct`）。
     增发只在**仍以超额现金形态留在账上**的部分内不算经营账面（东鹏 2026 H 股募资堆在现金池里；东鹏 2021 IPO、
@@ -1437,7 +1522,7 @@ def trailing_per_share_cagr(code: str, history: list, series: dict[str, dict], a
         return None
     per_share = []
     for y in ordered:
-        shares = shares_at_period_end(series, actions, y.period, y.parent_equity)
+        shares = shares_at_period_end(series, actions, y.period, share_equity(y))
         if not shares or shares <= 0:
             return None
         per_share.append(y.nopat / (shares * split_factor(actions, y.period, periods[-1])))
@@ -2279,8 +2364,10 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
             # §6.5.1 第 1/3 条（v4.59，OI-086）：分子锚乘**经营账面** `BPS_op = BPS − x − X_cum/股数`，
             # 最新年报之后的外生权益 x 按面值进每股净现金；年报已计入的累计外生权益 X_cum 的现金已在
             # 年报超额现金里（按经营账面同比例缩放），不另加。增发与回购注销同式、符号相反。
+            pending: list[float] = []
             x_ps, shares_now, basis_now, x_mode = external_equity_intra(
-                series, actions, period, latest.period, latest.parent_equity)
+                series, actions, period, latest.period, share_equity(latest),
+                pending_out=pending if DIVIDEND_TIMING == "post_period" else None)
             e_op_ref = e_op(latest) or latest.parent_equity
             x_cum_ps = 0.0
             applied = latest.parent_equity - e_op_ref          # 年报已计入、实际从经营账面摘掉的外生权益（未花的募资＋注销）
@@ -2309,6 +2396,27 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
             EXT_EQUITY_STATS[f"模式·{x_mode.split(',')[0]}"] += 1
             if abs(x_ps) > 0.05 * bps:
                 EXT_EQUITY_STATS["|x|>5%BPS 的带"] += 1
+            # §6.5.1 第 3 条（OI-262、OI-261，`--dividend-timing post_period`）：除权日在 (期末, 公告日] 的分红在带可用前已派出。
+            # 经营账面按派后计（期末未入账的部分从账面扣）；年报行的报表现金是实数，另把该窗口的全部派现补扣进净金融负债（d_post），
+            # 季报行的净金融负债随经营账面缩放，不另扣。
+            bps_scale, d_post = bps_op, 0.0
+            if DIVIDEND_TIMING == "post_period" and claim_snapshot is None:
+                annual_row = period.endswith("12-31")
+                if annual_row:
+                    d_post = post_period_dividends(actions, period, notice, basis_now)
+                    unbooked = post_period_dividends(actions, period, notice, basis_now, declared_after=period)
+                else:
+                    unbooked = sum(pending)
+                if unbooked and bps_op - unbooked > 0:
+                    bps_op -= unbooked
+                    band.bps_operating = bps_op
+                    if not annual_row:
+                        bps_scale = bps_op
+                    band.equity_anchor_mode = (band.equity_anchor_mode or "") + f",unbooked_div={unbooked:.4f}"
+                    EXT_EQUITY_STATS["期末未入账、公告前已派的分红·经营账面按派后计"] += 1
+                if d_post:
+                    band.equity_anchor_mode = (band.equity_anchor_mode or "") + f",d_post={d_post:.4f}"
+                    EXT_EQUITY_STATS["年报行期后除息补扣（d_post）"] += 1
             nopat_ps = ratio0 * bps_op
             band.nopat_ps = nopat_ps
             if latest.cfo is not None:
@@ -2322,8 +2430,10 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
             #              账面为下界：子公司只挣到资本成本时权益价值即账面，挣得多时按盈利份额分。
             # 外生权益 x 是母公司层面的募资/回购，两口径下都不参与少数股东分摊。
             minority_basis = getattr(args, "minority_basis", "book")
-            fin_net_debt_ps = (latest.interest_debt - latest.excess_cash) / e_op_ref * bps_op
-            minority_book_ps = latest.minority_equity / e_op_ref * bps_op
+            fin_net_debt_ps = (latest.interest_debt - latest.excess_cash) / e_op_ref * bps_scale
+            if d_post:
+                fin_net_debt_ps += d_post
+            minority_book_ps = latest.minority_equity / e_op_ref * bps_scale
             band.fin_net_debt_ps, band.minority_book_ps = fin_net_debt_ps, minority_book_ps
             m_share = 0.0
             if minority_basis == "earnings":
@@ -3378,6 +3488,17 @@ def main() -> int:
                         help="OI-219／OI-220：notes_wc=生产口径（v4.208，§6.7 第 2 步显式给出，扣除额另计入营运资金）；notes=v4.206 复现，年报受限资产附注中为应付票据、信用证、保函质押的现金类不计超额现金、"
                              "按经营资产进投入资本（以应付票据为限），其利息并回 EBIT；notes_generic=另加笼统原因（只写质押、保证金等）"
                              "的现金类，只作敏感性；off=改前口径，只作复现")
+    parser.add_argument("--payout-basis", choices=("annual", "fiscal"), default="annual",
+                        help="§6.5.1 第 3 条派息率（OI-260）：fiscal=财年全部现金分红（含中期、三季与特别分红，预案公告日起计入，与 V_D0 分子同一归属，"
+                             "生产，§6.7 显式给出）；annual=只计 report_date 为年报期的分配（改前口径，只作复现）")
+    parser.add_argument("--tax-anomaly", choices=roic_inputs.TAX_ANOMALY_MODES, default="off",
+                        help="§6.5.1 第 3 条（OI-264）：median3=实际税率为负、或低于前三个财年观测税率中位 10pp 以上的年份改按该中位（生产）；off=改前（只作复现）")
+    parser.add_argument("--share-equity", choices=("parent", "common"), default="parent",
+                        help="§6.5.1 股本口径与 §6.3 第 2 条（OI-262）：common=推股数与三表存档推重述前 BPS 用普通股权益（归母权益 − 其他权益工具），"
+                             "股本与面板 BPS 不符时按面板 BPS 反推股数（生产）；parent=归母权益、重述前 BPS = 归母权益 ÷ 股本（只作复现）")
+    parser.add_argument("--dividend-timing", choices=("legacy", "post_period"), default="legacy",
+                        help="§6.5.1 股本口径（OI-262、OI-261）：post_period=已结束财年年度分配期末是否入账按 |x| 更小解释，且除权日在 (期末, 公告日] "
+                             "的现金分红补扣进每股净金融负债（生产）；legacy=年度分配一律视为已入账、不补扣（只作复现）")
     parser.add_argument("--equity-anchor", choices=("guarded", "legacy"), default="guarded",
                         help="§6.5.1 第 3 条权益口径的 ROE 锚（OI-200）：guarded=与 ROIC 路径 ratio0 同式的 λ 锚、TTM 当期化与峰谷坡道"
                              "（缺省，生产）；legacy=五年锚 × 单边 λ 上抬、无周期守卫（只作复现）")
@@ -3439,6 +3560,8 @@ def main() -> int:
     PV_BASIS = getattr(args, "pv_basis", "ev")
     global STATE_EFFECTIVE
     STATE_EFFECTIVE = args.state_effective
+    global PAYOUT_BASIS, SHARE_EQUITY, DIVIDEND_TIMING
+    PAYOUT_BASIS, SHARE_EQUITY, DIVIDEND_TIMING = args.payout_basis, args.share_equity, args.dividend_timing
     global DEMAND_CYCLE_CODES, DEMAND_CYCLE_G0_ZERO
     if args.demand_cycle_codes:
         DEMAND_CYCLE_CODES = {line.strip().zfill(6) for line in args.demand_cycle_codes.read_text(encoding="utf-8").splitlines()
@@ -3531,7 +3654,8 @@ def main() -> int:
         ROIC_YEARS.update(roic_inputs.load_statements(set(codes), args.statements_dir,
                                                       ic_floor=args.roic_ic_floor, caliber=args.cash_caliber,
                                                       notice_cap=(args.notice_cap == "statutory"),
-                                                      restricted_cash=args.restricted_cash))
+                                                      restricted_cash=args.restricted_cash,
+                                                      tax_anomaly=args.tax_anomaly))
         if args.reset_guard != "off":
             with args.reset_guard_file.open(encoding="utf-8-sig", newline="") as fh:
                 for r in csv.DictReader(fh):

@@ -152,6 +152,75 @@ class ExternalEquityIntraTest(unittest.TestCase):
         self.assertAlmostEqual(shares, 10e8)
 
 
+class Batch1DividendTest(unittest.TestCase):
+    """OI-260／OI-262／OI-261：派息率按财年合计、年度分配期末入账按 |x| 更小解释、期后除息补扣、股数扣其他权益工具。"""
+
+    def tearDown(self):
+        B.PAYOUT_BASIS, B.SHARE_EQUITY, B.DIVIDEND_TIMING = "annual", "parent", "legacy"
+
+    def test_payout_counts_interim_dividends_once_known(self):
+        series = {"2025-12-31": {"basic_eps": "7.68", "notice_date": "2026-03-27"}}
+        actions = [{"report_date": "2025-06-30", "cash_per_share": "0.95", "plan_notice_date": "2025-08-27", "ex_dividend_date": "2025-10-16"},
+                   {"report_date": "2025-12-31", "cash_per_share": "1.75", "plan_notice_date": "2026-03-27", "ex_dividend_date": "2026-07-20"},
+                   {"report_date": "2026-06-30", "cash_per_share": "0.98", "plan_notice_date": "2026-08-21", "ex_dividend_date": "2026-10-10"}]
+        self.assertAlmostEqual(B.payout_ratio(series, actions, "2026-09-30", 1)[0], 1.75 / 7.68)
+        B.PAYOUT_BASIS = "fiscal"
+        self.assertAlmostEqual(B.payout_ratio(series, actions, "2026-09-30", 1)[0], 2.70 / 7.68)
+        late = [dict(a, plan_notice_date="2026-10-01") if a["report_date"] == "2025-12-31" else a for a in actions]
+        self.assertAlmostEqual(B.payout_ratio(series, late, "2026-09-30", 1)[0], 0.95 / 7.68)   # 预案未公告不计
+
+    def test_annual_distribution_unbooked_at_h1_is_ambiguous(self):
+        actions = [{"ex_dividend_date": "2026-07-03", "cash_per_share": "0.5", "share_ratio": "0",
+                    "plan_notice_date": "2026-04-20", "report_date": "2025-12-31"}]
+        self.assertEqual(B.dividends_booked_since(actions, "2025-12-31", "2026-06-30", "2026-08-27"), (0.5, []))
+        B.DIVIDEND_TIMING = "post_period"
+        self.assertEqual(B.dividends_booked_since(actions, "2025-12-31", "2026-06-30", "2026-08-27"), (0.0, [0.5]))
+        # 华荣型：期末未入账 → BPS 未扣，|x| 更小的解释是不计，x ≈ 0（旧口径读成 +0.5 外生权益）
+        ref = row("2025-12-31", "2026-03-30", 10.0, 12e8, 1.2)
+        series = {"2025-12-31": ref, "2026-06-30": row("2026-06-30", "2026-08-27", 10.8, 8e8, 0.8)}
+        x, _s, _b, _m = B.external_equity_intra(series, actions, "2026-06-30", "2025-12-31", 100e8)
+        self.assertAlmostEqual(x, 0.0, places=6)
+        B.DIVIDEND_TIMING = "legacy"
+        x_old, *_ = B.external_equity_intra(series, actions, "2026-06-30", "2025-12-31", 100e8)
+        self.assertAlmostEqual(x_old, 0.5, places=6)
+
+    def test_multiple_ambiguous_dividends_pick_best_combination(self):
+        # 中期分红 1.0（预案早于年报期末、年初除权，入账与否不可知）＋年度分配 2.0（股东大会已过、期末已入账）：
+        # 最佳解释是只计年度分配（x ≈ 0）；逐笔贪心会先计中期分红、把年度分配读成未入账
+        actions = [{"ex_dividend_date": "2026-01-23", "cash_per_share": "1.0", "share_ratio": "0",
+                    "plan_notice_date": "2025-11-01", "report_date": "2025-09-30"},
+                   {"ex_dividend_date": "2026-08-20", "cash_per_share": "2.0", "share_ratio": "0",
+                    "plan_notice_date": "2026-04-29", "report_date": "2025-12-31"}]
+        ref = row("2025-12-31", "2026-04-29", 10.0, 12e8, 1.2)
+        series = {"2025-12-31": ref, "2026-06-30": row("2026-06-30", "2026-08-27", 8.8, 8e8, 0.8)}   # 100 + 8 − 20（年度）= 88 亿
+        B.DIVIDEND_TIMING = "post_period"
+        pending = []
+        x, *_ = B.external_equity_intra(series, actions, "2026-06-30", "2025-12-31", 100e8, pending_out=pending)
+        self.assertAlmostEqual(x, 0.0, places=6)
+        self.assertEqual(pending, [])
+        # 两笔金额相同（并列）：按先验——年报期末前已预案的中期分红不计、期内通过的年度分配计入
+        tie = [dict(actions[0]), dict(actions[1], cash_per_share="1.0")]
+        series_tie = {"2025-12-31": ref, "2026-06-30": row("2026-06-30", "2026-08-27", 9.8, 8e8, 0.8)}
+        pending = []
+        x, *_ = B.external_equity_intra(series_tie, tie, "2026-06-30", "2025-12-31", 100e8, pending_out=pending)
+        self.assertAlmostEqual(x, 0.0, places=6)
+        self.assertEqual(pending, [])
+
+    def test_post_period_dividends_window(self):
+        actions = [{"ex_dividend_date": "2026-01-23", "cash_per_share": "1.0", "share_ratio": "0"},   # 期后、公告前：补扣
+                   {"ex_dividend_date": "2026-04-29", "cash_per_share": "0.4", "share_ratio": "0"},   # 公告日当天：归一化不扣，补扣
+                   {"ex_dividend_date": "2026-07-10", "cash_per_share": "2.0", "share_ratio": "0"},   # 公告后：归一化处理
+                   {"ex_dividend_date": "2025-12-20", "cash_per_share": "0.7", "share_ratio": "0"}]   # 期内：已在报表
+        self.assertAlmostEqual(B.post_period_dividends(actions, "2025-12-31", "2026-04-29", "2026-04-29"), 1.4)
+
+    def test_share_equity_excludes_other_equity_tool(self):
+        y = Year("2025-12-31", "2026-03-28", 1272875.0, 0.0)
+        y.other_equity_tool = 177457.0
+        self.assertEqual(B.share_equity(y), 1272875.0)
+        B.SHARE_EQUITY = "common"
+        self.assertEqual(B.share_equity(y), 1272875.0 - 177457.0)
+
+
 class AnnualExternalEquityTest(unittest.TestCase):
     def test_ipo_year_counted_small_residual_ignored(self):
         actions = [{"ex_dividend_date": "2023-06-15", "cash_per_share": "0.5", "share_ratio": "0"}]

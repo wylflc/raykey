@@ -1495,7 +1495,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
         max_corr: float = 0.0, corr=None, corr_conflict: str = "skip",
         corr_strength_days: int = 126, tier_mode: str = "none",
         scan_depth: int = 40, min_upside: dict[str, float] | None = None,
-        position_cap: float = 0.0, only_tiers: set[str] | None = None,
+        position_cap: float = 0.0, only_tiers: set[str] | None = None, cap_equity: str = "execution",
         universe: list[tuple[str, set[str]]] | None = None,
         trend_tranche: bool = False, trend_ma: tuple[int, ...] = (20, 60),
         trend_tol: float = 0.0, exec_delay: int = 0, exec_price: str = "close",
@@ -2149,6 +2149,8 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
             stats["**穿仓·净资产归零**"] += 1
             break
         tranche_equity = equity_curve[-1][1] if exec_delay and equity_curve and execution_consistency == "signal" else equity
+        # §9.3.1 单票机械上限按信号日收盘市值与**信号日**净资产判（OI-243，`--cap-equity signal`）；execution＝执行日盯市净资产（改前，只作复现）
+        cap_base = tranche_equity if cap_equity == "signal" else equity
         budget = tranche_equity * x
         # `--sell-x`（用户 2026-09-02：买入与卖出不必同一档位）：卖出侧一档 = 净资产 × sell_x，
         # 涨幅减持／出名单减持／换仓卖出／簇内升级／止损减档同用；不给即与买入一档相同（逐位不变）。
@@ -2985,7 +2987,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
             cand_pv: dict[str, float] = {}
             for r in eligible:
                 if position_cap and r[0] in portfolio.lots \
-                        and portfolio.lots[r[0]].shares * r[1] >= equity * position_cap:
+                        and portfolio.lots[r[0]].shares * r[1] >= cap_base * position_cap:
                     continue                          # 已到单票上限的持仓收不了钱，也就不该触发别人卖出
                 cand_pv[r[0]] = r[3]
             buy_codes = [r[0] for r in eligible if r[0] in cand_pv]      # 保持 P/V 升序
@@ -3061,7 +3063,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                     # `swap_trigger_window`（用户 2026-09-03 实验）：触发期内的已持仓候选仍可触发（其余触发条件不变）；
                     # `swap_held_trigger_max_tiers`：持仓市值不足 T 档的已持仓候选同样可触发。缺省两者都关，逐位不变。
                     # 已到单票上限的持仓收不了钱，也就不该触发别人卖出（与配对换仓同一口径）。
-                    if position_cap and portfolio.lots[code].shares * close >= equity * position_cap:
+                    if position_cap and portfolio.lots[code].shares * close >= cap_base * position_cap:
                         continue
                     if swap_trigger_window and trigger_win.get(code, -1) >= day_no:
                         held_kind = "触发期内已持仓"
@@ -3512,7 +3514,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 if r[3] > _cut:
                     continue
                 _l = portfolio.lots.get(r[0])
-                if _l is not None and position_cap and _l.shares * r[1] >= equity * position_cap:
+                if _l is not None and position_cap and _l.shares * r[1] >= cap_base * position_cap:
                     continue
                 if _l is not None and addon_max_gain and _l.avg_cost > 0 \
                         and r[1] >= _l.avg_cost * (1.0 + addon_max_gain):
@@ -3620,7 +3622,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
             if position_cap:
                 held_value = (portfolio.lots[code].shares * (fill if exec_confirm_close else close)
                               if code in portfolio.lots else 0.0)
-                room = equity * position_cap - held_value
+                room = cap_base * position_cap - held_value
                 if room <= 0:
                     continue
                 amount = min(amount, room)
@@ -4417,6 +4419,8 @@ def main() -> int:
                         default=None, help="分档最低空间门槛，如 0.30 0.40 0.40")
     parser.add_argument("--position-cap", type=float, default=0.0,
                         help="单票买入上限占总资产比例，如 0.10；只挡加仓不强制减持")
+    parser.add_argument("--cap-equity", choices=("execution", "signal"), default="execution",
+                        help="单票上限的净资产分母（OI-243）：signal=信号日净资产（§9.3.1，生产同判，BASE 显式给出）；execution=执行日盯市净资产（改前，只作复现）")
     parser.add_argument("--only-tiers", default="", help="只买这些档位，逗号分隔，如 L1")
     parser.add_argument("--hold-states", type=Path, default=None, help="持仓侧逐日状态（v4.92 SPA，§9.3.1：换仓来源／簇内升级／T+1 换仓确认读它）；候选侧仍读 --daily-states；不给则持仓侧＝候选侧（v4.92 前口径）")
     parser.add_argument("--daily-states", type=Path, help="逐日估值状态文件，缺省 a_share_daily_states_adopted.csv（§6.7 第 3 步产物）")
@@ -5248,7 +5252,7 @@ def main() -> int:
                          scan_depth=args.scan_depth,
                          min_upside=(dict(zip(("L1", "L2", "L3"), args.min_upside))
                                      if args.min_upside else None),
-                         position_cap=args.position_cap,
+                         position_cap=args.position_cap, cap_equity=args.cap_equity,
                          only_tiers={t.strip() for t in args.only_tiers.split(",") if t.strip()} or None,
                          universe=universe, trend_tranche=args.trend_tranche,
                          sell_full=args.sell_full, stop_min_days=args.stop_min_days,

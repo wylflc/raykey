@@ -71,6 +71,37 @@ class PanelVersionTest(unittest.TestCase):
         self.assertIn("known_from", next(iter(resets.values())))
 
 
+class VersionBpsTest(unittest.TestCase):
+    """§6.3 第 2 条（OI-262）：三表存档推重述前 BPS 用普通股权益；股本不是股数时按面板 BPS 反推股数。"""
+
+    def tearDown(self) -> None:
+        bhvb.SHARE_EQUITY = "parent"
+
+    def test_parent_mode_reproduces_old_formula(self) -> None:
+        bal = {"TOTAL_PARENT_EQUITY": "1272875", "OTHER_EQUITY_TOOL": "177457", "SHARE_CAPITAL": "25220"}
+        self.assertAlmostEqual(bhvb.version_bps(bal, 43.43, None), 1272875 / 25220)      # 招行 50.47：含永续债与优先股
+
+    def test_common_equity_excludes_other_equity_instruments(self) -> None:
+        bhvb.SHARE_EQUITY = "common"
+        bal = {"TOTAL_PARENT_EQUITY": "1272875", "OTHER_EQUITY_TOOL": "177457", "SHARE_CAPITAL": "25220"}
+        self.assertAlmostEqual(bhvb.version_bps(bal, 43.43, {"TOTAL_PARENT_EQUITY": 1272875.0, "OTHER_EQUITY_TOOL": 177457.0,
+                                                             "SHARE_CAPITAL": 25220.0}), 43.4345, places=3)
+
+    def test_share_capital_not_share_count_uses_panel_bps(self) -> None:
+        bhvb.SHARE_EQUITY = "common"                     # 中国海油：股本 751.8 亿元、475.3 亿股、面板 BPS 16.889
+        bal = {"TOTAL_PARENT_EQUITY": "802750", "SHARE_CAPITAL": "75180"}
+        now = {"TOTAL_PARENT_EQUITY": 802750.0, "OTHER_EQUITY_TOOL": None, "SHARE_CAPITAL": 75180.0}
+        self.assertAlmostEqual(bhvb.version_bps(bal, 16.889, now), 16.889, places=6)
+        restated = {"TOTAL_PARENT_EQUITY": "780000", "SHARE_CAPITAL": "75180"}
+        self.assertAlmostEqual(bhvb.version_bps(restated, 16.889, now), 16.889 * 780000 / 802750, places=6)
+
+    def test_pre_restatement_panel_still_matches_old_statements(self) -> None:
+        bhvb.SHARE_EQUITY = "common"                     # 面值 1 元：面板仍是重述前口径，旧表 ÷ 股本 = 面板 BPS
+        old = {"TOTAL_PARENT_EQUITY": "100", "SHARE_CAPITAL": "10"}
+        now = {"TOTAL_PARENT_EQUITY": 90.0, "OTHER_EQUITY_TOOL": None, "SHARE_CAPITAL": 10.0}
+        self.assertAlmostEqual(bhvb.version_bps(old, 10.0, now), 10.0)
+
+
 class OverlayBridgeTest(unittest.TestCase):
     def test_minority_share_scales_with_ev(self) -> None:
         band = {"roic_path": "growth", "nopat_ps": "2.0", "ev_ps": "40.0", "net_debt_ps": "12.0",
