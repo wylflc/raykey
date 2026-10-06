@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -75,6 +76,43 @@ class ResearchOverlayTest(unittest.TestCase):
     def test_normalized_band_and_other_paths_are_refused(self) -> None:
         self.assertIsInstance(o.apply_research_overlay(_band(exright_note="除权归一化"), _dossier(177.92)), str)
         self.assertIsInstance(o.apply_research_overlay(_band(roic_path="bank_divspread"), _dossier(177.92)), str)
+
+
+class StockGrowthCapTest(unittest.TestCase):
+    """§6.5.2.2 存量型增长上限（OI-272）：g0 超过 10% 的 growth 行按 10% 以同一引擎重算 EV 比例与股权桥。"""
+
+    def test_cap_recomputes_ev_with_capped_g0(self) -> None:
+        band = _band(g0="0.1967")
+        old, new = o.apply_stock_growth_cap(band)
+        base = intrinsic_value(7.0896, 1.1182, 0.1967, 0.0998, roe_terminal=0.1198, g_terminal=0.03, **o.FADE).intrinsic_value
+        capped = intrinsic_value(7.0896, 1.1182, 0.10, 0.0998, roe_terminal=0.1198, g_terminal=0.03, **o.FADE).intrinsic_value
+        self.assertAlmostEqual(float(band["ev_ps"]), float(_band(g0="0.1967")["ev_ps"]) * capped / base, places=3)
+        self.assertEqual((band["g0"], band["model_g0"]), ("0.1000", "0.1967"))
+        self.assertAlmostEqual(new, float(band["ev_ps"]) - float(band["net_debt_ps"]), places=3)
+        self.assertAlmostEqual(float(band["band_high"]), 1.1 * new, places=3)
+        self.assertLess(new, old)
+        self.assertIn("存量型增长上限", band["growth_cap_note"])
+        self.assertIsNone(o.apply_stock_growth_cap(band))          # 幂等：已截断的行不再改
+
+    def test_cap_leaves_low_growth_and_other_paths(self) -> None:
+        self.assertIsNone(o.apply_stock_growth_cap(_band(g0="0.0634")))
+        self.assertIsNone(o.apply_stock_growth_cap(_band(g0="0.1000")))
+        self.assertIsNone(o.apply_stock_growth_cap(_band(roic_path="zero_growth", g0="0.2")))
+        self.assertIsInstance(o.apply_stock_growth_cap(_band(g0="0.2", exright_note="除权归一化")), str)
+
+    def test_cap_after_research_growth_keeps_mechanical_g0(self) -> None:
+        band = _band(g0="0.1482")
+        o.apply_research_overlay(band, dict(_dossier(177.92), research_g0="0.15"))
+        self.assertEqual((band["g0"], band["model_g0"]), ("0.1500", "0.1482"))
+        o.apply_stock_growth_cap(band)
+        self.assertEqual((band["g0"], band["model_g0"]), ("0.1000", "0.1482"))
+
+    def test_load_stock_demand_reads_only_stock_runway(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "attrs.csv"
+            path.write_text("security_code,demand_runway\n605305,存量\n300308,结构扩张\n", encoding="utf-8")
+            self.assertEqual(o.load_stock_demand(path), {"605305"})
+        self.assertEqual(o.STOCK_G0_CAP, 0.10)
 
 
 if __name__ == "__main__":

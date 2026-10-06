@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.235
+# A股选股-估值-量价操作流程 v4.236
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -290,9 +290,9 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 ##### 6.5.2.1 P/V 与带宽
 
-正常生产带的中值必须等于模型内在价值。生产 `P/V` 与回测 `valuation_ratio` 在未叠加的行上使用同一分母（`scripts/pv_ratio.py` 与逐日状态同式）；被 §6.4 叠加过的行与采用研究数的行（§6.5.2.2）是成文例外，前者生产分母比回测分母新，后者按研究盈利计。
+正常生产带的中值必须等于模型内在价值。生产 `P/V` 与回测 `valuation_ratio` 在未叠加的行上使用同一分母（`scripts/pv_ratio.py` 与逐日状态同式）；被 §6.4 叠加过的行、采用研究数与存量型 g0 截断的行（§6.5.2.2）是成文例外，前者生产分母比回测分母新，后两者按研究盈利或截断后的增长计。
 
-叠加只写生产带 `a_share_pool_model_bands_adopted.csv`，**回测输入 `roic_bands.csv`／`roic_daily_raw.csv`／`a_share_daily_states_adopted.csv` 一律不碰**。带文件的 `forecast_overlay` 列非空即表示该行已叠加预告或快报，`research_overlay` 列非空即表示该行采用研究数；引用回测读数论证生产行为时先看这两列。
+叠加只写生产带 `a_share_pool_model_bands_adopted.csv`，**回测输入 `roic_bands.csv`／`roic_daily_raw.csv`／`a_share_daily_states_adopted.csv` 一律不碰**。带文件的 `forecast_overlay` 列非空即表示该行已叠加预告或快报，`research_overlay` 列非空即表示该行采用研究数，`growth_cap_note` 列非空即表示该行 g0 按存量型上限截断；引用回测读数论证生产行为时先看这三列。
 
 ##### 6.5.2.2 模型计算
 
@@ -304,13 +304,15 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 
 **研究增长**：结论为采用研究数的 `growth` 路径行，档案可另登记 `research_g0`（小数，替代生产带 g0）与 `research_g0_basis`（窗口、两数与可证伪条件）。研究增长只取本公司已实现的资本腿读数：按 §6.5.1 同式 `min(增量 ROIC, 40%) × 再投资率`，增量 ROIC 的窗口起点移到结构性变化（毛利率台阶、主体重置、并购）之后的年报、终点照带，再投资率照带（台阶扭曲的是增量 ROIC 的分子，不是再投资强度）；不得取行业或预测增速，不得为希望的 `P/V` 反推。叠加时 EV(研究) 以研究 NOPAT 与研究增长同算，机械 g0 留在 `model_g0`；未登记时 g0 照带，`zero_growth` 路径不适用。
 
+**存量型增长上限（OI-272）**：业务属性登记表（个人投资体系第 5.12 节，`data/processed/a_share_business_attributes.csv`）`demand_runway = 存量` 的池成员，`growth` 路径池带的 g0（含研究增长）超过 10% 时按 10% 计。§6.7 第 4 步叠加脚本在采用研究数之后、除权归一化之前，以同一引擎按截断后的 g0 重算企业价值比例与股权桥，改写候选侧与 B2 池带（持仓侧随之）；截断前的 g0 留在 `model_g0`（研究增长行已存的机械值不改），`growth_cap_note` 记截断。常数 `apply_forecast_band_overlay.STOCK_G0_CAP = 0.10`，唯一实现 `apply_forecast_band_overlay.apply_stock_growth_cap`。业务属性不是时点数据，本条只在生产执行，回测输入不动（成文差异，§12.1 读数不适用）。
+
 ##### 6.5.2.3 生产带落地
 
 `data/processed/a_share_pool_model_bands_adopted.csv` 是生产模型带唯一来源，**只含池成员**（分层表 worth_attention L1-L3；池外档案的带由 `apply_model_bands_to_dossiers.py` 直接取自全市场模型带、只落档案），**其带值恒为现价口径**：§6.7 第 4 步的叠加脚本末段按除权事件（现金自带公告日起、送转自 `bps_basis_date` 起，§6.5.1 第 5 条）归一化，`exright_note` 列非空即已折算。池外原始模型带也由档案写入脚本调用相同除权实现，事件截止取信号日；银行与保险（池内、池外）的带值按 §11.3 的信号日口径由 `bank_live_value` 计算，不取逐日状态末行（OI-269）。逐票档案只承载研究结论和当前带；`apply_model_bands_to_dossiers.py` 只覆盖带相关字段，保留 `key_metrics`、`review_triggers`、高频指标和研究备注。README 第八节「现价隐含了什么」的首段由 `build_company_dossier_readmes.py` 按生产带与池内现价机械生成（`现价 ÷ 中值 = P/V`、路径与增长/折现假设、归一化盈利倍数），`implied_growth_years` 的新增研究只记录可证伪命题与方法分歧；已有原文在折叠区标明证据须复核，不作为当前估值或交易依据。带变更历史留在 CSV 的 `notes`，不重复铺陈于 README；页面分别标注估值更新日与质量证据日。
 
 **持仓侧带** `data/processed/a_share_pool_model_bands_hold.csv`：§6.7 第 4 步由候选侧生产带与 B2 池带（§6.5.1 B2 口径）逐票取 `intrinsic_value` 较高的一行，两侧各自完成预告叠加与除权归一化后再取，`hold_source` 列标明来源；成员与候选侧生产带相同。§9.3.1 换仓来源读持仓侧带；买入线、候选排序、档案、阅读版与 §6 其余判定只读候选侧生产带。回测同构：候选侧读 `a_share_daily_states_adopted.csv`，持仓侧读 `a_share_daily_states_hold.csv`（§6.7 第 3 步逐 (代码, 日期) 取较高 V，`--hold-states`）。
 
-生产 `P/V` 与回测 `valuation_ratio` 必须逐位一致（§6.4 叠加行与采用研究数的行除外，§6.5.2.1）。**晚间披露报告的当晚吸收两侧同构**：生产在公告日戳的前一晚即用新带出信号；回测逐日状态里每条带自**可得日之前的最后一个市场交易日**起生效（`build_historical_valuation_bands.py --state-effective prev_trading_day`，缺省；前一交易日按上证指数日历取，行情库在该公告前已断的陈旧序列退回可得日生效）。带的可得日按 §6.3 第 2 条封顶（`--notice-cap statutory`，缺省）。回测的均线与建仓止损锚同样与实盘同构：均线按前复权口径折回当日股本／分红基准（§8.3），除权日止损锚与持有期峰价按 §11.4 同式折算（§9.3.5）。早于 §6.5.2.4 时点门槛的陈旧模型带不进任何一层：扫描器无 `P/V`、档案层判「无法估值」，两层同一结论。
+生产 `P/V` 与回测 `valuation_ratio` 必须逐位一致（§6.4 叠加行、采用研究数与存量型 g0 截断的行除外，§6.5.2.1）。**晚间披露报告的当晚吸收两侧同构**：生产在公告日戳的前一晚即用新带出信号；回测逐日状态里每条带自**可得日之前的最后一个市场交易日**起生效（`build_historical_valuation_bands.py --state-effective prev_trading_day`，缺省；前一交易日按上证指数日历取，行情库在该公告前已断的陈旧序列退回可得日生效）。带的可得日按 §6.3 第 2 条封顶（`--notice-cap statutory`，缺省）。回测的均线与建仓止损锚同样与实盘同构：均线按前复权口径折回当日股本／分红基准（§8.3），除权日止损锚与持有期峰价按 §11.4 同式折算（§9.3.5）。早于 §6.5.2.4 时点门槛的陈旧模型带不进任何一层：扫描器无 `P/V`、档案层判「无法估值」，两层同一结论。
 
 ##### 6.5.2.4 主体重置与无法估值
 
@@ -407,7 +409,7 @@ python3 scripts/build_hold_daily_states.py   # 持仓侧逐日状态 = 逐 (代�
 
 # 4. 生成池模型带 → 叠加预告/快报 →（B2 池带同两步 → 持仓侧池带）→ 写入逐票档案
 python3 scripts/build_pool_model_bands.py --signal-date YYYY-MM-DD
-python3 scripts/apply_forecast_band_overlay.py --signal-date YYYY-MM-DD   # 预告/快报叠加（§6.4）→ 采用研究数（§6.5.2.2）→ 除权归一化
+python3 scripts/apply_forecast_band_overlay.py --signal-date YYYY-MM-DD   # 预告/快报叠加（§6.4）→ 采用研究数与存量型 g0 上限（§6.5.2.2）→ 除权归一化
 python3 scripts/build_pool_model_bands.py --signal-date YYYY-MM-DD \
   --bands data/processed/roic_bands_b2.csv --states data/processed/a_share_daily_states_b2.csv \
   --out data/processed/a_share_pool_model_bands_b2.csv

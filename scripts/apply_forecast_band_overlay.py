@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""按工作流程叠加已公告的预告或快报，套用采用研究数的复核结论，并归一化除权事件。
+"""按工作流程叠加已公告的预告或快报，套用采用研究数的复核结论与存量型 g0 上限，并归一化除权事件。
 
 叠加通过经营 BPS 调整盈利分子，保持归一化比率；净金融负债与账面少数股东不变，
-盈利份额扣减随 EV 重算。采用研究数（§6.5.2.2）把每股 NOPAT 换成研究数、投入资本不变。
-仅写生产带，同一份证据不重复叠加。
+盈利份额扣减随 EV 重算。采用研究数（§6.5.2.2）把每股 NOPAT 换成研究数、投入资本不变；
+存量型 g0 上限（§6.5.2.2，OI-272）按截断后的 g0 重算 EV 比例。仅写生产带，同一份证据不重复叠加。
 """
 from __future__ import annotations
 
@@ -32,6 +32,11 @@ OVERLAY_COLS = ["forecast_overlay", "forecast_notice_date", "forecast_report_dat
 # §6.5.2.2 采用研究数：`research_overlay` 非空（采用日）即本行盈利锚取研究数，机械值留在 model_* 与 pre_research_iv。
 RESEARCH_COLS = ["research_overlay", "research_nopat_yi", "model_nopat_ps", "model_roic0", "pre_research_iv",
                  "research_overlay_note", "model_g0"]
+# §6.5.2.2 存量型增长上限（OI-272，用户 2026-10-07 裁定）：业务属性 `demand_runway = 存量` 的 `growth` 行 g0 至多 10%；
+# `growth_cap_note` 非空即本行已截断，截断前 g0 留在 `model_g0`。业务属性不是时点数据，只在生产执行（回测不复现）。
+GROWTH_CAP_COLS = ["growth_cap_note"]
+STOCK_G0_CAP = 0.10
+DEFAULT_BUSINESS = ROOT / "data/processed/a_share_business_attributes.csv"
 # 重算企业价值比例所用的生产参数（§6.5.1 统一参数、§6.7 第 2 步 `--fade-shape exponential --fade-lambda 0.12
 # --fade-horizon 50`；增速 10 年线性 fade，`ROIC_T = min(WACC + 2pp, ROIC0)`）
 FADE = dict(n=10, n1=0, consistent=True, roe_lam=0.12, horizon=50)
@@ -362,6 +367,73 @@ def apply_research_overlay(band: dict, dossier: dict) -> tuple[float, float] | s
     return iv, iv_new
 
 
+def load_stock_demand(path: Path) -> set[str]:
+    """业务属性登记表中 `demand_runway = 存量` 的代码（§6.5.2.2 存量型增长上限）。"""
+    if not path.exists():
+        return set()
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        return {(r.get("security_code") or "").strip().zfill(6) for r in csv.DictReader(handle)
+                if (r.get("demand_runway") or "").strip() == "存量"}
+
+
+def apply_stock_growth_cap(band: dict, cap: float = STOCK_G0_CAP) -> tuple[float, float] | str | None:
+    """§6.5.2.2 存量型增长上限（OI-272）：`growth` 行 g0 > cap 时，以同一引擎按 cap 重算企业价值比例与股权桥。
+
+    每股 NOPAT 与 ROIC0 照带（采用研究数的行已是研究口径），其余参数不动；截断前 g0 留在 `model_g0`
+    （研究增长行已存的机械值不改）。须在采用研究数之后、除权归一化之前调用。
+    返回 (原 IV, 新 IV)；不需截断返回 None；不适用返回原因。"""
+    if (band.get("roic_path") or "").strip() != "growth":
+        return None
+    g0 = num(band.get("g0"))
+    if g0 is None or g0 <= cap + 1e-12:
+        return None
+    if (band.get("exright_note") or "").strip():
+        return "带已除权归一化，须从 §6.7 第 4 步重建池带后再套用"
+    nopat, roic0, wacc, g_t = (num(band.get(k)) for k in ("nopat_ps", "roic0", "wacc", "g_terminal"))
+    iv, net_debt, ev_ps = num(band.get("intrinsic_value")), num(band.get("net_debt_ps")), num(band.get("ev_ps"))
+    if ev_ps is None and iv is not None and net_debt is not None:
+        ev_ps = iv + net_debt
+    if None in (nopat, roic0, wacc, g_t, iv, net_debt, ev_ps) or nopat <= 0:
+        return "输入不全（每股 NOPAT、roic0、wacc、g_terminal、IV、净负债或 EV）"
+
+    def ev(g: float):
+        return intrinsic_value(nopat, roic0, g, wacc, roe_terminal=min(wacc + TERMINAL_EXCESS, roic0),
+                               g_terminal=g_t, **FADE)
+    try:
+        base, capped = ev(g0), ev(cap)
+        factor = capped.intrinsic_value / base.intrinsic_value if base.intrinsic_value > 0 else None
+    except (ValueError, ZeroDivisionError) as exc:
+        return f"截断后企业价值不可算：{exc}"
+    if factor is None or factor <= 0:
+        return "截断后企业价值非正"
+    ev_new = ev_ps * factor
+    iv_new = equity_from_ev(band, ev_new, net_debt)
+    if iv_new <= 0:
+        return f"截断后股权价值 {iv_new:.2f} ≤ 0"
+    if not (band.get("model_g0") or "").strip():
+        band["model_g0"] = band.get("g0", "")
+    band.update({
+        "g0": f"{cap:.4f}",
+        "growth_cap_note": (f"§6.5.2.2 存量型增长上限：g0 {g0:.2%} → {cap:.2%}（业务属性需求空间为存量），"
+                            f"EV ×{factor:.4f}，IV {iv:.2f} → {iv_new:.2f}"),
+        "intrinsic_value": f"{iv_new:.4f}",
+        "band_low": f"{BAND_LOW_COEF * iv_new:.4f}",
+        "band_high": f"{BAND_HIGH_COEF * iv_new:.4f}",
+        "ev_ps": f"{ev_new:.4f}",
+        "net_debt_ps": f"{ev_new - iv_new:.4f}",
+        "terminal_share": f"{capped.terminal_share:.4f}",
+    })
+    # 派生列随截断重写；敏感度列 v_bear／v_bull／v_zero_growth 保留机械模型的值
+    if nopat > 0:
+        band["implied_pe"] = f"{iv_new / nopat:.2f}"
+    eps_ttm, mos = num(band.get("eps_ttm")), num(band.get("mos"))
+    if eps_ttm and eps_ttm > 0:
+        band["pe_on_ttm_eps"] = f"{iv_new / eps_ttm:.2f}"
+    if mos is not None:
+        band["max_buy_price"] = f"{iv_new * (1 - mos):.4f}"
+    return iv, iv_new
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="把业绩预告／快报叠加到生产模型带（工作流程 §6.4）")
     ap.add_argument("--signal-date", required=True, help="信号日；证据截止自动取下一工作日")
@@ -375,6 +447,8 @@ def main() -> int:
                     help="只用于按 总市值÷现价 交叉校验股本；缺失则跳过校验")
     ap.add_argument("--dossiers", type=Path, default=ROOT / "data/processed/a_share_valuation_dossiers.csv",
                     help="差距复核结论为「采用研究数」的档案（§6.5.2.2）")
+    ap.add_argument("--business", type=Path, default=DEFAULT_BUSINESS,
+                    help="业务属性登记表：`demand_runway = 存量` 的 growth 行按 §6.5.2.2 存量型上限截断 g0")
     ap.add_argument("--out", type=Path, default=None, help="缺省原地覆盖 --bands")
     args = ap.parse_args()
     args.as_of = evidence_iso_for_signal(args.signal_date)
@@ -426,13 +500,14 @@ def main() -> int:
                 if cap and price and price > 0:
                     market_shares[(row.get("security_code") or "").strip()] = cap * 1e9 / price
 
-    out_header = header + [c for c in (*OVERLAY_COLS, *RESEARCH_COLS, *minority_claims.ROW_FIELDS) if c not in header]
+    out_header = header + [c for c in (*OVERLAY_COLS, *RESEARCH_COLS, *GROWTH_CAP_COLS, *minority_claims.ROW_FIELDS)
+                           if c not in header]
     applied, skipped, unchanged = [], [], 0
     bank_cleared: list[tuple[str, str, str]] = []
 
     for band in rows:
         band.update(minority_claims.invalidate_row(band, args.as_of))
-        for col in (*OVERLAY_COLS, *RESEARCH_COLS):
+        for col in (*OVERLAY_COLS, *RESEARCH_COLS, *GROWTH_CAP_COLS):
             band.setdefault(col, "")
         code = (band.get("security_code") or "").strip()
         name = band.get("security_name") or code
@@ -606,6 +681,19 @@ def main() -> int:
         else:
             research_hits.append((name, res[0], res[1]))
 
+    # ---- §6.5.2.2 存量型增长上限（OI-272）：采用研究数之后、除权归一化之前 ----
+    stock_codes = load_stock_demand(args.business)
+    cap_hits: list[tuple[str, float, float]] = []
+    for band in rows:
+        code = (band.get("security_code") or "").strip().zfill(6)
+        if code not in stock_codes or (band.get("status") or "").strip() not in ("", "ok"):
+            continue
+        res = apply_stock_growth_cap(band)
+        if isinstance(res, str):
+            skipped.append((band.get("security_name") or code, f"存量型增长上限未套用：{res}"))
+        elif res is not None:
+            cap_hits.append((band.get("security_name") or code, res[0], res[1]))
+
     # ---- v4.20 除权归一化（OI-052/OI-039）：本文件写出的带值恒为现价口径 ----
     exright_hits: list[tuple[str, float, float]] = []
     for band in rows:
@@ -639,6 +727,9 @@ def main() -> int:
             print(f"  {name:<10}{old or 0:>10.2f}{new:>10.2f}{chg:>9}  {dprofit:>12.2f}  {label} {notice}")
     for name, old, new in research_hits:
         print(f"  采用研究数（§6.5.2.2）：{name} IV {old:.2f} → {new:.2f}（{new / old - 1:+.1%}）")
+    if cap_hits:
+        print(f"  存量型 g0 上限 {STOCK_G0_CAP:.0%}（§6.5.2.2）：{len(cap_hits)} 只截断：" + "、".join(
+            f"{n} {o:.2f}→{v:.2f}({v / o - 1:+.1%})" for n, o, v in sorted(cap_hits, key=lambda h: h[2] / h[1])))
     for name, label, notice in bank_cleared:
         print(f"  · 银行只推进证据日、带值不变：{name}（{label} {notice}）")
     for name, why in skipped:
