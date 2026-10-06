@@ -1,0 +1,128 @@
+[
+ {
+  "code": "000786",
+  "name": "北新建材",
+  "close": 16.6,
+  "model_yi": 44.88,
+  "research_yi": 25.71,
+  "gap": 0.7458,
+  "model_V": 26.91,
+  "research_V": 16.08,
+  "model_pv": 0.617,
+  "research_pv": 1.032,
+  "independent_pv": 1.073,
+  "independent_range": [
+   0.86,
+   1.427
+  ],
+  "why": "锚取 2023–24 年比率（λ=0 三年中位）× 经营账面、谷底守卫 v=0.79，比 TTM NOPAT 高 74%；竣工面积仍在下滑"
+ },
+ {
+  "code": "600970",
+  "name": "中材国际",
+  "close": 7.72,
+  "model_yi": 43.87,
+  "research_yi": 32.3,
+  "gap": 0.3583,
+  "model_V": 14.94,
+  "research_V": 11.77,
+  "model_pv": 0.517,
+  "research_pv": 0.656,
+  "independent_pv": 0.812,
+  "independent_range": [
+   0.688,
+   1.038
+  ],
+  "why": "锚取 λ=0 中位比率 × 账面，高于 2024–25 年与 TTM 归母（29.8／28.6／23.7 亿）"
+ },
+ {
+  "code": "603279",
+  "name": "景津装备",
+  "close": 10.94,
+  "model_yi": 11.25,
+  "research_yi": 5.23,
+  "gap": 1.1511,
+  "model_V": 19.87,
+  "research_V": 11.43,
+  "model_pv": 0.551,
+  "research_pv": 0.957,
+  "independent_pv": 0.894,
+  "independent_range": [
+   0.679,
+   1.316
+  ],
+  "why": "谷底守卫回归中位，锚 11.3 亿对 2024／2025／TTM 归母 8.5／5.2／4.1 亿"
+ },
+ {
+  "code": "000568",
+  "name": "泸州老窖",
+  "close": 72.28,
+  "model_yi": 129.61,
+  "research_yi": 80.24,
+  "gap": 0.6153,
+  "model_V": 103.55,
+  "research_V": 65.67,
+  "model_pv": 0.698,
+  "research_pv": 1.101,
+  "independent_pv": 1.127,
+  "independent_range": [
+   0.892,
+   1.453
+  ],
+  "why": "λ=0 中位锚、谷底守卫 v=0.75，锚 129.6 亿对 TTM 归母 75.1 亿"
+ },
+ {
+  "code": "603369",
+  "name": "今世缘",
+  "close": 28.09,
+  "model_yi": 36.19,
+  "research_yi": 24.1,
+  "gap": 0.5015,
+  "model_V": 39.51,
+  "research_V": 27.28,
+  "model_pv": 0.711,
+  "research_pv": 1.03,
+  "independent_pv": 1.127,
+  "independent_range": [
+   0.971,
+   1.415
+  ],
+  "why": "三年中位锚 36.2 亿对 2025／TTM 归母 26.0／24.6 亿"
+ },
+ {
+  "code": "000596",
+  "name": "古井贡酒",
+  "close": 93.55,
+  "model_yi": 45.64,
+  "research_yi": 28.2,
+  "gap": 0.6184,
+  "model_V": 115.66,
+  "research_V": 76.71,
+  "model_pv": 0.809,
+  "research_pv": 1.219,
+  "independent_pv": 1.332,
+  "independent_range": [
+   1.102,
+   1.779
+  ],
+  "why": "谷底守卫回归中位，锚 45.6 亿对 2025／TTM 归母 35.5／20.5 亿"
+ },
+ {
+  "code": "000792",
+  "name": "盐湖股份",
+  "close": 23.83,
+  "model_yi": 149.73,
+  "research_yi": 90.89,
+  "gap": 0.6474,
+  "model_V": 27.12,
+  "research_V": 18.89,
+  "model_pv": 0.879,
+  "research_pv": 1.261,
+  "independent_pv": 1.033,
+  "independent_range": [
+   0.734,
+   1.462
+  ],
+  "why": "补税后谷底守卫使锚混向含 2021–22 年景气高点的五年中位（OI-264、OI-266），研究数按审查长期价格"
+ }
+]

@@ -51,6 +51,7 @@ from __future__ import annotations
 
 import csv
 import math
+import re
 import statistics
 from collections import Counter
 from dataclasses import dataclass, field, replace
@@ -81,6 +82,16 @@ NOTE_DEBT_MODES = ("off", "notes")
 NOTE_DEBT_FILE = ROOT / "data/reference/debt_note_items.csv"
 DECOM_FUND_FILE = ROOT / "data/reference/decom_fund_items.csv"
 NOTE_DEBT_VERIFIED = ("ok", "manual")
+# OI-271 研究开关（缺省 off，只作估值准确性量化）：其他流动负债附注中由客户资金形成的项目——预收与监管商品款项、
+# 销售返利／折让／应付退货、待转销项税、支付业务往来与待清算资金、未到期责任准备金。`ocl`：从超额现金扣除（同 OI-200 客户资金）；
+# `ocl_contract`：另扣资产负债表合同负债与预收款项；`ocl_wc customer`：同一批项目只计入营运资金（影响再投资率，不动超额现金）。
+CUSTOMER_FLOAT_MODES = ("off", "ocl", "ocl_contract")
+OCL_WC_MODES = ("off", "customer")
+CUSTOMER_FLOAT_KINDS = (("prepay", re.compile(r"预收|监管商品|客户预付|合同负债|未到期责任准备金")),
+                        ("rebate", re.compile(r"返利|折让|退货|收入准备")),
+                        ("vat", re.compile(r"销项税")),
+                        ("payment", re.compile(r"支付业务|待清算")))
+CONTRACT_FLOAT_FIELDS = ("CONTRACT_LIAB", "ADVANCE_RECEIVABLES")
 # 估值准确性检验的研究开关（缺省＝生产，逐位不变；建带器按 --iroic-dic-floor／--iroic-endpoint／--reinvest-wc／--rd-addback／--rd-amort-start 设定）
 IROIC_DIC_FLOOR = 0.0      # OI-252 G1：ΔIC < 该比例 × 窗首投入资本时增量 ROIC 不可算
 IROIC_ENDPOINT = "1y"      # OI-252 G2：2y = 增量 ROIC 取端点两年均值
@@ -240,14 +251,17 @@ class RoicYear:
     decom_liability: float = 0.0      # OI-261：弃置、复垦类义务 × (1 − 税率)
     decom_fund: float = 0.0           # OI-261：现金行之外的弃置专户存款，与义务对冲、计超额现金
     annualized_months: int = 0        # OI-132：购买法收购当年 NOPAT／EBIT 已按并表月数年化（0 = 未调整）
+    customer_float: float = 0.0       # OI-271 研究开关：从超额现金扣除的客户资金（缺省 0）
     cash_inputs_complete: bool = False  # Strict availability for the optional maintenance proxy.
 
 
 def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap: bool,
                      ic_floor: float = 0.0, caliber: str = "nonop", note_cash: float = 0.0,
                      restricted: float = 0.0, pledged_wc: bool = False, reserve: float = 0.0,
-                     note_debt: tuple[float, float, float] = (0.0, 0.0, 0.0)) -> RoicYear | None:
-    """三表同一财年的三行 → `RoicYear`；缺资产负债表或利润表、或无公告日时返回 None。"""
+                     note_debt: tuple[float, float, float] = (0.0, 0.0, 0.0),
+                     customer: tuple[float, bool, float] = (0.0, False, 0.0)) -> RoicYear | None:
+    """三表同一财年的三行 → `RoicYear`；缺资产负债表或利润表、或无公告日时返回 None。
+    `customer`（OI-271 研究开关）=（其他流动负债客户资金类扣超额现金额, 是否另扣合同负债与预收款项, 计入营运资金额）。"""
     bal, inc, cfl = parts.get("balance"), parts.get("income"), parts.get("cashflow")
     if not (bal and inc):
         return None
@@ -333,7 +347,9 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
     operating_cash = OPERATING_CASH_RATIO * (year.revenue or 0.0)
     if caliber == "nonop":
         year.note_cash = note_cash
-        cash = _sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds - year.restricted_cash - year.statutory_reserve
+        year.customer_float = customer[0] + (_sum(bal, CONTRACT_FLOAT_FIELDS) if customer[1] else 0.0)
+        cash = (_sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds - year.restricted_cash - year.statutory_reserve
+                - year.customer_float)
         year.excess_cash = max(0.0, cash - operating_cash) + max(0.0, _sum(bal, OTHER_FIN_ASSET_FIELDS)) + year.decom_fund
     else:
         cash = (_num(bal.get("MONETARYFUNDS")) or 0.0) \
@@ -352,6 +368,8 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
     year.working_capital_operating = wc.operating
     year.working_capital = (wc.operating + year.restricted_cash if pledged_wc and wc.operating is not None
                             else wc.operating)
+    if customer[2] and year.working_capital is not None:
+        year.working_capital -= customer[2]
     year.financing_receivables = wc.financing_receivables
     year.wc_receivable_basis = wc.receivable_basis
     year.wc_payable_basis = wc.payable_basis
@@ -428,7 +446,9 @@ def load_statements(codes: set[str] | None = None,
                     caliber: str = "nonop",
                     restricted_cash: str = "off",
                     tax_anomaly: str = "off",
-                    note_debt: str = "off") -> dict[str, dict[str, RoicYear]]:
+                    note_debt: str = "off",
+                    customer_float: str = "off",
+                    ocl_wc: str = "off") -> dict[str, dict[str, RoicYear]]:
     """读三大报表 → `{代码: {财年: RoicYear}}`。缺表即返回空，由调用方降级。
 
     `notice_cap`（OI-042，缺省开）：财年公告日按 `disclosure_dates.available_at` 封顶到法定截止日
@@ -465,6 +485,12 @@ def load_statements(codes: set[str] | None = None,
     if note_debt not in NOTE_DEBT_MODES:
         raise ValueError(f"note_debt {note_debt!r} 不在 {NOTE_DEBT_MODES}")
     debts = load_note_debt(codes) if caliber == "nonop" and note_debt == "notes" else {}
+    if customer_float not in CUSTOMER_FLOAT_MODES or ocl_wc not in OCL_WC_MODES:
+        raise ValueError(f"customer_float {customer_float!r}／ocl_wc {ocl_wc!r} 不在 {CUSTOMER_FLOAT_MODES}／{OCL_WC_MODES}")
+    floats = load_customer_float(codes) if caliber == "nonop" and (customer_float != "off" or ocl_wc != "off") else {}
+    customers = {key: (amount if customer_float != "off" else 0.0, False, amount if ocl_wc != "off" else 0.0)
+                 for key, amount in floats.items()}
+    contract = customer_float == "ocl_contract"
     note_cash = load_cash_note_items(codes) if caliber == "nonop" else {}
     restricted = (load_restricted_cash_items(codes, mode=restricted_cash)
                   if caliber == "nonop" and restricted_cash != "off" else {})
@@ -474,11 +500,12 @@ def load_statements(codes: set[str] | None = None,
         for period, parts in periods.items():
             year = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber, note_cash.get((code, period), 0.0),
                                     restricted.get((code, period), 0.0), restricted_cash == "notes_wc",
-                                    reserves.get((code, period), 0.0), debts.get((code, period), (0.0, 0.0, 0.0)))
+                                    reserves.get((code, period), 0.0), debts.get((code, period), (0.0, 0.0, 0.0)),
+                                    _customer(customers, code, period, contract))
             if year is not None:
                 out.setdefault(code, {})[period] = year
     attach_superseded_versions(out, raw, codes, stmt_dir, notice_cap, ic_floor, caliber, note_cash, restricted,
-                               restricted_cash == "notes_wc", reserves, debts)
+                               restricted_cash == "notes_wc", reserves, debts, customers, contract)
     if tax_anomaly == "median3":
         for years in out.values():
             CAP_STATS["tax_anomaly_corrected"] += correct_tax_anomalies(years)
@@ -519,6 +546,45 @@ def correct_tax_anomalies(years: dict[str, RoicYear]) -> int:
         for _superseded_at, old in year.superseded:
             changed += _correct_tax(old, prior)
     return changed
+
+
+def _customer(customers: dict, code: str, period: str, contract: bool) -> tuple[float, bool, float]:
+    amount, _, wc = customers.get((code, period), (0.0, False, 0.0))
+    return amount, contract, wc
+
+
+def customer_float_kind(label: str) -> str | None:
+    """OI-271：其他流动负债附注项目名 → 客户资金类别（prepay／rebate／vat／payment），不属客户资金返回 None。"""
+    if re.search(r"背书|贴现|票据", label or ""):
+        return None
+    return next((kind for kind, pattern in CUSTOMER_FLOAT_KINDS if pattern.search(label or "")), None)
+
+
+def load_customer_float(codes: set[str] | None = None, path: Path | None = None,
+                        detail: bool = False) -> dict[tuple[str, str], float] | dict[tuple[str, str], dict[str, float]]:
+    """OI-271 研究开关：`debt_note_items.csv` 其他流动负债行（核定）中非债务项目按 `customer_float_kind` 归类 →
+    `{(代码, 年报期): 客户资金合计（元）}`；`detail` 时返回各类别与未归类项目（`unclassified`）的金额。"""
+    out: dict[tuple[str, str], dict[str, float]] = {}
+    path = path or NOTE_DEBT_FILE
+    if not path.exists():
+        return {}
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            code = (row.get("security_code") or "").zfill(6)
+            if (row.get("line") != "OTHER_CURRENT_LIAB" or row.get("status") not in NOTE_DEBT_VERIFIED
+                    or (codes is not None and code not in codes)):
+                continue
+            entry = out.setdefault((code, (row.get("report_date") or "")[:10]), {})
+            for item in filter(None, (row.get("items") or "").split(";")):
+                label, amount, kind = (item.rsplit(":", 2) + ["", "", ""])[:3]
+                value = _num(amount)
+                if kind != "other" or value is None or value <= 0 or re.search(r"合计|小计", label):
+                    continue
+                group = customer_float_kind(label) or "unclassified"
+                entry[group] = entry.get(group, 0.0) + value
+    if detail:
+        return out
+    return {k: sum(v for g, v in d.items() if g != "unclassified") for k, d in out.items()}
 
 
 def load_note_debt(codes: set[str] | None = None, debt_path: Path | None = None,
@@ -618,7 +684,8 @@ def load_restatement_dates(codes: set[str] | None = None, path: Path | None = No
 def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, codes: set[str] | None,
                                stmt_dir: Path, notice_cap: bool, ic_floor: float = 0.0, caliber: str = "nonop",
                                note_cash: dict | None = None, restricted: dict | None = None, pledged_wc: bool = False,
-                               reserves: dict | None = None, debts: dict | None = None) -> None:
+                               reserves: dict | None = None, debts: dict | None = None, customers: dict | None = None,
+                               contract: bool = False) -> None:
     """给被追溯重述的财年挂上「重述前版本」（`RoicYear.superseded`，按 superseded_at 升序），
     版本 = 该日之前在用的三行（某表无存档即沿用现行）。重述日志有重述日、却无存档版本覆盖该日的，
     记 `delayed_until` = 重述日：现行值在该日之前不可用（不假装当时已知）。"""
@@ -636,7 +703,8 @@ def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, c
                     parts[kind] = min(cands, key=lambda c: c[0])[1]
             old = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber,
                                    (note_cash or {}).get((code, period), 0.0), (restricted or {}).get((code, period), 0.0), pledged_wc,
-                                   (reserves or {}).get((code, period), 0.0), (debts or {}).get((code, period), (0.0, 0.0, 0.0)))
+                                   (reserves or {}).get((code, period), 0.0), (debts or {}).get((code, period), (0.0, 0.0, 0.0)),
+                                   _customer(customers or {}, code, period, contract))
             if old is not None:
                 versions.append((sa, old))
         year.superseded = versions

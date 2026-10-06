@@ -3521,6 +3521,10 @@ def main() -> int:
                         help="研究开关（OI-266 T2）：continuous＝λ 按近两次年度比率变动的相对幅度连续计分（±10%% 满格）")
     parser.add_argument("--anchor-book-growth", choices=("off", "iroic"), default="off",
                         help="研究开关（OI-268 B2）：iroic＝锚的账面增长部分按增量 ROIC（夹 [0, 比率锚]）折算")
+    parser.add_argument("--customer-float", choices=roic_inputs.CUSTOMER_FLOAT_MODES, default="off",
+                        help="研究开关（OI-271，缺省 off）：ocl=其他流动负债附注中的客户资金类项目从超额现金扣除；ocl_contract=另扣合同负债与预收款项")
+    parser.add_argument("--ocl-wc", choices=roic_inputs.OCL_WC_MODES, default="off",
+                        help="研究开关（OI-271，缺省 off）：customer=同一批客户资金类项目计入营运资金（只影响再投资率）")
     parser.add_argument("--note-debt", choices=roic_inputs.NOTE_DEBT_MODES, default="off",
                         help="§6.5.1 第 3 条（OI-261）：notes=年报附注核定的类债务与融资项、税后弃置义务计入有息负债，现金行之外的弃置专户计超额现金"
                              "（生产）；off=改前（只作复现）")
@@ -3693,7 +3697,8 @@ def main() -> int:
                                                       ic_floor=args.roic_ic_floor, caliber=args.cash_caliber,
                                                       notice_cap=(args.notice_cap == "statutory"),
                                                       restricted_cash=args.restricted_cash,
-                                                      tax_anomaly=args.tax_anomaly, note_debt=args.note_debt))
+                                                      tax_anomaly=args.tax_anomaly, note_debt=args.note_debt,
+                                                      customer_float=args.customer_float, ocl_wc=args.ocl_wc))
         if args.reset_guard != "off":
             with args.reset_guard_file.open(encoding="utf-8-sig", newline="") as fh:
                 for r in csv.DictReader(fh):
