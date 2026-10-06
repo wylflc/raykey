@@ -2241,7 +2241,7 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
 
         # ---- 卖出（先卖后买：卖出释放的现金当日即可用，与「有资金就买」一致）
         outlist_sold_today: set[str] = set()
-        gain_trimmed_today: set[str] = set()   # 当日已按涨幅减持减过一档的持仓：`swap_gain_once` 下不作换仓卖出源（OI-142，v4.134）
+        gain_trimmed_today: set[str] = set()   # 当日已按涨幅减持（或偏离减仓，OI-234）减过一档的持仓：`swap_gain_once` 下不作换仓卖出源（OI-142，v4.134）
         for code in list(portfolio.lots):
             lot = portfolio.lots[code]
             if execution_consistency == "signal" and confirmed_cooldown:
@@ -2490,7 +2490,8 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 gain_hit = bool(gain_sell) and lot.avg_cost > 0 and \
                     gain_close(code, price) >= lot.avg_cost * (1.0 + gain_sell)
             # OI-234 研究开关 `dev_trim`（缺省 0＝关）：信号日收盘 ≥ MA（`dev_trim_ma`，缺省 20）× K 即减一档、不减到一档以下，同票
-            # `dev_trim_cooldown` 个交易日内至多一次；与估值／涨幅减持同一减档路径，不过走势闸门。
+            # `dev_trim_cooldown` 个交易日内至多一次；与估值／涨幅减持同一减档路径，不过走势闸门。落地实验 K 1.35／1.30 标劣化，
+            # 用户 2026-10-07 不采纳（回测日志 §12.329）。
             dev_hit = False
             if dev_trim and not value_rich and not gain_hit:
                 _dc = today.get(code, (None,))[0]
@@ -2605,8 +2606,8 @@ def run(strategy: str, x: float, states, prices, actions, mas, since: str, until
                 sell_count += 1
                 cooldown_sale(code, lot.proceeds - cooldown_proceeds, sp,
                               net_reg[code][-1] if net_reg and code in net_reg else None)
-                if gain_hit and not value_rich:
-                    gain_trimmed_today.add(code)
+                if (gain_hit and not value_rich) or dev_hit:
+                    gain_trimmed_today.add(code)      # 研究开关偏离减仓同样计入（§9.3.1 换仓行：同一持仓每日合计至多减一档）
 
         # Research cap acts after ordinary sales, before swaps/buys. Untradable holdings stay marked.
         eb_active_cap = eb_cap if equity_bond is not None and equity_bond.mode != "credit" else None

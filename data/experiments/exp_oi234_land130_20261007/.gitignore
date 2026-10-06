@@ -1,0 +1,5 @@
+cache/
+daily/
+errors/
+*.log
+__pycache__/
