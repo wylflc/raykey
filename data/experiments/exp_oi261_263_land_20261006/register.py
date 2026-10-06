@@ -58,7 +58,7 @@ def main():
     assert untouched.keys() <= after.keys() and all(after[k] == r for k, r in untouched.items()), '本批之外的已登记行不得改写'
     overwritten = sum(1 for k in touched if k in committed)
     (EXP / 'registration.json').write_text(json.dumps(dict(registered_base_rows=28, overwritten_keys=overwritten, new_keys=len(after) - len(before),
-        input_epoch='v4233_20261006', precedent='OI-244 §12.295、OI-232 §12.299、OI-257 §12.315 重登', arm=arm, A=A_SET, run_job=os.getenv('RUN_JOB', ''),
+        input_epoch='v4233_20261006', precedent='OI-244 §12.295、OI-232 §12.299、OI-257 §12.315、第一批 §12.317 重登', arm=arm, A=A_SET, run_job=os.getenv('RUN_JOB', ''),
         entry_point='clean_derived_artifacts.write_ledger', published=published), ensure_ascii=False, indent=2) + '\n')
     print(f'REGISTERED 28 BASE summaries (overwritten {overwritten}, new keys {len(after) - len(before)}); other ledger rows preserved.')
 

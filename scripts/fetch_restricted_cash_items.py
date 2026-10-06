@@ -912,8 +912,8 @@ def main() -> int:
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--show", action="store_true", help="打印逐行解析结果（调试）")
     parser.add_argument("--parser", choices=PARSERS, default="v1",
-                        help="v1（缺省，现行解析）；v2：v1 未核定的行再按 OI-263 新版式重解析（实验）")
-    parser.add_argument("--out", type=Path, default=OUT, help="输出表（缺省生产表；v2 实验写到实验目录）")
+                        help="v2（生产，§6.7 第 1 步）：v1 未核定的行再按 OI-263 新版式重解析；v1（缺省）只作复现")
+    parser.add_argument("--out", type=Path, default=OUT, help="输出表（缺省生产表）")
     args = parser.parse_args()
     codes = {c.strip().zfill(6) for c in args.codes.split(",")} if args.codes else None
     years = {int(y) for y in args.years.split(",")} if args.years else None

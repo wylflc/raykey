@@ -1,6 +1,6 @@
-"""第二批修正安装（v4.233）：ALL2 七份逐日状态替换正式文件，附注类债务、弃置专户与受限资产 v2 三张表落 data/reference/。
+"""第二批修正安装（v4.233）：ALL2 七份逐日状态替换正式文件，附注类债务（含人工核定）、弃置专户与受限资产 v2 四张表落 data/reference/。
 
-先验：CONTROL 逐字节复现安装前正式状态（`build_check.json`）；正式状态仍是 v4.230 安装版本；ALL 摘要与文件一致。
+先验：CONTROL 逐字节复现安装前正式状态（`build_check.json`）；正式状态仍是 v4.232 安装版本；ALL2 摘要与文件一致。
 旧口径状态即 `states/CONTROL`（与安装前 v4.232 正式状态逐字节相同），保留作复现。
 
     python3 install.py     # → publication.json
@@ -31,7 +31,9 @@ def main():
         installed[name] = dict(before=before, after=digest(PROC / name))
         assert installed[name]['after'] == check['reproduction'][name]['ALL2'], name
         print('INSTALLED', name, flush=True)
-    for src, dst in ((DEBT, 'debt_note_items.csv'), (FUND, 'decom_fund_items.csv'), (RESTRICTED_V2, 'restricted_cash_items.csv')):
+    manual = ROOT / 'data/experiments/exp_oi261_263_20261006/debt_note_manual.csv'
+    for src, dst in ((DEBT, 'debt_note_items.csv'), (FUND, 'decom_fund_items.csv'), (RESTRICTED_V2, 'restricted_cash_items.csv'),
+                     (manual, 'debt_note_manual.csv')):
         replace(src, ROOT / 'data/reference' / dst, '.v4233')
         installed['data/reference/' + dst] = digest(ROOT / 'data/reference' / dst)
     gaps_new, gaps_prod = EXP / 'states/ALL2/gaps.csv', ROOT / 'data/interim/valuation_statement_gaps.csv'

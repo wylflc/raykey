@@ -31,7 +31,7 @@
     python3 scripts/fetch_debt_note_items.py --codes 600887 --years 2025 --parse-only --show
     python3 scripts/fetch_debt_note_items.py --funds                     # 弃置专项资金（不联网，读 --out 表）
 
-产物（实验期，生产路径待定）：`data/experiments/exp_oi261_263_20261006/debt_note_items.csv`，逐 (代码, 财年, 行) 一行；
+产物：`data/reference/debt_note_items.csv`（§6.5.1 第 3 条，建带 `--note-debt notes` 读），逐 (代码, 财年, 行) 一行；人工核定表 `data/reference/debt_note_manual.csv`；
 `--funds` 另写 `decom_fund_items.csv`：弃置类计入额 > 0 的 (代码, 财年) 逐资产行查弃置专户、矿山地质环境治理恢复基金等
 专项资金（用户 2026-10-06 裁定：报表现金行之外的计超额现金对冲，`counts_as_excess_cash = 1`；货币资金里的只列出备查）。
 """
@@ -53,9 +53,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_cash_note_items as cn  # noqa: E402
 
 ROOT = cn.ROOT
-EXP = ROOT / "data/experiments/exp_oi261_263_20261006"
-OUT = EXP / "debt_note_items.csv"
-MANUAL = EXP / "debt_note_manual.csv"
+OUT = ROOT / "data/reference/debt_note_items.csv"
+MANUAL = ROOT / "data/reference/debt_note_manual.csv"
 POOL = ROOT / "data/processed/a_share_core_valuation_pool.csv"
 VERIFIED = ("ok", "manual")          # 计入股权桥的状态
 MATERIALITY = 0.02                   # 该行 ≥ 归母权益 × 2% 才抽取（与附注现金类、受限资产同一门槛）
@@ -1013,7 +1012,7 @@ def fetch(tasks: list[dict], workers: int, refresh: bool) -> dict[tuple[str, int
 
 # ---- 弃置专项资金（用户 2026-10-06 裁定：弃置义务税后计入股权桥，报表现金行之外的弃置专户、矿山地质环境治理恢复基金等
 #      专项资金计超额现金对冲；已在货币资金里的本就按现金计，只列出备查） ---------------------------------------------
-FUNDS_OUT = EXP / "decom_fund_items.csv"
+FUNDS_OUT = ROOT / "data/reference/decom_fund_items.csv"
 CASH_NOTE_MANUAL = ROOT / "data/reference/cash_note_manual.csv"
 FUND_LINES = {"OTHER_CURRENT_ASSET": "其他流动资产", "NONCURRENT_ASSET_1YEAR": "一年内到期的非流动资产",
               "OTHER_NONCURRENT_ASSET": "其他非流动资产", "MONETARYFUNDS": "货币资金"}
@@ -1214,12 +1213,12 @@ def main() -> int:
     parser.add_argument("--parse-only", action="store_true", help="只用已缓存文本解析，不联网")
     parser.add_argument("--workers", type=int, default=6, help="下载与文本提取的进程数")
     parser.add_argument("--limit", type=int, default=0, help="只取清单前 N 份（分批下载）")
-    parser.add_argument("--out", type=Path, default=OUT, help="输出表（缺省实验目录）")
+    parser.add_argument("--out", type=Path, default=OUT, help="输出表（缺省生产表）")
     parser.add_argument("--manual", type=Path, default=MANUAL, help="人工核定表")
     parser.add_argument("--show", action="store_true", help="打印逐行解析结果（调试）")
     parser.add_argument("--funds", action="store_true",
                         help="只按 --out 表里弃置类计入额 > 0 的 (代码, 财年) 查弃置专项资金，写 --funds-out（不联网）")
-    parser.add_argument("--funds-out", type=Path, default=FUNDS_OUT, help="弃置专项资金表（缺省实验目录）")
+    parser.add_argument("--funds-out", type=Path, default=FUNDS_OUT, help="弃置专项资金表（缺省生产表）")
     args = parser.parse_args()
     if args.funds:
         rows = decom_funds(args.out)

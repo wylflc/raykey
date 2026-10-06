@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.232
+# A股选股-估值-量价操作流程 v4.233
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -356,7 +356,9 @@ python3 scripts/fetch_cost_of_equity_inputs.py   # rf/ERP 序列：银行/保险
 python3 scripts/fetch_a_share_share_changes.py --signal-date YYYY-MM-DD   # 股本变动事件表（第 5.5 步检查⑦读它）
 python3 scripts/fetch_equity_bond_inputs.py --refresh   # 沪深 300 TTM PE 与 10 年国债：§9.3.1 股债总仓位上限读不晚于信号日的最新观测（过期门槛见该行）
 python3 scripts/fetch_cash_note_items.py --workers 16   # 年报附注的现金类明细（§6.5.1，只下载新增年报、全量重解析并入人工核定表；原文缓存不入库）
-python3 scripts/fetch_restricted_cash_items.py --workers 16   # 年报受限资产、受限原因与法定存款准备金（§6.5.1 第 3 条，读附注现金类的核定额，须在其后）
+python3 scripts/fetch_restricted_cash_items.py --workers 16 --parser v2   # 年报受限资产、受限原因与法定存款准备金（§6.5.1 第 3 条，读附注现金类的核定额，须在其后）
+python3 scripts/fetch_debt_note_items.py --workers 16   # 年报附注的类债务与弃置义务（§6.5.1 第 3 条，OI-261；与附注现金类共用原文缓存，并入人工核定表）
+python3 scripts/fetch_debt_note_items.py --funds   # 弃置专项资金（读上一行的表，不联网）
 python3 scripts/scan_restatement_announcements.py --history --since <上年 01-01>   # 更正公告与定期报告更新版（§6.3 第 2 条）
 python3 scripts/fetch_csrc_industry.py --missing-only   # 证监会行业大类（§6.5.1 研发资本化的摊销年限），只补三大报表中新出现或未取到的代码
 
@@ -371,7 +373,7 @@ python3 scripts/build_historical_valuation_bands.py --all --value-model roic \
   --wacc-weights unlevered \
   --reset-guard both \
   --rd-capitalize on \
-  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period \
+  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes \
   --fade-shape exponential --fade-lambda 0.12 --fade-horizon 50 --roic-ic-floor 0.1 \
   --out-bands data/processed/roic_bands.csv \
   --out-daily data/processed/roic_daily_raw.csv
@@ -386,7 +388,7 @@ python3 scripts/build_historical_valuation_bands.py --all --value-model roic \
   --wacc-weights unlevered \
   --reset-guard both \
   --rd-capitalize on \
-  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period \
+  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes \
   --fade-shape exponential --fade-lambda 0.12 --fade-horizon 50 --roic-ic-floor 0.1 \
   --ttm-trust on --ttm-trust-delta 0.02 \
   --out-bands data/processed/roic_bands_b2.csv \

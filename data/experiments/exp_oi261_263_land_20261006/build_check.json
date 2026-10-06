@@ -1,0 +1,110 @@
+{
+ "reproduction": {
+  "roic_bands.csv": {
+   "current": "3f965cce50ed50621f348e2088d7ee24b3d7c2d55b1b56b4b9e56211693d8c0d",
+   "CONTROL": "3f965cce50ed50621f348e2088d7ee24b3d7c2d55b1b56b4b9e56211693d8c0d",
+   "N261": "a863c1b559854324dc59522aad19e462935723f7e642e2a79c9fabddf43cddb4",
+   "R263": "a30aa1ed8c42a02c2e96bc92818c94f0c9c32909f1a1ff9c2497fc7e7d1c30f1",
+   "ALL2": "113eaac6e9305846be7a90283ed0726b8680519416bff638684af1ff8a46257b",
+   "identical": true
+  },
+  "roic_bands_b2.csv": {
+   "current": "1b8ace5e4f1810550f66bec5c030bdbd40a923a7c99edcaf367504acc14e9b4b",
+   "CONTROL": "1b8ace5e4f1810550f66bec5c030bdbd40a923a7c99edcaf367504acc14e9b4b",
+   "N261": "2d3012de1a8fe85cc53fa06cce134960f41617815de9176da2c5d2b857d0907c",
+   "R263": "48565ec3878dd844d0a2ba899506d142f657a1f22706cfd425ccec29205fe5d1",
+   "ALL2": "2ec44226f43a6a2dda83a4b90fe85dbb65fb7827723829c95aca41ae1b960099",
+   "identical": true
+  },
+  "roic_daily_raw.csv": {
+   "current": "6b75f3b7e6ca7c680aa1ba2b85a02037f350770f024258fa631122b52676bc0b",
+   "CONTROL": "6b75f3b7e6ca7c680aa1ba2b85a02037f350770f024258fa631122b52676bc0b",
+   "N261": "a7c13e507c9b5d9ea274ab0e0603a942fae693da9d0fbb04e5e530d7a1bf1173",
+   "R263": "62a51dbb0923e762b04c75f14d07ae44988e48dd6bccc021ef308334ceefda34",
+   "ALL2": "e8a76f84856d3ddd426123f9f31708cb491a5d1350f1e32ea1c2ef32ab2f8f12",
+   "identical": true
+  },
+  "roic_daily_raw_b2.csv": {
+   "current": "694ada573ca02c8798311bb609fcfb645e8bc477ece7dc48df4d027f34ba181d",
+   "CONTROL": "694ada573ca02c8798311bb609fcfb645e8bc477ece7dc48df4d027f34ba181d",
+   "N261": "eb2f7aa63e9d3fff1227d384c4935f6f57c89095a5d4ae208b8cd9b043b40dc0",
+   "R263": "7460b86312069f4761dafb4b40e3a9f35584148f631cbeec5d7416a2f849f8ce",
+   "ALL2": "f4cb963576a9be4043b42d3f8b9b84e29f37688dc0a44ddfad35f4ddd7ba854d",
+   "identical": true
+  },
+  "a_share_daily_states_adopted.csv": {
+   "current": "811d4dbd90d88bf56cb3c387ef2d147aa28049c2320d3f47d3c6d1b9187e243d",
+   "CONTROL": "811d4dbd90d88bf56cb3c387ef2d147aa28049c2320d3f47d3c6d1b9187e243d",
+   "N261": "d5aed95d6b865cf8b195fb1efe6a96720ab59f19e7653de8b3b8536bf5e2eb2c",
+   "R263": "5c17a5e35ac570c4afba7cdbed417756d84ace9b654254c66ef2bbdfcd8020aa",
+   "ALL2": "596cffba2d167ce4b82d55b7fd0a71aa5afff19efedcff6cd3c78e23e0b8c8ac",
+   "identical": true
+  },
+  "a_share_daily_states_b2.csv": {
+   "current": "0f07f2b6b0be1489293bba77e6c540b4d62d4aa533c3e21bb259f7e4f9b94c5d",
+   "CONTROL": "0f07f2b6b0be1489293bba77e6c540b4d62d4aa533c3e21bb259f7e4f9b94c5d",
+   "N261": "6bc3f573e25687815c8da7a90dc93272409657583aa9c32b7b0f6aa84efcf1e6",
+   "R263": "d5ea80b739f0eae7c2b7a813ff33d68c00d88a003ee41c5431fc01c544dc1e10",
+   "ALL2": "8883eefdd6edb8aded56168729dfdd65e66b05bc40b0196dd1c3384cb7c5fdfc",
+   "identical": true
+  },
+  "a_share_daily_states_hold.csv": {
+   "current": "90bd025152dff24cf9cf16c67159912fc2eab687a3fd604fc5c97a159803e99a",
+   "CONTROL": "90bd025152dff24cf9cf16c67159912fc2eab687a3fd604fc5c97a159803e99a",
+   "N261": "db0c7a9d250679033135fdd6e4b89b9fb3b7c261a3da661be876cb16f390b980",
+   "R263": "43973e4d3f9273554eba6bf74cf523f7bc86fc2d9f77466b09807edd7810b945",
+   "ALL2": "3a19b4f0dcadb1b77c3acb7f0cc10ef62f0f01f008c77f59f6e07741603498d1",
+   "identical": true
+  }
+ },
+ "band_diff": {
+  "N261": {
+   "roic_bands.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 2236,
+    "codes_changed": 94
+   },
+   "roic_bands_b2.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 2241,
+    "codes_changed": 94
+   }
+  },
+  "R263": {
+   "roic_bands.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 247,
+    "codes_changed": 17
+   },
+   "roic_bands_b2.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 249,
+    "codes_changed": 17
+   }
+  },
+  "ALL2": {
+   "roic_bands.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 2435,
+    "codes_changed": 105
+   },
+   "roic_bands_b2.csv": {
+    "rows": 319176,
+    "only_control": 0,
+    "only_arm": 0,
+    "value_changed": 2441,
+    "codes_changed": 105
+   }
+  }
+ }
+}

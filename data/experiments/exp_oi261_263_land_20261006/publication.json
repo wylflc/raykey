@@ -1,0 +1,40 @@
+{
+ "arm": "ALL2",
+ "version": "v4.233",
+ "installed": {
+  "roic_bands.csv": {
+   "before": "3f965cce50ed50621f348e2088d7ee24b3d7c2d55b1b56b4b9e56211693d8c0d",
+   "after": "113eaac6e9305846be7a90283ed0726b8680519416bff638684af1ff8a46257b"
+  },
+  "roic_bands_b2.csv": {
+   "before": "1b8ace5e4f1810550f66bec5c030bdbd40a923a7c99edcaf367504acc14e9b4b",
+   "after": "2ec44226f43a6a2dda83a4b90fe85dbb65fb7827723829c95aca41ae1b960099"
+  },
+  "roic_daily_raw.csv": {
+   "before": "6b75f3b7e6ca7c680aa1ba2b85a02037f350770f024258fa631122b52676bc0b",
+   "after": "e8a76f84856d3ddd426123f9f31708cb491a5d1350f1e32ea1c2ef32ab2f8f12"
+  },
+  "roic_daily_raw_b2.csv": {
+   "before": "694ada573ca02c8798311bb609fcfb645e8bc477ece7dc48df4d027f34ba181d",
+   "after": "f4cb963576a9be4043b42d3f8b9b84e29f37688dc0a44ddfad35f4ddd7ba854d"
+  },
+  "a_share_daily_states_adopted.csv": {
+   "before": "811d4dbd90d88bf56cb3c387ef2d147aa28049c2320d3f47d3c6d1b9187e243d",
+   "after": "596cffba2d167ce4b82d55b7fd0a71aa5afff19efedcff6cd3c78e23e0b8c8ac"
+  },
+  "a_share_daily_states_b2.csv": {
+   "before": "0f07f2b6b0be1489293bba77e6c540b4d62d4aa533c3e21bb259f7e4f9b94c5d",
+   "after": "8883eefdd6edb8aded56168729dfdd65e66b05bc40b0196dd1c3384cb7c5fdfc"
+  },
+  "a_share_daily_states_hold.csv": {
+   "before": "90bd025152dff24cf9cf16c67159912fc2eab687a3fd604fc5c97a159803e99a",
+   "after": "3a19b4f0dcadb1b77c3acb7f0cc10ef62f0f01f008c77f59f6e07741603498d1"
+  },
+  "data/reference/debt_note_items.csv": "21bcf760a3bf7561b8dde8cc371a7c8f36c237cdf0048c98fe828e2bfae3ac75",
+  "data/reference/decom_fund_items.csv": "877f0c98e03aff3234bf07beefeb0a00f184e04258fef1db52d6acce12daaad5",
+  "data/reference/restricted_cash_items.csv": "29131d4c3fcd129188c5fe9881949878af940104f837466f0c6972c775b23bfb",
+  "data/reference/debt_note_manual.csv": "7617afb43ec7b74d21bd6010ecded57ad2270166b35554d6d14294b400366ad7"
+ },
+ "statement_gaps_identical": true,
+ "old_states": "states/CONTROL（与安装前 v4.232 正式状态逐字节相同）"
+}

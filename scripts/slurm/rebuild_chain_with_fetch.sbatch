@@ -42,7 +42,9 @@ python3 scripts/fetch_equity_bond_inputs.py --refresh
 echo "=== [$(date +%H:%M:%S)] 第 1 步：年报附注现金类（§6.5.1，OI-201）==="
 python3 scripts/fetch_cash_note_items.py --workers 16
 echo "=== [$(date +%H:%M:%S)] 第 1 步：年报受限资产（§6.5.1 第 3 条，OI-219）==="
-python3 scripts/fetch_restricted_cash_items.py --workers 16
+python3 scripts/fetch_restricted_cash_items.py --workers 16 --parser v2
+python3 scripts/fetch_debt_note_items.py --workers 16
+python3 scripts/fetch_debt_note_items.py --funds
 echo "=== [$(date +%H:%M:%S)] 第 1 步：重述公告（§6.3 第 2 条，OI-203）==="
 python3 scripts/scan_restatement_announcements.py --history --since "$(( ${SIGNAL_DATE:0:4} - 1 ))-01-01" --until "$SIGNAL_DATE"
 echo "=== [$(date +%H:%M:%S)] 第 1 步：证监会行业大类（§6.5.1 研发资本化摊销年限）==="
@@ -60,7 +62,7 @@ COMMON="--all --value-model roic --roe-source onesided_max --roe-lift 2.0 --unif
   --roic-trail-weight 0 --minority-basis earnings --wc-aggregation operating \
   --cash-caliber nonop --equity-anchor guarded --restricted-cash notes_wc \
   --wacc-weights unlevered --reset-guard both --rd-capitalize on \
-  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period \
+  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes \
   --fade-shape exponential --fade-lambda 0.12 --fade-horizon 50 --roic-ic-floor 0.1"
 
 echo "=== [$(date +%H:%M:%S)] 第 2 步：候选侧建带 ==="

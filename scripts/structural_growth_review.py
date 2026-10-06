@@ -39,7 +39,7 @@ BUILD_FLAGS = ("--value-model roic --roe-source onesided_max --roe-lift 2.0 --un
                "--roic-peak-ramp 0.3 --ttm-current on --growth-damp on --thin-equity-max 0.5 --roic-trail-weight 0 "
                "--minority-basis earnings --wc-aggregation operating --cash-caliber nonop --equity-anchor guarded "
                "--restricted-cash notes_wc --wacc-weights unlevered --reset-guard both --rd-capitalize on "
-               "--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period "
+               "--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes "
                "--fade-shape exponential --fade-lambda 0.12 --fade-horizon 50 --roic-ic-floor 0.1").split()
 FIELDS = ["security_code", "security_name", "report_date", "available_at", "peak_weight", "nopat_ps_guarded", "nopat_ps_unguarded",
           "cut", "volume_driven", "business_class", "trigger", "flagged", "commodity", "em2016", "v_guarded", "v_unguarded",
@@ -132,13 +132,20 @@ def review(pool_rows: list[dict[str, str]], guarded: dict, relaxed: dict, unguar
     return rows
 
 
+def _build_flag(name: str, default: str) -> str:
+    """BUILD_FLAGS 中该参数的取值（年报 NOPAT 与 §6.7 第 2 步同口径，只在 BUILD_FLAGS 一处同步）。"""
+    return BUILD_FLAGS[BUILD_FLAGS.index(name) + 1] if name in BUILD_FLAGS else default
+
+
 def annual_nopat(band_rows: list[dict[str, str]]) -> dict[str, tuple[str, float | None]]:
     """各池带可得日当日在用的最新年报 NOPAT（元），与 §6.7 第 2 步同口径；无年报返回空。"""
     import roic_inputs
     codes = {r["security_code"].zfill(6) for r in band_rows}
     if not codes:
         return {}
-    years = roic_inputs.load_statements(codes, ic_floor=0.1, caliber="nonop", restricted_cash="notes_wc")
+    years = roic_inputs.load_statements(codes, ic_floor=float(_build_flag("--roic-ic-floor", "0")), caliber=_build_flag("--cash-caliber", "nonop"),
+                                        restricted_cash=_build_flag("--restricted-cash", "off"), tax_anomaly=_build_flag("--tax-anomaly", "off"),
+                                        note_debt=_build_flag("--note-debt", "off"))
     rd = roic_inputs.load_rd_expense(codes)
     csrc = {}
     if INDUSTRY.exists():

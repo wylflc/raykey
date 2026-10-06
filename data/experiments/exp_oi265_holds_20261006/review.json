@@ -1,0 +1,1139 @@
+{
+ "bands": "data/processed/a_share_pool_model_bands_adopted.csv",
+ "note_debt": "notes",
+ "buy_line": 1.0034,
+ "rows": [
+  {
+   "code": "603855",
+   "name": "华荣股份",
+   "close": 16.82,
+   "model_V": 16.27,
+   "model_pv": 1.034,
+   "research_yi": 4.11,
+   "model_yi": 5.39,
+   "gap": 0.3118,
+   "research_V": 12.9,
+   "research_pv": 1.304,
+   "g0_band": 0.0228,
+   "window_band": "2021→2025",
+   "reinvest": 0.581,
+   "independent_V": 13.55,
+   "independent_pv": 1.24,
+   "independent_range": [
+    9.29,
+    20.32
+   ],
+   "hold_note": "股权桥分红时点：已宣派未入账的年度分红按外生权益加回（V 多约 1.00 元）；研究数 4.11 亿对模型锚 5.39 亿差距 31.2%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": 1.53,
+     "ic_yi": 9.5,
+     "roic": 0.161,
+     "gross_margin": 0.519
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 1.23,
+     "ic_yi": 9.54,
+     "roic": 0.1294,
+     "gross_margin": 0.5466
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 1.36,
+     "ic_yi": 10.02,
+     "roic": 0.1356,
+     "gross_margin": 0.5076
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 1.51,
+     "ic_yi": 10.21,
+     "roic": 0.1476,
+     "gross_margin": 0.5287
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 2.07,
+     "ic_yi": 8.98,
+     "roic": 0.2308,
+     "gross_margin": 0.5489
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 2.99,
+     "ic_yi": 10.87,
+     "roic": 0.2749,
+     "gross_margin": 0.5239
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 3.72,
+     "ic_yi": 11.88,
+     "roic": 0.3133,
+     "gross_margin": 0.4588
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 4.06,
+     "ic_yi": 15.07,
+     "roic": 0.2694,
+     "gross_margin": 0.5037
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 5.24,
+     "ic_yi": 14.55,
+     "roic": 0.3599,
+     "gross_margin": 0.5419
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 5.76,
+     "ic_yi": 17.38,
+     "roic": 0.3316,
+     "gross_margin": 0.4673
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 4.08,
+     "ic_yi": 21.0,
+     "roic": 0.1943,
+     "gross_margin": 0.5115
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.167,
+     "g0": 0.097,
+     "V": 14.93,
+     "pv": 1.127
+    },
+    {
+     "start": "2020",
+     "iroic": 0.1078,
+     "g0": 0.0626,
+     "V": 13.94,
+     "pv": 1.207
+    },
+    {
+     "start": "2021",
+     "iroic": 0.0392,
+     "g0": 0.0228,
+     "V": 12.9,
+     "pv": 1.304
+    },
+    {
+     "start": "2022",
+     "iroic": 0.0033,
+     "g0": 0.0019,
+     "V": 12.39,
+     "pv": 1.357
+    },
+    {
+     "start": "2023",
+     "iroic": -0.1791,
+     "g0": 0.0,
+     "V": 12.35,
+     "pv": 1.362
+    },
+    {
+     "start": "2024",
+     "iroic": -0.4659,
+     "g0": 0.0,
+     "V": 12.35,
+     "pv": 1.362
+    }
+   ]
+  },
+  {
+   "code": "600938",
+   "name": "中国海油",
+   "close": 33.42,
+   "model_V": 36.35,
+   "model_pv": 0.919,
+   "research_yi": 1231.9,
+   "model_yi": 1528.04,
+   "gap": 0.2404,
+   "research_V": 30.49,
+   "research_pv": 1.096,
+   "g0_band": 0.0665,
+   "window_band": "2021→2025",
+   "reinvest": 0.3126,
+   "independent_V": 30.64,
+   "independent_pv": 1.091,
+   "independent_range": [
+    23.75,
+    37.41
+   ],
+   "hold_note": "资本腿 g0 9.7% 外推到存量商品，锚约等于布伦特 83 美元；研究数 1231.90 亿对模型锚 1528.04 亿差距 24.0%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2018",
+     "nopat_yi": 537.51,
+     "ic_yi": 4106.56,
+     "roic": 0.1309,
+     "gross_margin": 0.4289
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 619.15,
+     "ic_yi": 4430.93,
+     "roic": 0.1397,
+     "gross_margin": 0.4452
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 265.82,
+     "ic_yi": 4501.85,
+     "roic": 0.059,
+     "gross_margin": 0.3732
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 717.66,
+     "ic_yi": 4561.52,
+     "roic": 0.1573,
+     "gross_margin": 0.506
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 1428.35,
+     "ic_yi": 5775.7,
+     "roic": 0.2473,
+     "gross_margin": 0.5305
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 1227.67,
+     "ic_yi": 6243.78,
+     "roic": 0.1966,
+     "gross_margin": 0.4988
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 1364.54,
+     "ic_yi": 6742.79,
+     "roic": 0.2024,
+     "gross_margin": 0.5363
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 1226.79,
+     "ic_yi": 6955.6,
+     "roic": 0.1764,
+     "gross_margin": 0.5147
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.2407,
+     "g0": 0.0752,
+     "V": 30.95,
+     "pv": 1.08
+    },
+    {
+     "start": "2020",
+     "iroic": 0.3916,
+     "g0": 0.1224,
+     "V": 33.59,
+     "pv": 0.995
+    },
+    {
+     "start": "2021",
+     "iroic": 0.2127,
+     "g0": 0.0665,
+     "V": 30.49,
+     "pv": 1.096
+    },
+    {
+     "start": "2022",
+     "iroic": -0.1708,
+     "g0": 0.0,
+     "V": 27.28,
+     "pv": 1.225
+    },
+    {
+     "start": "2023",
+     "iroic": -0.0012,
+     "g0": 0.0,
+     "V": 27.28,
+     "pv": 1.225
+    },
+    {
+     "start": "2024",
+     "iroic": -0.6473,
+     "g0": 0.0,
+     "V": 27.28,
+     "pv": 1.225
+    }
+   ]
+  },
+  {
+   "code": "002001",
+   "name": "新和成",
+   "close": 25.95,
+   "model_V": 30.1,
+   "model_pv": 0.862,
+   "research_yi": 64.78,
+   "model_yi": 78.4,
+   "gap": 0.2102,
+   "research_V": 25.52,
+   "research_pv": 1.017,
+   "g0_band": 0.1046,
+   "window_band": "2021→2025",
+   "reinvest": 0.432,
+   "independent_V": 21.82,
+   "independent_pv": 1.19,
+   "independent_range": [
+    14.14,
+    31.69
+   ],
+   "hold_note": "周期高位窗口的 g0 10.5%，研发摊销按医药 10 年；研究数 64.78 亿对模型锚 78.40 亿差距 21.0%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": 3.93,
+     "ic_yi": 68.59,
+     "roic": 0.0573,
+     "gross_margin": 0.2722
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 12.61,
+     "ic_yi": 83.41,
+     "roic": 0.1512,
+     "gross_margin": 0.4543
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 19.35,
+     "ic_yi": 99.83,
+     "roic": 0.1938,
+     "gross_margin": 0.5047
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 32.02,
+     "ic_yi": 145.09,
+     "roic": 0.2207,
+     "gross_margin": 0.5337
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 23.42,
+     "ic_yi": 196.39,
+     "roic": 0.1193,
+     "gross_margin": 0.4712
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 39.84,
+     "ic_yi": 229.02,
+     "roic": 0.174,
+     "gross_margin": 0.5417
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 49.28,
+     "ic_yi": 257.23,
+     "roic": 0.1916,
+     "gross_margin": 0.4436
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 41.32,
+     "ic_yi": 307.76,
+     "roic": 0.1343,
+     "gross_margin": 0.3694
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 31.04,
+     "ic_yi": 335.42,
+     "roic": 0.0925,
+     "gross_margin": 0.3298
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 64.96,
+     "ic_yi": 348.61,
+     "roic": 0.1863,
+     "gross_margin": 0.4178
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 72.51,
+     "ic_yi": 353.2,
+     "roic": 0.2053,
+     "gross_margin": 0.4467
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.313,
+     "g0": 0.1352,
+     "V": 26.94,
+     "pv": 0.963
+    },
+    {
+     "start": "2020",
+     "iroic": 0.2631,
+     "g0": 0.1136,
+     "V": 25.93,
+     "pv": 1.001
+    },
+    {
+     "start": "2021",
+     "iroic": 0.242,
+     "g0": 0.1046,
+     "V": 25.52,
+     "pv": 1.017
+    },
+    {
+     "start": "2022",
+     "iroic": 0.6862,
+     "g0": 0.1728,
+     "V": 27.82,
+     "pv": 0.933
+    },
+    {
+     "start": "2023",
+     "iroic": 2.3327,
+     "g0": 0.1728,
+     "V": 27.82,
+     "pv": 0.933
+    },
+    {
+     "start": "2024",
+     "iroic": 1.6437,
+     "g0": 0.1728,
+     "V": 27.82,
+     "pv": 0.933
+    }
+   ]
+  },
+  {
+   "code": "300910",
+   "name": "瑞丰新材",
+   "close": 28.02,
+   "model_V": 33.72,
+   "model_pv": 0.831,
+   "research_yi": 7.25,
+   "model_yi": 8.51,
+   "gap": 0.1733,
+   "research_V": 28.64,
+   "research_pv": 0.978,
+   "g0_band": 0.177,
+   "window_band": "2021→2025",
+   "reinvest": 0.6752,
+   "independent_V": 21.34,
+   "independent_pv": 1.31,
+   "independent_range": [
+    15.38,
+    32.36
+   ],
+   "hold_note": "低谷起点的 g0 17.7%，权益法基金收益进 EBIT；研究数 7.25 亿对模型锚 8.51 亿差距 17.3%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2016",
+     "nopat_yi": 0.38,
+     "ic_yi": 2.07,
+     "roic": 0.1819,
+     "gross_margin": 0.2781
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 0.55,
+     "ic_yi": 3.47,
+     "roic": 0.1579,
+     "gross_margin": 0.2582
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 0.64,
+     "ic_yi": 4.15,
+     "roic": 0.1542,
+     "gross_margin": 0.2513
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 1.07,
+     "ic_yi": 4.97,
+     "roic": 0.2146,
+     "gross_margin": 0.3071
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 1.92,
+     "ic_yi": 5.22,
+     "roic": 0.3675,
+     "gross_margin": 0.3457
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 1.89,
+     "ic_yi": 8.88,
+     "roic": 0.2134,
+     "gross_margin": 0.3046
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 5.84,
+     "ic_yi": 12.32,
+     "roic": 0.4739,
+     "gross_margin": 0.3013
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 6.26,
+     "ic_yi": 17.85,
+     "roic": 0.3506,
+     "gross_margin": 0.35
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 7.6,
+     "ic_yi": 26.3,
+     "roic": 0.2889,
+     "gross_margin": 0.3582
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 7.83,
+     "ic_yi": 31.5,
+     "roic": 0.2484,
+     "gross_margin": 0.346
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.2548,
+     "g0": 0.172,
+     "V": 28.32,
+     "pv": 0.989
+    },
+    {
+     "start": "2020",
+     "iroic": 0.2248,
+     "g0": 0.1518,
+     "V": 27.08,
+     "pv": 1.035
+    },
+    {
+     "start": "2021",
+     "iroic": 0.2622,
+     "g0": 0.177,
+     "V": 28.64,
+     "pv": 0.978
+    },
+    {
+     "start": "2022",
+     "iroic": 0.1037,
+     "g0": 0.07,
+     "V": 22.68,
+     "pv": 1.235
+    },
+    {
+     "start": "2023",
+     "iroic": 0.1149,
+     "g0": 0.0776,
+     "V": 23.05,
+     "pv": 1.215
+    },
+    {
+     "start": "2024",
+     "iroic": 0.0439,
+     "g0": 0.0297,
+     "V": 20.85,
+     "pv": 1.344
+    }
+   ]
+  },
+  {
+   "code": "600809",
+   "name": "山西汾酒",
+   "close": 115.6,
+   "model_V": 128.33,
+   "model_pv": 0.901,
+   "research_yi": 100.79,
+   "model_yi": 117.89,
+   "gap": 0.1697,
+   "research_V": 111.3,
+   "research_pv": 1.039,
+   "g0_band": 0.0282,
+   "window_band": "2021→2025",
+   "reinvest": 0.0705,
+   "independent_V": 101.75,
+   "independent_pv": 1.136,
+   "independent_range": [
+    82.23,
+    118.08
+   ],
+   "hold_note": "白酒下行期锚高于 TTM，独立基准 P/V 1.14；研究数 100.79 亿对模型锚 117.89 亿差距 17.0%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": 5.32,
+     "ic_yi": 35.95,
+     "roic": 0.1479,
+     "gross_margin": 0.6737
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 6.29,
+     "ic_yi": 37.69,
+     "roic": 0.1669,
+     "gross_margin": 0.6868
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 9.97,
+     "ic_yi": 44.7,
+     "roic": 0.223,
+     "gross_margin": 0.6734
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 15.86,
+     "ic_yi": 48.7,
+     "roic": 0.3257,
+     "gross_margin": 0.6868
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 21.23,
+     "ic_yi": 42.45,
+     "roic": 0.5001,
+     "gross_margin": 0.7336
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 31.15,
+     "ic_yi": 64.44,
+     "roic": 0.4834,
+     "gross_margin": 0.7215
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 52.94,
+     "ic_yi": 40.26,
+     "roic": 1.315,
+     "gross_margin": 0.7491
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 79.13,
+     "ic_yi": 25.94,
+     "roic": 3.0506,
+     "gross_margin": 0.7536
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 101.4,
+     "ic_yi": 73.18,
+     "roic": 1.3858,
+     "gross_margin": 0.7531
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 120.94,
+     "ic_yi": 79.14,
+     "roic": 1.5283,
+     "gross_margin": 0.762
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 121.72,
+     "ic_yi": 122.55,
+     "roic": 0.9932,
+     "gross_margin": 0.7485
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 1.2545,
+     "g0": 0.0282,
+     "V": 111.3,
+     "pv": 1.039
+    },
+    {
+     "start": "2020",
+     "iroic": 1.5585,
+     "g0": 0.0282,
+     "V": 111.3,
+     "pv": 1.039
+    },
+    {
+     "start": "2021",
+     "iroic": 0.8358,
+     "g0": 0.0282,
+     "V": 111.3,
+     "pv": 1.039
+    },
+    {
+     "start": "2022",
+     "iroic": 0.4408,
+     "g0": 0.0282,
+     "V": 111.3,
+     "pv": 1.039
+    },
+    {
+     "start": "2023",
+     "iroic": 0.4114,
+     "g0": 0.0282,
+     "V": 111.3,
+     "pv": 1.039
+    },
+    {
+     "start": "2024",
+     "iroic": 0.0178,
+     "g0": 0.0013,
+     "V": 103.75,
+     "pv": 1.114
+    }
+   ]
+  },
+  {
+   "code": "002920",
+   "name": "德赛西威",
+   "close": 79.28,
+   "model_V": 101.81,
+   "model_pv": 0.779,
+   "research_yi": 35.93,
+   "model_yi": 41.26,
+   "gap": 0.1484,
+   "research_V": 87.17,
+   "research_pv": 0.909,
+   "g0_band": 0.1857,
+   "window_band": "2021→2025",
+   "reinvest": 0.9886,
+   "independent_V": 64.15,
+   "independent_pv": 1.236,
+   "independent_range": [
+    37.85,
+    95.76
+   ],
+   "hold_note": "研发资本化加回外推（不资本化 V −32%），g0 18.6%；研究数 35.93 亿对模型锚 41.26 亿差距 14.8%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": 5.81,
+     "ic_yi": 17.97,
+     "roic": 0.3232,
+     "gross_margin": 0.2696
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 8.83,
+     "ic_yi": 24.69,
+     "roic": 0.3578,
+     "gross_margin": 0.2695
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 8.4,
+     "ic_yi": 29.19,
+     "roic": 0.2876,
+     "gross_margin": 0.2578
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 6.13,
+     "ic_yi": 31.96,
+     "roic": 0.1918,
+     "gross_margin": 0.2399
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 4.17,
+     "ic_yi": 38.32,
+     "roic": 0.1088,
+     "gross_margin": 0.2275
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 7.05,
+     "ic_yi": 46.73,
+     "roic": 0.1509,
+     "gross_margin": 0.2339
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 12.72,
+     "ic_yi": 58.19,
+     "roic": 0.2186,
+     "gross_margin": 0.246
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 20.9,
+     "ic_yi": 90.17,
+     "roic": 0.2318,
+     "gross_margin": 0.2303
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 26.97,
+     "ic_yi": 120.28,
+     "roic": 0.2242,
+     "gross_margin": 0.1997
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 33.02,
+     "ic_yi": 155.58,
+     "roic": 0.2122,
+     "gross_margin": 0.1988
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 35.86,
+     "ic_yi": 181.42,
+     "roic": 0.1977,
+     "gross_margin": 0.1907
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.2215,
+     "g0": 0.2189,
+     "V": 89.02,
+     "pv": 0.891
+    },
+    {
+     "start": "2020",
+     "iroic": 0.2139,
+     "g0": 0.2114,
+     "V": 88.7,
+     "pv": 0.894
+    },
+    {
+     "start": "2021",
+     "iroic": 0.1878,
+     "g0": 0.1857,
+     "V": 87.17,
+     "pv": 0.909
+    },
+    {
+     "start": "2022",
+     "iroic": 0.164,
+     "g0": 0.1621,
+     "V": 84.79,
+     "pv": 0.935
+    },
+    {
+     "start": "2023",
+     "iroic": 0.1454,
+     "g0": 0.1438,
+     "V": 81.77,
+     "pv": 0.97
+    },
+    {
+     "start": "2024",
+     "iroic": 0.11,
+     "g0": 0.1088,
+     "V": 76.37,
+     "pv": 1.038
+    }
+   ]
+  },
+  {
+   "code": "002594",
+   "name": "比亚迪",
+   "close": 83.31,
+   "model_V": 99.22,
+   "model_pv": 0.84,
+   "research_yi": 628.19,
+   "model_yi": 638.97,
+   "gap": 0.0172,
+   "research_V": 97.2,
+   "research_pv": 0.857,
+   "g0_band": 0.2009,
+   "window_band": "2021→2025",
+   "reinvest": 1.0,
+   "independent_V": 45.2,
+   "independent_pv": 1.843,
+   "independent_range": [
+    34.6,
+    57.0
+   ],
+   "hold_note": "研发加回约 38 元／股外推，g0 20.5%；研究数 628.19 亿对模型锚 707.34 亿差距 12.6%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": 39.67,
+     "ic_yi": 723.17,
+     "roic": 0.0549,
+     "gross_margin": 0.1687
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 79.83,
+     "ic_yi": 973.85,
+     "roic": 0.082,
+     "gross_margin": 0.2036
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 81.99,
+     "ic_yi": 1150.17,
+     "roic": 0.0713,
+     "gross_margin": 0.1901
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 73.82,
+     "ic_yi": 1268.54,
+     "roic": 0.0582,
+     "gross_margin": 0.164
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 69.95,
+     "ic_yi": 1419.47,
+     "roic": 0.0493,
+     "gross_margin": 0.1629
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 123.03,
+     "ic_yi": 1202.64,
+     "roic": 0.1023,
+     "gross_margin": 0.1938
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 79.67,
+     "ic_yi": 1054.7,
+     "roic": 0.0755,
+     "gross_margin": 0.1302
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 270.01,
+     "ic_yi": 1058.66,
+     "roic": 0.2551,
+     "gross_margin": 0.1704
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 553.46,
+     "ic_yi": 1461.34,
+     "roic": 0.3787,
+     "gross_margin": 0.1858
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 727.23,
+     "ic_yi": 2005.94,
+     "roic": 0.3625,
+     "gross_margin": 0.1944
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 590.17,
+     "ic_yi": 3595.14,
+     "roic": 0.1642,
+     "gross_margin": 0.1774
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.2391,
+     "g0": 0.2391,
+     "V": 100.7,
+     "pv": 0.827
+    },
+    {
+     "start": "2020",
+     "iroic": 0.1953,
+     "g0": 0.1953,
+     "V": 96.35,
+     "pv": 0.865
+    },
+    {
+     "start": "2021",
+     "iroic": 0.2009,
+     "g0": 0.2009,
+     "V": 97.2,
+     "pv": 0.857
+    },
+    {
+     "start": "2022",
+     "iroic": 0.1262,
+     "g0": 0.1262,
+     "V": 82.53,
+     "pv": 1.009
+    },
+    {
+     "start": "2023",
+     "iroic": 0.0172,
+     "g0": 0.0172,
+     "V": 65.11,
+     "pv": 1.28
+    },
+    {
+     "start": "2024",
+     "iroic": -0.0862,
+     "g0": 0.0,
+     "V": 62.78,
+     "pv": 1.327
+    }
+   ]
+  },
+  {
+   "code": "920599",
+   "name": "同力股份",
+   "close": 17.38,
+   "model_V": 32.28,
+   "model_pv": 0.538,
+   "research_yi": 9.44,
+   "model_yi": 10.33,
+   "gap": 0.0942,
+   "research_V": 29.5,
+   "research_pv": 0.589,
+   "g0_band": 0.1456,
+   "window_band": "2021→2025",
+   "reinvest": 0.4029,
+   "independent_V": 20.9,
+   "independent_pv": 0.832,
+   "independent_range": [
+    13.9,
+    28.0
+   ],
+   "hold_note": "资本腿增长腿约 9.3 元／股；研究数 9.44 亿对模型锚 10.33 亿差距 9.4%，偏乐观主要在锚之外（OI-259 独立基准 P/V 见审查报告）",
+   "series": [
+    {
+     "year": "2015",
+     "nopat_yi": -0.2,
+     "ic_yi": 4.37,
+     "roic": -0.046,
+     "gross_margin": 0.2162
+    },
+    {
+     "year": "2016",
+     "nopat_yi": 0.11,
+     "ic_yi": 3.88,
+     "roic": 0.0286,
+     "gross_margin": 0.2073
+    },
+    {
+     "year": "2017",
+     "nopat_yi": 0.87,
+     "ic_yi": 4.21,
+     "roic": 0.2056,
+     "gross_margin": 0.2198
+    },
+    {
+     "year": "2018",
+     "nopat_yi": 1.93,
+     "ic_yi": 5.18,
+     "roic": 0.3728,
+     "gross_margin": 0.2044
+    },
+    {
+     "year": "2019",
+     "nopat_yi": 2.64,
+     "ic_yi": 7.06,
+     "roic": 0.3744,
+     "gross_margin": 0.2171
+    },
+    {
+     "year": "2020",
+     "nopat_yi": 3.6,
+     "ic_yi": 10.84,
+     "roic": 0.3321,
+     "gross_margin": 0.2358
+    },
+    {
+     "year": "2021",
+     "nopat_yi": 4.03,
+     "ic_yi": 10.6,
+     "roic": 0.3805,
+     "gross_margin": 0.1821
+    },
+    {
+     "year": "2022",
+     "nopat_yi": 4.95,
+     "ic_yi": 16.64,
+     "roic": 0.2975,
+     "gross_margin": 0.1924
+    },
+    {
+     "year": "2023",
+     "nopat_yi": 6.47,
+     "ic_yi": 24.19,
+     "roic": 0.2674,
+     "gross_margin": 0.1908
+    },
+    {
+     "year": "2024",
+     "nopat_yi": 9.11,
+     "ic_yi": 23.01,
+     "roic": 0.3959,
+     "gross_margin": 0.2145
+    },
+    {
+     "year": "2025",
+     "nopat_yi": 9.59,
+     "ic_yi": 25.97,
+     "roic": 0.3693,
+     "gross_margin": 0.2299
+    }
+   ],
+   "windows": [
+    {
+     "start": "2019",
+     "iroic": 0.3673,
+     "g0": 0.148,
+     "V": 29.66,
+     "pv": 0.586
+    },
+    {
+     "start": "2020",
+     "iroic": 0.3959,
+     "g0": 0.1595,
+     "V": 30.46,
+     "pv": 0.571
+    },
+    {
+     "start": "2021",
+     "iroic": 0.3615,
+     "g0": 0.1457,
+     "V": 29.5,
+     "pv": 0.589
+    },
+    {
+     "start": "2022",
+     "iroic": 0.4973,
+     "g0": 0.1612,
+     "V": 30.59,
+     "pv": 0.568
+    },
+    {
+     "start": "2023",
+     "iroic": 1.7486,
+     "g0": 0.1612,
+     "V": 30.59,
+     "pv": 0.568
+    },
+    {
+     "start": "2024",
+     "iroic": 0.1616,
+     "g0": 0.0651,
+     "V": 24.57,
+     "pv": 0.707
+    }
+   ]
+  }
+ ]
+}

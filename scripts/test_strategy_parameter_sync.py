@@ -145,10 +145,14 @@ class StrategyParameterSyncTest(unittest.TestCase):
         self.assertLess(chain.index("fetch_csrc_industry.py --missing-only"), chain.index("build_historical_valuation_bands.py"))
         self.assertTrue((ROOT / "data/reference/a_share_csrc_industry.csv").exists())
         # v4.232（OI-260／OI-264／OI-262／OI-261）：两条建带命令、常设重建作业与结构性复核同参
-        self.assertEqual(workflow.count("  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period \\"), 2)
-        self.assertIn("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period", chain)
+        self.assertEqual(workflow.count("  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes \\"), 2)
+        self.assertIn("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes", chain)
         import structural_growth_review
-        self.assertTrue(set("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period".split()) <= set(structural_growth_review.BUILD_FLAGS))
+        self.assertTrue(set("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period --note-debt notes".split()) <= set(structural_growth_review.BUILD_FLAGS))
+        for command in ("fetch_restricted_cash_items.py --workers 16 --parser v2", "fetch_debt_note_items.py --workers 16",
+                        "fetch_debt_note_items.py --funds"):
+            self.assertIn(command, workflow)
+            self.assertIn(command, chain)
         # v4.232（OI-243）：BASE 单票上限按信号日净资产
         import sweep_backtest_configs as sweep_base
         self.assertIn("--cap-equity signal", sweep_base.BASE)
