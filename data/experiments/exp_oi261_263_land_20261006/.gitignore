@@ -1,0 +1,7 @@
+states/
+cache/
+daily/
+errors/
+pool/
+*.log
+__pycache__/

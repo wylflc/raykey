@@ -129,7 +129,7 @@ BASE = (
     # （`skip_fill` −0.76、`--stop-basis signal` −0.42、`--residual-clear tranche` −0.44，合并 −1.41），
     # §9.3 成文改从实现（v4.68）；三开关缺省即现行，显式写出以防缺省漂移。
     "--stop-basis exec --residual-clear lot "
-    "--position-cap 0.6 "
+    "--position-cap 0.6 --cap-equity signal "
     # 审计批 C（2026-08-24，用户裁定）：T+1 成交日无价该笔跳过（§9.1）、差别化股息税按 FIFO 结算、
     # 配股按交易所除权参考价折算并全额认购（事件库配股行）。`--fill-missing signal_close`／`--no-rights-events`／
     # 不给 `--dividend-tax` 为研究／复现口径。

@@ -3521,11 +3521,14 @@ def main() -> int:
                         help="研究开关（OI-266 T2）：continuous＝λ 按近两次年度比率变动的相对幅度连续计分（±10%% 满格）")
     parser.add_argument("--anchor-book-growth", choices=("off", "iroic"), default="off",
                         help="研究开关（OI-268 B2）：iroic＝锚的账面增长部分按增量 ROIC（夹 [0, 比率锚]）折算")
+    parser.add_argument("--note-debt", choices=roic_inputs.NOTE_DEBT_MODES, default="off",
+                        help="§6.5.1 第 3 条（OI-261）：notes=年报附注核定的类债务与融资项、税后弃置义务计入有息负债，现金行之外的弃置专户计超额现金"
+                             "（生产）；off=改前（只作复现）")
     parser.add_argument("--payout-basis", choices=("annual", "fiscal"), default="annual",
                         help="§6.5.1 第 3 条派息率（OI-260）：fiscal=财年全部现金分红（含中期、三季与特别分红，预案公告日起计入，与 V_D0 分子同一归属，"
                              "生产，§6.7 显式给出）；annual=只计 report_date 为年报期的分配（改前口径，只作复现）")
     parser.add_argument("--tax-anomaly", choices=roic_inputs.TAX_ANOMALY_MODES, default="off",
-                        help="§6.5.1 第 3 条（OI-264）：median3=实际税率为负的年份改按前三个财年观测税率中位（生产）；off=改前（只作复现）")
+                        help="§6.5.1 第 3 条（OI-264）：median3=实际税率低于 −5%% 的年份改按前三个财年观测税率中位（无非负观测不改，生产）；off=改前（只作复现）")
     parser.add_argument("--share-equity", choices=("parent", "common"), default="parent",
                         help="§6.5.1 股本口径与 §6.3 第 2 条（OI-262）：common=推股数与三表存档推重述前 BPS 用普通股权益（归母权益 − 其他权益工具），"
                              "股本与面板 BPS 不符时按面板 BPS 反推股数（生产）；parent=归母权益、重述前 BPS = 归母权益 ÷ 股本（只作复现）")
@@ -3690,7 +3693,7 @@ def main() -> int:
                                                       ic_floor=args.roic_ic_floor, caliber=args.cash_caliber,
                                                       notice_cap=(args.notice_cap == "statutory"),
                                                       restricted_cash=args.restricted_cash,
-                                                      tax_anomaly=args.tax_anomaly))
+                                                      tax_anomaly=args.tax_anomaly, note_debt=args.note_debt))
         if args.reset_guard != "off":
             with args.reset_guard_file.open(encoding="utf-8-sig", newline="") as fh:
                 for r in csv.DictReader(fh):

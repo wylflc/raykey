@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""§6.5.1 第 3 条（OI-264，用户 2026-10-06 裁定只纠负税率）：负税率年份改按前三年观测税率（非负原值）中位，其余不动。"""
+"""§6.5.1 第 3 条（OI-264）：税率低于 −5% 的年份改按前三年观测税率（非负原值）中位；前三年无非负观测不改。"""
 from __future__ import annotations
 
 import sys
@@ -32,16 +32,21 @@ class TaxAnomalyTest(unittest.TestCase):
         self.assertAlmostEqual(ys["2023-12-31"].tax_rate, 0.18)
 
     def test_prior_negative_years_excluded_from_reference(self) -> None:
-        ys = {p: year(p, r) for p, r in (("2021-12-31", 0.07), ("2022-12-31", 0.07), ("2023-12-31", -0.06), ("2024-12-31", -0.01))}
-        self.assertEqual(correct_tax_anomalies(ys), 2)            # 圣邦 2023–2024
-        self.assertAlmostEqual(ys["2024-12-31"].tax_rate, 0.07)
+        ys = {p: year(p, r) for p, r in (("2021-12-31", 0.07), ("2022-12-31", 0.07), ("2023-12-31", -0.062), ("2024-12-31", -0.013))}
+        self.assertEqual(correct_tax_anomalies(ys), 1)            # 圣邦：2023 −6.2% 改，2024 −1.3% 不改
+        self.assertAlmostEqual(ys["2023-12-31"].tax_rate, 0.07)
+        self.assertAlmostEqual(ys["2024-12-31"].tax_rate, 0.0)
 
-    def test_without_history_negative_uses_statutory(self) -> None:
+    def test_without_nonnegative_history_untouched(self) -> None:
         ys = {"2025-12-31": year("2025-12-31", -0.10)}
-        self.assertEqual(correct_tax_anomalies(ys), 1)
-        self.assertAlmostEqual(ys["2025-12-31"].tax_rate, 0.25)
-        ys = {"2025-12-31": year("2025-12-31", 0.05)}
+        self.assertEqual(correct_tax_anomalies(ys), 0)            # 不退回法定税率
+        rates = (("2018-12-31", -0.004), ("2019-12-31", -0.003), ("2020-12-31", 0.0), ("2021-12-31", -0.004), ("2024-12-31", -0.002))
+        ys = {p: year(p, r) for p, r in rates}                    # 牧原：农业免税，历年微负
         self.assertEqual(correct_tax_anomalies(ys), 0)
+
+    def test_small_negative_below_threshold_untouched(self) -> None:
+        ys = {p: year(p, r) for p, r in (("2022-12-31", 0.12), ("2023-12-31", 0.12), ("2024-12-31", 0.12), ("2025-12-31", -0.045))}
+        self.assertEqual(correct_tax_anomalies(ys), 0)            # 抵免不足税前利润 5%（拓荆 2025 −4.5%）
 
 
 if __name__ == "__main__":

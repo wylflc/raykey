@@ -36,17 +36,17 @@ def features(band, rec):
     hist = sorted(roic_inputs.years_before(_YEARS.get(code, {}), avail, 5), key=lambda y: y.period)
     out = {}
     if len(hist) >= 2 and hist[0].invested_capital and hist[-1].invested_capital and hist[0].invested_capital > 0:
-        out['dic_small'] = (hist[-1].invested_capital - hist[0].invested_capital) / hist[0].invested_capital < 0.10
+        out['dic_small'] = bool((hist[-1].invested_capital - hist[0].invested_capital) / hist[0].invested_capital < 0.10)
         capex = sum(y.capex for y in hist[1:]) - sum(y.dep_amort for y in hist[1:])
         if hist[0].working_capital is not None and hist[-1].working_capital is not None:
             dwc = hist[-1].working_capital - hist[0].working_capital
-            out['wc_major'] = dwc > 0 and dwc > 0.5 * (capex + dwc)
+            out['wc_major'] = bool(dwc > 0 and dwc > 0.5 * (capex + dwc))
     rd = _RD.get(code, {})
     if hist:
         last = hist[-1].period
         y0 = f'{int(last[:4]) - 3}{last[4:]}'
         if rd.get(last) and rd.get(y0) and rd[y0] > 0:
-            out['rd_growth'] = (rd[last] / rd[y0]) ** (1 / 3) - 1
+            out['rd_growth'] = float((rd[last] / rd[y0]) ** (1 / 3) - 1)
     return out
 
 
@@ -61,7 +61,7 @@ def main():
         for r in rows:
             g = r['groups'].pop('rd_growth', None)
             if g is not None:
-                r['groups'].update(rd_low=g < lo, rd_mid=lo <= g < hi, rd_high=g >= hi)
+                r['groups'].update(rd_low=bool(g < lo), rd_mid=bool(lo <= g < hi), rd_high=bool(g >= hi))
         cache.write_text(json.dumps(rows, ensure_ascii=False))
         (EXP / 'cache/rd_terciles.json').write_text(json.dumps(dict(lo=float(lo), hi=float(hi), n=int(len(growth)))))
     cf.run(EXP, arms, group_names=GROUPS, cases=CASES)

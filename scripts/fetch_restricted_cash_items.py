@@ -586,7 +586,7 @@ def _extra_fields(extra: dict) -> dict:
                 breakdown_items=extra["breakdown_items"], loan_pledge_manual_yuan=f"{extra['manual']:.2f}")
 
 
-def parse_task(task: dict, meta: dict, note_cash: dict, manual: dict | None = None) -> dict:
+def _parse_task_v1(task: dict, meta: dict, note_cash: dict, manual: dict | None = None) -> dict:
     stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
     day = re.search(r"finalpage/(\d{4}-\d{2}-\d{2})/", meta.get("url", ""))
     row = dict(security_code=task["code"], security_name=task["name"], fiscal_year=task["year"],
@@ -624,23 +624,282 @@ def parse_task(task: dict, meta: dict, note_cash: dict, manual: dict | None = No
                    restricted_total=f"{parsed['total']:.2f}")
 
 
-def load_existing() -> dict[tuple[str, int], dict]:
+def parse_task(task: dict, meta: dict, note_cash: dict, manual: dict | None = None, parser: str = "v1") -> dict:
+    """一份年报 → 一行结果。`parser = "v1"`（缺省）为原解析；`"v2"`（OI-263）先跑 v1，v1 核定（`status = ok`）的行原样保留，
+    其余行再用 v2 版式（`find_section_v2`／`parse_section_v2`）重解析，v2 找到附注段即以其结果为准。"""
+    row = _parse_task_v1(task, meta, note_cash, manual)
+    if parser == "v1" or row.get("status") == "ok" or meta.get("status") != "ok":
+        return row
+    v2 = _parse_task_v2(task, meta, note_cash, manual, row)
+    return v2 if v2 is not None else row
+
+
+# ---- v2 版式（OI-263）：「使用权受到限制的资产」标题、千元／万元表（单位写在页眉）、无「合计」字样的表、(a)(b)(c) 字母脚注 ----
+PARSERS = ("v1", "v2")
+HEADING_V2 = re.compile(r"(?:^|\n)[ \t]*(?:(\d{1,3})\s*[、．.]\s*|[（(]((?:[一二三四五六七八九十百]+|\d{1,3}))[)）]\s*|(\d{1,3})[ \t]+)"
+                        r"(?:所\s*有\s*权\s*(?:或\s*)?)?(?:使\s*用\s*权\s*)?受\s*(?:到\s*)?限\s*(?:制\s*)?(?:的\s*)?资\s*产"
+                        r"(?![一-龥])(?!\s*[（(]\s*续)")
+PAGE_UNIT_V2 = re.compile(r"金\s*额\s*单\s*位\s*(?:为|：|:)?\s*(?:人\s*民\s*币)?\s*(百\s*万\s*元|千\s*元|万\s*元|元)|"
+                          r"(?:^|\n)[^\n]{0,24}?人\s*民\s*币\s*(百\s*万\s*元|千\s*元|万\s*元|元)[ \t]*(?=\n)|"
+                          r"单\s*位\s*[:：]\s*(?:人\s*民\s*币)?\s*(百\s*万\s*元|千\s*元|万\s*元|元)")
+FOOTNOTE_V2 = re.compile(r"(?:^|\n)[ \t]*[（(]\s*([a-zA-Z]|[ivx]{1,4})\s*[)）][ \t]*(.+?)(?=\n[ \t]*[（(]\s*(?:[a-zA-Z]|[ivx]{1,4})\s*[)）]|\n[ \t]*\n[ \t]*\n|$)",
+                         re.S)
+CN_NUM = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+# v2：财务公司与保证金类的货币资金分项行（美的 2015～2017「存放中央银行款项」「存放同业款项」，伊利 2025「存放中央银行法定
+# 存款准备金」「担保保证金」）按货币资金计，原行名并入原因（法定存款准备金、票据类保证金由原因判定）
+CASH_SUB_V2 = ("存放中央银行法定存款准备金", "存放中央银行法定准备金", "存放中央银行款项", "存放同业款项", "存放同业", "法定存款准备金",
+               "已抵押银行存款及其他受限资金", "担保保证金", "期货保证金", "信用证保证金", "保函保证金", "履约保证金", "票据保证金",
+               "借款保证金")
+
+
+SPACES_V2 = "[" + "".join(map(chr, (0x00A0, 0x202F, 0x205F, 0x3000))) + chr(0x2000) + "-" + chr(0x200B) + "]"   # 不换行空格、细空格等
+
+
+def _v2_unit(body: str, before: str) -> float | None:
+    """v2 单位：段内「单位：」优先，其次段首或标题前 4000 字内最近的页眉单位（「金额单位为人民币千元」「人民币千元」）。"""
+    for region in (body[:2500], before):
+        hits = list(PAGE_UNIT_V2.finditer(region))
+        if hits:
+            word = next(g for g in hits[-1].groups() if g)
+            return UNITS[re.sub(r"\s+", "", word)]
+    return None
+
+
+def _v2_next(number: str) -> re.Pattern:
+    """同一版式、序号 + 1 的下一标题（「(26)」→「(27)」，「54.」→「55.」，「（十五）」→「（十六）」）。"""
+    if number.isdigit():
+        n = int(number) + 1
+        return re.compile(r"\n[ \t]*(?:" + str(n) + r"\s*[、．.]|[（(]" + str(n) + r"[)）]|" + str(n) + r"[ \t]+)\s*[一-龥]")
+    if "十" in number:
+        tens, _, ones = number.partition("十")
+        value = (CN_NUM.get(tens, 0) if tens else 1) * 10 + CN_NUM.get(ones, 0)
+    else:
+        value = CN_NUM.get(number, 0)
+    rev = {v: k for k, v in CN_NUM.items()}
+    n = value + 1
+    word = rev[n] if n < 10 else ("" if n // 10 == 1 else rev[n // 10]) + "十" + (rev[n % 10] if n % 10 else "")
+    return re.compile(r"\n[ \t]*[（(]" + word + r"[)）]\s*[一-龥]")
+
+
+def find_section_v2(text: str) -> tuple[str, str, float | None] | None:
+    """v2 附注段：「(所有权或)使用权受(到)限(制)的资产」标题（序号「26、」「(26)」「（二十六）」或事务所版式「26 」），其后 400 字内
+    有表头或金额；段止于同一版式的下一序号标题（至多 6000 字）。→ (段文字, 来源, 单位提示)。"""
+    start = cn.notes_start(text)
+    for m in list(HEADING_V2.finditer(text, start)) + list(HEADING_V2.finditer(text, 0, start)):
+        head = text[m.end():m.end() + 400]
+        if re.search(r"^\s*[”\"」]", head) or not re.search(r"项\s*目|单位|期末|年末|受限|账面|\d{4}\s*年|\d{1,3}(?:,\d{3})+", head):
+            continue
+        body = text[m.end():m.end() + 6000]
+        number = next((g for g in m.groups() if g), "")
+        if number:
+            stop = _v2_next(number).search(body)
+            if stop:
+                body = body[:stop.start()]
+        return body, "note", _v2_unit(body, text[max(0, m.start() - 4000):m.start()])
+    return None
+
+
+def parse_section_v2(body: str, unit_hint: float | None, balance: dict) -> dict:
+    """v2 受限资产表 → 逐行 (行名, 期末账面价值, 原因)。与 v1 的不同：单位取页眉；行名后的字母脚注「(a)」与「见其他说明（1）」
+    按表下同号说明取原因；没有「合计」字样时依次试表末 1～3 个纯金额行作合计（行内金额被 PDF 拆到下一行的版式里，上期数也
+    独占一行，美的 2016）；连合计行也没有时，单位写明且各现金类行不超过报表对应行值（v1 容差）即认；说明里写明金额的
+    「…保证金 41,849,177.08 元」不当表格行；财务公司与保证金类的货币资金分项（CASH_SUB_V2）按货币资金计。"""
+    body = re.sub(SPACES_V2, " ", _clean(body))
+    # 事务所版式的页眉（公司名、「××年度财务报表附注」「(除特别注明外，金额单位为人民币千元)」「四 合并财务报表项目附注(续)」）
+    body = "\n".join(ln for ln in body.split("\n") if not re.search(
+        r"财务报表附注|金额单位为|项目(?:附注|注释)\s*[（(]续[)）]|^\s*[一-龥（）()]{2,30}公司\s*$|^\s*\d{1,4}\s*$", ln))
+    body = re.sub(r"((?:19|20)\d{2})\s*年\s*12\s*月\s*31\s*日", r"\1年末", body)
+    body = re.sub(r"(?<=\d) ?, ?(?=\d{3}(?![\d]))", ",", body)          # 千分位逗号两侧多出的空格（中兴通讯 2015「106, 892」「79 ,963」）
+    body = re.sub(r"\d[\d,]*(?:\.\d+)?\s*(?:万|千)?元(?![一-龥]{0,2}币)", "", body)   # 说明文字里的金额
+    # 附注引用（「(附注四(1))」，可断行）里的数字在整数模式下会被当成金额
+    body = re.sub(r"[（(]\s*附\s*注[^（()）]{0,20}(?:[（(][^（()）]{0,10}[)）][^（()）]{0,10})?[)）]", "", body)
+    foot = re.search(r"\n[ \t]*(?:[（(]\s*[a-zA-Z]\s*[)）][ \t]*[一-龥]|注\s*\d*\s*[:：]|其他说明)", body)
+    table, after = (body[:foot.start()], body[foot.start():]) if foot else (body, "")
+    # 表内脚注序号（「注1」「见其他说明（1）」）在整数模式下会被当成金额：改写成中文数字
+    numeral = "一二三四五六七八九十"
+    table = re.sub(r"注\s*(\d)(?![\d,.])", lambda m: "注" + numeral[int(m.group(1)) - 1] if m.group(1) != "0" else m.group(0), table)
+    table = re.sub(r"说明\s*[（(]\s*(\d)\s*[)）]", lambda m: "说明（" + (numeral[int(m.group(1)) - 1] if m.group(1) != "0" else "零") + "）", table)
+    unit = cn._unit(body) or unit_hint or 1.0
+    pattern, join = cn._pattern(table)
+    values: list[float] = []
+
+    def token(m: re.Match) -> str:
+        values.append(float(m.group().replace(",", "")))
+        return f"⟦{len(values) - 1}⟧"
+    tokenized = pattern.sub(token, re.sub(join, "", table))
+    flat = re.sub(r"\s+", "", tokenized)
+    head_end = flat.find("⟦")
+    if re.search(r"本(?:年|期)增加.{0,12}本(?:年|期)减少", flat[:max(head_end, 0) + 1]):
+        return dict(status="movement_table")                  # 年初、增加、减少、年末的变动表（华润三九 2008、2009）不认
+    per = 2 if re.search(r"账面余额.{0,12}账面价值", flat[:max(head_end, 0) + 1]) else 1
+    item_re = "|".join(map(re.escape, sorted(set(ITEMS) | set(CASH_SUB_V2), key=len, reverse=True)))
+
+    def end_value(r: dict) -> float:
+        return r["amounts"][per - 1] if len(r["amounts"]) >= per else r["amounts"][0]
+
+    def rows_of(part: str) -> list[dict]:
+        rows: list[dict] = []
+        for m in re.finditer(r"(?:其中[:：])?(" + item_re + r")(?:[-—–][一-龥]{1,10})?((?:[（(][^⟦）)]{0,20}[)）])?)[-—–]*"
+                             r"((?:⟦\d+⟧)+)", part):
+            if rows:
+                rows[-1]["reason"] = part[rows[-1]["end"]:m.start()]
+            rows.append(dict(label=m.group(1), ref=re.sub(r"[（()）\s]", "", m.group(2) or ""), end=m.end(),
+                             amounts=[values[int(i)] for i in re.findall(r"⟦(\d+)⟧", m.group(3))],
+                             sub=m.group(0).startswith("其中")))
+        if rows:
+            rows[-1]["reason"] = part[rows[-1]["end"]:]
+        for r in rows:
+            r["reason"] = re.sub(r"⟦\d+⟧", " ", r["reason"]).strip(" /／-—")
+        return rows
+
+    def reconcile(rows: list[dict], total_vals: list[float], synthetic: bool) -> dict:
+        """逐行期末值之和与合计相符：先去掉「其中」行，母项本身没有金额（美的 2019「货币资金 / 其中：银行存款」）对不上时
+        保留；两种都可剔除 0～3 行只有期初数的行（精确相符优先，否则须在 v1 容差内）。"""
+        target = total_vals[per - 1] if len(total_vals) >= per else total_vals[0]
+        tol = max(TOLERANCE * abs(target), 1.0)
+        if synthetic and len(total_vals) not in (per, 2 * per):
+            return dict(status="rows_mismatch", total=target * unit, rows=[])   # 纯金额行个数与表的列数不符
+        exact = max(1.0, 1e-6 * abs(target))
+        variants = [[r for r in rows if not r["sub"]]] + ([rows] if any(r["sub"] for r in rows) else [])
+        fallback = None
+        for cand in variants:
+            vals = [end_value(r) for r in cand]
+            single = [i for i, r in enumerate(cand) if len(r["amounts"]) <= per]
+            options = [(abs(sum(v for j, v in enumerate(vals) if j not in c) - target), len(c), c)
+                       for size in (0, 1, 2, 3) for c in combinations(single, size)][:5000]
+            err, _, best = min(options, key=lambda x: (x[0] > exact, x[0], x[1]))
+            if err <= tol:
+                keep = [i for i in range(len(cand)) if i not in best]
+                return dict(status="ok", total=target, rows=[cand[i] for i in keep], vals=[vals[i] for i in keep], note="")
+            fallback = fallback or dict(status="rows_mismatch", total=target * unit,
+                                        rows=[(r["label"], v * unit, r["reason"][:60]) for r, v in zip(cand, vals)])
+        return fallback
+
+    result = None
+    labeled = re.search(r"合计((?:⟦\d+⟧)+)", flat)
+    if labeled:
+        rows = rows_of(flat[:labeled.start()])
+        if not rows:
+            return dict(status="no_rows")
+        result = reconcile(rows, [values[int(i)] for i in re.findall(r"⟦(\d+)⟧", labeled.group(1))], False)
+    else:
+        # 表末纯金额行作合计：自最后一行起取 1～3 行（中间可隔空行），取首个逐行相符的切法
+        lines = tokenized.split("\n")
+        bare = [i for i, ln in enumerate(lines) if re.fullmatch(r"[\s\-—–]*(?:⟦\d+⟧[\s\-—–]*)+", ln)]
+        if bare and not any(re.search(r"[一-龥]", ln) for ln in lines[bare[-1] + 1:]):
+            run = [bare[-1]]
+            for k in reversed(bare[:-1]):
+                if len(run) == 3 or any(ln.strip() for ln in lines[k + 1:run[-1]]):
+                    break
+                run.append(k)
+            for size in range(1, len(run) + 1):
+                first = run[size - 1]
+                rows = rows_of(re.sub(r"\s+", "", "\n".join(lines[:first])))
+                if not rows:
+                    continue
+                total_vals = [values[int(t)] for k in sorted(run[:size]) for t in re.findall(r"⟦(\d+)⟧", lines[k])]
+                attempt = reconcile(rows, total_vals, True)
+                if attempt["status"] == "ok":
+                    result = attempt
+                    break
+                result = result or attempt
+        if result is None:
+            # 没有合计行：单位写明、各现金类行不超过资产负债表对应行（v1 容差），且至少有一行现金类可核对
+            rows = [r for r in rows_of(flat) if not r["sub"]]
+            if not rows:
+                return dict(status="no_rows")
+            if any(len(r["amounts"]) > 2 * per for r in rows):
+                return dict(status="no_total")                # 列数多于两期（变动表等）时无合计行无从核对
+            vals = [end_value(r) for r in rows]
+            per_field: dict[str, float] = {}
+            for r, v in zip(rows, vals):
+                field = BALANCE_FIELD.get("货币资金" if r["label"] in CASH_SUB_V2 else r["label"])
+                if field and balance.get(field):
+                    per_field[field] = per_field.get(field, 0.0) + v * unit
+            if any(total > balance[field] * (1 + TOLERANCE) + 1.0 for field, total in per_field.items()):
+                return dict(status="exceeds_balance", total=None)    # 同一报表行的受限额合计不得超过该行
+            checked = len(per_field)
+            if not checked or not (cn._unit(body) or unit_hint):
+                return dict(status="no_total")
+            result = dict(status="ok", total=sum(vals), rows=rows, vals=vals, note="nototal")
+    if result["status"] != "ok":
+        return result
+    notes = {m.group(1).lower(): re.sub(r"\s+", "", m.group(2))[:600] for m in FOOTNOTE_V2.finditer(after)}
+    notes.update({m.group(1): re.sub(r"\s+", "", m.group(2))[:600] for m in re.finditer(
+        r"(?:^|\n)[ \t]*[（(]\s*(\d{1,2})\s*[)）][ \t]*(.+?)(?=\n[ \t]*[（(]\s*\d{1,2}\s*[)）]|$)", after, re.S)})
+    numbered = {m.group(1): re.sub(r"⟦\d+⟧|\s+", "", m.group(2))[:600]
+                for m in re.finditer(r"注\s*(\d+)\s*[:：](.*?)(?=注\s*\d+\s*[:：]|$)", after, re.S)}
+    out_rows = []
+    for r, v in zip(result["rows"], result["vals"]):
+        reason = r["reason"]
+        if r["ref"] and r["ref"].lower() in notes:
+            reason += "｜" + notes[r["ref"].lower()]
+        for ref in re.findall(r"说明\s*[（(]\s*([一二三四五六七八九十])\s*[)）]", reason):      # 「见“其他说明（1）”」
+            reason += "｜" + notes.get(str(numeral.index(ref) + 1), "")
+        for ref in re.findall(r"注([一二三四五六七八九十])", reason):
+            reason += "｜" + numbered.get(str(numeral.index(ref) + 1), "")
+        if not re.search(r"[一-龥]", reason) and not notes:
+            reason = re.sub(r"⟦\d+⟧|\s+", "", after)[:800]          # 表内无原因列、也没有逐行脚注：以表后说明为原因
+        label = r["label"]
+        if label in CASH_SUB_V2:
+            label, reason = "货币资金", label + "｜" + reason
+        out_rows.append(dict(label=label, value=v * unit, reason=reason))
+    return dict(status="ok", total=result["total"] * unit, rows=out_rows, note=result["note"], unit=unit)
+
+
+def _parse_task_v2(task: dict, meta: dict, note_cash: dict, manual: dict | None, v1_row: dict) -> dict | None:
+    """v2 重解析（只在 v1 未核定时调用）：找不到 v2 附注段返回 None（沿用 v1 结果）。"""
+    text = gzip.decompress((cn.CACHE / task["code"] / f"{task['year']}.txt.gz").read_bytes()).decode("utf-8")
+    keep = {k: v1_row[k] for k in ("security_code", "security_name", "fiscal_year", "report_date", "notes_payable",
+                                   "extracted_at_utc", "announcement_date", "title", "url")}
+    row = dict(keep, counted_yuan="0.00")
+    if text.count("的") < 400:                         # 文本层无字符映射或只抽出几页（天山铝业 2025）
+        return dict(v1_row, status="text_unreadable")
+    found = find_section_v2(text)
+    if found is None:
+        if re.search(r"(?:主要资产受限情况|资产权利受限情况)[^\n]{0,4}\n?[\s□]*(?:适用)?[\s]*√\s*不适用", text):
+            return dict(row, source="v2:mda", status="none_stated",           # 管理层讨论写明不适用（中国巨石 2025）
+                        **_extra_fields(cash_note_breakdown(text, task, [], 0.0, 0.0)))
+        return None
+    body, source, unit_hint = found
+    manual_loan = (manual or {}).get((task["code"], task["year"]), 0.0)
+    if re.match(r"[:：]?(?:□适用)?√?不适用|[:：]?无[。；;]?(?:$|[^一-龥])", re.sub(r"\s+", "", body)):
+        return dict(row, source="v2:" + source, status="none_stated",
+                    **_extra_fields(cash_note_breakdown(text, task, [], 0.0, 0.0)))
+    parsed = parse_section_v2(body, unit_hint, task["balance"])
+    if parsed["status"] != "ok":
+        return dict(row, source="v2:" + source, status=parsed["status"],
+                    restricted_total=f"{parsed['total']:.2f}" if parsed.get("total") is not None else "",
+                    **_extra_fields(cash_note_breakdown(text, task, [], 0.0, 0.0)))
+    c = classify(parsed["rows"], task, note_cash)
+    extra = cash_note_breakdown(text, task, c["rows"], c["generic"], manual_loan)
+    return dict(row, source="v2:" + source + ("+" + parsed["note"] if parsed.get("note") else ""), status="ok",
+                restricted_total=f"{parsed['total']:.2f}", cash_like_yuan=f"{c['cash_like']:.2f}",
+                counted_yuan=f"{c['counted'] + extra['fallback'] - extra['carve']:.2f}",
+                generic_yuan=f"{extra['generic']:.2f}", loan_only_yuan=f"{c['loan']:.2f}", items=c["items"],
+                **_extra_fields(extra))
+
+
+def load_existing(path: Path | None = None) -> dict[tuple[str, int], dict]:
+    path = path or OUT
     out = {}
-    if OUT.exists():
-        with OUT.open(encoding="utf-8") as handle:
+    if path.exists():
+        with path.open(encoding="utf-8") as handle:
             for r in csv.DictReader(handle):
                 out[(r["security_code"], int(r["fiscal_year"]))] = r
     return out
 
 
-def write(merged: dict) -> None:
+def write(merged: dict, path: Path | None = None) -> None:
+    path = path or OUT
     rows = sorted(merged.values(), key=lambda r: (r["security_code"], int(r["fiscal_year"])))
-    tmp = OUT.with_suffix(".tmp")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp")
     with tmp.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=FIELDS, restval="", extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
-    tmp.replace(OUT)
+    tmp.replace(path)
 
 
 def main() -> int:
@@ -652,6 +911,9 @@ def main() -> int:
     parser.add_argument("--parse-only", action="store_true", help="只用已缓存文本解析，不联网")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--show", action="store_true", help="打印逐行解析结果（调试）")
+    parser.add_argument("--parser", choices=PARSERS, default="v1",
+                        help="v1（缺省，现行解析）；v2：v1 未核定的行再按 OI-263 新版式重解析（实验）")
+    parser.add_argument("--out", type=Path, default=OUT, help="输出表（缺省生产表；v2 实验写到实验目录）")
     args = parser.parse_args()
     codes = {c.strip().zfill(6) for c in args.codes.split(",")} if args.codes else None
     years = {int(y) for y in args.years.split(",")} if args.years else None
@@ -694,7 +956,7 @@ def main() -> int:
     results = {}
     for t in tasks:
         meta = metas[(t["code"], t["year"])]
-        results[(t["code"], t["year"])] = parse_task(t, meta, note_cash, manual)
+        results[(t["code"], t["year"])] = parse_task(t, meta, note_cash, manual, args.parser)
         if args.show and meta.get("status") == "ok":
             text = gzip.decompress((cn.CACHE / t["code"] / f"{t['year']}.txt.gz").read_bytes()).decode("utf-8")
             found = find_section(text)
@@ -703,8 +965,8 @@ def main() -> int:
             r = results[(t["code"], t["year"])]
             print("  受限分项", {k: r.get(k) for k in ("counted_yuan", "fallback_yuan", "reserve_yuan", "reserve_source",
                                                    "breakdown_source", "breakdown_items", "loan_pledge_manual_yuan")})
-    merged = {**load_existing(), **results}
-    write(merged)
+    merged = {**load_existing(args.out), **results}
+    write(merged, args.out)
     stats: dict[str, int] = {}
     for r in results.values():
         key = (r.get("status") or "").split(":")[0]

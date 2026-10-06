@@ -5,3 +5,4 @@ daily/
 errors/
 *.log
 __pycache__/
+pool/

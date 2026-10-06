@@ -1,0 +1,36 @@
+{
+ "arm": "ALL",
+ "version": "v4.232",
+ "installed": {
+  "roic_bands.csv": {
+   "before": "1ccff0e2af294829813ad81a614546040b16d7bb2ab0fdac1d31026fb0570af5",
+   "after": "047670a2ea07ffb07c5eb8816b6f86791f1fad3efbfe461cfcbb3105b57ef13f"
+  },
+  "roic_bands_b2.csv": {
+   "before": "ecb3fce22adedbf1069be26a2e0276df8fa54bdcd0e29e6b40ce52d21ddcb237",
+   "after": "9d410899ade3553c8afbf667c3d6b256720289247258acfbf5e93409bcc033b4"
+  },
+  "roic_daily_raw.csv": {
+   "before": "c752165619196d19c1038249a87bf5d91d5bfc833152b3f3646a23662d07ef32",
+   "after": "aefa4512c669cf129b730a12264852bd1f1123b1e3952ee4a7556e21681d07ec"
+  },
+  "roic_daily_raw_b2.csv": {
+   "before": "83d3388f4ad7683d93ca1722d7744842595b5b81fd4ee6919d43a318a70f3843",
+   "after": "7b47a94dba61fe5c1b47760dec24dbf655091070c5c8803d6a2d5f964ca2cbb2"
+  },
+  "a_share_daily_states_adopted.csv": {
+   "before": "5477176da6142612edfb64a638ea84754443d0af846accb46680fb1d7b9ddb7a",
+   "after": "d0cb50a052b3ca95f0d206a1d0a86909cc79521d469ff579fa070784695f389c"
+  },
+  "a_share_daily_states_b2.csv": {
+   "before": "ad4b8763ad2a831412cd5df16f27eb4eac3845a91aca031cd4bb6e4ef66e3f9a",
+   "after": "745a09aa3a92cad3bbbce0b0d2b2855df92ee44d86a4cd06a92203e10fbe0851"
+  },
+  "a_share_daily_states_hold.csv": {
+   "before": "3dc4cdc2e152dfcbe26880048ab7271227870ec2ca1640a0d79b459ab94dc8a8",
+   "after": "69a26a2971098de1015609b55eb71ad45ab195399d573c61113b33764f97cdd4"
+  }
+ },
+ "statement_gaps_identical": true,
+ "old_states": "states/CONTROL（与安装前正式状态逐字节相同）"
+}

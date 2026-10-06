@@ -144,6 +144,14 @@ class StrategyParameterSyncTest(unittest.TestCase):
         self.assertIn("--rd-capitalize on", chain)
         self.assertLess(chain.index("fetch_csrc_industry.py --missing-only"), chain.index("build_historical_valuation_bands.py"))
         self.assertTrue((ROOT / "data/reference/a_share_csrc_industry.csv").exists())
+        # v4.232（OI-260／OI-264／OI-262／OI-261）：两条建带命令、常设重建作业与结构性复核同参
+        self.assertEqual(workflow.count("  --payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period \\"), 2)
+        self.assertIn("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period", chain)
+        import structural_growth_review
+        self.assertTrue(set("--payout-basis fiscal --tax-anomaly median3 --share-equity common --dividend-timing post_period".split()) <= set(structural_growth_review.BUILD_FLAGS))
+        # v4.232（OI-243）：BASE 单票上限按信号日净资产
+        import sweep_backtest_configs as sweep_base
+        self.assertIn("--cap-equity signal", sweep_base.BASE)
         self.assertIn("绝对值 < 0.2pp 时保留原线", workflow)
         self.assertNotIn("| 减持 |", workflow)                # v4.109（OI-110）：估值减持行已删
         # v4.110（OI-116）：止盈行不得退回「无」——涨幅减持即按盈利触发的减仓；v4.222 另有换仓行的让位源

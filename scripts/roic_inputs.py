@@ -70,10 +70,17 @@ RESTATE_ANNOUNCEMENTS = ROOT / "data/interim/restatement_announcements.csv"   # 
 OPERATING_CASH_RATIO = 0.02      # 营运现金 ≈ 2% 营收，其余视为超额现金
 DEFAULT_TAX_RATE = 0.25          # 法定税率，利润总额非正时回退
 TAX_RATE_BOUNDS = (0.0, 0.40)
-# §6.5.1 第 3 条（OI-264，用户 2026-10-06 裁定只纠负税率）：实际税率为负的年份改按前三个财年观测税率（非负原值）的中位，
-# 前三年无观测取法定。建带 `--tax-anomaly median3`；off 只作复现。
+# §6.5.1 第 3 条（OI-264，用户 2026-10-06 裁定）：实际税率低于 −5%（所得税抵免超过税前利润 5%）的年份改按前三个财年观测税率
+# （非负原值）的中位；前三年无非负观测的不改。建带 `--tax-anomaly median3`；off 只作复现。
 TAX_ANOMALY_MODES = ("off", "median3")
 TAX_ANOMALY_YEARS = 3
+TAX_ANOMALY_FLOOR = -0.05
+# §6.5.1 第 3 条（OI-261，用户 2026-10-06 裁定）：年报附注核定的类债务项目与弃置义务、弃置专户（`fetch_debt_note_items.py`）；
+# 建带 `--note-debt notes`；off 只作复现。
+NOTE_DEBT_MODES = ("off", "notes")
+NOTE_DEBT_FILE = ROOT / "data/reference/debt_note_items.csv"
+DECOM_FUND_FILE = ROOT / "data/reference/decom_fund_items.csv"
+NOTE_DEBT_VERIFIED = ("ok", "manual")
 # 估值准确性检验的研究开关（缺省＝生产，逐位不变；建带器按 --iroic-dic-floor／--iroic-endpoint／--reinvest-wc／--rd-addback／--rd-amort-start 设定）
 IROIC_DIC_FLOOR = 0.0      # OI-252 G1：ΔIC < 该比例 × 窗首投入资本时增量 ROIC 不可算
 IROIC_ENDPOINT = "1y"      # OI-252 G2：2y = 增量 ROIC 取端点两年均值
@@ -229,13 +236,17 @@ class RoicYear:
     tax_rate_raw: float | None = None  # 未夹 [0,40%] 的 所得税/利润总额（OI-264 识别负税率）
     tax_anomaly_ref: float | None = None   # OI-264 改按的参照税率（未改为 None）
     other_equity_tool: float = 0.0    # 其他权益工具（永续债、优先股，`OTHER_EQUITY_TOOL`）：§6.5.1 股本口径推股数时从归母权益扣除（OI-262）
+    note_debt: float = 0.0            # OI-261：附注核定的类债务（短融／超短融、借款、拆借、财务公司吸收存款、供应链融资、保理、票据融资等）
+    decom_liability: float = 0.0      # OI-261：弃置、复垦类义务 × (1 − 税率)
+    decom_fund: float = 0.0           # OI-261：现金行之外的弃置专户存款，与义务对冲、计超额现金
     annualized_months: int = 0        # OI-132：购买法收购当年 NOPAT／EBIT 已按并表月数年化（0 = 未调整）
     cash_inputs_complete: bool = False  # Strict availability for the optional maintenance proxy.
 
 
 def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap: bool,
                      ic_floor: float = 0.0, caliber: str = "nonop", note_cash: float = 0.0,
-                     restricted: float = 0.0, pledged_wc: bool = False, reserve: float = 0.0) -> RoicYear | None:
+                     restricted: float = 0.0, pledged_wc: bool = False, reserve: float = 0.0,
+                     note_debt: tuple[float, float, float] = (0.0, 0.0, 0.0)) -> RoicYear | None:
     """三表同一财年的三行 → `RoicYear`；缺资产负债表或利润表、或无公告日时返回 None。"""
     bal, inc, cfl = parts.get("balance"), parts.get("income"), parts.get("cashflow")
     if not (bal and inc):
@@ -312,11 +323,18 @@ def _year_from_parts(code: str, period: str, parts: dict[str, dict], notice_cap:
         else:
             year.tax_rate = DEFAULT_TAX_RATE
         year.nopat = year.ebit * (1 - year.tax_rate)
+    if caliber == "nonop" and any(note_debt):
+        # OI-261：附注类债务按面值、弃置义务按税后计入有息负债（其折现回转在财务费用里、本不进 EBIT）；弃置专户在下面计超额现金
+        year.note_debt = note_debt[0]
+        tax = year.tax_rate if year.tax_rate is not None else DEFAULT_TAX_RATE
+        year.decom_liability = note_debt[1] * (1 - tax)
+        year.decom_fund = note_debt[2]
+        year.interest_debt += year.note_debt + year.decom_liability
     operating_cash = OPERATING_CASH_RATIO * (year.revenue or 0.0)
     if caliber == "nonop":
         year.note_cash = note_cash
         cash = _sum(bal, CASH_LIKE_FIELDS) + note_cash - year.client_funds - year.restricted_cash - year.statutory_reserve
-        year.excess_cash = max(0.0, cash - operating_cash) + max(0.0, _sum(bal, OTHER_FIN_ASSET_FIELDS))
+        year.excess_cash = max(0.0, cash - operating_cash) + max(0.0, _sum(bal, OTHER_FIN_ASSET_FIELDS)) + year.decom_fund
     else:
         cash = (_num(bal.get("MONETARYFUNDS")) or 0.0) \
             + (_num(bal.get("TRADE_FINASSET")) or 0.0) \
@@ -409,7 +427,8 @@ def load_statements(codes: set[str] | None = None,
                     notice_cap: bool = True,
                     caliber: str = "nonop",
                     restricted_cash: str = "off",
-                    tax_anomaly: str = "off") -> dict[str, dict[str, RoicYear]]:
+                    tax_anomaly: str = "off",
+                    note_debt: str = "off") -> dict[str, dict[str, RoicYear]]:
     """读三大报表 → `{代码: {财年: RoicYear}}`。缺表即返回空，由调用方降级。
 
     `notice_cap`（OI-042，缺省开）：财年公告日按 `disclosure_dates.available_at` 封顶到法定截止日
@@ -443,6 +462,9 @@ def load_statements(codes: set[str] | None = None,
         raise ValueError(f"restricted_cash {restricted_cash!r} 不在 {RESTRICTED_CASH_MODES}")
     if tax_anomaly not in TAX_ANOMALY_MODES:
         raise ValueError(f"tax_anomaly {tax_anomaly!r} 不在 {TAX_ANOMALY_MODES}")
+    if note_debt not in NOTE_DEBT_MODES:
+        raise ValueError(f"note_debt {note_debt!r} 不在 {NOTE_DEBT_MODES}")
+    debts = load_note_debt(codes) if caliber == "nonop" and note_debt == "notes" else {}
     note_cash = load_cash_note_items(codes) if caliber == "nonop" else {}
     restricted = (load_restricted_cash_items(codes, mode=restricted_cash)
                   if caliber == "nonop" and restricted_cash != "off" else {})
@@ -452,11 +474,11 @@ def load_statements(codes: set[str] | None = None,
         for period, parts in periods.items():
             year = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber, note_cash.get((code, period), 0.0),
                                     restricted.get((code, period), 0.0), restricted_cash == "notes_wc",
-                                    reserves.get((code, period), 0.0))
+                                    reserves.get((code, period), 0.0), debts.get((code, period), (0.0, 0.0, 0.0)))
             if year is not None:
                 out.setdefault(code, {})[period] = year
     attach_superseded_versions(out, raw, codes, stmt_dir, notice_cap, ic_floor, caliber, note_cash, restricted,
-                               restricted_cash == "notes_wc", reserves)
+                               restricted_cash == "notes_wc", reserves, debts)
     if tax_anomaly == "median3":
         for years in out.values():
             CAP_STATS["tax_anomaly_corrected"] += correct_tax_anomalies(years)
@@ -473,19 +495,21 @@ def _observed_rate(year: RoicYear) -> float | None:
 
 
 def _correct_tax(year: RoicYear, prior: list[RoicYear]) -> int:
-    if _observed_rate(year) is None or year.ebit is None or year.tax_rate_raw >= 0.0:
+    if _observed_rate(year) is None or year.ebit is None or year.tax_rate_raw >= TAX_ANOMALY_FLOOR:
         return 0
     rates = [r for p in prior if (r := _observed_rate(p)) is not None and p.tax_rate_raw >= 0.0]
-    ref = statistics.median(rates) if rates else DEFAULT_TAX_RATE
+    if not rates:
+        return 0
+    ref = statistics.median(rates)
     year.tax_rate, year.tax_anomaly_ref = ref, ref
     year.nopat = year.ebit * (1 - ref)
     return 1
 
 
 def correct_tax_anomalies(years: dict[str, RoicYear]) -> int:
-    """§6.5.1 第 3 条（OI-264）：实际税率为负的年份（确认递延所得税资产等一次性收益，盐湖 2025）改按前三个财年观测税率
-    （非负原值，不取改后值）的中位重算当年 NOPAT，前三年无观测取法定 25%。「低于中位 10pp」一并纠正的方案在落地实验中被此前
-    偏高的年份（子公司亏损不可抵扣）抬高参照而误改正常年份（神火、顺丰、鼎龙），用户 2026-10-06 裁定只纠负税率。
+    """§6.5.1 第 3 条（OI-264）：实际税率低于 −5% 的年份（确认递延所得税资产等一次性收益，盐湖 2025 −24%）改按前三个财年
+    观测税率（非负原值，不取改后值）的中位重算当年 NOPAT；前三年无非负观测的不改。用户 2026-10-06 两次改判：「低于中位 10pp」
+    方案被此前偏高年份抬高参照而误改神火、顺丰、鼎龙；「凡负即纠、无观测取法定」又把免税的牧原（历年 −0.4%～0%）按 25% 补税。
     重述前版本同式（参照取现行前三年）。原地修改，返回改动的年数。"""
     ordered = sorted(years.values(), key=lambda y: y.period)
     changed = 0
@@ -495,6 +519,38 @@ def correct_tax_anomalies(years: dict[str, RoicYear]) -> int:
         for _superseded_at, old in year.superseded:
             changed += _correct_tax(old, prior)
     return changed
+
+
+def load_note_debt(codes: set[str] | None = None, debt_path: Path | None = None,
+                   fund_path: Path | None = None) -> dict[tuple[str, str], tuple[float, float, float]]:
+    """§6.5.1 第 3 条（OI-261）：`debt_note_items.csv` 与 `decom_fund_items.csv` → `{(代码, 年报期): (类债务, 弃置义务, 弃置专户)}`（元）。
+
+    只取核定行（`ok`／`manual`）。类债务 = 其他流动负债与其他应付款行的 `counted_amount + review_amount`（用户 2026-10-06 裁定融资类一并计入）；
+    弃置义务 = 预计负债行的 `counted_amount`（已扣一年内到期部分）；弃置专户只取现金行之外的（`counts_as_excess_cash = 1`）。"""
+    out: dict[tuple[str, str], list[float]] = {}
+    path = debt_path or NOTE_DEBT_FILE
+    if path.exists():
+        with path.open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                code = (row.get("security_code") or "").zfill(6)
+                if row.get("status") not in NOTE_DEBT_VERIFIED or (codes is not None and code not in codes):
+                    continue
+                entry = out.setdefault((code, (row.get("report_date") or "")[:10]), [0.0, 0.0, 0.0])
+                if row.get("line") == "PREDICT_LIAB":
+                    entry[1] += _num(row.get("counted_amount")) or 0.0
+                else:
+                    entry[0] += (_num(row.get("counted_amount")) or 0.0) + (_num(row.get("review_amount")) or 0.0)
+    path = fund_path or DECOM_FUND_FILE
+    if path.exists():
+        with path.open(newline="", encoding="utf-8") as handle:
+            for row in csv.DictReader(handle):
+                code = (row.get("security_code") or "").zfill(6)
+                if (row.get("status") not in NOTE_DEBT_VERIFIED or str(row.get("counts_as_excess_cash")) != "1"
+                        or (codes is not None and code not in codes)):
+                    continue
+                entry = out.setdefault((code, (row.get("report_date") or "")[:10]), [0.0, 0.0, 0.0])
+                entry[2] += _num(row.get("fund_amount")) or 0.0
+    return {k: (v[0], v[1], v[2]) for k, v in out.items()}
 
 
 def load_balance_fields(codes: set[str] | None, fields: tuple[str, ...],
@@ -562,7 +618,7 @@ def load_restatement_dates(codes: set[str] | None = None, path: Path | None = No
 def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, codes: set[str] | None,
                                stmt_dir: Path, notice_cap: bool, ic_floor: float = 0.0, caliber: str = "nonop",
                                note_cash: dict | None = None, restricted: dict | None = None, pledged_wc: bool = False,
-                               reserves: dict | None = None) -> None:
+                               reserves: dict | None = None, debts: dict | None = None) -> None:
     """给被追溯重述的财年挂上「重述前版本」（`RoicYear.superseded`，按 superseded_at 升序），
     版本 = 该日之前在用的三行（某表无存档即沿用现行）。重述日志有重述日、却无存档版本覆盖该日的，
     记 `delayed_until` = 重述日：现行值在该日之前不可用（不假装当时已知）。"""
@@ -580,7 +636,7 @@ def attach_superseded_versions(out: dict[str, dict[str, RoicYear]], raw: dict, c
                     parts[kind] = min(cands, key=lambda c: c[0])[1]
             old = _year_from_parts(code, period, parts, notice_cap, ic_floor, caliber,
                                    (note_cash or {}).get((code, period), 0.0), (restricted or {}).get((code, period), 0.0), pledged_wc,
-                                   (reserves or {}).get((code, period), 0.0))
+                                   (reserves or {}).get((code, period), 0.0), (debts or {}).get((code, period), (0.0, 0.0, 0.0)))
             if old is not None:
                 versions.append((sa, old))
         year.superseded = versions

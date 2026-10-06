@@ -203,7 +203,10 @@ class Sample:
 
 def encompass(s: Sample, w, groups):
     ym, xm, dm = demean(groups, w, s.y, s.x, s.d)
-    return wls(ym, np.column_stack([xm, dm]), w)
+    try:
+        return wls(ym, np.column_stack([xm, dm]), w)
+    except np.linalg.LinAlgError:            # 重抽样本里分歧全为 0（小分组）：该次记缺失
+        return np.array([np.nan, np.nan])
 
 
 def readout_encompass(s: Sample, rng, boot, fe='month'):
@@ -212,8 +215,10 @@ def readout_encompass(s: Sample, rng, boot, fe='month'):
     groups = s.month if fe == 'month' else s.cell
     beta = encompass(s, np.ones(s.n), groups)
     draws = [encompass(s, boot_weights(s.stock, s.n_stocks, rng), groups) for _ in range(boot)]
+    if not np.all(np.isfinite(beta)):
+        return dict(n=s.n, stocks=s.n_stocks, note='分歧样本不足以估计')
     return dict(n=s.n, stocks=s.n_stocks, b=float(beta[0]), b_ci=interval([d[0] for d in draws]), g=float(beta[1]),
-                lam=float(beta[1] / beta[0]), lam_ci=interval([d[1] / d[0] for d in draws if d[0] != 0]))
+                lam=float(beta[1] / beta[0]), lam_ci=interval([d[1] / d[0] for d in draws if np.isfinite(d[0]) and d[0] != 0]))
 
 
 def calibrate(s: Sample, w):
