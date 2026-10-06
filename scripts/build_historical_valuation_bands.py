@@ -2229,6 +2229,10 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                                     and ratios[-1] > statistics.median(ratios)) else 0.0
                 elif detect == "graded":
                     trust = rising / 2.0 if len(ratios) >= 3 else 0.0
+                    m3 = abs(statistics.median(ratios[-3:])) if len(ratios) >= 3 else 0.0
+                    if getattr(args, "trust_mode", "discrete") == "continuous" and m3 > 0:
+                        # OI-266 T2 研究开关：近两次年度变动各按相对三年中位的幅度连续计分，±10% 即满格
+                        trust = sum(min(max(0.5 + (ratios[i] - ratios[i - 1]) / (0.2 * m3), 0.0), 1.0) for i in (-1, -2)) / 2.0
                 else:
                     trust = 1.0 if (len(ratios) >= 3 and ratios[-1] > ratios[-2] > ratios[-3]) else 0.0
                 # OI-073 ②（研究开关）：单调判据对幅度不敏感（0.10→0.101→0.102 与 0.10→0.15→0.22 同判），
@@ -2345,6 +2349,9 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                 if demand_cycle:
                     ratio_cyc, w_any = statistics.median(long_ratios), 1.0
                     ROIC_STATS["OI-254 需求周期·十年中位锚"] += 1
+                if (getattr(args, "trough_target", "median5") == "min510" and trough_w > peak_w and len(long_ratios) >= 4
+                        and not demand_cycle):
+                    ratio_cyc = min(ratio_cyc, statistics.median(long_ratios))   # OI-266 T1 研究开关
                 ratio0 = (1.0 - w_any) * ratio_noncyc + w_any * ratio_cyc
                 if demand_cycle:
                     band.roic_nopat_mode = "demand_cycle_median10"
@@ -2418,6 +2425,18 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                     band.equity_anchor_mode = (band.equity_anchor_mode or "") + f",d_post={d_post:.4f}"
                     EXT_EQUITY_STATS["年报行期后除息补扣（d_post）"] += 1
             nopat_ps = ratio0 * bps_op
+            if (getattr(args, "anchor_book_growth", "off") == "iroic" and shares_now and claim_snapshot is None
+                    and anchor_mode == "ratio_bps"):
+                # OI-268 B2 研究开关：锚总额 = 比率锚 × 三年比率窗首年经营账面 + 账面增长 × 增量回报（增长取 clip(增量 ROIC, 0, 比率锚)，
+                # 账面缩水按比率锚），再除以当期股数
+                window = [y for y in sorted(history, key=lambda x: x.period) if y.nopat is not None and e_op(y) is not None]
+                if window:
+                    e0 = e_op(window[-3] if len(window) >= 3 else window[0])
+                    growth = bps_op * shares_now - e0
+                    rate = min(max(iroic, 0.0), ratio0) if (iroic is not None and growth >= 0) else (0.0 if growth >= 0 else ratio0)
+                    total = ratio0 * e0 + rate * growth
+                    if total > 0:
+                        nopat_ps = total / shares_now
             band.nopat_ps = nopat_ps
             if latest.cfo is not None:
                 band.owner_earnings_true_ps = (
@@ -3488,11 +3507,25 @@ def main() -> int:
                         help="OI-219／OI-220：notes_wc=生产口径（v4.208，§6.7 第 2 步显式给出，扣除额另计入营运资金）；notes=v4.206 复现，年报受限资产附注中为应付票据、信用证、保函质押的现金类不计超额现金、"
                              "按经营资产进投入资本（以应付票据为限），其利息并回 EBIT；notes_generic=另加笼统原因（只写质押、保证金等）"
                              "的现金类，只作敏感性；off=改前口径，只作复现")
+    parser.add_argument("--iroic-dic-floor", type=float, default=0.0,
+                        help="研究开关（OI-252 G1）：五年窗 ΔIC < 该比例 × 窗首投入资本时增量 ROIC 不可算；0＝生产")
+    parser.add_argument("--iroic-endpoint", choices=("1y", "2y"), default="1y", help="研究开关（OI-252 G2）：2y＝增量 ROIC 取端点两年均值")
+    parser.add_argument("--reinvest-wc", choices=("full", "half"), default="full",
+                        help="研究开关（OI-252 G3）：half＝窗口 ΔWC 为正且超过净再投资一半时再投资率不计 ΔWC")
+    parser.add_argument("--rd-addback", choices=("full", "steady"), default="full",
+                        help="研究开关（OI-267 R1）：steady＝各年研发加回以稳态比例（研发增速 3%%）× 当年研发为上限")
+    parser.add_argument("--rd-amort-start", choices=("next", "current"), default="next", help="研究开关（OI-267 R2）：current＝研发当年起摊")
+    parser.add_argument("--trough-target", choices=("median5", "min510"), default="median5",
+                        help="研究开关（OI-266 T1）：min510＝谷底守卫混合目标取 min(五年中位, 十年中位)")
+    parser.add_argument("--trust-mode", choices=("discrete", "continuous"), default="discrete",
+                        help="研究开关（OI-266 T2）：continuous＝λ 按近两次年度比率变动的相对幅度连续计分（±10%% 满格）")
+    parser.add_argument("--anchor-book-growth", choices=("off", "iroic"), default="off",
+                        help="研究开关（OI-268 B2）：iroic＝锚的账面增长部分按增量 ROIC（夹 [0, 比率锚]）折算")
     parser.add_argument("--payout-basis", choices=("annual", "fiscal"), default="annual",
                         help="§6.5.1 第 3 条派息率（OI-260）：fiscal=财年全部现金分红（含中期、三季与特别分红，预案公告日起计入，与 V_D0 分子同一归属，"
                              "生产，§6.7 显式给出）；annual=只计 report_date 为年报期的分配（改前口径，只作复现）")
     parser.add_argument("--tax-anomaly", choices=roic_inputs.TAX_ANOMALY_MODES, default="off",
-                        help="§6.5.1 第 3 条（OI-264）：median3=实际税率为负、或低于前三个财年观测税率中位 10pp 以上的年份改按该中位（生产）；off=改前（只作复现）")
+                        help="§6.5.1 第 3 条（OI-264）：median3=实际税率为负的年份改按前三个财年观测税率中位（生产）；off=改前（只作复现）")
     parser.add_argument("--share-equity", choices=("parent", "common"), default="parent",
                         help="§6.5.1 股本口径与 §6.3 第 2 条（OI-262）：common=推股数与三表存档推重述前 BPS 用普通股权益（归母权益 − 其他权益工具），"
                              "股本与面板 BPS 不符时按面板 BPS 反推股数（生产）；parent=归母权益、重述前 BPS = 归母权益 ÷ 股本（只作复现）")
@@ -3562,6 +3595,8 @@ def main() -> int:
     STATE_EFFECTIVE = args.state_effective
     global PAYOUT_BASIS, SHARE_EQUITY, DIVIDEND_TIMING
     PAYOUT_BASIS, SHARE_EQUITY, DIVIDEND_TIMING = args.payout_basis, args.share_equity, args.dividend_timing
+    roic_inputs.IROIC_DIC_FLOOR, roic_inputs.IROIC_ENDPOINT = args.iroic_dic_floor, args.iroic_endpoint
+    roic_inputs.REINVEST_WC, roic_inputs.RD_ADDBACK, roic_inputs.RD_AMORT_START = args.reinvest_wc, args.rd_addback, args.rd_amort_start
     global DEMAND_CYCLE_CODES, DEMAND_CYCLE_G0_ZERO
     if args.demand_cycle_codes:
         DEMAND_CYCLE_CODES = {line.strip().zfill(6) for line in args.demand_cycle_codes.read_text(encoding="utf-8").splitlines()

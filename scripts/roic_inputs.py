@@ -70,11 +70,17 @@ RESTATE_ANNOUNCEMENTS = ROOT / "data/interim/restatement_announcements.csv"   # 
 OPERATING_CASH_RATIO = 0.02      # 营运现金 ≈ 2% 营收，其余视为超额现金
 DEFAULT_TAX_RATE = 0.25          # 法定税率，利润总额非正时回退
 TAX_RATE_BOUNDS = (0.0, 0.40)
-# §6.5.1 第 3 条（OI-264）：实际税率为负、或低于前三个财年中有观测年份的原始税率中位 10pp 以上的年份改按该中位；
-# 前三年无观测时只改负税率（取法定）；高于中位的不调。建带 `--tax-anomaly median3`；off 只作复现。
+# §6.5.1 第 3 条（OI-264，用户 2026-10-06 裁定只纠负税率）：实际税率为负的年份改按前三个财年观测税率（非负原值）的中位，
+# 前三年无观测取法定。建带 `--tax-anomaly median3`；off 只作复现。
 TAX_ANOMALY_MODES = ("off", "median3")
-TAX_ANOMALY_GAP = 0.10
 TAX_ANOMALY_YEARS = 3
+# 估值准确性检验的研究开关（缺省＝生产，逐位不变；建带器按 --iroic-dic-floor／--iroic-endpoint／--reinvest-wc／--rd-addback／--rd-amort-start 设定）
+IROIC_DIC_FLOOR = 0.0      # OI-252 G1：ΔIC < 该比例 × 窗首投入资本时增量 ROIC 不可算
+IROIC_ENDPOINT = "1y"      # OI-252 G2：2y = 增量 ROIC 取端点两年均值
+REINVEST_WC = "full"       # OI-252 G3：half = 窗口 ΔWC 为正且超过净再投资一半时不计 ΔWC
+RD_ADDBACK = "full"        # OI-267 R1：steady = 各年研发加回以「稳态加回比例 × 当年研发」为上限
+RD_AMORT_START = "next"    # OI-267 R2：current = 研发当年起摊
+RD_STEADY_GROWTH = 0.03    # R1 的稳态研发增速
 COST_OF_DEBT_BOUNDS = (0.02, 0.12)
 DEFAULT_COST_OF_DEBT = 0.045
 
@@ -467,26 +473,19 @@ def _observed_rate(year: RoicYear) -> float | None:
 
 
 def _correct_tax(year: RoicYear, prior: list[RoicYear]) -> int:
-    rate = _observed_rate(year)
-    if rate is None or year.ebit is None:
+    if _observed_rate(year) is None or year.ebit is None or year.tax_rate_raw >= 0.0:
         return 0
-    rates = [r for r in (_observed_rate(p) for p in prior) if r is not None]
-    if rates:
-        ref = statistics.median(rates)
-        anomalous = year.tax_rate_raw < 0.0 or rate < ref - TAX_ANOMALY_GAP
-    else:
-        ref, anomalous = DEFAULT_TAX_RATE, year.tax_rate_raw < 0.0
-    if not anomalous:
-        return 0
+    rates = [r for p in prior if (r := _observed_rate(p)) is not None and p.tax_rate_raw >= 0.0]
+    ref = statistics.median(rates) if rates else DEFAULT_TAX_RATE
     year.tax_rate, year.tax_anomaly_ref = ref, ref
     year.nopat = year.ebit * (1 - ref)
     return 1
 
 
 def correct_tax_anomalies(years: dict[str, RoicYear]) -> int:
-    """§6.5.1 第 3 条（OI-264）：实际税率为负、或低于前三个财年中有观测年份的原始税率中位 10pp 以上的年份（递延所得税确认等
-    一次性优惠），改按该中位重算当年 NOPAT；前三年无观测时只改负税率（取法定 25%）；高于中位的不调（优惠取消多为持续变化，另议）。
-    参照一律取各年原始税率、不取改后值——税率永久下台阶（取得优惠）时最多改两年即随中位回落，不会逐年连锁。
+    """§6.5.1 第 3 条（OI-264）：实际税率为负的年份（确认递延所得税资产等一次性收益，盐湖 2025）改按前三个财年观测税率
+    （非负原值，不取改后值）的中位重算当年 NOPAT，前三年无观测取法定 25%。「低于中位 10pp」一并纠正的方案在落地实验中被此前
+    偏高的年份（子公司亏损不可抵扣）抬高参照而误改正常年份（神火、顺丰、鼎龙），用户 2026-10-06 裁定只纠负税率。
     重述前版本同式（参照取现行前三年）。原地修改，返回改动的年数。"""
     ordered = sorted(years.values(), key=lambda y: y.period)
     changed = 0
@@ -684,11 +683,19 @@ def capitalize_rd(years: dict[str, RoicYear], rd: dict[str, float], life: int) -
         y = years.get(period)
         return intensity * y.revenue if y is not None and y.revenue and y.revenue > 0 else 0.0
 
+    steady = 1.0 - sum((1.0 + RD_STEADY_GROWTH) ** -k for k in range(1, life + 1)) / life   # R1：稳态加回比例
+
     def adjust(y: RoicYear) -> RoicYear:
         t = labels[y.period]
         spends = [spend(t - k) for k in range(life + 1)]
-        asset = sum(spends[k] * (life - k) / life for k in range(life))
-        amort = sum(spends[1:]) / life
+        if RD_AMORT_START == "current":
+            asset = sum(spends[k] * (life - k - 1) / life for k in range(life))
+            amort = sum(spends[:life]) / life
+        else:
+            asset = sum(spends[k] * (life - k) / life for k in range(life))
+            amort = sum(spends[1:]) / life
+        if RD_ADDBACK == "steady" and spends[0] > 0:
+            amort = spends[0] - min(spends[0] - amort, steady * spends[0])
         tax = y.tax_rate if y.tax_rate is not None else DEFAULT_TAX_RATE
         return replace(y, ebit=None if y.ebit is None else y.ebit + spends[0] - amort,
                        nopat=None if y.nopat is None else y.nopat + (spends[0] - amort) * (1 - tax),
@@ -748,11 +755,23 @@ def incremental_roic(history: list[RoicYear]) -> float | None:
     ordered = sorted(history, key=lambda y: y.period)
     if len(ordered) < 2:
         return None
+    if IROIC_ENDPOINT == "2y" and len(ordered) >= 4:
+        ends = (ordered[:2], ordered[-2:])
+        if any(y.nopat is None or y.invested_capital is None for pair in ends for y in pair):
+            return None
+        n_old, n_new = (sum(y.nopat for y in pair) / 2 for pair in ends)
+        ic_old, ic_new = (sum(y.invested_capital for y in pair) / 2 for pair in ends)
+        delta_ic = ic_new - ic_old
+        if delta_ic <= 0 or (IROIC_DIC_FLOOR and delta_ic < IROIC_DIC_FLOOR * ic_old):
+            return None
+        return (n_new - n_old) / delta_ic
     new, old = ordered[-1], ordered[0]
     if None in (new.nopat, old.nopat, new.invested_capital, old.invested_capital):
         return None
     delta_ic = new.invested_capital - old.invested_capital
     if delta_ic <= 0:
+        return None
+    if IROIC_DIC_FLOOR and delta_ic < IROIC_DIC_FLOOR * old.invested_capital:
         return None
     return (new.nopat - old.nopat) / delta_ic
 
@@ -904,6 +923,8 @@ def reinvestment_rate(history: list[RoicYear]) -> float | None:
     delta_wc = 0.0
     if ordered[0].working_capital is not None and ordered[-1].working_capital is not None:
         delta_wc = ordered[-1].working_capital - ordered[0].working_capital
+    if REINVEST_WC == "half" and delta_wc > 0 and delta_wc > 0.5 * (capex_sum - depr_sum + delta_wc):
+        delta_wc = 0.0
     return (capex_sum - depr_sum + delta_wc) / nopat_sum
 
 
