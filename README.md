@@ -20,6 +20,7 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 | [版本记录](docs/Ashare_workflow_changelog.md)、[回测日志](docs/Ashare_backtest_log.md) | 当前纪元的变更与实验证据索引，按需检索 |
 | [结案索引](docs/Ashare_workflow_open_issues_closed.md) | 已处理缺陷与待办的处置 |
 | [仓库清理规则](docs/repository_cleanup_rules.md) | 文档精简与文件清理的判定、处置和校验 |
+| [独立估值登记](docs/independent_valuations.zh.md) | 历次独立估值的现行结论、依据与证伪条件；复用规则见工作流程 §6.9 |
 | `docs/reports/` | 各次实验与审计报告；报告日期对应当时状态 |
 | [行业校准记录](docs/peer-group-calibration/README.md) | 历史行业研究线索；使用前核对当前名单与原始证据 |
 | [文档归档](docs/archive/README.md) | 已删除历史文档的 Git 取回索引 |

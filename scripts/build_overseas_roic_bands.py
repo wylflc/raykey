@@ -41,6 +41,7 @@ COMPANY_CFG = {
     "TSM": dict(ccy="USD", adr=5, fx="fx_usd_twd", fx_inv=True),
     "ASML": dict(ccy="USD", adr=1, fx="fx_usd_eur", fx_inv=True),
     "PDD": dict(ccy="USD", adr=4, fx="fx_usd_cny", fx_inv=True),
+    "VIPS": dict(ccy="USD", adr=0.2, fx="fx_usd_cny", fx_inv=True),
     # HK 上市（人民币报表 → 港币）
     "00700": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),
     "09992": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),

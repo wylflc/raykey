@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.237
+# A股选股-估值-量价操作流程 v4.238
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -15,6 +15,7 @@
 | 财报披露后的滚动更新 | §7 | `build_report_update_queue.py` |
 | 单票研究（含点名建档与 L4） | §5 → §6 → §9.3 | 逐层判断，任一层否决即止 |
 | 海外单票研究（港股／美股／韩股点名） | §5 → §6.8 | 逐层判断；建档、入清单、重出阅读版三步缺一不可 |
+| 独立估值、独立审计、是否真的低估（个股或名单） | §6.9 | 先查 `data/processed/independent_valuations.csv`，可复用即引用 |
 | 成长股（结构成长型）识别、复核与买卖 | §9.3.6 | `a_share_business_attributes.csv`、`structural_growth_review.py` |
 | 修改估值、交易规则或回测参数 | §12-§13 | `sweep_backtest_configs.py` |
 | 清理仓库、精简文档 | — | `docs/repository_cleanup_rules.md` |
@@ -63,6 +64,7 @@
 | 逐日估值状态与带（§6.7 第 2～4 步产物） | 候选侧 `data/processed/a_share_daily_states_adopted.csv`、`roic_bands.csv`、`roic_daily_raw.csv`；B2 `a_share_daily_states_b2.csv`、`roic_bands_b2.csv`、`roic_daily_raw_b2.csv`、`a_share_pool_model_bands_b2.csv`；持仓侧 `a_share_daily_states_hold.csv`；回测宇宙 `data/processed/pit_attention/panel_moat_bank_v6b.csv` |
 | 估值表与人工台账 | `data/processed/a_share_focus_watchlist_l1_l2_valuation.csv`（§6.7 第 5 步）；`data/processed/entity_reset_dates.csv`、`share_event_reviews.csv`（§6.5.2.4，人工登记） |
 | 海外关注清单估值 | `data/processed/overseas_watchlist_valuation.csv`（§6.8） |
+| 独立估值登记（研究对照，不进判定） | `data/processed/independent_valuations.csv`（§6.9）；阅读版 `docs/independent_valuations.zh.md` |
 | 公司分析索引 | `data/processed/a_share_company_analysis_index.csv` 与 `a_share_company_analysis_index.md`（`build_a_share_company_analysis_index.py` 读当前与归档决策日志生成；§6.7 第 2 步的行业口径读它） |
 
 每条质量、估值、名单迁移、规则采纳或成交结论必须写入决策日志，至少包含：时间、阶段、对象、结论、简要理由、输入文件、输出文件、执行者、工作流版本和稳定 `decision_id`。纠错或替代旧结论时填写 `supersedes_decision_id`。
@@ -497,6 +499,21 @@ python3 scripts/build_a_share_core_valuation_pool.py --md-only --quotes fetch --
 阅读版海外附表列出清单 CSV 的全部行。`build_a_share_core_valuation_pool.py --md-only` 每次建表核对 `data/companies/` 下每个档案目录都登记在 `a_share_valuation_dossiers.csv` 或本清单，未登记的写 `data/interim/dossier_registration_gaps.csv` 并非零退出；补登记后重跑。
 
 海外最新定期报告只认 `data/reference/overseas_report_evidence.csv` 的公司 IR／交易所／监管申报证据。附表 `估值时间`、清单 `valuation_reviewed_at`／`evidence_available_at`／`last_report_date` 均写该报告的公开可得日，`估值事件` 写报告类型；不得写脚本运行日。`next_report_date` 只作预期提醒，过期日历日期未获官方证据确认时不得当作已披露，且必须报“待核验”并核对公司官方业绩页。报告日、证据日、带和不可买状态维护在 `data/processed/overseas_watchlist_valuation.csv`。
+
+### 6.9 独立估值登记
+
+独立估值不读本流程的模型、档案与 `P/V`，只作研究对照，不改带，不进 §9.3。登记表 `data/processed/independent_valuations.csv` 每家公司每次评审一行，状态为 `current`（现行）、`superseded`（已被取代）、`historical`（历史时点）或 `reference`（外部意见）；阅读版 `docs/independent_valuations.zh.md` 由脚本生成，不手改：
+
+```bash
+python3 scripts/build_independent_valuations.py           # 校验并重出阅读版
+python3 scripts/build_independent_valuations.py --check   # 只校验
+```
+
+1. 用户问到某公司的独立估值、独立审计或是否真的低估时，先查登记表该公司 `current` 行；`reference` 行只作对照。
+2. 同时满足以下三条时直接引用，不重做：评审后公司没有披露新的定期报告；登记的证伪条件没有触发；没有并购重组、监管处罚、管理层更替或指引大幅下修等重大事件。引用时独立 V 不变，`P/V` 按当日价格重算，并注明评审日、价格日与证据截止。
+3. 任一条不满足时复核。结论或独立 V 改变的追加新行，旧行改 `superseded` 并填 `superseded_by`；结论不变的也追加一行，写明新的证据截止。
+4. 新评审沿用最近一批 `data/experiments/exp_independent_<批次>/brief.md` 的框架。独立 `P/V` = 现价 ÷ 独立 V，分档：≤ 0.75 明显低估；0.75～0.90 温和低估；0.90～1.10 大致合理；> 1.10 偏贵或价值陷阱风险高。
+5. 逐家全文与计算放 `data/experiments/exp_independent_<批次>/`，汇总报告放 `docs/reports/`；登记后重出阅读版。
 
 ## 7. 阶段三：披露与事件滚动更新
 
