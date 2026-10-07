@@ -61,7 +61,8 @@ POOL_FIELDS = [
     "security_code", "security_name", "cb_type", "status", "status_since", "attention_class", "report_date",
     "evidence_available_at", "price_date", "price", "market_cap_yi", "v_cb_yi", "pv_cb", "pv_a", "pv_b", "pv_c",
     "pv_d", "ncav_yi", "net_cash_yi", "cash_verified", "dividend_yield", "payout_3y", "ocf_3y_yi", "v_cb_cagr_3y",
-    "liquidity_60d_wan", "auto_flags", "gates_failed", "catalysts", "falsifiers", "next_check", "buy_eligible",
+    "liquidity_60d_wan", "auto_flags", "gates_failed", "v_cb_reviewed_yi", "pv_cb_reviewed", "catalysts", "falsifiers",
+    "next_check", "buy_eligible",
     "independent_review_id", "dossier_dir", "reviewed_at", "note",
 ]
 AUTO_FIELDS = ["security_name", "cb_type"] + POOL_FIELDS[POOL_FIELDS.index("attention_class"):POOL_FIELDS.index("gates_failed")]
@@ -402,6 +403,12 @@ def update_pool(rows: list[dict], signal_date: str) -> dict[str, int]:
         kind = r["cb_type"] or entry["cb_type"]          # 出区的保留原类，读数按原类重算
         entry.update({f: r.get(f, "") for f in AUTO_FIELDS})
         entry.update(cb_type=kind, pv_cb=r["pv_cb"] if r["cb_type"] else r.get(f"pv_{kind.lower()}", ""))
+        reviewed = num(entry, "v_cb_reviewed_yi")          # 复核值（§6.10 第 4 条）：状态与退出按复核值判
+        if reviewed > 0 and num(entry, "market_cap_yi") > 0:
+            entry["pv_cb_reviewed"] = round(num(entry, "market_cap_yi") / reviewed, 3)
+            if entry["status"] in ("watch", "focus") and entry["pv_cb_reviewed"] >= CANDIDATE_MAX:
+                entry.update(status="exited", status_since=signal_date, note=f"复核 P/V_cb ≥ 1.0（{signal_date}）")
+                stats["exited"] += 1
     for code in [c for c, e in pool.items() if e["status"] == "candidate" and c not in seen]:
         del pool[code]
         stats["removed"] += 1

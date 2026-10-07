@@ -41,7 +41,8 @@ def validate(rows: list[dict], registry: dict[str, dict]) -> list[str]:
             errors.append(f"{where}：status {r['status']} 不在 {STATUSES}")
         if r["cb_type"] not in FOCUS_MAX:
             errors.append(f"{where}：cb_type {r['cb_type']} 不在 A／B／C／D")
-        for field in ("price", "market_cap_yi", "v_cb_yi", "pv_cb", "pv_a", "pv_b", "pv_c", "pv_d", "dividend_yield"):
+        for field in ("price", "market_cap_yi", "v_cb_yi", "pv_cb", "pv_a", "pv_b", "pv_c", "pv_d", "dividend_yield",
+                      "v_cb_reviewed_yi", "pv_cb_reviewed"):
             if r.get(field) and fnum(r[field]) is None:
                 errors.append(f"{where}：{field} 不是数字")
         pv = fnum(r["pv_cb"])
@@ -51,8 +52,11 @@ def validate(rows: list[dict], registry: dict[str, dict]) -> list[str]:
             errors.append(f"{where}：{r['status']} 须填 reviewed_at")
         if r["status"] == "rejected" and not r["gates_failed"]:
             errors.append(f"{where}：rejected 须写 gates_failed")
+        if r["status"] in ("watch", "focus") and r["cb_type"] in ("C", "D") and not r["v_cb_reviewed_yi"]:
+            errors.append(f"{where}：C、D 类复核后须填 v_cb_reviewed_yi")
         if r["status"] == "focus":
             review = registry.get(r["independent_review_id"])
+            pv = fnum(r["pv_cb_reviewed"]) if r["v_cb_reviewed_yi"] else pv
             if pv is None or pv > FOCUS_MAX.get(r["cb_type"], 0):
                 errors.append(f"{where}：重点级须 P/V_cb ≤ {FOCUS_MAX.get(r['cb_type'])}")
             if r["cash_verified"] != "yes":
@@ -88,7 +92,7 @@ def _pvs(r: dict) -> str:
     return "／".join(_cell(r.get(f"pv_{k}", "")) for k in "abcd")
 
 
-def render(rows: list[dict], screen: list[dict]) -> str:
+def render(rows: list[dict], screen: list[dict], registry: dict[str, dict]) -> str:
     by_status = {s: [r for r in rows if r["status"] == s] for s in STATUSES}
     latest = max(rows, key=lambda r: r["price_date"], default={})
     out = [
@@ -109,6 +113,8 @@ def render(rows: list[dict], screen: list[dict]) -> str:
     ]
     head = "| 代码 | 名称 | 类 | P/V_cb | A／B／C／D | V_cb（亿） | 市值（亿） | 股息率 | 三年分红率 | 股东回报 | 每股价值三年年化 | 日均成交（万） | 旗标 |"
     rule = "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- |"
+    reviewed_head = ("| 代码 | 名称 | 类 | 复核 P/V_cb | 粗筛 P/V_cb | 复核 V_cb（亿） | 市值（亿） | 股息率 | 股东回报 | 日均成交（万） | 独立 P/V | 可买 |")
+    reviewed_rule = "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | --- |"
 
     def line(r: dict) -> str:
         return (f"| {r['security_code']} | {r['security_name']} | {r['cb_type']} | **{_cell(r['pv_cb'])}** | {_pvs(r)} | "
@@ -121,10 +127,15 @@ def render(rows: list[dict], screen: list[dict]) -> str:
         if not by_status[status]:
             out += ["无。", ""]
             continue
-        out += [head + f" {extra} | 独立估值 | 下次核对 |", rule + " --- | --- | --- |"]
-        for r in by_status[status]:
+        out += [reviewed_head + f" {extra} | 下次核对 |", reviewed_rule + " --- | --- |"]
+        group = sorted(by_status[status], key=lambda r: fnum(r["pv_cb_reviewed"] or r["pv_cb"]) or 9)
+        for r in group:
+            review = registry.get(r["independent_review_id"], {})
             detail = r["catalysts"] if status == "focus" else (r["gates_failed"] or r["note"])
-            out.append(line(r) + f" {_cell(detail)} | {_cell(r['independent_review_id'])} | {_cell(r['next_check'])} |")
+            out.append(f"| {r['security_code']} | {r['security_name']} | {r['cb_type']} | **{_cell(r['pv_cb_reviewed'] or r['pv_cb'])}** | "
+                       f"{_cell(r['pv_cb'])} | {_cell(r['v_cb_reviewed_yi'] or r['v_cb_yi'])} | {_cell(r['market_cap_yi'])} | "
+                       f"{_pct(r['dividend_yield'])} | {'是' if r['cash_verified'] == 'yes' else '否'} | {_wan(r['liquidity_60d_wan'])} | "
+                       f"{_cell(review.get('pv', ''))} | {'是' if r['buy_eligible'] == 'yes' else '—'} | {_cell(detail)} | {_cell(r['next_check'])} |")
         out.append("")
     out += ["## 三、候选（待复核）", ""]
     for kind in "ABCD":
@@ -168,7 +179,7 @@ def main() -> int:
         print("ERROR:", error)
     if errors:
         return 1
-    text = render(rows, read(SCREEN) if SCREEN.exists() else [])
+    text = render(rows, read(SCREEN) if SCREEN.exists() else [], registry)
     if args.check:
         stale = not READING.exists() or READING.read_text(encoding="utf-8") != text
         print(f"{len(rows)} 行通过校验" + ("；阅读版需重出" if stale else "；阅读版一致"))

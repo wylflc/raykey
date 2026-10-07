@@ -97,6 +97,15 @@ class ValidateTest(unittest.TestCase):
         self.assertEqual(build.validate([dict(ok, buy_eligible="yes")], registry), [])
         self.assertTrue(build.validate([dict(ok, buy_eligible="yes")], {"iv:600001": dict(status="current", pv="0.95")}))
 
+    def test_reviewed_value_for_c_and_d(self):
+        registry = {"iv:600001": dict(status="current", pv="0.85")}
+        bank = self.row(cb_type="D", status="focus", pv_cb="0.6", catalysts="股息率 5%", independent_review_id="iv:600001",
+                        reviewed_at="2026-10-07")
+        self.assertTrue(build.validate([bank], registry))                               # 缺复核值
+        ok = dict(bank, v_cb_reviewed_yi="100", pv_cb_reviewed="0.7")
+        self.assertEqual(build.validate([ok], registry), [])
+        self.assertTrue(build.validate([dict(ok, pv_cb_reviewed="0.8")], registry))     # 按复核值判门槛 0.75
+
     def test_rejected_needs_reason(self):
         self.assertTrue(build.validate([self.row(status="rejected", reviewed_at="2026-10-07")], {}))
 
