@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.239 | 2026-10-07 | 新增 §6.10 烟蒂池：独立于关注池的观察池，不做回测。A／B／C／D 四类烟蒂价值 `V_cb` 的口径；候选门槛 `P/V_cb ≤ 1.0`，重点级 A、B 0.8、C 0.7、D 0.75；闸门中非标审计、价值流失、现金消耗由粗筛自动判，股东回报验证现金真实性、资本配置、流动性与银行资本拨备由复核判；五种状态与购买资格（买卖口径待裁定，不进 §9.3）。池表 `data/processed/cigar_butt_pool.csv`、阅读版 `docs/000_cigar_butt_pool.md`、粗筛 `data/interim/cigar_butt_screen.csv`，实现 `screen_cigar_butts.py`／`build_cigar_butt_pool.py`；§0 路由、§2 真值行。个人投资体系 v1.35 增研究标签 G 烟蒂型（5.13）。依据 OI-273 |
 | v4.238 | 2026-10-07 | 新增 §6.9 独立估值登记：登记表 `data/processed/independent_valuations.csv`（每家公司每次评审一行，状态 `current`／`superseded`／`historical`／`reference`），阅读版 `docs/independent_valuations.zh.md` 由 `build_independent_valuations.py` 校验并生成；复用条件、独立 `P/V` 分档与登记步骤写在 §6.9，§0 增路由、§2 增唯一真值行。只作研究对照，不改估值口径与交易规则 |
 | v4.237 | 2026-10-07 | 文档精简，规则不变：正文删去 `OI-` 编号、理由与举例、逐项「只作复现」说明（§6.7 改为一句统一约束）、§6.5.4 维持性现金研究开关与 §12.1 已结案研究段落、各处重复表述，§10.3 纪元沿革改读 `strategy_return_tracker.EPOCHS`；§0 增仓库清理路由，规则落在 `docs/repository_cleanup_rules.md`，`audit_repository_docs.py` 增对应检查；个人投资体系 v1.34 账户约束改为指向工作流程、章节重编号；`docs/archive/` 全文副本删除、改为 Git 取回索引，一次性作业移入 `scripts/archive/slurm/` |
 | v4.236 | 2026-10-07 | §6.5.2.2 新增存量型增长上限：业务属性 `demand_runway = 存量` 的池成员，`growth` 路径池带的 g0（含研究增长）至多 10%；§6.7 第 4 步叠加脚本在采用研究数之后、除权归一化之前按截断后的 g0 重算企业价值比例与股权桥，截断前 g0 留在 `model_g0`，`growth_cap_note` 记截断（`apply_forecast_band_overlay.STOCK_G0_CAP`／`apply_stock_growth_cap`，`--business`）；§6.5.2.1 成文例外与 §6.7 第 4 步注释同步，档案推导文字标注截断。只在生产执行，回测输入与 BASE 不变（OI-272）。依据 §12.330 |

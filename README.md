@@ -7,6 +7,7 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 - [工作流程](docs/000_Ashare_workflow.md)：按任务路由表执行；名单、评分、估值、交易和回测规范的主入口。
 - [个人投资体系](docs/000_personal-investment-system-v1.zh.md)：账户约束、策略标签与研究纪律。
 - [核心池阅读版](docs/000_a_share_core_valuation_pool.md)：当前估值、池外档案与海外观察清单。
+- [烟蒂池阅读版](docs/000_cigar_butt_pool.md)：独立于关注池的资产折价股候选与复核状态（工作流程 §6.10）。
 - [每日扫描日志](docs/000_daily_scan_log.md)：执行清单、持仓与成交记录。
 - [待处理事项](docs/000_Ashare_workflow_open_issues.md)：执行前检查相关缺陷。
 
