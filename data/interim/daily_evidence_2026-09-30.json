@@ -195,8 +195,8 @@
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/reference/a_share_action_component_exclusions.csv": "8541a084e13e14492defe4f4e8a59cd4f0dd075020ba8eac8c5c6ec17874356d",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/reference/a_share_exright_terms.csv": "df02cdf9898fd9740c6dab6556460e68eac888f02cf429b597700a02c7a1973e",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/reference/a_share_action_component_corrections.csv": "5453755218419e2f2787078d02b7aeb544786a3ac452f75f4ac7e5334eef1c4d",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_announcements_2026-09-30.json": "a0e759eecaaa8b66630e9f3ceff18ec3149eeddc0fb96d0f6f3d95b2153cdb4c",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_corporate_actions_2026-09-30.json": "5edd10e0d3a74ea9c3ceba5c3710cf5950aefce280a5c2918320f9d85dbe649a",
-    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_market_context_2026-09-30.json": "8c0a11b8d38614e0001d25f2444ddc50b6bd9bd9021d8ac756e15848aa8a2620"
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_announcements_2026-09-30.json": "745a9d032392a35c03f1a67593fe74094e85be7673714e8a53af1bc72c6c9d58",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_corporate_actions_2026-09-30.json": "e2d48e3ae611f3252d56f95311b5761bb0553e6ec404dbd13ed712a889e2399f",
+    "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/interim/daily_market_context_2026-09-30.json": "76cb48a3d05a78f4c994fda42635546a4c35deee81c74877957091c86df8f09a"
   }
 }

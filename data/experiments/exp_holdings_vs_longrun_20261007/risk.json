@@ -1,0 +1,422 @@
+{
+ "since": "2012-01-01",
+ "credit_ratio": 0.666,
+ "live": {
+  "as_of": "2026-09-30",
+  "positions": 5,
+  "gross": 1.7196,
+  "debt_over_nav": 0.7196,
+  "guarantee_ratio": 2.39,
+  "top1": 0.7637
+ },
+ "longrun_end": {
+  "BASE20091101": {
+   "end_date": "2026-08-28",
+   "positions": 19,
+   "gross": 1.6813,
+   "debt_over_nav": 0.6813,
+   "top1": 0.609271
+  },
+  "BASE20100501": {
+   "end_date": "2026-08-28",
+   "positions": 19,
+   "gross": 1.6813,
+   "debt_over_nav": 0.6813,
+   "top1": 0.609271
+  },
+  "BASE20101101": {
+   "end_date": "2026-08-28",
+   "positions": 23,
+   "gross": 1.6764,
+   "debt_over_nav": 0.6764,
+   "top1": 0.619944
+  },
+  "BASE20110501": {
+   "end_date": "2026-08-28",
+   "positions": 21,
+   "gross": 1.6757,
+   "debt_over_nav": 0.6757,
+   "top1": 0.63529
+  },
+  "BASE20111101": {
+   "end_date": "2026-08-28",
+   "positions": 21,
+   "gross": 1.6771,
+   "debt_over_nav": 0.6771,
+   "top1": 0.613754
+  },
+  "BASE20120501": {
+   "end_date": "2026-08-28",
+   "positions": 20,
+   "gross": 1.6755,
+   "debt_over_nav": 0.6755,
+   "top1": 0.6353
+  },
+  "BASE20121101": {
+   "end_date": "2026-08-28",
+   "positions": 24,
+   "gross": 1.6752,
+   "debt_over_nav": 0.6752,
+   "top1": 0.635643
+  },
+  "BASE20130501": {
+   "end_date": "2026-08-28",
+   "positions": 20,
+   "gross": 1.6769,
+   "debt_over_nav": 0.6769,
+   "top1": 0.642075
+  },
+  "BASE20131101": {
+   "end_date": "2026-08-28",
+   "positions": 19,
+   "gross": 1.68,
+   "debt_over_nav": 0.68,
+   "top1": 0.601668
+  },
+  "BASE20140501": {
+   "end_date": "2026-08-28",
+   "positions": 18,
+   "gross": 1.6796,
+   "debt_over_nav": 0.6796,
+   "top1": 0.603488
+  },
+  "BASE20141101": {
+   "end_date": "2026-08-28",
+   "positions": 21,
+   "gross": 1.6767,
+   "debt_over_nav": 0.6767,
+   "top1": 0.634462
+  },
+  "BASE20150501": {
+   "end_date": "2026-08-28",
+   "positions": 23,
+   "gross": 1.6778,
+   "debt_over_nav": 0.6778,
+   "top1": 0.615888
+  },
+  "BASE20151101": {
+   "end_date": "2026-08-28",
+   "positions": 18,
+   "gross": 1.6752,
+   "debt_over_nav": 0.6752,
+   "top1": 0.645289
+  },
+  "BASE20160501": {
+   "end_date": "2026-08-28",
+   "positions": 19,
+   "gross": 1.68,
+   "debt_over_nav": 0.68,
+   "top1": 0.627317
+  }
+ },
+ "longrun_daily": {
+  "BASE20091101": {
+   "days": 3559,
+   "top1": {
+    "median": 0.5584,
+    "p90": 0.6654,
+    "max": 0.7945,
+    "share_ge_60": 0.3723,
+    "share_ge_70": 0.0421,
+    "share_ge_76": 0.0006
+   },
+   "gross": {
+    "median": 1.6901,
+    "p90": 1.8151,
+    "max": 2.0391
+   },
+   "debt_over_credit_share": 0.8294,
+   "margin_ratio": {
+    "min": 1.962,
+    "p10": 2.222,
+    "median": 2.441
+   }
+  },
+  "BASE20100501": {
+   "days": 3559,
+   "top1": {
+    "median": 0.5584,
+    "p90": 0.6654,
+    "max": 0.7945,
+    "share_ge_60": 0.3723,
+    "share_ge_70": 0.0421,
+    "share_ge_76": 0.0006
+   },
+   "gross": {
+    "median": 1.6901,
+    "p90": 1.8151,
+    "max": 2.0391
+   },
+   "debt_over_credit_share": 0.8294,
+   "margin_ratio": {
+    "min": 1.962,
+    "p10": 2.222,
+    "median": 2.441
+   }
+  },
+  "BASE20101101": {
+   "days": 3559,
+   "top1": {
+    "median": 0.5753,
+    "p90": 0.6735,
+    "max": 0.8093,
+    "share_ge_60": 0.4338,
+    "share_ge_70": 0.0542,
+    "share_ge_76": 0.002
+   },
+   "gross": {
+    "median": 1.6919,
+    "p90": 1.8296,
+    "max": 2.0569
+   },
+   "debt_over_credit_share": 0.8275,
+   "margin_ratio": {
+    "min": 1.946,
+    "p10": 2.198,
+    "median": 2.437
+   }
+  },
+  "BASE20110501": {
+   "days": 3559,
+   "top1": {
+    "median": 0.5951,
+    "p90": 0.7003,
+    "max": 0.8023,
+    "share_ge_60": 0.4765,
+    "share_ge_70": 0.1006,
+    "share_ge_76": 0.0126
+   },
+   "gross": {
+    "median": 1.6898,
+    "p90": 1.8218,
+    "max": 2.0352
+   },
+   "debt_over_credit_share": 0.8193,
+   "margin_ratio": {
+    "min": 1.966,
+    "p10": 2.211,
+    "median": 2.441
+   }
+  },
+  "BASE20111101": {
+   "days": 3559,
+   "top1": {
+    "median": 0.5921,
+    "p90": 0.6987,
+    "max": 0.7977,
+    "share_ge_60": 0.4698,
+    "share_ge_70": 0.0978,
+    "share_ge_76": 0.0132
+   },
+   "gross": {
+    "median": 1.6904,
+    "p90": 1.8234,
+    "max": 2.0352
+   },
+   "debt_over_credit_share": 0.8174,
+   "margin_ratio": {
+    "min": 1.966,
+    "p10": 2.209,
+    "median": 2.441
+   }
+  },
+  "BASE20120501": {
+   "days": 3484,
+   "top1": {
+    "median": 0.5418,
+    "p90": 0.6676,
+    "max": 0.8013,
+    "share_ge_60": 0.3571,
+    "share_ge_70": 0.0465,
+    "share_ge_76": 0.0009
+   },
+   "gross": {
+    "median": 1.6909,
+    "p90": 1.8135,
+    "max": 2.0371
+   },
+   "debt_over_credit_share": 0.8192,
+   "margin_ratio": {
+    "min": 1.964,
+    "p10": 2.219,
+    "median": 2.438
+   }
+  },
+  "BASE20121101": {
+   "days": 3359,
+   "top1": {
+    "median": 0.5079,
+    "p90": 0.6762,
+    "max": 0.7973,
+    "share_ge_60": 0.3462,
+    "share_ge_70": 0.0637,
+    "share_ge_76": 0.0006
+   },
+   "gross": {
+    "median": 1.6884,
+    "p90": 1.8297,
+    "max": 2.0349
+   },
+   "debt_over_credit_share": 0.8169,
+   "margin_ratio": {
+    "min": 1.966,
+    "p10": 2.198,
+    "median": 2.445
+   }
+  },
+  "BASE20130501": {
+   "days": 3242,
+   "top1": {
+    "median": 0.508,
+    "p90": 0.6621,
+    "max": 0.7825,
+    "share_ge_60": 0.298,
+    "share_ge_70": 0.046,
+    "share_ge_76": 0.0006
+   },
+   "gross": {
+    "median": 1.687,
+    "p90": 1.7846,
+    "max": 2.0368
+   },
+   "debt_over_credit_share": 0.8106,
+   "margin_ratio": {
+    "min": 1.964,
+    "p10": 2.267,
+    "median": 2.448
+   }
+  },
+  "BASE20131101": {
+   "days": 3121,
+   "top1": {
+    "median": 0.5476,
+    "p90": 0.663,
+    "max": 0.7845,
+    "share_ge_60": 0.3579,
+    "share_ge_70": 0.0461,
+    "share_ge_76": 0.0006
+   },
+   "gross": {
+    "median": 1.6853,
+    "p90": 1.8,
+    "max": 2.0358
+   },
+   "debt_over_credit_share": 0.8071,
+   "margin_ratio": {
+    "min": 1.965,
+    "p10": 2.242,
+    "median": 2.451
+   }
+  },
+  "BASE20140501": {
+   "days": 2999,
+   "top1": {
+    "median": 0.4971,
+    "p90": 0.6629,
+    "max": 0.7955,
+    "share_ge_60": 0.3431,
+    "share_ge_70": 0.0507,
+    "share_ge_76": 0.0007
+   },
+   "gross": {
+    "median": 1.683,
+    "p90": 1.7864,
+    "max": 2.0368
+   },
+   "debt_over_credit_share": 0.8029,
+   "margin_ratio": {
+    "min": 1.964,
+    "p10": 2.263,
+    "median": 2.456
+   }
+  },
+  "BASE20141101": {
+   "days": 2876,
+   "top1": {
+    "median": 0.4828,
+    "p90": 0.669,
+    "max": 0.8034,
+    "share_ge_60": 0.3425,
+    "share_ge_70": 0.0563,
+    "share_ge_76": 0.0014
+   },
+   "gross": {
+    "median": 1.6841,
+    "p90": 1.7907,
+    "max": 2.0365
+   },
+   "debt_over_credit_share": 0.7921,
+   "margin_ratio": {
+    "min": 1.965,
+    "p10": 2.255,
+    "median": 2.454
+   }
+  },
+  "BASE20150501": {
+   "days": 2755,
+   "top1": {
+    "median": 0.5053,
+    "p90": 0.6649,
+    "max": 0.7824,
+    "share_ge_60": 0.3387,
+    "share_ge_70": 0.0515,
+    "share_ge_76": 0.0007
+   },
+   "gross": {
+    "median": 1.6837,
+    "p90": 1.7875,
+    "max": 2.0365
+   },
+   "debt_over_credit_share": 0.7779,
+   "margin_ratio": {
+    "min": 1.965,
+    "p10": 2.263,
+    "median": 2.455
+   }
+  },
+  "BASE20151101": {
+   "days": 2633,
+   "top1": {
+    "median": 0.5276,
+    "p90": 0.6705,
+    "max": 0.7767,
+    "share_ge_60": 0.3331,
+    "share_ge_70": 0.0577,
+    "share_ge_76": 0.0004
+   },
+   "gross": {
+    "median": 1.6861,
+    "p90": 1.7915,
+    "max": 2.0334
+   },
+   "debt_over_credit_share": 0.8162,
+   "margin_ratio": {
+    "min": 1.968,
+    "p10": 2.258,
+    "median": 2.455
+   }
+  },
+  "BASE20160501": {
+   "days": 2510,
+   "top1": {
+    "median": 0.5735,
+    "p90": 0.6764,
+    "max": 0.7743,
+    "share_ge_60": 0.4147,
+    "share_ge_70": 0.0582,
+    "share_ge_76": 0.0056
+   },
+   "gross": {
+    "median": 1.6859,
+    "p90": 1.799,
+    "max": 2.0382
+   },
+   "debt_over_credit_share": 0.8092,
+   "margin_ratio": {
+    "min": 1.963,
+    "p10": 2.249,
+    "median": 2.455
+   }
+  }
+ }
+}
