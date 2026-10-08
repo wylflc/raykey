@@ -16,7 +16,7 @@
 # EXTRA_CODES：点名建档的池外代码，三大报表按 --codes 先行补取并入面板，再跑面板缺省名单。
 
 set -euo pipefail
-cd /gpfs/scratch1/shared/zwang/mm_quant/RayKey
+cd /home/zwang/project/mm_quant/RayKey
 : "${SIGNAL_DATE:?需要 SIGNAL_DATE=YYYY-MM-DD}"
 : "${SINCE:?需要 SINCE=<当前报告期末>}"
 

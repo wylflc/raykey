@@ -116,7 +116,7 @@ data/experiments/*/attrib/*/
 data/experiments/*/sig/*/candidates.csv
 data/experiments/*/sig/*/ledger.csv
 data/experiments/*/sig/*/run.log
-data/experiments/exp_oi150_overseas_forward/raw/
+data/experiments/exp_oi150_overseas_forward/raw
 # MA20 joint-guard research: large/redundant inputs; compact evidence and scan ledger are retained.
 data/experiments/exp_whipsaw_joint/**/candidates.csv
 data/experiments/exp_whipsaw_joint/summaries/
@@ -130,7 +130,7 @@ data/experiments/exp_whipsaw_joint/validation_raw/
 data/raw/ohlcv_us/
 data/raw/us/
 data/processed/us_daily_states_*.csv
-data/experiments/exp_us_sp500_port/raw/
+data/experiments/exp_us_sp500_port/raw
 
 data/experiments/exp_buy_fraction_operating_20260909/summaries/
 data/experiments/exp_buy_fraction_operating_20260909/daily_selection_*.csv
@@ -195,3 +195,6 @@ data/experiments/exp_ma60_clause4_20260919/stats/
 data/experiments/exp_ma60_clause4_20260919/daily/
 data/experiments/exp_ma60_clause4_20260919/errors/
 data/experiments/exp_ma60_clause4_20260919/contrib/
+
+# scratch 上的大文件（CLAUDE.md 存储规则）
+data/scratch

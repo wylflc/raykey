@@ -8,6 +8,7 @@
 | `daily_scan_log_2026-07-10_to_2026-08-10.md` | 旧账户纪元每日扫描日志 | 自扫描日志移出 |
 | `daily_scan_log_2026-09-01_to_2026-09-30.md` | 2026-09-01 ~ 2026-09-30 每日扫描日志 | 自 `docs/000_daily_scan_log.md` 按 §9.1 第 6 步移出 |
 | `daily_scan_log_2026-08-13_to_2026-08-31.md` | 2026-08-13 ~ 2026-08-31 每日扫描日志 | 自 `docs/000_daily_scan_log.md` 按 §9.1 第 6 步移出 |
+| `storage_cleanup_2026-10-08.csv` | 2026-10-08 仓库迁出 scratch 前删除的未跟踪实验产出（97 个目录，约 845 GiB）与移到 scratch 的缓存，逐目录记文件数与容量 | 删除的是无人引用、可重建的中间件；已跟踪的配置、摘要与报告不受影响 |
 | `scan_summaries_m1.csv` | 回测扫描台账旧计量口径 m1 的 29,643 行（81 列） | 自 `data/backtest/scan_summaries.csv` 移出；只供 `scan_arms_index.csv` 数臂与 `start_sign_correlation.py` 复现 |
 | `quality_tiers_migrated_2026-09-07.csv` | 2026-09-07 护城河审核迁出 `worth_attention` 的 37 家分层行 | 自分层表移出；`docs/reports/moat_audit_2026-09-07.zh.md` 引用 |
 | `pretrade_decisions_2026-08-03.csv` | v2.05 退役的买前裁决记录 | 只作历史 |

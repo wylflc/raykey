@@ -13,7 +13,8 @@
 
 产物：
   data/reference/cash_note_items.csv   逐 (代码, 财年, 行) 一行：报表行值、附注合计、现金类合计、明细、状态
-  data/raw/annual_reports/             原文 PDF 与文本缓存（不入库，按本脚本重建）
+  data/raw/annual_reports/             文本与元数据缓存（不入库，按本脚本重建）
+  data/scratch/raw/annual_reports_pdf/ 原文 PDF，只在抽文本时用（scratch，不入库）
 输入：
   data/reference/cash_note_manual.csv  人工核定登记（原文无法抽取：文本层无字符映射、上市前只有招股说明书），逐行记来源、页码与依据，
                                        写表时覆盖同一 (代码, 财年, 行) 的抽取结果（`status = manual`）
@@ -45,6 +46,7 @@ OUT = ROOT / "data/reference/cash_note_items.csv"
 MANUAL = ROOT / "data/reference/cash_note_manual.csv"
 VERIFIED = ("ok", "manual")   # 现金类计入超额现金的状态（roic_inputs 与受限资产抽取同读此常量）
 CACHE = ROOT / "data/raw/annual_reports"
+PDF_CACHE = ROOT / "data/scratch/raw/annual_reports_pdf"   # 大文件放 scratch（CLAUDE.md）
 LINES = {"OTHER_CURRENT_ASSET": "其他流动资产", "NONCURRENT_ASSET_1YEAR": "一年内到期的非流动资产",
          "OTHER_NONCURRENT_ASSET": "其他非流动资产"}
 MATERIALITY = 0.02            # 三行合计 ≥ 归母权益 × 2% 才抽取
@@ -148,7 +150,8 @@ def report_text(code: str, year: int, url: str, refresh: bool) -> str:
     txt = folder / f"{year}.txt.gz"
     if txt.exists() and not refresh:
         return gzip.decompress(txt.read_bytes()).decode("utf-8")
-    pdf = folder / f"{year}.pdf"
+    pdf = PDF_CACHE / code / f"{year}.pdf"
+    pdf.parent.mkdir(parents=True, exist_ok=True)
     if refresh or not pdf.exists():
         pdf.write_bytes(http(url, timeout=120))
     text = "\n".join((page.extract_text() or "") for page in PdfReader(str(pdf)).pages)

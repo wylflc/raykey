@@ -11,7 +11,7 @@
 #SBATCH --output=logs/refresh_pool_%j.out
 #SBATCH --error=logs/refresh_pool_%j.err
 set -euo pipefail
-cd /gpfs/scratch1/shared/zwang/mm_quant/RayKey
+cd /home/zwang/project/mm_quant/RayKey
 : "${SIGNAL_DATE:?Set SIGNAL_DATE}"
 : "${SINCE:?Set previous successful scan date}"
 python3 scripts/build_pool_model_bands.py --signal-date "$SIGNAL_DATE"

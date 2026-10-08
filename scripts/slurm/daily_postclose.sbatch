@@ -9,7 +9,7 @@
 #SBATCH -e logs/%x_%j.err
 
 set -euo pipefail
-cd /gpfs/scratch1/shared/zwang/mm_quant/RayKey
+cd /home/zwang/project/mm_quant/RayKey
 : "${SCAN_DATE:?Set SCAN_DATE to the signal date}"
 : "${SCAN_STAGE:?Set SCAN_STAGE to evidence or scan}"
 

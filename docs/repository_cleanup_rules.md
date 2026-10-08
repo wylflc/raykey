@@ -32,7 +32,7 @@
 | 重复报告 | 内容已在现行文档中，如每日扫描回复已写入扫描日志 | 删除 |
 | 过程记录 | 仓库审计与清理记录、事项状态快照、交接说明、方案草稿、外部审核意见；所涉事项已结案、结论已入日志 | 删除 |
 | 历史全文副本 | `docs/archive/` 中的旧文档与旧纪元日志 | 删除，`docs/archive/README.md` 登记取回命令 |
-| 派生产物 | 可由脚本重建的回测与估值中间件 | `python3 scripts/clean_derived_artifacts.py` 预览后加 `--apply`；已结案实验用 `closed` |
+| 派生产物 | 可由脚本重建的回测与估值中间件 | `python3 scripts/clean_derived_artifacts.py` 预览后加 `--apply`；已结案实验用 `closed`；新产生的大文件放 `data/scratch/`（CLAUDE.md） |
 | 作业日志 | `logs/` 中 14 天前的文件 | `find logs -type f -mtime +14 -delete` |
 
 保留：实验与决策证据（实验报告、修复核验、口径分析）、公司研究、`data/experiments/` 中被日志引用的证据、`data/companies/`、`docs/peer-group-calibration/`、原始数据、结构化真值、决策日志与账户台账。
