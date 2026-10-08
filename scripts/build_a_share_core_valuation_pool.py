@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import os
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -233,7 +234,7 @@ def load_forecasts(path: Path) -> dict[str, dict[str, str]]:
 
 
 def forecasts_retrieved_on(path: Path) -> str:
-    """预告物化文件的检索日（retrieved_at_utc 最大值折算**北京日期**）；文件缺失返回空。
+    """预告物化文件的检索日（retrieved_at_utc 最大值折算**北京日期**）；文件缺失返回空，0 行时取旁置 .meta.json 的生成时间。
     §7.1：检索日早于扫描日=数据过期，须按 §9.1 步骤 0 重抓。
     必须折算时区再取日期部：扫描日与 §6.7 的 as-of 都是北京日历日，而戳是 UTC——
     北京 00:00-08:00 之间 UTC 还在前一天，直接取 UTC 日期部会把刚抓的数据误报「过期」
@@ -242,7 +243,12 @@ def forecasts_retrieved_on(path: Path) -> str:
         return ""
     stamps = [str(row.get("retrieved_at_utc") or "") for row in load_csv(path)]
     if not stamps:
-        return ""
+        # 新报告期刚开始披露时文件可为 0 行，不能据此报「缺失」
+        meta = path.with_suffix(path.suffix + ".meta.json")
+        generated = json.loads(meta.read_text(encoding="utf-8")).get("generated_at_utc", "") if meta.exists() else ""
+        if not generated:
+            return ""
+        stamps = [generated]
     latest = max(stamps)
     try:
         dt = datetime.fromisoformat(latest.replace("Z", "+00:00"))

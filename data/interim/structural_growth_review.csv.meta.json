@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-09-30",
-  "generated_at_utc": "2026-10-07T15:14:12.387110+00:00",
-  "sha256": "22ecd37f0a5dfe936e6bb6351901cb9e9824a9963cf019f69403be5d13c2bfc5",
+  "as_of": "2026-10-08",
+  "generated_at_utc": "2026-10-08T07:46:04.514275+00:00",
+  "sha256": "a713d568ba74ff570385864de25e09d988049048ecc2cc1843bc84aa7e955fb6",
   "inputs": {
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "7089927e3a30ed21af9f6bc8f43a61324e0d5a12fcfd886a2af6f62fe20a3a1d",
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_business_attributes.csv": "6f16862ea99df580a3c6cf4b9b01ba47ad0f934d82d59d6318f91df008c2900a"

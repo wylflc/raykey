@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-09-30",
-  "generated_at_utc": "2026-10-07T15:14:14.381312+00:00",
-  "sha256": "4f43a7c31354ea00f813209d804ba977309e164ff75f3f8f4c62a23791d95a16",
+  "as_of": "2026-10-08",
+  "generated_at_utc": "2026-10-08T07:46:13.702153+00:00",
+  "sha256": "f1ed03a0e7a7d20ac70390d3c13cf08813386f763c8c99c669dbc51c795f32c8",
   "inputs": {
     "/gpfs/scratch1/shared/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "7089927e3a30ed21af9f6bc8f43a61324e0d5a12fcfd886a2af6f62fe20a3a1d"
   }

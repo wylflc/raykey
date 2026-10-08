@@ -1,6 +1,6 @@
 # 烟蒂池
 
-> 由 `python3 scripts/build_cigar_butt_pool.py` 从 `data/processed/cigar_butt_pool.csv` 生成，不手改。口径、门槛、闸门与状态见[工作流程](000_Ashare_workflow.md) §6.10；逐家粗筛读数在 `data/interim/cigar_butt_screen.csv`。烟蒂池不做回测，买卖口径未裁定前不进执行清单。
+> 由 `python3 scripts/build_cigar_butt_pool.py` 从 `data/processed/cigar_butt_pool.csv` 生成，不手改。口径、门槛、闸门与状态见[工作流程](000_Ashare_workflow.md) §6.10；逐家粗筛读数在 `data/interim/cigar_butt_screen.csv`。烟蒂池不做回测，不设系统买卖规则，买卖由用户决定，不进执行清单。
 
 - 报告期 2026-06-30，价格日 2026-09-30。重点级 3、观察级 14、候选 0、已退回 14、已退出 0。
 - `P/V_cb` = 总市值 ÷ 烟蒂价值；四列依次为 A／B／C／D 类读数，— 表示该类不适用或烟蒂价值不为正。重点级门槛：A 0.8、B 0.8、C 0.7、D 0.75；候选门槛 1.0。

@@ -1,0 +1,141 @@
+{
+ "signal_date": "2026-10-08",
+ "checked_at_utc": "2026-10-08T08:00:19.119771+00:00",
+ "status": "passed",
+ "checks": [
+  "whole_pool_unique_codes",
+  "trade_date",
+  "publication_as_of",
+  "publication_verify_passed",
+  "empty_buy_plan",
+  "empty_sell_plan",
+  "holdings_two_rows",
+  "tracking_scope",
+  "tracking_close_matches_scan_000651",
+  "no_price_stop_000651",
+  "independent_quote_000651",
+  "tracking_close_matches_scan_603529",
+  "no_price_stop_603529",
+  "independent_quote_603529",
+  "holdings_and_reported_assets_match",
+  "user_account_registered_before_scan",
+  "strategy_columns_check",
+  "cooldown_executions_registered",
+  "cooldown_all_zero",
+  "no_holding_exdiv_today",
+  "trade_receipt_corrected_600036"
+ ],
+ "problems": [],
+ "holdings_market_value_cny": "4806948.00",
+ "reported_total_assets_cny": "4806948.00",
+ "registered_total_assets_gap_cny": "0.00",
+ "tranche_cny": "133589.55",
+ "scan_funds_cny": "-295989.37",
+ "remaining_funds_cny": "-295989.37",
+ "coverage": {
+  "scanned": 182,
+  "valid_pv": 178,
+  "below_buy_line": 18,
+  "held": 2,
+  "announcement_rows_pool": 173,
+  "all_market_rows": 3687,
+  "mandatory_companies": [
+   "000651",
+   "603529",
+   "600970",
+   "601009",
+   "600036",
+   "601838"
+  ],
+  "primary_reviewed_announcements": [
+   "AN202609291830000558",
+   "AN202609291830000557",
+   "AN202609301830039769"
+  ]
+ },
+ "holdings": {
+  "000651": {
+   "name": "格力电器",
+   "shares": "108000",
+   "close": "38.32",
+   "cost": "38.6984",
+   "gain_pct": -0.98,
+   "ma20": "38.4630",
+   "ma60": "38.5073",
+   "close_over_ma20": 0.9963,
+   "hold_pv": "0.4884",
+   "candidate_pv": "0.5222",
+   "action": "持有",
+   "stretch_source": false,
+   "gain_trim": false
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "shares": "29200",
+   "close": "22.89",
+   "cost": "21.2292",
+   "gain_pct": 7.82,
+   "ma20": "21.3622",
+   "ma60": "20.9701",
+   "close_over_ma20": 1.0715,
+   "hold_pv": "0.8688",
+   "candidate_pv": "0.8688",
+   "action": "持有",
+   "stretch_source": false,
+   "gain_trim": false
+  }
+ },
+ "buy_plan": [],
+ "sell_plan": [],
+ "trades_registered": [
+  {
+   "code": "601318",
+   "side": "sell",
+   "shares": 16400,
+   "price": "52.61"
+  },
+  {
+   "code": "600036",
+   "side": "sell",
+   "shares": 14700,
+   "price": "41.72"
+  },
+  {
+   "code": "601717",
+   "side": "sell",
+   "shares": 31400,
+   "price": "13.354"
+  },
+  {
+   "code": "000651",
+   "side": "buy",
+   "shares": 30200,
+   "price": "38.484"
+  },
+  {
+   "code": "000651",
+   "side": "buy",
+   "shares": 24600,
+   "price": "38.483"
+  }
+ ],
+ "calendar": "10-08（周四）为国庆休市后首个交易日；本日信号的执行日为 10-09（周五）。",
+ "rule_version": "a-share-selection-operation-v4.240",
+ "equity_bond": {
+  "spread_pct": 6.33,
+  "observed_on": "2026-09-30",
+  "pe_ttm": 12.48,
+  "cgb10y": 0.016822,
+  "restricted": false
+ },
+ "report_period_note": "报告期取 2026-09-30：三季报预告已开始披露（全市场 128 行，池内只有立讯精密 08-25 一行，已被其 10-01 估值复核吸收）；快报与正式报告 0 行。队列 19 行与 09-30 相同，财报触发 0。",
+ "jobs": {
+  "evidence": "27756666",
+  "scan_runs": [
+   "27758023",
+   "27758141",
+   "27758208"
+  ]
+ },
+ "rerun_note": "第二次扫描只为核心池阅读版的「披露物化文件缺失」误报（0 行文件改读旁置 .meta.json 生成时间）；第三次为招行成交估值改判行写入决策日志后重发。三次计划相同（0 买 0 卖），候选表只有 16 只成交额字段因行情源回退不同。"
+}

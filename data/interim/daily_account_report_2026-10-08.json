@@ -1,0 +1,57 @@
+{
+ "as_of": "2026-10-08",
+ "account_reported": {
+  "as_of": "2026-10-08",
+  "net_assets_cny": "2671791.07",
+  "total_assets_cny": "4806948.00",
+  "margin_debt_cny": "2135156.93",
+  "credit_line_cny": "",
+  "leverage_ratio": "1.7991",
+  "guarantee_ratio_pct": "225.13",
+  "holdings_market_value_cny": "4806948.00",
+  "cash_cny": "0.00",
+  "position_count": "2",
+  "top_position_weight_pct": "154.90",
+  "account_peak_net_assets_cny": "2811530.99",
+  "drawdown_from_peak_pct": "-4.97",
+  "source": "user_reported_assets_debt_derived",
+  "note": "用户2026-10-08盘后回报（北京时间约15:20）：卖出中国平安16400股@52.61、招商银行14700股@41.72、中创智领31400股@13.354（三只清仓，合计1895403.60元）；买入格力电器30200股@38.484、24600股@38.483（53200→108000股，成本38.6984元，止损锚37.24只作记录，合计2108898.60元）。09-30清单为空，五笔均为清单外成交。总资产4806948、净资产2671791.07，负债按差额2135156.93；现金0、券商可用保证金-295989.37，扫描funds=-295989.37。未报告外部出入金按0。2只持仓股数乘10-08公开收盘价（格力38.32、爱玛22.89）合计4806948.00元，与实报总资产完全相符。净资产较09-30变动+5307.19元＝持仓市值变动+221668.00元−负债增加216360.81元（净买入213495.00元，其余2865.81元为卖出印花税、佣金与09-30～10-08利息等，未拆分）。格力市值4138560.00元，占净资产154.90%，按现行单票上限暂停加仓。一档133589.55元。",
+  "external_cash_flow_cny": "0.00",
+  "strategy_base_net_assets_cny": "",
+  "strategy_return_pct": "-4.97",
+  "net_assets_before_flow_cny": "",
+  "strategy_nav_basis": "exact",
+  "strategy_unit_nav": "0.950298",
+  "strategy_epoch": "E6"
+ },
+ "available_margin_cny": "-295989.37",
+ "actual_scan_funds_cny": "-295989.37",
+ "net_asset_change_cny": "5307.19",
+ "debt_change_cny": "216360.81",
+ "market_value_change_cny": "221668.00",
+ "tranche_cny": "133589.55",
+ "asset_leverage": "1.799148164680406690632437813",
+ "guarantee_ratio_pct": "225.1332411430760735699178795",
+ "buffer_to_130pct": "42.25641698225152425197859432",
+ "gree_only_drop_to_130pct": "49.08093614687234207067192453",
+ "credit_line_cny": "1779412.85",
+ "debt_over_credit_line_cny": "355744.08",
+ "market_value_reconciliation_cny": "0.00",
+ "close_price_reconciliation_status": "matched",
+ "holdings_close_valuation": [
+  {
+   "code": "000651",
+   "name": "格力电器",
+   "close": "38.32",
+   "shares": "108000",
+   "market_value_cny": "4138560.00"
+  },
+  {
+   "code": "603529",
+   "name": "爱玛科技",
+   "close": "22.89",
+   "shares": "29200",
+   "market_value_cny": "668388.00"
+  }
+ ]
+}

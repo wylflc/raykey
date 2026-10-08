@@ -1,0 +1,79 @@
+{
+  "signal_date": "2026-10-08",
+  "retrieved_at_utc": "2026-10-08T07:43:01.748859+00:00",
+  "source": "eastmoney:RPT_SHAREBONUS_DET, full-market ex-dividend date query",
+  "events": {
+    "000739": {
+      "name": "普洛药业",
+      "plan": "10派1.39元(含税,扣税后1.251元)",
+      "cash_per_share": 0.139,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.139,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "002023": {
+      "name": "海特高新",
+      "plan": "10派0.65元(含税,扣税后0.585元)",
+      "cash_per_share": 0.065,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.065,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "003027": {
+      "name": "同兴科技",
+      "plan": "10派1.00元(含税,扣税后0.90元)",
+      "cash_per_share": 0.1,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.1,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "601390": {
+      "name": "中国中铁",
+      "plan": "10派0.6374元(含税,扣税后0.5737元)",
+      "cash_per_share": 0.06374,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.06374,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "605337": {
+      "name": "李子园",
+      "plan": "10派1.30元(含税,扣税后1.17元)",
+      "cash_per_share": 0.13,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.13,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "688676": {
+      "name": "金盘科技",
+      "plan": "10派2.20元(含税,扣税后1.98元)",
+      "cash_per_share": 0.22,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.22,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    }
+  }
+}

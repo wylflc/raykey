@@ -100,7 +100,7 @@ def render(rows: list[dict], screen: list[dict], registry: dict[str, dict]) -> s
         "",
         "> 由 `python3 scripts/build_cigar_butt_pool.py` 从 `data/processed/cigar_butt_pool.csv` 生成，不手改。口径、门槛、闸门与状态见"
         "[工作流程](000_Ashare_workflow.md) §6.10；逐家粗筛读数在 `data/interim/cigar_butt_screen.csv`。烟蒂池不做回测，"
-        "买卖口径未裁定前不进执行清单。",
+        "不设系统买卖规则，买卖由用户决定，不进执行清单。",
         "",
         f"- 报告期 {latest.get('report_date', '—')}，价格日 {latest.get('price_date', '—')}。"
         f"重点级 {len(by_status['focus'])}、观察级 {len(by_status['watch'])}、候选 {len(by_status['candidate'])}、"
