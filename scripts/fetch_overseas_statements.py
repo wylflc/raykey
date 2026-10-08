@@ -62,9 +62,9 @@ STATEMENT_SUPPLEMENTS = ROOT / "data/reference/overseas_statement_supplements.cs
 VALUATION_INPUTS = ROOT / "data/reference/overseas_valuation_inputs.csv"
 UA = "RayKey-AShareQuant research bot (personal research use)"
 HK_API = "https://datacenter.eastmoney.com/securities/api/data/v1/get"
-# 港股清单的报表货币（东财 HK F10 不带币种列；人民币列报公司显式登记）
+# 港股清单的报表货币（东财 HK F10 不带币种列；F10 金额为人民币的公司显式登记，含官方美元列报、F10 已折人民币的英矽智能）
 HK_REPORT_CCY = {"00700": "CNY", "09992": "CNY", "09618": "CNY", "09988": "CNY", "03690": "CNY", "06862": "CNY",
-                 "03888": "CNY", "00316": "CNY", "00267": "CNY"}
+                 "03888": "CNY", "00316": "CNY", "00267": "CNY", "02228": "CNY", "03696": "CNY"}
 TAX_DEFAULT = {"US": 0.21, "HK": 0.165}
 IC_FLOOR = 0.1          # §6.5.1 投入资本下限（§6.7 第 2 步 `--roic-ic-floor 0.1`，test_strategy_parameter_sync 核对同值）
 CARRY_MAX_DAYS = 460    # 维护行沿用的年报须在 15 个月内（上一财年年报）

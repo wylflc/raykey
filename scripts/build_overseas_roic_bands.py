@@ -52,6 +52,8 @@ COMPANY_CFG = {
     "03888": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),
     "00316": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),
     "00267": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),
+    "02228": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),
+    "03696": dict(ccy="HKD", adr=1, fx="fx_cny_hkd", fx_inv=False),   # 官方美元列报，东财 F10 已折人民币
 }
 FINANCIAL_KEEP = {"BRK.B": "金融资本型（保险浮存金＋控股）：按工作流程海外金融企业口径读取经核验的档案隐含 PB 带，不按 ROIC 重算",
                   "00267": "金融资本型（银行并表）：按工作流程海外金融企业口径读取经核验的档案隐含 PB 带，不按 ROIC 重算"}
