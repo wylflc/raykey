@@ -137,5 +137,41 @@
    "27758208"
   ]
  },
- "rerun_note": "第二次扫描只为核心池阅读版的「披露物化文件缺失」误报（0 行文件改读旁置 .meta.json 生成时间）；第三次为招行成交估值改判行写入决策日志后重发。三次计划相同（0 买 0 卖），候选表只有 16 只成交额字段因行情源回退不同。"
+ "rerun_note": "第二次扫描只为核心池阅读版的「披露物化文件缺失」误报（0 行文件改读旁置 .meta.json 生成时间）；第三次为招行成交估值改判行写入决策日志后重发。三次计划相同（0 买 0 卖），候选表只有 16 只成交额字段因行情源回退不同。",
+ "republish_after_move": {
+  "location": "/home/zwang/project/mm_quant/RayKey -> /gpfs/work1/0/qt15419/zwang/mm_quant/RayKey",
+  "jobs": {
+   "evidence": "27767676",
+   "refresh_pool": "27768284",
+   "scan": "27768512"
+  },
+  "announcements": {
+   "retrieved_at_beijing": "2026-10-08 19:45",
+   "all_market_rows": 5349,
+   "pool_rows": 263,
+   "new_since_1543": 90
+  },
+  "forecast_overlay": {
+   "code": "300054",
+   "name": "鼎龙股份",
+   "v_before": 9.52,
+   "v_after": 10.07,
+   "pv": 6.2493
+  },
+  "rf_10y": {
+   "observed_on": "2026-10-08",
+   "value": 0.016899
+  },
+  "equity_bond_spread_pct": 6.34,
+  "eligible": [
+   "600970",
+   "601009",
+   "603529",
+   "600036",
+   "601838"
+  ],
+  "buy_plan": [],
+  "sell_plan": [],
+  "verify": "passed"
+ }
 }
