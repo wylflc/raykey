@@ -403,9 +403,12 @@ def screen(report_date: str, signal_date: str, reuse: bool) -> list[dict]:
     return out
 
 
-def update_pool(rows: list[dict], signal_date: str, held: set[str] = frozenset()) -> dict[str, int]:
-    """`held`：当前持仓代码；持仓中的候选不移出、改标 exited（§6.10 第 4 条），以免失去第 5 条的持仓豁免。"""
-    pool = {r["security_code"]: r for r in _read(POOL)} if POOL.exists() else {}
+def update_pool(rows: list[dict], signal_date: str, held: set[str] = frozenset(), *, path: Path | None = None,
+                fields: list[str] = POOL_FIELDS, auto_fields: list[str] = AUTO_FIELDS) -> dict[str, int]:
+    """`held`：当前持仓代码；持仓中的候选不移出、改标 exited（§6.10 第 4 条），以免失去第 5 条的持仓豁免。
+    `path`／`fields`／`auto_fields`：港股池表（第 7 条）同一状态规则。"""
+    path = path or POOL
+    pool = {r["security_code"]: r for r in _read(path)} if path.exists() else {}
     blocked = {"非标审计意见", "价值流失", "现金消耗"}
     seen, stats = set(), dict(added=0, removed=0, exited=0)
     for r in rows:
@@ -417,11 +420,11 @@ def update_pool(rows: list[dict], signal_date: str, held: set[str] = frozenset()
         if code not in pool:
             if set(filter(None, r["auto_flags"].split("；"))) & blocked:
                 continue
-            pool[code] = {f: "" for f in POOL_FIELDS} | dict(security_code=code, status="candidate", status_since=signal_date)
+            pool[code] = {f: "" for f in fields} | dict(security_code=code, status="candidate", status_since=signal_date)
             stats["added"] += 1
         entry = pool[code]
         kind = r["cb_type"] or entry["cb_type"]          # 出区的保留原类，读数按原类重算
-        entry.update({f: r.get(f, "") for f in AUTO_FIELDS})
+        entry.update({f: r.get(f, "") for f in auto_fields})
         entry.update(cb_type=kind, pv_cb=r["pv_cb"] if r["cb_type"] else r.get(f"pv_{kind.lower()}", ""))
         reviewed = num(entry, "v_cb_reviewed_yi")          # 复核值（§6.10 第 4 条）：状态与退出按复核值判
         if reviewed > 0 and num(entry, "market_cap_yi") > 0:
@@ -441,24 +444,30 @@ def update_pool(rows: list[dict], signal_date: str, held: set[str] = frozenset()
         if code not in seen and entry["status"] in ("watch", "focus"):
             entry.update(status="exited", status_since=signal_date, note=f"P/V_cb ≥ 1.0 或不再可估（{signal_date}）")
             stats["exited"] += 1
-    _write(POOL, sorted(pool.values(), key=lambda e: (STATUSES.index(e["status"]), e["cb_type"], float(e["pv_cb"] or 9), e["security_code"])),
-           POOL_FIELDS)
+    _write(path, sorted(pool.values(), key=lambda e: (STATUSES.index(e["status"]), e["cb_type"], float(e["pv_cb"] or 9), e["security_code"])),
+           fields)
     return stats
 
 
-def log_summary(report_date: str, signal_date: str, rows: list[dict], stats: dict[str, int]) -> None:
+def pool_summary_log(pool_path: Path, run_id: str, as_of: str, code: str, name: str, reason: str,
+                     input_files: str, script: str) -> None:
+    """粗筛决策日志汇总行（§6.10 第 6 条）：按池表计各类候选与达重点级门槛家数。"""
     from workflow_decision_log import WORKFLOW_VERSION, append_decision_log
-    pool = _read(POOL)
+    pool = _read(pool_path)
     by_type = {k: sum(1 for e in pool if e["cb_type"] == k and e["status"] == "candidate") for k in "ABCD"}
     focus_ready = sum(1 for e in pool if e["pv_cb"] and float(e["pv_cb"]) <= FOCUS_MAX.get(e["cb_type"], 0))
     append_decision_log(ROOT / "data/processed/a_share_workflow_decision_log.csv", [dict(
         logged_at_utc=time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()), workflow_stage="cigar_butt_pool",
-        run_id=f"cigar_butt_screen:{report_date}", as_of=signal_date, security_code="POOL", security_name="烟蒂池",
-        decision_type="cigar_butt_screen",
+        run_id=run_id, as_of=as_of, security_code=code, security_name=name, decision_type="cigar_butt_screen",
         decision_result=f"候选 A {by_type['A']}／B {by_type['B']}／C {by_type['C']}／D {by_type['D']}；达重点级门槛 {focus_ready}",
-        summary_reason=f"报告期 {report_date}、价格日 {signal_date}；逐家读数 {len(rows)}；新增 {stats['added']}、移出 {stats['removed']}、标退出 {stats['exited']}",
-        input_files=f"data/raw/financials_market/；data/raw/financials/{report_date}.csv", output_file="data/processed/cigar_butt_pool.csv",
-        operator_or_script="scripts/screen_cigar_butts.py", workflow_version=WORKFLOW_VERSION)])
+        summary_reason=reason, input_files=input_files, output_file=str(pool_path.relative_to(ROOT)),
+        operator_or_script=script, workflow_version=WORKFLOW_VERSION)])
+
+
+def log_summary(report_date: str, signal_date: str, rows: list[dict], stats: dict[str, int]) -> None:
+    pool_summary_log(POOL, f"cigar_butt_screen:{report_date}", signal_date, "POOL", "烟蒂池",
+                     f"报告期 {report_date}、价格日 {signal_date}；逐家读数 {len(rows)}；新增 {stats['added']}、移出 {stats['removed']}、标退出 {stats['exited']}",
+                     f"data/raw/financials_market/；data/raw/financials/{report_date}.csv", "scripts/screen_cigar_butts.py")
 
 
 def main() -> int:

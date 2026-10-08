@@ -11,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_cigar_butt_pool as build  # noqa: E402
 import screen_cigar_butts as screen  # noqa: E402
+import screen_cigar_butts_hk as hk  # noqa: E402
 import screen_daily_volume_price_signals as scan  # noqa: E402
 import track_holdings_daily as tracker  # noqa: E402
 from test_daily_execution_plan import hold, row  # noqa: E402
@@ -115,6 +116,71 @@ class ValidateTest(unittest.TestCase):
 
     def test_rejected_needs_reason(self):
         self.assertTrue(build.validate([self.row(status="rejected", reviewed_at="2026-10-07")], {}))
+
+
+HK_BALANCE = {"现金及等价物": 100, "短期存款": 10, "受限制存款及现金": 5, "指定以公允价值记账之金融资产(流动)": 20,
+              "应收票据": 10, "应收帐款": 40, "存货": 30, "发展中及待售物业": 30, "合同资产": 10, "流动资产合计": 275,
+              "总负债": 150, "少数股东权益": 10, "永久资本证券": 5, "短期贷款": 30, "长期贷款": 20, "应付票据(非流动)": 10,
+              "融资租赁负债(流动)": 2, "中长期存款": 10, "联营公司权益": 50, "投资物业": 20, "物业厂房及设备": 100,
+              "总资产": 500, "总权益": 350}
+
+
+class HongKongTest(unittest.TestCase):
+    """§6.10 第 7 条港股口径：科目映射、非普通股权益、扣非替代、银行 COE、财年与分红期次。"""
+
+    def test_value_a_b_c(self):
+        value, ncav = hk.value_a(HK_BALANCE)
+        # 货币资金 115、其余流动资产 = 275 − 255 = 20；少数股东权益与永久资本证券同扣
+        self.assertAlmostEqual(value, 115 + 0.9 * 20 + 0.9 * 10 + 0.75 * 40 + 0.5 * 60 + 0.5 * 10 + 0.25 * 20 - 165)
+        self.assertAlmostEqual(ncav, 275 - 165)
+        self.assertAlmostEqual(hk.net_cash(HK_BALANCE, "00001"), 135 - 62 - 15)
+        self.assertAlmostEqual(hk.net_cash(HK_BALANCE, "09988"), 135 - 60 - 15)        # 美国准则列报：租赁负债不计
+        self.assertAlmostEqual(hk.value_b(HK_BALANCE, "00001", [5, 6, 7, 8, 9], 6), 58 + 5 * 6)
+        self.assertIsNone(hk.value_b(HK_BALANCE, "00001", [5, -1, 7, 8, 9], 6))
+        self.assertIsNone(hk.value_b(HK_BALANCE, "00001", [5, 6, 7, 8, 9], None))
+        self.assertAlmostEqual(hk.value_c(HK_BALANCE, value), value + 0.9 * 10 + 0.3 * 50 + 0.5 * 20 + 0.2 * 100)
+
+    def test_equity_and_report_completeness(self):
+        self.assertAlmostEqual(hk.common_equity(HK_BALANCE), 350 - 15)
+        self.assertAlmostEqual(hk.common_equity({"股东权益合计": 143.4, "非控股股东权益": 1.0, "其他权益工具": 24.0}), 118.4)
+        self.assertAlmostEqual(hk.common_equity({"归属于母公司股东权益": 100, "其他权益工具": 10}), 90)
+        self.assertTrue(hk.complete(HK_BALANCE))
+        self.assertFalse(hk.complete({"总资产": 1, "总负债": 1}))
+        self.assertTrue(hk.complete({"总资产": 1, "总负债": 1, "归属于母公司股东权益": 1}))
+        self.assertFalse(hk.is_intermediary(HK_BALANCE))
+        self.assertTrue(hk.is_intermediary(dict(HK_BALANCE, 客户存款=120)))
+
+    def test_profit_bank_and_calendar(self):
+        self.assertEqual(hk.adjusted_profit({"股东应占溢利": 10, "重估盈余": 3}), 7)
+        self.assertEqual(hk.adjusted_profit({"股东应占溢利": 10, "重估盈余": -3}), 13)
+        self.assertIsNone(hk.adjusted_profit({"重估盈余": 1}))
+        self.assertEqual(hk.bank_coe("01398", "H股", "工商银行"), 10.0)
+        self.assertEqual(hk.bank_coe("09668", "H股", "渤海银行"), 11.0)
+        self.assertEqual(hk.bank_coe("01983", "H股", "泸州银行"), 11.5)
+        self.assertEqual(hk.bank_coe("00023", "非H股", "东亚银行"), 11.0)
+        self.assertTrue(hk.is_bank("03618", "重庆农村商业银行") and hk.is_bank("00005", "汇丰控股"))
+        self.assertFalse(hk.is_bank("00267", "中信股份"))
+        self.assertEqual(hk.fiscal_end("2026-06-30", "12-31"), "2025-12-31")
+        self.assertEqual(hk.fiscal_end("2026-03-31", "03-31"), "2026-03-31")
+        self.assertEqual(hk.fiscal_end("2025-12-31", "06-30"), "2025-06-30")
+        self.assertEqual(hk.recent_periods("2026-10-08"), ["2026-09-30", "2026-06-30", "2026-03-31", "2025-12-31", "2025-09-30"])
+        self.assertEqual(hk.shift_years("2024-02-29", -1), "2023-02-28")
+        self.assertEqual([hk.standard_year(d) for d in ("2025-12-31", "2026-03-31", "2026-06-30", "2025-08-31")],
+                         [2025, 2025, 2025, 2025])
+
+    def test_dividends_to_hkd(self):
+        fx = {"HKD": 1.0, "CNY": 1.17, "USD": 7.85}
+        event = lambda plan, progress="实施分配", period="2025末期": dict(PLAN_EXPLAIN=plan, ASSIGN_PROGRESS=progress,
+                                                                         ASSIGN_PERIOD=period)
+        self.assertAlmostEqual(hk.dividend_hkd(event("每股派港币0.23元"), fx), 0.23)
+        self.assertAlmostEqual(hk.dividend_hkd(event("每股派美元0.0138元(相当于港币0.1081元)"), fx), 0.1081)
+        self.assertAlmostEqual(hk.dividend_hkd(event("每股派人民币0.5元"), fx), 0.585)
+        self.assertEqual(hk.dividend_hkd(event("每10股转2股"), fx), 0.0)
+        self.assertEqual(hk.dividend_hkd(event("每股派港币0.3元", "董事会决议通过"), fx), 0.0)         # 末期待股东大会
+        self.assertAlmostEqual(hk.dividend_hkd(event("每股派港币0.3元", "董事会决议通过", "2026中期"), fx), 0.3)
+        by_year = hk.dividends_by_year([event("每股派港币0.2元", period="2025中期"), event("每股派港币0.3元"),
+                                        event("每股派港币0.1元", period="2024末期")], fx)
+        self.assertEqual({y: round(v, 4) for y, v in by_year.items()}, {2025: 0.5, 2024: 0.1})
 
 
 CB = dict(security_code="600987", security_name="航民股份", cb_type="B", status="watch", price="6.28",

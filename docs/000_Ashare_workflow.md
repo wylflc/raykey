@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.241
+# A股选股-估值-量价操作流程 v4.242
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -16,7 +16,7 @@
 | 单票研究（含点名建档与 L4） | §5 → §6 → §9.3 | 逐层判断，任一层否决即止 |
 | 海外单票研究（港股／美股／韩股点名） | §5 → §6.8 | 逐层判断；建档、入清单、重出阅读版三步缺一不可 |
 | 独立估值、独立审计、是否真的低估（个股或名单） | §6.9 | 先查 `data/processed/independent_valuations.csv`，可复用即引用 |
-| 烟蒂池（无护城河要求的资产折价股）筛选与复核 | §6.10 | `screen_cigar_butts.py`、`build_cigar_butt_pool.py` |
+| 烟蒂池（无护城河要求的资产折价股）筛选与复核 | §6.10 | `screen_cigar_butts.py`、`screen_cigar_butts_hk.py`、`build_cigar_butt_pool.py` |
 | 成长股（结构成长型）识别、复核与买卖 | §9.3.6 | `a_share_business_attributes.csv`、`structural_growth_review.py` |
 | 修改估值、交易规则或回测参数 | §12-§13 | `sweep_backtest_configs.py` |
 | 清理仓库、精简文档 | — | `docs/repository_cleanup_rules.md` |
@@ -66,7 +66,7 @@
 | 估值表与人工台账 | `data/processed/a_share_focus_watchlist_l1_l2_valuation.csv`（§6.7 第 5 步）；`data/processed/entity_reset_dates.csv`、`share_event_reviews.csv`（§6.5.2.4，人工登记） |
 | 海外关注清单估值 | `data/processed/overseas_watchlist_valuation.csv`（§6.8） |
 | 独立估值登记（研究对照，不进判定） | `data/processed/independent_valuations.csv`（§6.9）；阅读版 `docs/independent_valuations.zh.md` |
-| 烟蒂池 | `data/processed/cigar_butt_pool.csv`（§6.10）；阅读版 `docs/000_cigar_butt_pool.md`；全市场粗筛 `data/interim/cigar_butt_screen.csv` |
+| 烟蒂池 | `data/processed/cigar_butt_pool.csv`（§6.10），港股 `data/processed/cigar_butt_pool_hk.csv`；阅读版 `docs/000_cigar_butt_pool.md`；全市场粗筛 `data/interim/cigar_butt_screen.csv`、`cigar_butt_screen_hk.csv` |
 | 公司分析索引 | `data/processed/a_share_company_analysis_index.csv` 与 `a_share_company_analysis_index.md`（`build_a_share_company_analysis_index.py` 读当前与归档决策日志生成；§6.7 第 2 步的行业口径读它） |
 
 每条质量、估值、名单迁移、规则采纳或成交结论必须写入决策日志，至少包含：时间、阶段、对象、结论、简要理由、输入文件、输出文件、执行者、工作流版本和稳定 `decision_id`。纠错或替代旧结论时填写 `supersedes_decision_id`。
@@ -519,11 +519,12 @@ python3 scripts/build_independent_valuations.py --check   # 只校验
 
 ### 6.10 烟蒂池
 
-烟蒂池是独立于 §5 关注池的观察池：入池不要求护城河，只按资产负债表与已实现的现金回报估烟蒂价值 `V_cb`，不做回测。关注池成员与 `garbage` 不入；入池不改 `attention_class`，经 §5 进入 `worth_attention` 即移出。范围为 A 股；名称含 ST 或已进入退市整理的不入，总市值低于 5 亿元或股价低于 1 元的只标退市风险。金融中介负债 ≥ 总资产 20% 的一般企业（§6.5.1 第 3 条口径）按金融企业处理，不入 A、B、C 类。
+烟蒂池是独立于 §5 关注池的观察池：入池不要求护城河，只按资产负债表与已实现的现金回报估烟蒂价值 `V_cb`，不做回测。关注池成员与 `garbage` 不入；入池不改 `attention_class`，经 §5 进入 `worth_attention` 即移出。范围为 A 股与港股（第 7 条）；名称含 ST 或已进入退市整理的不入，总市值低于 5 亿元或股价低于 1 元的只标退市风险。金融中介负债 ≥ 总资产 20% 的一般企业（§6.5.1 第 3 条口径）按金融企业处理，不入 A、B、C 类。
 
 ```bash
 python3 scripts/screen_cigar_butts.py --report-date YYYY-MM-DD --signal-date YYYY-MM-DD   # 取数、粗筛、补登候选；只刷新价格加 --reuse-raw
-python3 scripts/build_cigar_butt_pool.py [--check]                                        # 校验池表并重出阅读版
+sbatch --account=tes21035 --export=ALL,HK_SIGNAL_DATE=YYYY-MM-DD scripts/slurm/cigar_butt_screen_hk.sbatch   # 港股（第 7 条）；只刷新价格加 HK_EXTRA_ARGS=--reuse-raw
+python3 scripts/build_cigar_butt_pool.py [--check]                                        # 校验两张池表并重出阅读版
 ```
 
 1. **烟蒂价值**（公司口径，`P/V_cb` = 总市值 ÷ `V_cb`；报表取最新定期报告，合并口径）：
@@ -552,7 +553,16 @@ python3 scripts/build_cigar_butt_pool.py [--check]                              
    - 扫描器不对其做出名单、涨幅减持与换仓卖出源判定；§9.3.1 股债总仓位上限照常计入，受限时与其他持仓一起按比例减仓。
    - 跟踪表动作记「烟蒂股（用户决定）」，`pv_cb` 列 = 池表总市值 × 当日收盘 ÷ 池表价格 ÷ 烟蒂价值（有复核值用复核值）。
    - 成交按 §11.5 回写：规则记「烟蒂股（用户决定）」，`P/V` 记 `resolve_trade_valuation.py` 输出的 `cigar_butt.pv_cb`，不登记冷却。
-6. **节奏**：每个定期报告法定截止日（4-30、8-31、10-31）后按新报告期粗筛一次；每周用 `--reuse-raw` 刷新价格。每次粗筛写一行决策日志汇总，复核改状态逐家写决策日志（`workflow_stage = cigar_butt_pool`）。
+6. **节奏**：每个定期报告法定截止日（4-30、8-31、10-31）后按新报告期粗筛一次，港股同日逐家取已披露的最新报告；每周用 `--reuse-raw` 刷新价格。每次粗筛写一行决策日志汇总，复核改状态逐家写决策日志（`workflow_stage = cigar_butt_pool`）。
+7. **港股**（池表 `data/processed/cigar_butt_pool_hk.csv`，粗筛 `data/interim/cigar_butt_screen_hk.csv`）：口径同第 1～6 条，差异如下。
+   - 范围：港交所主板、创业板的 H 股、红筹股与其他普通股；价格日无行情的不入；机构类型为保险、证券的不入。A+H 公司按 A 股三类表、海外关注清单成员按 §6.8 的类别判第 1 段的关注池与 `garbage`。
+   - 数据：东财 HK F10 按标准报告期取全市场，逐家取已披露的最新定期报告；报表币金额按价格日欧洲央行参考汇率折港元；总市值 = 全部普通股（H 股加内资股或 A 股）× 港股收盘；退市风险只按总市值低于 5 亿港元标注。
+   - A 类：货币资金 = 现金及等价物 + 短期存款 + 受限制存款及现金；交易性金融资产 = 短期投资与流动的指定以公允价值记账之金融资产、交易性金融资产、其他金融资产；存货含发展中及待售物业；除少数股东权益外，永久资本证券、其他权益工具、优先股与其他权益一并扣除，F10 未单列的永续债复核时扣。
+   - B 类：扣非归母净利改为股东应占溢利减重估盈余；有息负债另含银行贷款及透支、借款、其他贷款与已发行债券，按美国会计准则列报的公司不计租赁负债。
+   - C 类：中长期存款 × 0.9；联营、合营公司权益与证券投资、其他投资、非流动金融资产 × 0.3；投资物业 × 0.5；物业厂房及设备、在建工程 × 0.2。
+   - D 类：A+H 银行取 A 股粗筛的 `V_cb`；其余银行的普通股每股净资产 = 扣除非控股股东权益、其他权益工具等的股东权益 ÷ 股数，ROE 取 F10 平均净资产收益率；COE 内地银行同第 1 条（只在港股上市的股份行按股份行），香港及外资银行 11%。
+   - 闸门：非标审计意见改为复核时查年报；分红计已实施、已获股东大会批准及董事会宣派的中期与特别股息，公告列有港币等值的取等值；流动性按日均成交额折人民币判。
+   - 港股通：读上交所、深交所当日公布的港股通标的证券名单，池表 `southbound_sh`／`southbound_sz` 分列，任一为是即 `southbound_eligible = yes`；不在名单的不能经港股通买入。
 
 ## 7. 阶段三：披露与事件滚动更新
 

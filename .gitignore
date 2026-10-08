@@ -21,6 +21,8 @@ data/raw/ohlcv/
 data/raw/financials/
 # 全市场按报告期三大报表、分红与行情（§6.10 烟蒂池粗筛缓存）；重建：python3 scripts/screen_cigar_butts.py
 data/raw/financials_market/
+# 港股全市场按报告期报表、分红、行情、汇率与港股通名单（§6.10 第 7 条港股粗筛缓存）；重建：python3 scripts/screen_cigar_butts_hk.py
+data/raw/financials_market_hk/
 # 全市场个股研报，约 33MB（OI-034 第 20 步）
 data/raw/research_reports/
 # 面板三大报表年报全量，约 11MB（OI-060 解除后的 ROIC 口径输入）。
