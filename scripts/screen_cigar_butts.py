@@ -5,7 +5,8 @@
 缓存在 `data/raw/financials_market/`（不入库，`--reuse-raw` 复用）；银行读 `data/raw/financials/` 逐季面板。
 行情取腾讯（总市值按 A 股价计全部股本）。写 `data/interim/cigar_butt_screen.csv`（逐家读数），并更新
 `data/processed/cigar_butt_pool.csv` 的候选与读数：复核状态只由人工改，本脚本只补登候选、移出 `P/V_cb > 1.0`
-的候选、把 `P/V_cb ≥ 1.0` 的 watch／focus 标 exited。
+的候选（持仓中的改标 exited）、把 `P/V_cb ≥ 1.0` 的 watch／focus 标 exited。
+`cigar_butt_rows`／`pv_cb_at` 供扫描器、跟踪器与成交估值识别烟蒂股持仓（§6.10 第 5 条）。
 """
 from __future__ import annotations
 
@@ -29,6 +30,7 @@ from roic_inputs import FINANCIAL_INTERMEDIATION_FIELDS, FINANCIAL_INTERMEDIATIO
 RAW = ROOT / "data/raw/financials_market"
 SCREEN = ROOT / "data/interim/cigar_butt_screen.csv"
 POOL = ROOT / "data/processed/cigar_butt_pool.csv"
+HOLDINGS = ROOT / "data/processed/a_share_holdings.csv"
 F10_API = "https://datacenter.eastmoney.com/securities/api/data/get"
 WEB_API = "https://datacenter-web.eastmoney.com/api/data/v1/get"
 
@@ -98,6 +100,23 @@ def _write(path: Path, rows: list[dict], fields: list[str]) -> None:
 def _read(path: Path) -> list[dict]:
     with path.open(encoding="utf-8-sig", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def cigar_butt_rows(codes, members: set[str] | None, path: Path = POOL) -> dict[str, dict]:
+    """§6.10 第 5 条：池表在册（不论状态）且不在 `worth_attention` 的代码 → 池表行。"""
+    if not path.exists():
+        raise ValueError(f"缺烟蒂池表，不能判定烟蒂股持仓：{path}")
+    pool = {r["security_code"].zfill(6): r for r in _read(path)}
+    return {c: pool[c] for c in sorted(codes) if c in pool and (members is None or c not in members)}
+
+
+def pv_cb_at(row: dict, close: float | None) -> float | None:
+    """池表 `P/V_cb` 按池表股本折到 `close`：总市值 × close ÷ 池表价格 ÷ 烟蒂价值（有复核值用复核值）。"""
+    value = num(row, "v_cb_reviewed_yi") or num(row, "v_cb_yi")
+    mcap, price = num(row, "market_cap_yi"), num(row, "price")
+    if close is None or close <= 0 or value <= 0 or mcap <= 0 or price <= 0:
+        return None
+    return mcap * close / price / value
 
 
 def fetch_statement(report: str, columns: list[str], report_date: str, codes: set[str], reuse: bool) -> dict[str, dict]:
@@ -384,7 +403,8 @@ def screen(report_date: str, signal_date: str, reuse: bool) -> list[dict]:
     return out
 
 
-def update_pool(rows: list[dict], signal_date: str) -> dict[str, int]:
+def update_pool(rows: list[dict], signal_date: str, held: set[str] = frozenset()) -> dict[str, int]:
+    """`held`：当前持仓代码；持仓中的候选不移出、改标 exited（§6.10 第 4 条），以免失去第 5 条的持仓豁免。"""
     pool = {r["security_code"]: r for r in _read(POOL)} if POOL.exists() else {}
     blocked = {"非标审计意见", "价值流失", "现金消耗"}
     seen, stats = set(), dict(added=0, removed=0, exited=0)
@@ -410,6 +430,11 @@ def update_pool(rows: list[dict], signal_date: str) -> dict[str, int]:
                 entry.update(status="exited", status_since=signal_date, note=f"复核 P/V_cb ≥ 1.0（{signal_date}）")
                 stats["exited"] += 1
     for code in [c for c, e in pool.items() if e["status"] == "candidate" and c not in seen]:
+        if code in held:
+            pool[code].update(status="exited", status_since=signal_date,
+                              note=f"持仓中：P/V_cb > 1.0 或不再可估，保留在册（{signal_date}）")
+            stats["exited"] += 1
+            continue
         del pool[code]
         stats["removed"] += 1
     for code, entry in pool.items():
@@ -449,10 +474,11 @@ def main() -> int:
     if args.dry_run:
         print(f"逐家读数 {len(rows)}；P/V_cb ≤ 1.0：{ {k: sum(1 for r in rows if r['cb_type'] == k) for k in 'ABCD'} }（试跑，未改池表）")
         return 0
-    stats = update_pool(rows, args.signal_date)
+    held = {r["security_code"].zfill(6) for r in _read(HOLDINGS) if num(r, "current_shares") > 0}
+    stats = update_pool(rows, args.signal_date, held)
     publication = ROOT / "data/processed/daily_execution_publication.json"
     if publication.exists() and json.loads(publication.read_text()).get("status") == "complete":
-        print("注意：写决策日志会使当前发布凭据失效，须在每日扫描前运行，或运行后按同一参数重发（仓库清理规则第 3 节）")
+        print("注意：改池表与写决策日志会使当前发布凭据失效，须在每日扫描前运行，或运行后按同一参数重发（仓库清理规则第 3 节）")
     log_summary(args.report_date, args.signal_date, rows, stats)
     kinds = {k: sum(1 for r in rows if r["cb_type"] == k) for k in "ABCD"}
     print(f"逐家读数 {len(rows)}；P/V_cb ≤ 1.0：{kinds}；池表新增 {stats['added']}、移出 {stats['removed']}、标退出 {stats['exited']}")

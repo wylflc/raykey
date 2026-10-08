@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.241 | 2026-10-08 | §6.10 第 5 条：池表在册（不论状态）且不在 `worth_attention` 的持仓为烟蒂股持仓，扫描器不做出名单、涨幅减持与换仓卖出源判定，§9.3.1 股债总仓位上限照常计入并按比例减仓（用户裁定）；跟踪表动作「烟蒂股（用户决定）」并加 `pv_cb` 列；成交回写取 `resolve_trade_valuation.py` 的 `cigar_butt.pv_cb`、不登记冷却。第 4 条：持仓中的候选重算后 `P/V_cb > 1.0` 改标 `exited`、不移出。烟蒂池表进 §9.1 第 3 步校验与发布凭据输入摘要（`daily_execution_guard.py`、扫描器 `--cigar-pool`）；§9.3.2 第 4 步、§9.3.4、§11.1、§11.3、§11.5 改为引用。实现 `screen_cigar_butts.cigar_butt_rows`／`pv_cb_at`。依据 OI-275 |
 | v4.240 | 2026-10-08 | §6.10 第 5 条：烟蒂股不设系统买卖规则，买入与卖出由用户决定，不进 §9.3 执行清单（原为买卖口径裁定后写入 §9.3）；阅读版页眉同步（`build_cigar_butt_pool.py`）。扫描器对烟蒂股持仓的卖出豁免待实现（OI-275） |
 | v4.239 | 2026-10-07 | 新增 §6.10 烟蒂池：独立于关注池的观察池，不做回测。A／B／C／D 四类烟蒂价值 `V_cb` 的口径；候选门槛 `P/V_cb ≤ 1.0`，重点级 A、B 0.8、C 0.7、D 0.75；闸门中非标审计、价值流失、现金消耗由粗筛自动判，股东回报验证现金真实性、资本配置、流动性与银行资本拨备由复核判；五种状态与购买资格（买卖口径待裁定，不进 §9.3）；复核后的烟蒂价值写池表 `v_cb_reviewed_yi`，重点级门槛与退出按复核值判。池表 `data/processed/cigar_butt_pool.csv`、阅读版 `docs/000_cigar_butt_pool.md`、粗筛 `data/interim/cigar_butt_screen.csv`，实现 `screen_cigar_butts.py`／`build_cigar_butt_pool.py`；§0 路由、§2 真值行。个人投资体系 v1.35 增研究标签 G 烟蒂型（5.13）。依据 OI-273 |
 | v4.238 | 2026-10-07 | 新增 §6.9 独立估值登记：登记表 `data/processed/independent_valuations.csv`（每家公司每次评审一行，状态 `current`／`superseded`／`historical`／`reference`），阅读版 `docs/independent_valuations.zh.md` 由 `build_independent_valuations.py` 校验并生成；复用条件、独立 `P/V` 分档与登记步骤写在 §6.9，§0 增路由、§2 增唯一真值行。只作研究对照，不改估值口径与交易规则 |

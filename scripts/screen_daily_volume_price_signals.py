@@ -28,6 +28,7 @@ from pv_ratio import trading_pv  # noqa: E402  v4.62 OI-091：P/V 唯一实现
 from lot_cooldown import (CooldownBook, Opportunities, cooldown_skips,
                           DEFAULT_STATE as DEFAULT_COOLDOWN_STATE)
 from growth_stocks import DEFAULT_BUSINESS, DEFAULT_DOSSIERS, GrowthState, load_growth_state
+from screen_cigar_butts import POOL as DEFAULT_CIGAR_POOL, cigar_butt_rows, pv_cb_at
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -482,6 +483,8 @@ def parse_args() -> argparse.Namespace:
                         help="业务属性登记表（个人投资体系第 5.12 节）：§9.3.6 成长股")
     parser.add_argument("--dossiers", type=Path, default=DEFAULT_DOSSIERS,
                         help="逐票档案：§9.3.6 成长股重点复核记录")
+    parser.add_argument("--cigar-pool", type=Path, default=DEFAULT_CIGAR_POOL,
+                        help="烟蒂池表（§6.10 第 5 条）：在册且不在 worth_attention 的持仓不做出名单、涨幅减持与换仓卖出源判定")
     return parser.parse_args()
 
 
@@ -965,7 +968,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                              holding_rows: list[dict[str, object]] | None = None,
                              sell_counters: dict[str, int] | None = None,
                              exposure_cap: float | None = None, cap_cash: float | None = None,
-                             growth: GrowthState | None = None) -> dict[str, object]:
+                             growth: GrowthState | None = None,
+                             cigar: dict[str, dict] | None = None) -> dict[str, object]:
     """§9.3.2 全部六步：先卖后买。
 
     卖出侧（第 4 步）逐持仓判（v4.222 起不设价格止损）：
@@ -979,6 +983,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     常规卖出后按持仓市值比例减仓至上限，每笔买入以买后总仓位 ≤ 上限为限（与回测 enforce_equity_bond_cap／equity_bond_buy_shares 同序同式）。
     `growth`：§9.3.6 成长股登记与重点复核状态（只在生产，回测不复现）。成长股持仓不做涨幅减持、不作换仓卖出源，
     持仓侧 P/V ≥ SEC93_GROWTH_TRIM_PV 减一档；改判的持仓每日减一档；无有效「通过」记录的不进合格集；买入受成长股总额上限。
+    `cigar`：§6.10 烟蒂池表行（`cigar_butt_rows`）。其中不在 `members` 的持仓买卖由用户决定（§6.10 第 5 条）：
+    不做出名单、涨幅减持，也不作换仓卖出源；股债总仓位上限照常计入并按比例减仓。
     """
     holdings = holdings or {}
     counters = counters if counters is not None else {}
@@ -987,8 +993,10 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     blocked = blocked or set()
     tactical_gated = tactical_gated or set()
     growth = growth or GrowthState()
+    cigar = cigar or {}
     tranche = nav * SEC93_TRANCHE_PCT
     held_codes = set(holdings)
+    cigar_held = {c for c in cigar if c in held_codes and (members is None or c not in members)}
     by_code: dict[str, dict[str, object]] = {str(r["security_code"]).zfill(6): r for r in rows}
     for r in holding_rows or []:
         by_code.setdefault(str(r["security_code"]).zfill(6), r)
@@ -1059,6 +1067,9 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                                   note="停牌或取数失败：按 §9.1 执行日停牌跳过并复核"))
             continue
         ma20 = to_float(r.get("ma20"))
+        # §6.10 第 5 条：烟蒂股持仓的买卖由用户决定——不做出名单与涨幅减持（换仓卖出源下方同样排除）
+        if code in cigar_held:
+            continue
         # §9.3.1「止损」（v4.222）：不设价格止损，持仓表的止损锚不进判定。
         # ② 出名单：每日减一档，不加走势条件
         if members is not None and code not in members:
@@ -1170,6 +1181,8 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                     continue                                   # 当日已换仓或已涨幅减持的持仓不再作卖出源
                 if hcode in growth.growth or hcode in growth.exiting:
                     continue                                   # §9.3.1 成长股卖出行：成长股持仓不作换仓卖出源
+                if hcode in cigar_held:
+                    continue                                   # §6.10 第 5 条：烟蒂股持仓不作换仓卖出源
                 hr = by_code.get(hcode)
                 hp, hm20 = to_float((hr or {}).get("close")), to_float((hr or {}).get("ma20"))
                 if hp is None or hr.get("tradable") is False:
@@ -1397,9 +1410,12 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                     if code in by_code and isinstance(by_code[code].get("hold_pv"), float)
                     and isinstance(by_code[code].get("model_pv"), float)
                     and abs(by_code[code]["hold_pv"] - by_code[code]["model_pv"]) > 5e-5]
+    # 烟蒂股持仓（报告用）：(名称, 当日收盘折算的 P/V_cb 或 None, 池表状态)
+    cigar_rows = [(holdings[c].get("name", c), pv_cb_at(cigar[c], to_float((by_code.get(c) or {}).get("close"))),
+                   cigar[c].get("status", "")) for c in sorted(cigar_held)]
     return {"plan": plan, "sells": sells, "sell_notes": sell_notes, "missing_holdings": missing_holdings,
             "netted": netted_rows, "stop_conflict": stop_conflict,
-            "hold_pv_diff": hold_pv_diff,
+            "hold_pv_diff": hold_pv_diff, "cigar_held": cigar_rows,
             "swap_targets": swap_targets, "swap_stop_reason": swap_stop_reason, "swap_blocked": swap_blocked,
             "dropped": dropped, "corr_unknown": corr_unknown,
             "eligible": eligible, "capped": capped, "cooled": cooled,
@@ -1499,6 +1515,9 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
         print(f"     持仓 {result['n_held']} 只已载入｜{cap_txt}")
         for name, hpv, cpv in result.get("hold_pv_diff") or []:
             print(f"     [持仓侧带] {name}：持仓侧 P/V {hpv:.4f}（候选侧 {cpv:.4f}）——换仓来源按持仓侧判")
+        for name, pv_cb, status in result.get("cigar_held") or []:
+            print(f"     [烟蒂股·用户决定] {name}：不做出名单、涨幅减持与换仓判定，股债总仓位上限照常（§6.10 第 5 条）"
+                  f"｜P/V_cb {f'{pv_cb:.3f}' if pv_cb is not None else '—'}（池表 {status}）")
     # 3. 卖出清单
     print(f"  3. 卖出清单：{len([s for s in sells if s['rule'] not in ('数据缺失',)])} 条"
           + ("（**今日无卖出**）" if not sells else ""))
@@ -1630,6 +1649,8 @@ def run_execution(args, publication):
     hold_bands = load_model_bands(args.hold_bands, evidence_date)
     holdings = load_holdings_detail(args.holdings)
     members = load_worth_attention_codes(args.triage)
+    cigar_pool = getattr(args, "cigar_pool", None)
+    cigar = cigar_butt_rows(holdings, members, cigar_pool) if cigar_pool is not None else {}
     blocked = load_blocked_codes(args.review_queue)
     tactical = load_tactical_gate_codes(args.tiers)
     growth = load_growth_state(getattr(args, "business", None), getattr(args, "dossiers", None), bands)
@@ -1674,11 +1695,12 @@ def run_execution(args, publication):
     import track_holdings_daily as tracker
     tracked = tracker.track(args.holdings, args.input, date.fromisoformat(args.as_of), '', args.timeout,
                             snapshots={r['security_code']: r for r in all_rows},
-                            hold_bands=hold_bands, candidate_bands=bands, members=members, growth=growth)
+                            hold_bands=hold_bands, candidate_bands=bands, members=members, growth=growth,
+                            cigar=cigar)
     result = section93_execution_plan(rows, args.nav, args.funds, holdings, blocked, tactical,
                                      members, counters['buy'], extra, sell_counters=counters['sell'],
                                      exposure_cap=eb_cap, cap_cash=cash_now - debt_now if eb_cap is not None else None,
-                                     growth=growth)
+                                     growth=growth, cigar=cigar)
     result['eb'] = (dict(spread=eb_signal.spread, observed_on=eb_signal.observed_on, cap=eb_cap,
                          cash=cash_now, debt=debt_now, source=cash_source) if eb_signal else None)
     staged = {p: publication.stage(p) for p in (args.output_csv, args.plan_out, args.sell_out,
@@ -1738,9 +1760,10 @@ def main() -> int:
     args.publication = args.publication or args.plan_out.with_name('daily_execution_publication.json')
     args.evidence_proof = args.evidence_proof or ROOT / f'data/interim/daily_evidence_{args.as_of}.json'
     outputs = [args.output_csv, args.plan_out, args.sell_out, args.cooldown_state, args.tracking_out, args.log_file]
-    growth_inputs = [p for p in (getattr(args, "business", None), getattr(args, "dossiers", None)) if p is not None]
+    optional_inputs = [p for p in (getattr(args, "business", None), getattr(args, "dossiers", None),
+                                   getattr(args, "cigar_pool", None)) if p is not None]
     input_paths = {p.resolve() for p in (args.input, args.holdings, args.triage, args.tiers, args.model_bands,
-                                        args.hold_bands, args.review_queue, args.evidence_proof, *growth_inputs,
+                                        args.hold_bands, args.review_queue, args.evidence_proof, *optional_inputs,
                                         args.cooldown_executions or args.cooldown_state.with_name('cooldown_executions.csv'))}
     if any(p.resolve() in input_paths for p in outputs):
         print('输入与发布路径不得重叠', file=sys.stderr)

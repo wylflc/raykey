@@ -24,6 +24,7 @@ from screen_daily_volume_price_signals import (DEFAULT_HOLD_BANDS, DEFAULT_MODEL
                                                load_worth_attention_codes, load_model_bands)
 from workflow_decision_log import WORKFLOW_VERSION, append_decision_log
 from pv_ratio import trading_pv  # noqa: E402  v4.62 OI-091
+from screen_cigar_butts import cigar_butt_rows, pv_cb_at
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_HOLDINGS = ROOT / "data/processed/a_share_holdings.csv"
@@ -70,6 +71,8 @@ FIELDNAMES = [
     # 与 upside 是同一个量的倒数关系（pv = 1/(1+upside)），但阈值定在 pv 上，故必须直接输出，
     # 不让读者每天心算倒数。
     "pv",
+    # §6.10 第 5 条烟蒂股持仓：池表 P/V_cb 按池表股本折到当日收盘（有复核值用复核值）；其余持仓留空
+    "pv_cb",
     "action",
     "note",
     "scanned_at_utc",
@@ -166,8 +169,9 @@ def resolve_prices(codes: list[str], as_of: date,
     return out, ma20s, ma60s, label
 
 
-def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeout: float, *, snapshots=None, hold_bands=None, candidate_bands=None, members=None, growth=None) -> list[dict[str, object]]:
+def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeout: float, *, snapshots=None, hold_bands=None, candidate_bands=None, members=None, growth=None, cigar=None) -> list[dict[str, object]]:
     # `growth`：§9.3.6 成长股状态（扫描器同一份）；成长股持仓的卖出按 §9.3.1 成长股卖出行说明
+    # `cigar`：§6.10 第 5 条烟蒂股持仓（`cigar_butt_rows`，扫描器同一份）；缺省读烟蒂池表
     # Tests may supply module fixtures; normal calls always resolve their own date.
     selected_hold = hold_bands if hold_bands is not None else MODEL_BANDS
     selected_candidate = candidate_bands if candidate_bands is not None else CAND_BANDS
@@ -184,6 +188,8 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
     members = load_worth_attention_codes() if members is None else members
     if members is None:
         raise ValueError("缺三类表，不能判定持仓退出")
+    if cigar is None:
+        cigar = cigar_butt_rows({h["security_code"].zfill(6) for h in holdings}, members)
     pool = load_pool(pool_file)
     if snapshots is None:
         prices, ma20s, ma60s, price_label = resolve_prices([h["security_code"].zfill(6) for h in holdings], as_of, timeout)
@@ -220,9 +226,15 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
             notes.append(f"持仓侧 `P/V` {pv:.2f}（候选侧 {cand_pv:.2f}；换仓来源按持仓侧判）")
         if close is None:
             notes.append("**未取到当日行情**（停牌或接口失败）：`P/V` 未算出，该票当日不进 §9.3 判定")
-        if code not in members:
+        cb = cigar.get(code)
+        pv_cb = pv_cb_at(cb, close) if cb else None
+        if cb:
+            notes.append(f"烟蒂股（§6.10 第 5 条）：买卖由用户决定，不做出名单、涨幅减持与换仓判定"
+                         f"｜池表 {cb.get('status', '')}、{cb.get('cb_type', '')} 类"
+                         + (f"｜P/V_cb {pv_cb:.3f}" if pv_cb is not None else "｜P/V_cb 无法折算"))
+        elif code not in members:
             notes.append("已移出 worth_attention——按 §9.3.2 第四步逐日清仓")
-        if pv is None:
+        if pv is None and not cb:
             notes.append("池内无模型价值区间（无法估值）：无 `P/V`，当日不进机械判定")
         # §9.3.1 涨幅减持行：唯一判定在扫描器 `holding_trim_signal`（只看涨幅，不看走势）。
         # 无带／无 P/V 的票照判（只要有收盘价与成本）。
@@ -231,7 +243,9 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
         trim_rule, trim_why = holding_trim_signal(close, ma20, cost)
         gain = (close / cost - 1.0) if (close is not None and cost is not None and cost > 0) else None
         growth_holding = growth is not None and (code in growth.growth or code in growth.exiting)
-        if growth is not None and code in growth.exiting:
+        if cb:
+            trim_rule = ""                # §6.10 第 5 条：烟蒂股不做涨幅减持，也不作换仓让位来源
+        elif growth is not None and code in growth.exiting:
             notes.append("**成长股复核改判**：每日减一档直至清空，期间不买入（§9.3.1 成长股卖出行）")
         elif growth_holding:
             trim_rule = ""
@@ -244,7 +258,7 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
                          f"（§9.3.1 涨幅行）；资金不足时优先作换仓卖出源（涨幅最大者先）")
         elif trim_why:
             notes.append(trim_why)
-        if close is not None and (cost is None or cost <= 0):
+        if not cb and close is not None and (cost is None or cost <= 0):
             # §13 第 3 条：判据缺失必须显式落字，不能静默等同「未触发」。
             notes.append("**持仓均价未填**（`cost_basis` 空）：§9.3.1 涨幅减持行无法判定，请按 §11.2 补填（买入加权、除权按 §11.4 折算）")
 
@@ -253,7 +267,7 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
         ma60 = ma60s.get(code)
         stop_hit, stop_line = "停用", None
         # §9.3.1 换仓行（v4.222）：盈利 ≥ 30% 且收盘 ≥ MA20 × 1.15 → 资金不足一档且有未持仓合格候选时作换仓卖出源
-        if (not growth_holding and close is not None and cost is not None and cost > 0 and ma20 and trim_rule != "涨幅减持"
+        if (not cb and not growth_holding and close is not None and cost is not None and cost > 0 and ma20 and trim_rule != "涨幅减持"
                 and close >= cost * (1.0 + SEC93_SWAP_EXT_GAIN) and close >= ma20 * (1.0 + SEC93_SWAP_EXT_MA20)):
             notes.append(f"**满足换仓让位条件**：盈利 {gain:.0%} ≥ {SEC93_SWAP_EXT_GAIN:.0%} 且收盘为 MA20 的 {close / ma20:.2f} 倍 ≥ "
                          f"{1 + SEC93_SWAP_EXT_MA20:.2f}（§9.3.1 换仓行；资金不足一档且有未持仓合格候选时减一档让位）")
@@ -262,7 +276,11 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
         # `持有` 是唯一读起来像「已检查、没事」的取值，而没有现价恰恰意味着 `P/V` 没算过。
         # 一只涨幅已达标、本该减持的停牌股若显示为持有，就在卖出规则上
         # 制造了静默失效——这正是 §13 第 3 条要拦的形态。
-        action = "数据缺失" if close is None or (pv is None) else "持有"
+        # 烟蒂股持仓不读模型 `P/V`，有行情即记「烟蒂股（用户决定）」（§6.10 第 5 条）。
+        if close is None or (pv is None and not cb):
+            action = "数据缺失"
+        else:
+            action = "烟蒂股（用户决定）" if cb else "持有"
 
         rows.append(
             {
@@ -283,6 +301,7 @@ def track(holdings_file: Path, pool_file: Path, as_of: date, symbols: str, timeo
                 "fair_price_high": "" if high is None else f"{high:g}",
                 "upside": upside,
                 "pv": "" if pv is None else f"{pv:.2f}",
+                "pv_cb": "" if pv_cb is None else f"{pv_cb:.3f}",
                 "action": action,
                 "note": "；".join(notes),
                 "scanned_at_utc": now,
@@ -442,7 +461,11 @@ def main() -> None:
     as_of = date.fromisoformat(args.as_of)
     from growth_stocks import load_growth_state
     growth = load_growth_state(bands=load_model_bands(DEFAULT_MODEL_BANDS, as_of=evidence_iso_for_signal(as_of)))
-    rows = track(args.holdings, args.valuation_pool, as_of, args.symbols, args.timeout, growth=growth)
+    members = load_worth_attention_codes()
+    with args.holdings.open(newline="", encoding="utf-8") as handle:
+        cigar = cigar_butt_rows({r["security_code"].zfill(6) for r in csv.DictReader(handle)}, members)
+    rows = track(args.holdings, args.valuation_pool, as_of, args.symbols, args.timeout, growth=growth,
+                 members=members, cigar=cigar)
 
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", newline="", encoding="utf-8") as handle:
@@ -453,16 +476,21 @@ def main() -> None:
 
     gain_trim = []
     for r in rows:
-        if r["security_code"] in growth.growth or r["security_code"] in growth.exiting:
-            continue                      # §9.3.1 成长股卖出行：成长股不做涨幅减持
+        if r["security_code"] in growth.growth or r["security_code"] in growth.exiting or r["security_code"] in cigar:
+            continue                      # §9.3.1 成长股卖出行、§6.10 第 5 条烟蒂股：不做涨幅减持
         c, k = to_float(r.get("close")), to_float(r.get("cost_basis"))
         rule, _why = holding_trim_signal(c, to_float(r.get("ma20")), k)
         if rule == "涨幅减持":
             gain_trim.append((c / k - 1.0, r))
     gain_trim.sort(key=lambda t: -t[0])
-    no_pv = [r for r in rows if not str(r["pv"]).strip()]
-    no_band = [r for r in rows if not r["fair_price_low"]]
+    regular = [r for r in rows if r["security_code"] not in cigar]
+    no_pv = [r for r in regular if not str(r["pv"]).strip()]
+    no_band = [r for r in regular if not r["fair_price_low"]]
     print(f"tracked {len(rows)} holdings as of {as_of}")
+    for r in rows:
+        if r["security_code"] in cigar:
+            print(f"  烟蒂股（用户决定，§6.10 第 5 条）：{r['security_name']} P/V_cb {r['pv_cb'] or '—'}"
+                  f"——不做出名单、涨幅减持与换仓判定，股债总仓位上限照常")
     # §11.4 检出排在 P/V 结论之前打印：除权未调时，下面那行 P/V 就是错的（§9.1 第四步）。
     report_ex_dividend(rows, as_of, args.timeout)
     # §9.3.1 换仓行（v4.222）：满足让位条件的持仓（无事也打印）
@@ -473,7 +501,7 @@ def main() -> None:
     else:
         print(f"  满足换仓让位条件（盈利 ≥ {SEC93_SWAP_EXT_GAIN:.0%} 且收盘 ≥ MA20 × {1 + SEC93_SWAP_EXT_MA20:.2f}）：无"
               "（v4.222 起不设价格止损）")
-    no_cost = [r for r in rows if not (to_float(r.get("cost_basis")) or 0) > 0]
+    no_cost = [r for r in regular if not (to_float(r.get("cost_basis")) or 0) > 0]
     if no_cost:
         print(f"  **持仓均价未填 {len(no_cost)} 只**：{'、'.join(str(r['security_name']) for r in no_cost)}——§9.3.1 涨幅减持行对其无法判定，请补 `cost_basis`（§11.2）")
     if gain_trim:

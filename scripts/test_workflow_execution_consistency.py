@@ -318,6 +318,24 @@ class GuardedExecution(unittest.TestCase):
         self.a.holdings.write_text('changed')
         with self.assertRaises(ValueError):guard.verify_publication(self.a.publication,DAY)
 
+    def test_cigar_butt_holding_user_decided_and_pool_digested(self):
+        # §6.10 第 5 条：池外烟蒂股持仓涨幅 225%、不在 worth_attention，仍不进卖出清单；池表进发布凭据的输入摘要
+        self.a.cigar_pool=self.p/'cigar.csv'
+        self.write(self.a.cigar_pool,[dict(security_code='600987',status='watch',cb_type='B',price=6.28,
+                                           market_cap_yi=64.11,v_cb_yi=69.9,v_cb_reviewed_yi=65.66)])
+        self.write(self.a.holdings,[dict(security_code='600987',current_shares=4000,cost_basis=2.0,entry_stop_price='')])
+        evidence=json.loads(self.a.evidence_proof.read_text());evidence['covered_codes'].append('600987')
+        guard.atomic_json(self.a.evidence_proof,evidence)
+        s.scan.side_effect=[[copy.deepcopy(self.quote)],[row('600987',price=6.5,pv=None,mark_close=6.5,mark_date=DAY,tradable=True)]]
+        self.assertEqual(s.main(),0)
+        with self.a.sell_out.open() as f:self.assertEqual(list(csv.DictReader(f)),[])
+        with self.a.tracking_out.open() as f:tracked=list(csv.DictReader(f))
+        self.assertEqual((tracked[0]['action'],tracked[0]['pv_cb']),('烟蒂股（用户决定）',f'{64.11*6.5/6.28/65.66:.3f}'))
+        value=guard.verify_publication(self.a.publication,DAY)
+        self.assertIn(str(self.a.cigar_pool.resolve()),value['inputs'])
+        self.a.cigar_pool.write_text('changed')
+        with self.assertRaises(ValueError):guard.verify_publication(self.a.publication,DAY)
+
 
 class PublicationRecovery(unittest.TestCase):
     def test_concurrent_change_is_not_overwritten_by_rollback(self):

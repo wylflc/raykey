@@ -10,8 +10,9 @@ from datetime import date
 
 from a_share_signal_dates import evidence_iso_for_signal
 from pv_ratio import load_model_bands, trading_pv
+from screen_cigar_butts import cigar_butt_rows, pv_cb_at
 from screen_daily_volume_price_signals import (
-    DEFAULT_HOLD_BANDS, DEFAULT_MODEL_BANDS, SECURITIES_MASTER, resolve_live_band,
+    DEFAULT_HOLD_BANDS, DEFAULT_MODEL_BANDS, SECURITIES_MASTER, load_worth_attention_codes, resolve_live_band,
 )
 
 
@@ -49,8 +50,15 @@ def main() -> int:
     hold = load_model_bands(DEFAULT_HOLD_BANDS, as_of=evidence) if DEFAULT_HOLD_BANDS.exists() else candidate
     result = trade_valuation(code, name, args.as_of, args.price, candidate, hold)
     result["hold_fallback_to_candidate"] = not DEFAULT_HOLD_BANDS.exists()
+    ok = all(result[s]["pv"] is not None for s in ("candidate", "hold"))
+    cigar = cigar_butt_rows({code}, load_worth_attention_codes()).get(code)
+    if cigar:      # §6.10 第 5 条：烟蒂股成交记 P/V_cb，规则「烟蒂股（用户决定）」，不登记冷却
+        pv_cb = pv_cb_at(cigar, args.price)
+        result["cigar_butt"] = {"status": cigar["status"], "cb_type": cigar["cb_type"],
+                                "pv_cb": round(pv_cb, 4) if pv_cb is not None else None, "rule": "烟蒂股（用户决定）"}
+        ok = pv_cb is not None
     print(json.dumps(result, ensure_ascii=False, indent=2))
-    return 0 if all(result[s]["pv"] is not None for s in ("candidate", "hold")) else 1
+    return 0 if ok else 1
 
 
 if __name__ == "__main__":

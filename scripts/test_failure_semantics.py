@@ -54,6 +54,7 @@ def run_tracker(price, *, pool=True, monkey_quotes=None):
     real_fetch, real_load, real_open = tracker.fetch_spot_quotes, tracker.load_pool, Path.open
     real_raw = tracker.fetch_raw_close
     real_bands = tracker.MODEL_BANDS
+    real_cigar = tracker.cigar_butt_rows
     tracker.MODEL_BANDS = {}   # 空模型必须传播，不使用池展示带兜底
 
     class FakeFile:
@@ -75,6 +76,7 @@ def run_tracker(price, *, pool=True, monkey_quotes=None):
     tracker.fetch_raw_close = lambda code, as_of, timeout: (
         price, (price * 1.05 if price else None), None)
     tracker.load_pool = lambda *a, **k: ({"600519": POOL_ROW} if pool else {})
+    tracker.cigar_butt_rows = lambda *a, **k: {}      # 烟蒂池表也走 Path.open，不让假文件冒充池表
     Path.open = lambda self, *a, **k: FakeFile()  # type: ignore[assignment]
     try:
         return tracker.track(Path("x.csv"), Path("y.csv"), date(2026, 8, 3), "", 8.0)[0]
@@ -82,6 +84,7 @@ def run_tracker(price, *, pool=True, monkey_quotes=None):
         tracker.fetch_spot_quotes, tracker.load_pool, Path.open = real_fetch, real_load, real_open
         tracker.fetch_raw_close = real_raw
         tracker.MODEL_BANDS = real_bands
+        tracker.cigar_butt_rows = real_cigar
 
 
 def case_no_quote_is_not_hold():

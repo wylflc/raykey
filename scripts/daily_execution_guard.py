@@ -89,6 +89,8 @@ def validate_inputs(args):
         args.model_bands: (('security_code', 'intrinsic_value', 'available_at'), False),
         args.hold_bands: (('security_code', 'intrinsic_value', 'available_at'), False),
     }
+    if getattr(args, 'cigar_pool', None) is not None:   # §6.10 第 5 条：烟蒂股持仓的判定输入
+        required[args.cigar_pool] = (('security_code', 'status', 'price', 'market_cap_yi', 'v_cb_yi', 'v_cb_reviewed_yi'), True)
     rows = {p: read_required(p, *spec) for p, spec in required.items()}
     if args.symbols:
         raise ValueError('执行模式须扫描完整输入池；按代码预览不发布交易计划')
