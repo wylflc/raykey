@@ -36,7 +36,7 @@ A 股上市公司研究、估值、每日执行与持仓跟踪，附港股、美
 | `data/processed/` | 当前结构化真值与生产产物；具体落点读取工作流程 |
 | `data/companies/` | 逐票阅读档案和研究台账；自动估值更新不代表人工研究已复核 |
 | `data/experiments/`、`data/backtest/` | 实验配置、摘要与扫描台账 |
-| `data/scratch/` | 链接到 `/scratch-shared/zwang/mm_quant/RayKey_scratch`：实验大文件与可重下缓存，不入库，14 天内容未变即被自动删除 |
+| `data/scratch/` | 链接到 `/scratch-shared/zwang/mm_quant/raykey_scratch`：实验大文件与可重下缓存，不入库，14 天内容未变即被自动删除 |
 | [数据归档](data/archive/README.md) | 已完成轮次的证据与历史记录 |
 | `scripts/` | 生产脚本、数据工具与本地检查 |
 | `scripts/slurm/` | 常设长时作业入口；资源规范见代理工作规则 |

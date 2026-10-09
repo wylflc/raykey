@@ -36,9 +36,9 @@ TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S %Z'
 
 ## Compute resources
 
-This is a Snellius interactive session. The repository lives at `/home/zwang/project/mm_quant/RayKey`, a link into the shared project space `/gpfs/work1/0/qt15419/zwang/mm_quant/RayKey` (no automatic deletion, no backup; capacity and file count share the group quota). Run `myquota --autodetect` before large writes.
+This is a Snellius interactive session. The repository lives at `/home/zwang/project/mm_quant/raykey`, a link into the shared project space `/gpfs/work1/0/qt15419/zwang/mm_quant/raykey` (no automatic deletion, no backup; capacity and file count share the group quota). Run `myquota --autodetect` before large writes.
 
-- Keep large files out of the repository. State panels, per-arm and sweep outputs, download caches and other regenerable data larger than about 100 MB or more than a few thousand files go under `data/scratch/`, an untracked link to `/scratch-shared/zwang/mm_quant/RayKey_scratch`; experiment bulk goes to `data/scratch/experiments/<dir>/`. Scratch deletes files whose contents have not changed for 14 days, without notice or backup, so keep only regenerable data there; tables, summaries and evidence go in `data/experiments/<dir>/`.
+- Keep large files out of the repository. State panels, per-arm and sweep outputs, download caches and other regenerable data larger than about 100 MB or more than a few thousand files go under `data/scratch/`, an untracked link to `/scratch-shared/zwang/mm_quant/raykey_scratch`; experiment bulk goes to `data/scratch/experiments/<dir>/`. Scratch deletes files whose contents have not changed for 14 days, without notice or backup, so keep only regenerable data there; tables, summaries and evidence go in `data/experiments/<dir>/`.
 - Submit work expected to exceed 10 minutes, use multiple processes or exceed session memory through SLURM. Keep interactive work to short inspections and single-company queries.
 - Put jobs in `scripts/slurm/`, logs in `logs/`. Before submission, delete log files older than 14 days with `find logs -type f -mtime +14 -delete`.
 - Use account `tes21035`, partition `rome`. Request at least 16 CPUs, in multiples of 16; budget 1792 MiB per CPU and at most 128 CPUs per node. Keep `--workers` within the allocation.

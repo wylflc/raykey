@@ -9,6 +9,6 @@
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
 set -euo pipefail
-cd /home/zwang/project/mm_quant/RayKey
+cd /home/zwang/project/mm_quant/raykey
 python3 -u data/experiments/exp_top3_periods_20260915/verify.py
 python3 -u scripts/experimental/render_top3_periods.py --source data/experiments/exp_top3_periods_20260915 --report docs/reports/top3_periods_2026-09-15.zh.md

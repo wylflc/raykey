@@ -2,7 +2,7 @@
 import csv, sys, datetime as dt
 from collections import defaultdict
 from pathlib import Path
-ROOT=Path('/home/zwang/project/mm_quant/RayKey')
+ROOT=Path('/home/zwang/project/mm_quant/raykey')
 sys.path.insert(0, str(ROOT/'scripts'))
 def load_actions(p):
     a=defaultdict(dict)

@@ -10,6 +10,6 @@
 
 # 工作流程 §6.10 第 7 条港股烟蒂池粗筛：全市场取数约 1,000 页，单进程顺序请求
 set -euo pipefail
-cd /home/zwang/project/mm_quant/RayKey
+cd /home/zwang/project/mm_quant/raykey
 : "${HK_SIGNAL_DATE:?Set HK_SIGNAL_DATE to the HK trading day}"
 python3 scripts/screen_cigar_butts_hk.py --signal-date "$HK_SIGNAL_DATE" ${HK_EXTRA_ARGS:-}
