@@ -1,0 +1,103 @@
+{
+  "signal_date": "2026-10-09",
+  "retrieved_at_utc": "2026-10-09T11:01:41.156194+00:00",
+  "source": "eastmoney:RPT_SHAREBONUS_DET, full-market ex-dividend date query",
+  "events": {
+    "000422": {
+      "name": "湖北宜化",
+      "plan": "10派0.50元(含税,扣税后0.45元)",
+      "cash_per_share": 0.05,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.05,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "000680": {
+      "name": "山推股份",
+      "plan": "10派1.00元(含税,扣税后0.90元)",
+      "cash_per_share": 0.1,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.1,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "001207": {
+      "name": "联科科技",
+      "plan": "10派3.00元(含税,扣税后2.70元)",
+      "cash_per_share": 0.3,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.3,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "300919": {
+      "name": "中伟新材",
+      "plan": "10派3.80元(含税,扣税后3.42元)",
+      "cash_per_share": 0.38,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.38,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "603006": {
+      "name": "联明股份",
+      "plan": "10派1.70元(含税,扣税后1.53元)",
+      "cash_per_share": 0.17,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.17,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "603303": {
+      "name": "得邦照明",
+      "plan": "10派0.49元(含税,扣税后0.441元)",
+      "cash_per_share": 0.049,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.049,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "603307": {
+      "name": "扬州金泉",
+      "plan": "10派4.00元(含税,扣税后3.60元)",
+      "cash_per_share": 0.4,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.4,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    },
+    "603337": {
+      "name": "杰克科技",
+      "plan": "10派3.00元(含税,扣税后2.70元)",
+      "cash_per_share": 0.3,
+      "share_ratio": 0.0,
+      "progress": "实施分配",
+      "price_cash_per_share": 0.3,
+      "price_share_ratio": 0.0,
+      "price_rights_ratio": 0.0,
+      "price_rights_price": 0.0,
+      "price_terms_source": "unverified_actual_fallback"
+    }
+  }
+}

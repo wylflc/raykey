@@ -1,0 +1,133 @@
+{
+ "signal_date": "2026-10-09",
+ "checked_at_utc": "2026-10-09T11:13:39.222047+00:00",
+ "status": "passed",
+ "checks": [
+  "whole_pool_unique_codes",
+  "trade_date",
+  "plans_trade_date",
+  "publication_as_of",
+  "publication_verify_passed",
+  "holdings_rows",
+  "tracking_scope",
+  "tracking_close_matches_scan_000651",
+  "independent_quote_000651",
+  "no_price_stop_000651",
+  "tracking_close_matches_scan_603529",
+  "independent_quote_603529",
+  "no_price_stop_603529",
+  "user_account_registered_before_scan",
+  "holdings_and_reported_assets_match",
+  "strategy_columns_check",
+  "cooldown_all_zero",
+  "no_holding_exdiv_today"
+ ],
+ "problems": [],
+ "holdings_market_value_cny": "4873416.00",
+ "reported_total_assets_cny": "4873416.00",
+ "tranche_cny": "136902.59",
+ "scan_funds_cny": "-246374.02",
+ "coverage": {
+  "scanned": 182,
+  "valid_pv": 178,
+  "held": 2
+ },
+ "holdings": {
+  "000651": {
+   "name": "格力电器",
+   "shares": "108000",
+   "close": "38.83",
+   "cost": "38.6984",
+   "gain_pct": 0.34,
+   "ma20": "38.4675",
+   "ma60": "38.5504",
+   "close_over_ma20": 1.0094,
+   "hold_pv": "0.4949",
+   "candidate_pv": "0.5291",
+   "action": "持有",
+   "market_value_cny": "4193640.00"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "shares": "29200",
+   "close": "23.28",
+   "cost": "21.2292",
+   "gain_pct": 9.66,
+   "ma20": "21.4650",
+   "ma60": "21.0315",
+   "close_over_ma20": 1.0846,
+   "hold_pv": "0.8836",
+   "candidate_pv": "0.8836",
+   "action": "持有",
+   "market_value_cny": "679776.00"
+  }
+ },
+ "buy_plan": [],
+ "sell_plan": [],
+ "jobs": {
+  "evidence": "27806518",
+  "refresh_pool": "27806834",
+  "scan": "27806878",
+  "evidence_not_used": {
+   "27805366": "仓库改名前取消（运行约2分钟，停在原子写入的公司行动取数）",
+   "27805439": "新浪配股表5只URLError，按设计非零退出"
+  }
+ },
+ "calendar": "10-09（周五）信号的执行日为10-12（周一）；10-10（周六）调休上班但交易所休市。",
+ "rule_version": "a-share-selection-operation-v4.243",
+ "equity_bond": {
+  "spread_pct": 6.34,
+  "observed_on": "2026-10-09",
+  "pe_ttm": 12.46,
+  "cgb10y": 0.016864,
+  "restricted": false
+ },
+ "eligible": [
+  "600970",
+  "920599",
+  "600690",
+  "600600",
+  "603529",
+  "600036",
+  "601838",
+  "603279"
+ ],
+ "forecast_overlay": {
+  "code": "600176",
+  "name": "中国巨石",
+  "notice_date": "2026-10-10",
+  "v_before": 7.67,
+  "v_after": 8.45,
+  "hold_v_after": 10.68,
+  "close": 38.57,
+  "pv": 4.5631,
+  "hold_pv": 3.6104,
+  "forecast": "前三季度归母净利51.36～53.93亿元，同比+100%～110%"
+ },
+ "announcements": {
+  "query_window": "2026-10-08～2026-10-12",
+  "retrieved_at_beijing": "2026-10-09 19:01",
+  "all_market_rows": 3623,
+  "pool_rows": 179,
+  "new_vs_1008_snapshot": 49,
+  "mandatory_companies": [
+   "000651",
+   "603529",
+   "600176",
+   "600970",
+   "920599",
+   "600690",
+   "600600",
+   "600036",
+   "601838",
+   "603279"
+  ],
+  "primary_reviewed_announcements": [
+   "AN202610081830208681",
+   "AN202610091830263669",
+   "AN202610091830263672"
+  ],
+  "restatement_new_candidates": 0
+ },
+ "repo_rename": "仓库目录 2026-10-09 由 RayKey 改名 raykey，取证、叠加与扫描均在新路径执行；凭据按解析后的绝对路径记录"
+}

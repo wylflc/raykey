@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-08",
-  "generated_at_utc": "2026-10-08T11:52:31.195529+00:00",
-  "sha256": "71ad919f0966e756cf7ef97f2489bb34043510d59027fef4375aa6fa8f71831b",
+  "as_of": "2026-10-09",
+  "generated_at_utc": "2026-10-09T11:09:10.089704+00:00",
+  "sha256": "2627f37c6bf0e639dc3308134149aa9dd668188400d6e10c939142bf2434042c",
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/RayKey/data/processed/a_share_pool_model_bands_adopted.csv": "a2d36b6814f1055d57b10dc5c53b936ef701a47a3492f7b0c858d39c78194719",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/RayKey/data/processed/a_share_business_attributes.csv": "6f16862ea99df580a3c6cf4b9b01ba47ad0f934d82d59d6318f91df008c2900a"
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "8923c03703e36a8863408ab83fdecb7cbca4f0d8124b7741a719deaaa914ae21",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_business_attributes.csv": "6f16862ea99df580a3c6cf4b9b01ba47ad0f934d82d59d6318f91df008c2900a"
   }
 }
