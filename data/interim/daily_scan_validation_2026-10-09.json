@@ -73,7 +73,7 @@
    "27805439": "新浪配股表5只URLError，按设计非零退出"
   }
  },
- "calendar": "10-09（周五）信号的执行日为10-12（周一）；10-10（周六）调休上班但交易所休市。",
+ "calendar": "10-09（周五）信号的执行日为 10-12（周一）。",
  "rule_version": "a-share-selection-operation-v4.243",
  "equity_bond": {
   "spread_pct": 6.34,
