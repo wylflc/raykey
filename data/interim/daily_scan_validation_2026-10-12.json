@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-12",
- "checked_at_utc": "2026-10-12T11:48:37.776444+00:00",
+ "checked_at_utc": "2026-10-12T11:56:29.354611+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -68,8 +68,8 @@
   "evidence": "27917649",
   "refresh_pool": "27919215",
   "scan": "27919888",
-  "refresh_pool_republish": "27933765",
-  "scan_republish": "27933766"
+  "refresh_pool_republish": "27934254",
+  "scan_republish": "27934256"
  },
  "calendar": "10-12（周一）信号的执行日为 10-13（周二）。",
  "rule_version": "a-share-selection-operation-v4.244",
@@ -178,5 +178,5 @@
   "OI-279",
   "OI-280"
  ],
- "republication": "第二次发布：中材国际档案复核触发线改口径并完成 §7.4 事件复核后，重建池与队列并重发；清单不变（0 买 0 卖）"
+ "republication": "第三次发布：中材国际档案复核触发线改口径并完成 §7.4 事件复核后重建池与队列并重发（第二次 27933765／27933766；阅读版条目标点修正后第三次 27934254／27934256）；清单不变（0 买 0 卖）"
 }
