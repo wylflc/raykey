@@ -132,6 +132,19 @@ def quote_date(quote_time: object, fallback: str) -> str:
 REPORT_EVENT = {"03-31": "一季报", "06-30": "中报", "09-30": "三季报", "12-31": "年报"}
 
 
+def band_event(band: dict) -> str:
+    """估值事件：带的报告期类型；§6.4 叠加行另加「预告」或「快报」。
+
+    叠加把带的 `report_date` 推到预告期末，只按月日取报告类型会把预告叠加行显示成「三季报」，
+    读者据此以为正式三季报已进带（OI-282；判例：立讯精密 2026-08-25 的带显示「三季报」）。
+    """
+    event = REPORT_EVENT.get(band["report_date"][5:10], "定期报告")
+    if band.get("forecast_overlay"):
+        source = band.get("forecast_source") or ""
+        event += next((kind for kind in ("快报", "预告") if source.startswith(kind)), "")
+    return event
+
+
 # **生产模型带的唯一落点**（§2 固定产物表）。此前这里指向 `data/interim/pool_model_bands.csv`
 # ——那是 v2.72 时代的中间物化文件，已在 2026-08-17 修 dossier 污染时删除。文件一删，
 # 下面的 `if not path.exists(): return best` 就让整张表**静默退回 `evidence_cutoff()` 兜底**，
@@ -353,7 +366,7 @@ def main() -> int:
         stale = ev if (row.get("fair_price_basis") or "").startswith("无法估值") and ev else None
         if mb and not stale:
             row["evidence_available_at"] = mb["available_at"][:10]
-            row["valuation_evidence_event"] = REPORT_EVENT.get(mb["report_date"][5:10], "定期报告")
+            row["valuation_evidence_event"] = band_event(mb)
             # 复核日 = 模型最近评估过的报告期可得日（含护栏拒绝行，`model_evaluated_at`）：
             # 采纳带停在更早 ok 行（护栏连续拒绝／无法估值）时，已评估的新报告期不再重复入队。
             row["valuation_reviewed_at"] = max(mb["available_at"][:10],

@@ -69,6 +69,18 @@ class ReportEventTest(unittest.TestCase):
                              ("2026-09-30", "三季报"), ("2025-12-31", "年报")):
             self.assertEqual(app.REPORT_EVENT.get(period[5:10], "定期报告"), name)
 
+    def test_overlay_rows_name_the_forecast_or_express(self) -> None:
+        """§6.4 叠加行在报告期类型后加预告或快报；未叠加行只写报告类型（OI-282）。"""
+        for overlay, source, name in (("forecast", "预告·预增", "三季报预告"),
+                                      ("express", "快报", "三季报快报"),
+                                      ("bank_no_change", "预告·略增", "三季报预告"),
+                                      ("manual_override", "", "三季报"),
+                                      ("", "", "三季报")):
+            band = {"report_date": "2026-09-30", "forecast_overlay": overlay, "forecast_source": source}
+            self.assertEqual(app.band_event(band), name)
+        self.assertEqual(app.band_event({"report_date": "2025-12-31", "forecast_overlay": "express",
+                                         "forecast_source": "快报"}), "年报快报")
+
     def test_falls_back_to_row_period_when_column_missing(self) -> None:
         """旧文件没有 `model_evaluated_report_date` 列时退回本行报告期，不报错。"""
         fh = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False,
