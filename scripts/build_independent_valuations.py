@@ -20,7 +20,7 @@ FIELDS = [
     "review_id", "batch_id", "review_date", "reviewer_type", "reviewer", "market", "security_code", "security_name",
     "status", "superseded_by", "price_date", "evidence_cutoff", "currency", "unit", "price", "v_base", "v_bear", "v_bull",
     "pv", "scenarios", "verdict", "confidence", "coe", "method", "implied_irr", "model_v", "model_pv",
-    "conclusion", "basis", "risks", "falsifiers", "next_check", "report", "evidence",
+    "conclusion", "basis", "key_events", "key_metrics", "risks", "falsifiers", "next_check", "report", "evidence",
 ]
 REQUIRED = ("review_id", "batch_id", "review_date", "reviewer_type", "reviewer", "market", "security_code",
             "security_name", "status", "report")
@@ -145,6 +145,8 @@ def render(rows: list[dict[str, str]]) -> str:
         out += [f"### {r['security_name']}（{r['security_code']}）", "",
                 f"- **结论**：{r['conclusion']}",
                 f"- **依据**：{r['basis'] or '—'}",
+                *([f"- **关键事件**：{r['key_events']}"] if r.get("key_events") else []),
+                *([f"- **关键指标**：{r['key_metrics']}"] if r.get("key_metrics") else []),
                 f"- **情景**：{r['scenarios'] or '—'}",
                 f"- **方法与股权成本**：{r['method'] or '—'}｜{r['coe'] or '—'}｜基准隐含 IRR {irr}",
                 f"- **主要风险**：{r['risks'] or '—'}",

@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.245 | 2026-10-12 | §6.9 第 3 条：独立估值登记的现行行自成一体（`conclusion` 写全部主要结论与操作结论），新增 `key_events`（关键事件与日期）、`key_metrics`（关键指标读数与跟踪门槛）两列，公告或事件的独立审计同样登记。落点：`data/processed/independent_valuations.csv`、`build_independent_valuations.py`（两列与阅读版「关键事件」「关键指标」两项，有值才显示）、README 文档表 |
 | v4.244 | 2026-10-12 | §10.2 取消授信额度指标（用户裁定）：账户级约束改为券商可用保证金，实际授信余量即券商可用保证金，可用资金 = 券商可用保证金 + 现金，可用保证金为负即不可新增买入；`N × 66.6% − 融资负债` 只作未回报时与回测的可用保证金估算，报告不列推算额度与超额。落点：§8.2 `--funds`、§10.2、§12.1 融资口径与资金记账用词、个人体系 §4、扫描器 `--funds` 说明与买入清单行文字、`test_strategy_parameter_sync`／`test_cash_accounting` |
 | v4.243 | 2026-10-08 | §6.10 第 7 条 D 类：A+H 银行的复核值与闸门结论两地共用，`P/V_cb` 与 §6.9 独立 `P/V` 按各自股价算，A 股重新复核时同步港股池表（用户裁定）。港股池表按此沿用 A 股 2026-10-07 复核：重庆农商、邮储、交通、中国银行 H 股重点级，中信、重庆银行、青岛、浙商 H 股退回；独立估值登记补四家 H 股引用行。依据 OI-276 首轮报告第四节 |
 | v4.242 | 2026-10-08 | §6.10 增第 7 条港股烟蒂池（用户裁定按建议口径）：范围、数据与汇率、A／B／C 科目映射、B 类以股东应占溢利减重估盈余代扣非、D 类 A+H 银行沿用 A 股 `V_cb`、其余银行 COE（香港及外资 11%）、闸门差异与港股通标注（沪深交易所名单，`southbound_sh`／`southbound_sz`／`southbound_eligible`）；第 6 条港股同节奏。池表 `data/processed/cigar_butt_pool_hk.csv`、粗筛 `data/interim/cigar_butt_screen_hk.csv`，实现 `screen_cigar_butts_hk.py`（作业 `scripts/slurm/cigar_butt_screen_hk.sbatch`），阅读版加第六节（`build_cigar_butt_pool.py`）；§0 路由、§2 真值行。依据 OI-276 |
