@@ -30,5 +30,7 @@
 | `companies/ADBE_Adobe.md` | 复核全文，含来源链接 |
 | `tools/adbe_dcf.py` | 估值计算（输入写在脚本内），`python3 adbe_dcf.py` 复现正文数字 |
 | `companies/ADBE_vs_Figma.md`、`ADBE_vs_Canva.md` | 用户同日追问 Figma、Canva 与 Adobe 的具体关系、Adobe 的应对及对未来的影响；各由一个独立代理完成，约束同上，只读本批与上一批的 Adobe 评审 |
+| `companies/ADBE_customer_groups.md` | 用户同日追问 Adobe 的客户分类与各类客户的增长数据；独立代理完成，数字全部来自 SEC 申报与 Adobe 投资者关系文件 |
+| `companies/ADBE_short_drama_video.md` | 用户同日追问短剧、创意视频的增加能否带来 Adobe 业务增加；独立代理完成，含国内 124 条、海外 23 条招聘启事的软件统计（启事清单未入库，按文内地址格式可重取） |
 
 原始下载（SEC 原文、GitHub 文档、媒体网页）存于会话临时目录，不入库；按正文来源链接可重取。
