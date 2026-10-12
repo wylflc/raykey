@@ -1,0 +1,179 @@
+{
+ "signal_date": "2026-10-12",
+ "checked_at_utc": "2026-10-12T08:05:50.442910+00:00",
+ "status": "passed",
+ "checks": [
+  "whole_pool_unique_codes",
+  "trade_date",
+  "plans_trade_date",
+  "publication_as_of",
+  "publication_verify_passed",
+  "holdings_rows",
+  "tracking_scope",
+  "tracking_close_matches_scan_000651",
+  "independent_quote_000651",
+  "no_price_stop_000651",
+  "tracking_close_matches_scan_603529",
+  "independent_quote_603529",
+  "no_price_stop_603529",
+  "user_account_registered_before_scan",
+  "holdings_and_reported_assets_match",
+  "strategy_columns_check",
+  "cooldown_all_zero",
+  "no_holding_exdiv_today"
+ ],
+ "problems": [],
+ "holdings_market_value_cny": "4955788.00",
+ "reported_total_assets_cny": "4955788.00",
+ "tranche_cny": "140990.11",
+ "scan_funds_cny": "-188920.76",
+ "coverage": {
+  "scanned": 182,
+  "valid_pv": 178,
+  "held": 2
+ },
+ "holdings": {
+  "000651": {
+   "name": "格力电器",
+   "shares": "108000",
+   "close": "39.59",
+   "cost": "38.6984",
+   "gain_pct": 2.3,
+   "ma20": "38.498",
+   "ma60": "38.6061",
+   "close_over_ma20": 1.0284,
+   "hold_pv": "0.5046",
+   "candidate_pv": "0.5395",
+   "action": "持有",
+   "market_value_cny": "4275720.00"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "shares": "29200",
+   "close": "23.29",
+   "cost": "21.2292",
+   "gain_pct": 9.71,
+   "ma20": "21.5643",
+   "ma60": "21.0881",
+   "close_over_ma20": 1.08,
+   "hold_pv": "0.8839",
+   "candidate_pv": "0.8839",
+   "action": "持有",
+   "market_value_cny": "680068.00"
+  }
+ },
+ "buy_plan": [],
+ "sell_plan": [],
+ "jobs": {
+  "evidence": "27917649",
+  "refresh_pool": "27919215",
+  "scan": "27919888"
+ },
+ "calendar": "10-12（周一）信号的执行日为 10-13（周二）。",
+ "rule_version": "a-share-selection-operation-v4.243",
+ "equity_bond": {
+  "spread_pct": 6.34,
+  "observed_on": "2026-10-09",
+  "pe_ttm": 12.46,
+  "cgb10y": 0.016864,
+  "restricted": false,
+  "note": "取数时（北京时间 15:40）沪深300 PE 最新观测仍为 10-09；10 年国债序列已到 10-10（1.6849%）"
+ },
+ "eligible": [
+  "600970",
+  "920599",
+  "601717",
+  "600690",
+  "600600",
+  "601009",
+  "603529",
+  "601838",
+  "603279",
+  "600036"
+ ],
+ "eligible_change_vs_previous": {
+  "added": [
+   "601717",
+   "601009"
+  ],
+  "removed": []
+ },
+ "valuation_update": {
+  "financial_update": "当日无估值更新（队列财报触发 0：预告 0、快报 0、定期报告 0）",
+  "exright_normalization": {
+   "300308": {
+    "name": "中际旭创",
+    "cash_per_share": 1.2,
+    "v_before": 309.4546,
+    "v_after": 308.2546
+   },
+   "688072": {
+    "name": "拓荆科技",
+    "cash_per_share": 0.35,
+    "v_before": 114.2371,
+    "v_after": 113.8871
+   }
+  },
+  "bank_insurance_rf_refresh": "8 只银行与保险的股利折现值随 10 年国债利率更新，变动均小于 0.05%",
+  "open_issue": "OI-280"
+ },
+ "queue": {
+  "rows": 19,
+  "trough_anchor": 13,
+  "structural_growth": 6,
+  "report_triggered": 0,
+  "lowest_frozen_pv": {
+   "688516": 1.0716
+  }
+ },
+ "divergence_check": {
+  "automated_subset": "持仓 2 + 当日可买 5（脚本按旧走势口径 收>MA20>MA60 取子集）",
+  "eligible_not_in_subset": [
+   "600970",
+   "601717",
+   "600690",
+   "600600",
+   "603279"
+  ],
+  "manual_coverage": "check_report_day_price_divergence.py --universe pool：全池 10 日内有披露且有带的 2 只（中国巨石、鼎龙股份），无命中；合格集 10 只与持仓 2 只 10 日内均无预告、快报或定期报告",
+  "open_issue": "OI-279"
+ },
+ "announcements": {
+  "query_window": "2026-10-09～2026-10-13",
+  "retrieved_at_beijing": "2026-10-12 15:48",
+  "all_market_rows": 3226,
+  "pool_rows": 146,
+  "new_vs_1009_snapshot": 31,
+  "mandatory_companies": [
+   "000651",
+   "603529",
+   "600970",
+   "920599",
+   "601717",
+   "600690",
+   "600600",
+   "601009",
+   "601838",
+   "603279",
+   "600036"
+  ],
+  "primary_reviewed_announcements": [
+   "AN202610121830360699",
+   "AN202610091830271801",
+   "AN202610111830333769",
+   "AN202610101830317008",
+   "AN202610111830333771",
+   "AN202610091830265388",
+   "AN202610091830267764"
+  ],
+  "restatement_new_candidates": 0
+ },
+ "event_review": {
+  "600970": "2026Q3 新签 197.50 亿元（同比 +6%），1–9 月 642.71 亿元（+7%）；未完合同额 707.98 亿元，环比 −1.19%、同比 +5.90%，前两期（03-31、06-30）环比均增。档案触发线（新签同比降 >15%；在手连续两期下降）均未越过，不触发 §7.4 复核；实测值已记入档案高频指标。",
+  "000895": "行政处罚决定书（公告日 10-10）：没收与罚款使 2026 年归母净利减少 6,380.66 万元；董事长、总裁等四人另被处罚款。候选侧 P/V 1.7149，在买入区外，不在每日必查范围，未做质量复核。"
+ },
+ "open_issues_registered": [
+  "OI-279",
+  "OI-280"
+ ]
+}
