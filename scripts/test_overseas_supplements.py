@@ -354,6 +354,43 @@ class CustomerFundsTest(unittest.TestCase):
             st.apply_customer_funds([BalanceSupplementTest.row(ccy="TWD")], supp)
 
 
+class CustomerDepositsTest(unittest.TestCase):
+    """§6.8：须返还的客户长约保证金计入金融负债与有息负债，现金照计；只取同一期末，TTM 沿用 15 个月内最近一期。"""
+
+    def supplements(self, rows):
+        path = write_csv(rows)
+        self.addCleanup(path.unlink)
+        return st.load_statement_supplements("2026-09-28", COMPANIES, path).get("UBER")
+
+    @staticmethod
+    def deposits(period, value):
+        return supplement_row(market="US", security_code="UBER", security_name="优步", period=period, period_kind="balance",
+                              field="customer_deposits", value=value, unit="USD", evidence_date="2026-02-13")
+
+    def test_adds_to_debt_and_recomputes(self):
+        supp = self.supplements([self.deposits("2025-12-31", 3000.0)])
+        row = BalanceSupplementTest.row()
+        excess, liab = row["excess_cash"], float(row.get("financial_liabilities") or 0.0)
+        self.assertEqual(st.apply_customer_deposits([row], supp), 1)
+        self.assertAlmostEqual(row["interest_debt"], 10743.0 + 3000.0)
+        self.assertAlmostEqual(row["financial_liabilities"], liab + 3000.0)
+        self.assertAlmostEqual(row["excess_cash"], excess)                                # 现金照计
+        self.assertAlmostEqual(row["invested_capital"], max(13743.0 + 27918.0 - excess, st.IC_FLOOR * 27918.0))
+        self.assertIn("customer_deposits=supplement:2025-12-31:3000", row["tags_used"])
+
+    def test_ttm_carry_and_unit_check(self):
+        supp = self.supplements([self.deposits("2025-12-31", 3000.0)])
+        ttm = BalanceSupplementTest.row(period="2026-06-30", period_type="ttm")
+        self.assertEqual(st.apply_customer_deposits([ttm], supp), 1)
+        self.assertIn("customer_deposits=supplement_carried:2025-12-31", ttm["tags_used"])
+        stale = BalanceSupplementTest.row(period="2027-06-30", period_type="ttm")
+        self.assertEqual(st.apply_customer_deposits([stale], supp), 0)
+        annual_without = BalanceSupplementTest.row(period="2024-12-31")                # 年报行不沿用
+        self.assertEqual(st.apply_customer_deposits([annual_without], supp), 0)
+        with self.assertRaises(st.SupplementError):
+            st.apply_customer_deposits([BalanceSupplementTest.row(ccy="TWD")], supp)
+
+
 class HkDownloadPagingTest(unittest.TestCase):
     """京东 FY2023：只按 REPORT_DATE 排序时跨页重复／漏行；须带 STD_ITEM_CODE 次序键，且下载结果查重。"""
 
@@ -400,7 +437,7 @@ class RepositoryTableTest(unittest.TestCase):
                                           st.HK_REPORT_CCY.get(r["security_code"], "CNY") if r["market_type"].upper() == "HK" else "")
                      for r in watch}
         out = st.load_statement_supplements("9999-12-31", companies)
-        self.assertEqual(set(out), {"00316", "06862", "09618", "UBER", "TSM", "00700", "PDD", "09988"})
+        self.assertEqual(set(out), {"00316", "06862", "09618", "UBER", "TSM", "00700", "PDD", "09988", "MU"})
 
 
 if __name__ == "__main__":

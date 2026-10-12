@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.247 | 2026-10-13 | §6.8：客户按长期供货协议预付、合同约定履约后返还的保证金，经用户裁定后视同有息负债（补充表字段 `customer_deposits`，计入有息负债，投入资本同式重算，现金照计；季报观察点沿用 15 个月内最近一期）。落点：`fetch_overseas_statements.apply_customer_deposits`、`overseas_statement_supplements.csv`（美光 FY2026）、`test_overseas_supplements` |
 | v4.246 | 2026-10-13 | §6.4：预告、快报叠加行的估值事件写报告期类型加「预告」或「快报」（结 OI-282）；§9.1 第 1 步：证据取数之后才发布的公告、预告、快报与定期报告由下一次扫描补取，当日不为此重发（用户裁定，结 OI-281）。落点：`apply_valuation_band_cards.band_event`、`test_apply_valuation_band_cards`、池表 `valuation_evidence_event` 与阅读版「估值事件」列 |
 | v4.245 | 2026-10-12 | §6.9 第 3 条：独立估值登记的现行行自成一体（`conclusion` 写全部主要结论与操作结论），新增 `key_events`（关键事件与日期）、`key_metrics`（关键指标读数与跟踪门槛）两列，公告或事件的独立审计同样登记。落点：`data/processed/independent_valuations.csv`、`build_independent_valuations.py`（两列与阅读版「关键事件」「关键指标」两项，有值才显示）、README 文档表 |
 | v4.244 | 2026-10-12 | §10.2 取消授信额度指标（用户裁定）：账户级约束改为券商可用保证金，实际授信余量即券商可用保证金，可用资金 = 券商可用保证金 + 现金，可用保证金为负即不可新增买入；`N × 66.6% − 融资负债` 只作未回报时与回测的可用保证金估算，报告不列推算额度与超额。落点：§8.2 `--funds`、§10.2、§12.1 融资口径与资金记账用词、个人体系 §4、扫描器 `--funds` 说明与买入清单行文字、`test_strategy_parameter_sync`／`test_cash_accounting` |

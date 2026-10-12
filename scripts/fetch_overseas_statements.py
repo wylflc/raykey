@@ -743,6 +743,7 @@ SUPPLEMENT_FIELDS = {
     "other_financial_assets": ("balance", frozenset({"HK", "US"})),
     "rd_expense": ("flow", frozenset({"HK"})),          # OI-255：利润表不单列研发、年报附注披露的港股
     "customer_funds": ("balance", frozenset({"HK", "US"})),   # OI-256：代客户收付、只能用于结算的托管资金（§6.5.1 客户资金）
+    "customer_deposits": ("balance", frozenset({"HK", "US"})),   # §6.8：须返还的客户长约保证金，经用户裁定后视同有息负债
 }
 SUPPLEMENT_KINDS = {"flow": frozenset({"annual", "interim_ytd"}), "balance": frozenset({"balance"})}
 SUPPLEMENT_COLUMNS = ("market", "security_code", "security_name", "period", "period_kind", "field", "value", "unit",
@@ -906,6 +907,36 @@ def apply_customer_funds(rows: list[dict], supplements: dict | None) -> int:
             row["invested_capital"] = ic if ic > 0 else None
         row["tags_used"] = ((row["tags_used"] + ";" if row["tags_used"] else "")
                             + f"customer_funds={how}:{item['period']}:{item['value']:.0f}")
+        applied += 1
+    return applied
+
+
+def apply_customer_deposits(rows: list[dict], supplements: dict | None) -> int:
+    """§6.8：客户按长期供货协议预付、合同约定履约后返还的保证金视同有息负债——计入金融负债与有息负债，
+    投入资本同式重算，现金照计（判例：美光 FY2026 战略客户协议保证金 127.47 亿美元，2029–2031 年返还）。
+    年报行只取同一期末的补充值；TTM 行无同期值时沿用 15 个月内最近一期。"""
+    items = (supplements or {}).get("customer_deposits") or {}
+    applied = 0
+    for row in rows:
+        item, how = items.get(row["period"]), "supplement"
+        if item is None and row.get("period_type") == "ttm":
+            prior = [p for p in items if p < row["period"]
+                     and (date.fromisoformat(row["period"]) - date.fromisoformat(p)).days <= CARRY_MAX_DAYS]
+            if prior:
+                item, how = items[max(prior)], "supplement_carried"
+        if item is None:
+            continue
+        if item["unit"] != row.get("report_currency"):
+            raise SupplementError(f"{row['security_code']} {row['period']} customer_deposits: 单位 {item['unit']} "
+                                  f"与报表币 {row.get('report_currency')} 不符")
+        item["_used"] = True
+        row["financial_liabilities"] = float(row.get("financial_liabilities") or 0.0) + item["value"]
+        row["interest_debt"] = float(row.get("interest_debt") or 0.0) + item["value"]
+        if row.get("total_equity") is not None:
+            ic = max(row["interest_debt"] + row["total_equity"] - row["excess_cash"], IC_FLOOR * row["total_equity"])
+            row["invested_capital"] = ic if ic > 0 else None
+        row["tags_used"] = ((row["tags_used"] + ";" if row["tags_used"] else "")
+                            + f"customer_deposits={how}:{item['period']}:{item['value']:.0f}")
         applied += 1
     return applied
 
@@ -1735,6 +1766,7 @@ def main() -> int:
         got += own_overrides
         apply_balance_supplements(got, supplements.get(code))     # OI-216：非流动金融资产补充值（在维护行沿用之后）
         apply_customer_funds(got, supplements.get(code))          # OI-256：客户托管资金不计超额现金（在金融资产补充之后）
+        apply_customer_deposits(got, supplements.get(code))       # §6.8：须返还的客户长约保证金视同有息负债
         got = apply_evidence(got, evidence)
         got.sort(key=lambda g: (g["period"], 0 if g["period_type"] == "annual" else 1))
         rows += got
