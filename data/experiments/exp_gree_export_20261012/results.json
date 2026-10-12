@@ -1,0 +1,99 @@
+{
+ "close": 39.59,
+ "model": {
+  "report_date": "2026-06-30",
+  "available_at": "2026-08-27",
+  "nopat_yi": 272.29,
+  "g0": 0.0,
+  "wacc": 0.1,
+  "ev_ps": 44.9485,
+  "net_cash_ps": 28.4343,
+  "V": 73.3828,
+  "pv": 0.5395,
+  "net_cash_share_of_V": 0.3875,
+  "buy_line_price": 73.63
+ },
+ "sensitivity_per_1pct_nopat": {
+  "dV_pct": -0.668,
+  "dPV": 0.0036
+ },
+ "scenarios": [
+  {
+   "name": "上半年已实现（外销 −21.98%）",
+   "profit_change_yi": -3.6,
+   "share_of_2025_profit_pct": -1.2,
+   "nopat_yi": 268.7,
+   "V": 72.73,
+   "dV_pct": -0.88,
+   "pv": 0.5443
+  },
+  {
+   "name": "下半年降幅收窄到 −5%（全年 −15.1%）",
+   "profit_change_yi": -5.1,
+   "share_of_2025_profit_pct": -1.8,
+   "nopat_yi": 267.2,
+   "V": 72.46,
+   "dV_pct": -1.25,
+   "pv": 0.5463
+  },
+  {
+   "name": "下半年维持 −22%（全年 −22.0%）",
+   "profit_change_yi": -10.2,
+   "share_of_2025_profit_pct": -3.5,
+   "nopat_yi": 262.1,
+   "V": 71.55,
+   "dV_pct": -2.5,
+   "pv": 0.5533
+  },
+  {
+   "name": "下半年 −30%，接近 7～8 月出货降幅（全年 −25.2%）",
+   "profit_change_yi": -12.6,
+   "share_of_2025_profit_pct": -4.3,
+   "nopat_yi": 259.7,
+   "V": 71.12,
+   "dV_pct": -3.08,
+   "pv": 0.5567
+  },
+  {
+   "name": "全年 −35%（压力测试）",
+   "profit_change_yi": -19.9,
+   "share_of_2025_profit_pct": -6.9,
+   "nopat_yi": 252.4,
+   "V": 69.82,
+   "dV_pct": -4.86,
+   "pv": 0.5671
+  },
+  {
+   "name": "2027 年再降 10%（相对 2025 年累计）",
+   "profit_change_yi": -23.7,
+   "share_of_2025_profit_pct": -8.2,
+   "nopat_yi": 248.6,
+   "V": 69.14,
+   "dV_pct": -5.78,
+   "pv": 0.5726
+  },
+  {
+   "name": "外销利润全部消失（上限，按完全分摊口径 32 亿元）",
+   "profit_change_yi": -32.0,
+   "share_of_2025_profit_pct": -11.0,
+   "nopat_yi": 240.3,
+   "V": 67.67,
+   "dV_pct": -7.79,
+   "pv": 0.5851
+  }
+ ],
+ "nopat_at_buy_line": {
+  "nopat_yi": 64.6,
+  "drop_pct": -76.3
+ },
+ "independent": {
+  "V": 58.2,
+  "bear": 34.9,
+  "base": 62.4,
+  "bull": 82.6,
+  "pv": 0.68,
+  "pv_bear": 1.134,
+  "normalized_profit_yi": 260,
+  "haircut_vs_2025_yi": 30.03
+ }
+}

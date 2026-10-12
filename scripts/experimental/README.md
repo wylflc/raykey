@@ -30,6 +30,7 @@
 | `moat_param_lab.py` | 单票估值参数与前向回报比较 |
 | `reconstruct_holding_weights.py`、`drawdown_path.py` | 逐笔流水、持仓权重与回撤归因 |
 | `build_cap_rank_universe.py`、`subset_daily_states.py` | 指数类股票库、抽样面板与状态子集 |
+| `magic_formula_fetch_inputs.py`、`magic_formula_backtest.py` | 神奇公式（盈利收益率与资本回报率名次相加）在沪深 300 历年成分与回测宇宙上的季度回测；运行入口 `scripts/slurm/magic_formula_csi300.sbatch`，回测日志 §12.334 |
 | `vp_signal_lab.py` | 量价事件研究与组合模拟；依赖 NumPy |
 | `value_procyclicality.py`、`cycle_peak_buy_audit.py` | 估值顺周期与盈利高点买入核查 |
 | `trough_guard_review.py`、`trough_guard_checks.py`、`trough_guard_evidence.py` | 谷底守卫复测，见[报告](../../docs/reports/trough_guard_review.zh.md) |
