@@ -1,6 +1,6 @@
 {
   "signal_date": "2026-10-12",
-  "retrieved_at_utc": "2026-10-12T07:48:21.836087+00:00",
+  "retrieved_at_utc": "2026-10-12T21:44:03.861927+00:00",
   "source": "eastmoney:RPT_SHAREBONUS_DET, full-market ex-dividend date query",
   "events": {
     "000795": {

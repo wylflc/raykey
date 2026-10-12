@@ -143,12 +143,13 @@ class MaterializedEvidenceTest(unittest.TestCase):
     def test_every_supported_latest_interim_report_has_matching_ttm_row(self):
         with (ROOT / "data/reference/overseas_report_evidence.csv").open(encoding="utf-8-sig") as handle:
             evidence = {r["security_code"]: r for r in csv.DictReader(handle)}
-        unsupported_or_annual = {"00267", "MSFT", "005930", "000660", "BRK.B", "SPCX"}
+        unsupported = {"00267", "005930", "000660", "BRK.B", "SPCX"}
         with (ROOT / "data/interim/overseas_roic_years.csv").open(encoding="utf-8-sig") as handle:
             current = {(r["security_code"], r["period"]) for r in csv.DictReader(handle)
                        if r["period_type"] == "ttm"}
+        # 最新证据是年报的公司（如 MSFT、MU 年报披露后）只有年报行，没有 TTM 行
         expected = {(code, row["report_period"]) for code, row in evidence.items()
-                    if code not in unsupported_or_annual}
+                    if code not in unsupported and not row["report_event"].startswith("年报")}
         self.assertEqual(current, expected)
 
 

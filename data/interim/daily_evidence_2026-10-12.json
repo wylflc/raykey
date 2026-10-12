@@ -187,17 +187,17 @@
     "920599"
   ],
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv": "a4b16a0f057f5873066690d9e5cd81b3d462c4bf02c07e6850da2ea600c0c5e4",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv": "8fa616e71ea1302ccd598617cbb8a781537c922a7f19974aa64c8377340c7a53",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/raw/corporate_actions/a_share_corporate_actions.csv": "e09a11b033887b6901b95f23337245196ace9c9b2960a036404c632f28dca0ac",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv.meta.json": "cc698ff622fdba8ca8819664ce0593688f996c45d6bbd9264709f17e5e356bbf",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv.meta.json": "c46f6681dfe2bb84403a35d0bed332e840fa0ace030d291574fea3b44b92d605",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/raw/corporate_actions/a_share_corporate_actions.csv.meta.json": "0365a79cc3d98d023cb0fae0234c5fc87f94d7e763f8b598408c29a65ded2fef",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv": "0c69ec38488a24ce56e7c2400095cc9f2e9edb815fd48c00e91bca3a156c437a",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv": "7af81b4612c2c597ac990ef54d1573053a045315d8551c6a1b6f83ecced9d189",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/raw/corporate_actions/a_share_corporate_actions.csv": "8ff464eca75ea026ccf8846cb94348a8c40eda67954df3d609f75dd2bef40bc0",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv.meta.json": "70c0b6a6aeb71967788feac0019cf9a63931c538ad74d82fccbf6175f7326528",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv.meta.json": "a0eae861611c2f2c8813ab9d91fb46265cf616a2f8f6c87525aecdad7cc52ad6",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/raw/corporate_actions/a_share_corporate_actions.csv.meta.json": "daa693a3304cfe36af9eb4959dc534e78bf8ac881afff3f72c8be6b3771cbbcc",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/a_share_action_component_exclusions.csv": "8541a084e13e14492defe4f4e8a59cd4f0dd075020ba8eac8c5c6ec17874356d",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/a_share_exright_terms.csv": "df02cdf9898fd9740c6dab6556460e68eac888f02cf429b597700a02c7a1973e",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/a_share_action_component_corrections.csv": "5453755218419e2f2787078d02b7aeb544786a3ac452f75f4ac7e5334eef1c4d",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_announcements_2026-10-12.json": "5e094caec06eb77afd314f231b68ebbfcc8516e3e893a7211eccebb33d9cdb61",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_corporate_actions_2026-10-12.json": "85eafef43e73da54e3d737305b040d9649c1f3dd455da9f15ee75e3eb5eb027c",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_market_context_2026-10-12.json": "762f73e88e36f7d270ee55fbed0ecccf69fe5bdbc50859e0a683e2fcd3503ff6"
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_announcements_2026-10-12.json": "ef8e6716851994acbaf7403e64d321dfd1cc007bbcc0216628b3bbd921658c59",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_corporate_actions_2026-10-12.json": "a77a5cde9af743224505af5e70d6acc3f9de324a4ecb7916520bb33cd09e3df9",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/daily_market_context_2026-10-12.json": "1ffd0a7ad32fa614b970e40b00d442d75a26a9e2fc8337f75224c7fdf10be7af"
   }
 }
