@@ -27,6 +27,21 @@ for arm, r in res.items():
     if c:
         print(f"{arm:13s} {pct(c['cagr']):>7s} {pct(c['max_drawdown']):>7s}")
 
+from datetime import date
+
+nav = list(csv.DictReader((EXP / "nav.csv").open(encoding="utf-8")))
+cuts = [b["start"] for b in res["MF30"]["blocks"][-2:]]  # 末两个 5 年块的起点
+print(f"\n【分段年化】臂 | " + " | ".join(f"{c} 起" for c in cuts))
+for arm in res:
+    if arm not in nav[0]:
+        continue
+    cells = []
+    for cut in cuts:
+        base = next((float(r[arm]) for r in nav if r["date"] == cut and r[arm]), None)
+        years = (date.fromisoformat(nav[-1]["date"]) - date.fromisoformat(cut)).days / 365.25
+        cells.append(pct((float(nav[-1][arm]) / base) ** (1 / years) - 1) if base else "")
+    print(f"{arm:13s} " + " ".join(f"{c:>8s}" for c in cells))
+
 arms = [a for a in ("MF30", "H00300", "INDEX_000300", "CW300", "EW300", "EW_ELIG", "MF30_Y", "MF30_T", "EY30", "ROC30") if a in res]
 years = sorted(res["MF30"]["yearly"])
 print("\n【逐年收益】" + " | ".join(["年"] + arms))
