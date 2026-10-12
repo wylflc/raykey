@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-12",
- "checked_at_utc": "2026-10-12T08:05:50.442910+00:00",
+ "checked_at_utc": "2026-10-12T11:48:37.776444+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -67,10 +67,12 @@
  "jobs": {
   "evidence": "27917649",
   "refresh_pool": "27919215",
-  "scan": "27919888"
+  "scan": "27919888",
+  "refresh_pool_republish": "27933765",
+  "scan_republish": "27933766"
  },
  "calendar": "10-12（周一）信号的执行日为 10-13（周二）。",
- "rule_version": "a-share-selection-operation-v4.243",
+ "rule_version": "a-share-selection-operation-v4.244",
  "equity_bond": {
   "spread_pct": 6.34,
   "observed_on": "2026-10-09",
@@ -175,5 +177,6 @@
  "open_issues_registered": [
   "OI-279",
   "OI-280"
- ]
+ ],
+ "republication": "第二次发布：中材国际档案复核触发线改口径并完成 §7.4 事件复核后，重建池与队列并重发；清单不变（0 买 0 卖）"
 }

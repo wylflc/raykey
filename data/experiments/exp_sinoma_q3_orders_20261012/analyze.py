@@ -47,6 +47,13 @@ out['ops_other_by_quarter'] = {q: round(Q[q]['ops_other'], 2) for q in names}
 out['overseas_operations_by_quarter'] = {q: round(Q[q]['overseas_operations'], 2) for q in names}
 out['ex_lump'] = dict(lump_yi=round(lump, 2), q3_total_ex=round(cur['total'] - lump, 2), q3_yoy_ex=round(100 * ((cur['total'] - lump) / prev['total'] - 1), 1),
                       ytd_total_ex=round(ytd(2026, 'total') - lump, 2), ytd_yoy_ex=round(100 * ((ytd(2026, 'total') - lump) / ytd(2025, 'total') - 1), 1))
+# 核心口径（档案复核触发线，用户 2026-10-12 裁定）：合计 − 生产运营服务未列明部分，两期同口径
+core = lambda q: Q[q]['total'] - Q[q]['ops_other']
+out['core_new_signings'] = {f'2026Q{i}': [round(core(f'2026Q{i}'), 2), round(100 * (core(f'2026Q{i}') / core(f'2025Q{i}') - 1), 1)] for i in (1, 2, 3)}
+out['core_new_signings']['2025Q4'] = [round(core('2025Q4'), 2), round(100 * (core('2025Q4') / core('2024Q4') - 1), 1)]
+c26, c25 = sum(core(f'2026Q{i}') for i in (1, 2, 3)), sum(core(f'2025Q{i}') for i in (1, 2, 3))
+out['core_new_signings']['2026_9M'] = [round(c26, 2), round(100 * (c26 / c25 - 1), 1)]
+out['backlog_ex_fx_trigger'] = '见 fx：环比变动额 − 最近披露的境外未完合同额 × 季内美元兑人民币季末变动，为负才计一期'
 dangote = DANGOTE_USD_YI * DANGOTE_RATE
 out['dangote'] = dict(cny_yi=round(dangote, 2), overseas_engineering_q3=65.89, cement_engineering_q3=42.31, cement_engineering_ex=round(42.31 - dangote, 2))
 

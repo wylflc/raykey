@@ -1,14 +1,14 @@
 {
   "as_of": "2026-10-12",
-  "generated_at_utc": "2026-10-12T07:56:43.445406+00:00",
-  "sha256": "cc9bc1bf61164cab7d1d4e4b07048b9f7fb65fdaea30f1d1344d255391e9d8f7",
+  "generated_at_utc": "2026-10-12T11:46:07.929678+00:00",
+  "sha256": "b9dd5488106b84f7005b675918876f8919bda551a68b09acbbb472753e08dd34",
   "inputs": {
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv": "8fa616e71ea1302ccd598617cbb8a781537c922a7f19974aa64c8377340c7a53",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv": "a4b16a0f057f5873066690d9e5cd81b3d462c4bf02c07e6850da2ea600c0c5e4",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_attention_triage.csv": "b172ae26ca7ad0cc7b79573142ab7ca0d571d535ddd25a7af7196e61f14fc316",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_watchlist_quality_tiers.csv": "2996c22a36f16c46195a1e022c2403b6842381a58e8c8f8bef6d948f02a4ad85",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_core_valuation_pool.csv": "aec66836cdcf67578108ba45d0c8eedc6470a3ede5d262e210b5bdb7ec9b0edb",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_valuation_dossiers.csv": "c7c43f4f2edb09e24b31f220304eeadaac26db1e9a7cac5b803aa26621ae5829",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_core_valuation_pool.csv": "406cf54c4325ff26092b600b93ac405903b4532737f0809d514be1735d9db441",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_valuation_dossiers.csv": "d5f75276886500f278208463b779925db11b24028b9ced46cefce146c3997ec5",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "e9e4bfcb9593482b8661adb19987dabbe7deb4957d2725b18eb26c810f684264",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/structural_growth_review.csv": "2ee81e4809dbeb35ae2d8d1923e72f7b8e6cec5b7ce0e5b5cfb82f8b7745286e",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/trough_anchor_review.csv": "6fbb3839663a796949b17d1c1215e3fd1da87609bd1cb2b6e9367a15100f8d55",
