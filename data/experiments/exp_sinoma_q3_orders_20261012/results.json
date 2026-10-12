@@ -1,0 +1,271 @@
+{
+ "yoy_2026Q3": {
+  "total": 5.5,
+  "engineering": -21.7,
+  "equipment": -34.8,
+  "operations": 106.0,
+  "cement_om": 5.8,
+  "mining_om": 9.9,
+  "other": -38.8,
+  "domestic": 14.2,
+  "overseas": 2.1,
+  "overseas_operations": 355.1,
+  "ops_other": 521.2
+ },
+ "ytd": {
+  "total": [
+   642.71,
+   7.3
+  ],
+  "engineering": [
+   374.95,
+   -3.6
+  ],
+  "equipment": [
+   66.32,
+   -8.2
+  ],
+  "operations": [
+   183.22,
+   52.6
+  ],
+  "ops_other": [
+   72.04,
+   247.6
+  ]
+ },
+ "ops_other_by_quarter": {
+  "2024Q4": 8.49,
+  "2025Q1": 5.07,
+  "2025Q2": 7.44,
+  "2025Q3": 8.21,
+  "2025Q4": 10.14,
+  "2026Q1": 7.18,
+  "2026Q2": 13.89,
+  "2026Q3": 50.98
+ },
+ "overseas_operations_by_quarter": {
+  "2024Q4": 12.96,
+  "2025Q1": 10.63,
+  "2025Q2": 10.4,
+  "2025Q3": 13.36,
+  "2025Q4": 13.62,
+  "2026Q1": 14.72,
+  "2026Q2": 23.15,
+  "2026Q3": 60.83
+ },
+ "ex_lump": {
+  "lump_yi": 42.77,
+  "q3_total_ex": 154.73,
+  "q3_yoy_ex": -17.3,
+  "ytd_total_ex": 599.94,
+  "ytd_yoy_ex": 0.2
+ },
+ "dangote": {
+  "cny_yi": 32.17,
+  "overseas_engineering_q3": 65.89,
+  "cement_engineering_q3": 42.31,
+  "cement_engineering_ex": 10.14
+ },
+ "ttm": {
+  "total": [
+   756.24,
+   7.2
+  ],
+  "engineering": [
+   413.19,
+   -2.6
+  ],
+  "equipment": [
+   87.13,
+   -7.3
+  ],
+  "operations": [
+   233.25,
+   44.0
+  ],
+  "other": [
+   22.68,
+   -9.2
+  ],
+  "cement_mining_om": [
+   151.06,
+   13.8
+  ]
+ },
+ "backlog_roll": {
+  "2025Q1": {
+   "backlog": 585.57,
+   "qoq": -1.94,
+   "new": 278.81,
+   "burn": 290.41,
+   "revenue": 101.47,
+   "gap": 188.94
+  },
+  "2025Q2": {
+   "backlog": 620.37,
+   "qoq": 5.94,
+   "new": 132.84,
+   "burn": 98.04,
+   "revenue": 115.29,
+   "gap": -17.25
+  },
+  "2025Q3": {
+   "backlog": 668.56,
+   "qoq": 7.77,
+   "new": 187.18,
+   "burn": 138.99,
+   "revenue": 113.22,
+   "gap": 25.77
+  },
+  "2025Q4": {
+   "backlog": 664.55,
+   "qoq": -0.6,
+   "new": 113.53,
+   "burn": 117.54,
+   "revenue": 166.01,
+   "gap": -48.47
+  },
+  "2026Q1": {
+   "backlog": 690.17,
+   "qoq": 3.85,
+   "new": 255.46,
+   "burn": 229.84,
+   "revenue": 95.05,
+   "gap": 134.79
+  },
+  "2026Q2": {
+   "backlog": 716.52,
+   "qoq": 3.82,
+   "new": 189.76,
+   "burn": 163.41,
+   "revenue": 117.57,
+   "gap": 45.84
+  },
+  "2026Q3": {
+   "backlog": 707.98,
+   "qoq": -1.19,
+   "new": 197.5,
+   "burn": 206.04,
+   "revenue": null,
+   "gap": null
+  }
+ },
+ "fx": {
+  "usdcnh_qoq_pct": -1.21,
+  "usdcnh_yoy_pct": -5.89,
+  "translation_qoq_yi": -6.45,
+  "backlog_change_qoq_yi": -8.54,
+  "backlog_qoq_ex_fx_pct": -0.29,
+  "backlog_yoy_pct": 5.9,
+  "backlog_yoy_ex_fx_pct": 10.02,
+  "note": "假设境外在手合同均按美元计价并按期末汇率折算（公告未说明折算口径），为上限估计"
+ },
+ "coverage": {
+  "backlog_over_2025_revenue": 1.43
+ },
+ "order_bridge": {
+  "gross_profit_2025": {
+   "engineering": 41.83,
+   "equipment": 14.44,
+   "operations": 30.11,
+   "other": 3.69
+  },
+  "ttm_order_growth": {
+   "engineering": -0.026000000000000002,
+   "equipment": -0.073,
+   "operations": 0.138,
+   "other": -0.092
+  },
+  "gp_change_yi": [
+   -2.48,
+   1.67
+  ],
+  "nopat_change_yi": [
+   -2.1,
+   1.42
+  ],
+  "note": "费用不随收入变动、税率取带上 15.47%；只作量级示意，不是预测"
+ },
+ "scenarios": [
+  {
+   "name": "生产现值（研究数 32.30 亿，g0 1.93%）",
+   "nopat_yi": 32.3,
+   "g0": 0.0193,
+   "V": 11.7659,
+   "pv": 0.6706,
+   "dV_pct": -0.0
+  },
+  {
+   "name": "订单换算下沿（运营收入不随订单增长）",
+   "nopat_yi": 30.2,
+   "g0": 0.0193,
+   "V": 11.2188,
+   "pv": 0.7033,
+   "dV_pct": -4.65
+  },
+  {
+   "name": "订单换算上沿（运营按运维年费增长）",
+   "nopat_yi": 33.72,
+   "g0": 0.0193,
+   "V": 12.1402,
+   "pv": 0.6499,
+   "dV_pct": 3.18
+  },
+  {
+   "name": "研究悲观档 27.38 亿",
+   "nopat_yi": 27.38,
+   "g0": 0.0193,
+   "V": 10.3606,
+   "pv": 0.7615,
+   "dV_pct": -11.94
+  },
+  {
+   "name": "研究乐观档 36.13 亿",
+   "nopat_yi": 36.13,
+   "g0": 0.0193,
+   "V": 12.7878,
+   "pv": 0.617,
+   "dV_pct": 8.68
+  },
+  {
+   "name": "研究数不变、g0 取 0",
+   "nopat_yi": 32.3,
+   "g0": 0.0,
+   "V": 11.4029,
+   "pv": 0.6919,
+   "dV_pct": -3.09
+  },
+  {
+   "name": "研究数不变、g0 取 3%",
+   "nopat_yi": 32.3,
+   "g0": 0.03,
+   "V": 11.9734,
+   "pv": 0.659,
+   "dV_pct": 1.76
+  },
+  {
+   "name": "研究悲观档且 g0 取 0",
+   "nopat_yi": 27.38,
+   "g0": 0.0,
+   "V": 10.0792,
+   "pv": 0.7828,
+   "dV_pct": -14.34
+  }
+ ],
+ "independent_oi259": {
+  "bear": {
+   "V": 7.44,
+   "pv": 1.0605
+  },
+  "base": {
+   "V": 9.51,
+   "pv": 0.8297
+  },
+  "bull": {
+   "V": 11.23,
+   "pv": 0.7026
+  }
+ },
+ "buy_line_price": 11.81
+}

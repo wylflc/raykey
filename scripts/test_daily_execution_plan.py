@@ -211,7 +211,7 @@ class ExecutionPlanTest(unittest.TestCase):
         self.assertEqual([n for n, _h, _c in res["hold_pv_diff"]], ["W"])                # 两侧不同须并列显示
 
     def test_negative_funds_repays_shortfall_before_buy(self) -> None:
-        # §10.2：券商可用保证金为负（已超授信）时 `--funds` 照负值起算，换仓卖出款先补缺口，余额才买入
+        # §10.2：券商可用保证金为负时 `--funds` 照负值起算，换仓卖出款先补缺口，余额才买入
         trig = row("000010", "X", close=10.0, ma20=9.0, ma60=8.0, pv=0.50)       # 未持仓触发者
         src = row("000012", "H2", close=10.0, ma20=8.0, ma60=7.0, pv=2.00)       # 让位源（盈利 100%、MA20 的 1.25 倍），不过买入线
         holdings = {"000012": hold("H2", 50000, 5.0, None)}
@@ -229,7 +229,7 @@ class ExecutionPlanTest(unittest.TestCase):
                             members={"000010", "000013"})
         self.assertEqual(res["sells"], [])
         self.assertEqual(res["plan"], [])
-        self.assertAlmostEqual(res["cash"], -50_000.0)                            # 缺口原样带出，报告显示仍超授信
+        self.assertAlmostEqual(res["cash"], -50_000.0)                            # 缺口原样带出，报告显示仍缺
 
     def test_swap_source_block_guards_buy_queue(self) -> None:
         # 研究开关（生产关，K=-1）：临时置 K=1 时当日换仓卖出源不进买入队列；让位源与涨幅源一样没有 P/V 边际，只剔除自身

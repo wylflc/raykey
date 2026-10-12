@@ -159,4 +159,10 @@
 | oi271_*（1） | `oi271_quant.sbatch` |
 | 其他单件（10） | `aima_growth_land.sbatch`, `audit2010.sbatch`, `base_longrun_attrib.sbatch`, `cbbi_temperature_20260922.sbatch`, `longrun_now.sbatch`, `ma60_clause4_20260919.sbatch`, `pv_cap_20260922.sbatch`, `reaudit_minority_val_arm.sbatch`, `reaudit_minority_val_sweep.sbatch`, `submit_oi141_coverage.sh` |
 
+### 2026-10-12 归档，2027-01-12 可永久删除
+
+| 家族（件数） | 文件 |
+| --- | --- |
+| 其他单件（1） | `position_cap_none_20261012.sbatch` |
+
 同类归档：`docs/archive/`（历史文档取回索引）、`data/archive/`（已跑完的工作队列与已结束轮次的产物）。

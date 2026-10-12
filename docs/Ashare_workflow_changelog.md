@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.244 | 2026-10-12 | §10.2 取消授信额度指标（用户裁定）：账户级约束改为券商可用保证金，实际授信余量即券商可用保证金，可用资金 = 券商可用保证金 + 现金，可用保证金为负即不可新增买入；`N × 66.6% − 融资负债` 只作未回报时与回测的可用保证金估算，报告不列推算额度与超额。落点：§8.2 `--funds`、§10.2、§12.1 融资口径与资金记账用词、个人体系 §4、扫描器 `--funds` 说明与买入清单行文字、`test_strategy_parameter_sync`／`test_cash_accounting` |
 | v4.243 | 2026-10-08 | §6.10 第 7 条 D 类：A+H 银行的复核值与闸门结论两地共用，`P/V_cb` 与 §6.9 独立 `P/V` 按各自股价算，A 股重新复核时同步港股池表（用户裁定）。港股池表按此沿用 A 股 2026-10-07 复核：重庆农商、邮储、交通、中国银行 H 股重点级，中信、重庆银行、青岛、浙商 H 股退回；独立估值登记补四家 H 股引用行。依据 OI-276 首轮报告第四节 |
 | v4.242 | 2026-10-08 | §6.10 增第 7 条港股烟蒂池（用户裁定按建议口径）：范围、数据与汇率、A／B／C 科目映射、B 类以股东应占溢利减重估盈余代扣非、D 类 A+H 银行沿用 A 股 `V_cb`、其余银行 COE（香港及外资 11%）、闸门差异与港股通标注（沪深交易所名单，`southbound_sh`／`southbound_sz`／`southbound_eligible`）；第 6 条港股同节奏。池表 `data/processed/cigar_butt_pool_hk.csv`、粗筛 `data/interim/cigar_butt_screen_hk.csv`，实现 `screen_cigar_butts_hk.py`（作业 `scripts/slurm/cigar_butt_screen_hk.sbatch`），阅读版加第六节（`build_cigar_butt_pool.py`）；§0 路由、§2 真值行。依据 OI-276 |
 | v4.241 | 2026-10-08 | §6.10 第 5 条：池表在册（不论状态）且不在 `worth_attention` 的持仓为烟蒂股持仓，扫描器不做出名单、涨幅减持与换仓卖出源判定，§9.3.1 股债总仓位上限照常计入并按比例减仓（用户裁定）；跟踪表动作「烟蒂股（用户决定）」并加 `pv_cb` 列；成交回写取 `resolve_trade_valuation.py` 的 `cigar_butt.pv_cb`、不登记冷却。第 4 条：持仓中的候选重算后 `P/V_cb > 1.0` 改标 `exited`、不移出。烟蒂池表进 §9.1 第 3 步校验与发布凭据输入摘要（`daily_execution_guard.py`、扫描器 `--cigar-pool`）；§9.3.2 第 4 步、§9.3.4、§11.1、§11.3、§11.5 改为引用。实现 `screen_cigar_butts.cigar_butt_rows`／`pv_cb_at`。依据 OI-275 |

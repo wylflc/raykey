@@ -228,9 +228,10 @@ class StrategyParameterSyncTest(unittest.TestCase):
         self.assertNotIn("至少低 `0.15`", workflow)
         self.assertIn(f"| 新建仓走势 | 近 {daily_scan.SEC93_BT_QUIET} 个交易日（含 T 日）最低价都未创 {daily_scan.SEC93_BT_LOW_WINDOW} 日新低", workflow)
         self.assertIn("| 止损 | 不设价格止损；", workflow)
-        # OI-193：授信比例只在 §10.2 成文，§9.3.1.2 引用；回测 BASE 同值
-        self.assertIn("授信额度 = 当日净资产 `N` × 66.6%，不设金额上限", workflow)
-        self.assertEqual(workflow.count("66.6%"), 2)   # §10.2 正文与其可用资金公式，别处只引用
+        # OI-193：可用保证金估算比例只在 §10.2 成文，§12.1 引用；回测 BASE 同值。v4.244 起不设授信额度指标
+        self.assertIn("按 `N × 66.6% − 当前融资负债` 估算可用保证金", workflow)
+        self.assertEqual(workflow.count("66.6%"), 1)   # 只在 §10.2 估算式，别处只引用
+        self.assertNotIn("授信额度 =", workflow)
         self.assertIn("--credit-ratio 0.666", sweep.BASE)
         self.assertIn(f"| 单票机械上限 | 单票市值 ÷ 当日净资产 `N` ≥ {daily_scan.SEC93_POSITION_CAP:.0%} 时不再加仓", workflow)
         self.assertIn(f"| 股债总仓位上限 | 沪深 300 股债利差（`1/PE_TTM − 10 年国债收益率`，信号日已知的最新观测）`< {daily_scan.SEC93_EQUITY_BOND_THRESHOLD:.0%}` 时触发总仓位（持仓市值 ÷ 当日净资产 `N`）上限 `{daily_scan.SEC93_EQUITY_BOND_CAP:.0%}`", workflow)

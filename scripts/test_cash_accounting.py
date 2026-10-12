@@ -109,7 +109,7 @@ class CashAccountingTest(unittest.TestCase):
     def test_workflow_states_the_cash_accounting_rule(self):
         text = (Path(__file__).resolve().parents[1] / "docs/000_Ashare_workflow.md").read_text(encoding="utf-8")
         self.assertIn("**资金记账**：日末盯市对当日新建仓取成交日收盘", text)
-        self.assertIn("同日对冲退回卖出款前先在授信内融回", text)
+        self.assertIn("同日对冲退回卖出款前先在估算可用保证金内融回", text)
         import sweep_backtest_configs as sweep
         for key in ("最低现金", "负现金日数", "最低现金日"):
             self.assertIn(key, sweep.FIELDS)

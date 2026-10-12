@@ -1,0 +1,3227 @@
+{
+ "20111101": {
+  "base": {
+   "final_equity": 497798588.9685,
+   "end": {
+    "000651": 0.6138,
+    "601225": 0.0116,
+    "000792": 0.0583,
+    "601166": 0.0954,
+    "601577": 0.0101,
+    "002807": 0.0234,
+    "600970": 0.4241,
+    "000001": 0.3232,
+    "603529": 0.0497,
+    "603369": 0.0592,
+    "601528": 0.0102
+   },
+   "end_day": "2026-08-28",
+   "top1_days_over": {
+    "0.6": 0.4725152692948362,
+    "0.8": 0.0,
+    "1.0": 0.0,
+    "1.2": 0.0
+   },
+   "min_margin": [
+    1.966031,
+    "2019-01-03"
+   ],
+   "buys": 1282,
+   "sells": 454
+  },
+  "cnone": {
+   "final_equity": 574071603.3495,
+   "end": {
+    "000651": 0.6958,
+    "601229": 0.04,
+    "000792": 0.0208,
+    "601577": 0.0323,
+    "000001": 0.3313,
+    "002807": 0.0249,
+    "601166": 0.1529,
+    "600970": 0.2827,
+    "603529": 0.0607,
+    "603369": 0.0417
+   },
+   "end_day": "2026-08-28",
+   "top1_days_over": {
+    "0.6": 0.5843975569128262,
+    "0.8": 0.4430871737923376,
+    "1.0": 0.18684064408661855,
+    "1.2": 0.012770682953914493
+   },
+   "min_margin": [
+    1.940522,
+    "2013-06-27"
+   ],
+   "buys": 1174,
+   "sells": 401
+  },
+  "base_over_buys": {},
+  "codes": [
+   {
+    "code": "601225",
+    "name": "陕西煤业",
+    "base": 37.9,
+    "cnone": 5.9,
+    "diff": -32.0,
+    "base_maxw": 49.4,
+    "cnone_maxw": 9.5,
+    "cnone_maxw_day": "2021-08-31",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000338",
+    "name": "潍柴动力",
+    "base": 68.2,
+    "cnone": 41.0,
+    "diff": -27.3,
+    "base_maxw": 74.6,
+    "cnone_maxw": 44.1,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 0,
+    "base_over_days": 309,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600660",
+    "name": "福耀玻璃",
+    "base": 23.5,
+    "cnone": 14.4,
+    "diff": -9.0,
+    "base_maxw": 20.4,
+    "cnone_maxw": 18.3,
+    "cnone_maxw_day": "2016-01-21",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601169",
+    "name": "北京银行",
+    "base": 19.2,
+    "cnone": 10.7,
+    "diff": -8.5,
+    "base_maxw": 55.1,
+    "cnone_maxw": 32.4,
+    "cnone_maxw_day": "2022-05-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600519",
+    "name": "贵州茅台",
+    "base": 40.7,
+    "cnone": 35.5,
+    "diff": -5.2,
+    "base_maxw": 45.3,
+    "cnone_maxw": 45.5,
+    "cnone_maxw_day": "2016-02-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600750",
+    "name": "华润江中",
+    "base": 4.8,
+    "cnone": 0.0,
+    "diff": -4.8,
+    "base_maxw": 10.3,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2021-11-16",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601988",
+    "name": "中国银行",
+    "base": 7.3,
+    "cnone": 2.6,
+    "diff": -4.7,
+    "base_maxw": 20.3,
+    "cnone_maxw": 7.8,
+    "cnone_maxw_day": "2022-10-31",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002024",
+    "name": "ST易购",
+    "base": 7.0,
+    "cnone": 2.7,
+    "diff": -4.4,
+    "base_maxw": 15.1,
+    "cnone_maxw": 7.8,
+    "cnone_maxw_day": "2013-09-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601288",
+    "name": "农业银行",
+    "base": 6.8,
+    "cnone": 2.8,
+    "diff": -4.0,
+    "base_maxw": 14.2,
+    "cnone_maxw": 6.7,
+    "cnone_maxw_day": "2022-04-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002294",
+    "name": "信立泰",
+    "base": 3.2,
+    "cnone": 0,
+    "diff": -3.2,
+    "base_maxw": 8.3,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000063",
+    "name": "中兴通讯",
+    "base": 3.6,
+    "cnone": 1.0,
+    "diff": -2.6,
+    "base_maxw": 12.7,
+    "cnone_maxw": 3.5,
+    "cnone_maxw_day": "2024-11-11",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000792",
+    "name": "盐湖股份",
+    "base": 8.7,
+    "cnone": 7.3,
+    "diff": -1.4,
+    "base_maxw": 21.0,
+    "cnone_maxw": 17.2,
+    "cnone_maxw_day": "2026-01-06",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600016",
+    "name": "民生银行",
+    "base": -0.6,
+    "cnone": -2.0,
+    "diff": -1.4,
+    "base_maxw": 10.7,
+    "cnone_maxw": 41.1,
+    "cnone_maxw_day": "2022-08-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000661",
+    "name": "长春高新",
+    "base": -0.2,
+    "cnone": -1.1,
+    "diff": -0.9,
+    "base_maxw": 34.6,
+    "cnone_maxw": 19.9,
+    "cnone_maxw_day": "2025-04-18",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002466",
+    "name": "天齐锂业",
+    "base": 7.5,
+    "cnone": 6.7,
+    "diff": -0.9,
+    "base_maxw": 17.8,
+    "cnone_maxw": 17.8,
+    "cnone_maxw_day": "2024-11-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600690",
+    "name": "海尔智家",
+    "base": 16.7,
+    "cnone": 16.0,
+    "diff": -0.7,
+    "base_maxw": 27.8,
+    "cnone_maxw": 27.2,
+    "cnone_maxw_day": "2016-09-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000333",
+    "name": "美的集团",
+    "base": 3.0,
+    "cnone": 2.2,
+    "diff": -0.7,
+    "base_maxw": 5.6,
+    "cnone_maxw": 5.6,
+    "cnone_maxw_day": "2016-02-01",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000933",
+    "name": "神火股份",
+    "base": 0.7,
+    "cnone": 0.1,
+    "diff": -0.6,
+    "base_maxw": 1.3,
+    "cnone_maxw": 0.1,
+    "cnone_maxw_day": "2015-03-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000858",
+    "name": "五粮液",
+    "base": 0.7,
+    "cnone": 0.1,
+    "diff": -0.5,
+    "base_maxw": 4.7,
+    "cnone_maxw": 0.7,
+    "cnone_maxw_day": "2015-04-16",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603529",
+    "name": "爱玛科技",
+    "base": -0.6,
+    "cnone": -1.0,
+    "diff": -0.5,
+    "base_maxw": 5.4,
+    "cnone_maxw": 6.7,
+    "cnone_maxw_day": "2026-04-27",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600000",
+    "name": "浦发银行",
+    "base": 0.5,
+    "cnone": 0.1,
+    "diff": -0.4,
+    "base_maxw": 6.7,
+    "cnone_maxw": 1.2,
+    "cnone_maxw_day": "2024-04-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601229",
+    "name": "上海银行",
+    "base": 3.5,
+    "cnone": 3.2,
+    "diff": -0.3,
+    "base_maxw": 7.2,
+    "cnone_maxw": 6.3,
+    "cnone_maxw_day": "2025-04-07",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000568",
+    "name": "泸州老窖",
+    "base": 7.0,
+    "cnone": 6.6,
+    "diff": -0.3,
+    "base_maxw": 19.7,
+    "cnone_maxw": 10.7,
+    "cnone_maxw_day": "2016-01-07",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002304",
+    "name": "洋河股份",
+    "base": 33.9,
+    "cnone": 33.6,
+    "diff": -0.3,
+    "base_maxw": 44.2,
+    "cnone_maxw": 43.4,
+    "cnone_maxw_day": "2016-01-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600015",
+    "name": "华夏银行",
+    "base": 0.7,
+    "cnone": 0.5,
+    "diff": -0.2,
+    "base_maxw": 6.3,
+    "cnone_maxw": 5.1,
+    "cnone_maxw_day": "2022-05-12",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603369",
+    "name": "今世缘",
+    "base": 0.4,
+    "cnone": 0.2,
+    "diff": -0.2,
+    "base_maxw": 6.1,
+    "cnone_maxw": 4.7,
+    "cnone_maxw_day": "2026-05-27",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600176",
+    "name": "中国巨石",
+    "base": 0.2,
+    "cnone": 0.0,
+    "diff": -0.2,
+    "base_maxw": 5.6,
+    "cnone_maxw": 2.8,
+    "cnone_maxw_day": "2022-06-06",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601398",
+    "name": "工商银行",
+    "base": 0.2,
+    "cnone": 0.1,
+    "diff": -0.1,
+    "base_maxw": 0.4,
+    "cnone_maxw": 0.1,
+    "cnone_maxw_day": "2023-12-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601077",
+    "name": "渝农商行",
+    "base": 0.1,
+    "cnone": 0.0,
+    "diff": -0.1,
+    "base_maxw": 3.9,
+    "cnone_maxw": 0.5,
+    "cnone_maxw_day": "2021-11-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603323",
+    "name": "苏农银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.2,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-12-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002001",
+    "name": "新和成",
+    "base": 0.0,
+    "cnone": 0,
+    "diff": -0.0,
+    "base_maxw": 0.1,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "300782",
+    "name": "卓胜微",
+    "base": 0.3,
+    "cnone": 0.3,
+    "diff": -0.0,
+    "base_maxw": 0.9,
+    "cnone_maxw": 0.8,
+    "cnone_maxw_day": "2023-01-30",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000733",
+    "name": "振华科技",
+    "base": 0.8,
+    "cnone": 0.8,
+    "diff": -0.0,
+    "base_maxw": 2.4,
+    "cnone_maxw": 6.9,
+    "cnone_maxw_day": "2025-04-11",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002807",
+    "name": "江阴银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 2.6,
+    "cnone_maxw": 2.7,
+    "cnone_maxw_day": "2026-07-01",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601825",
+    "name": "沪农商行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-06-04",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600426",
+    "name": "华鲁恒升",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-01-20",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000951",
+    "name": "中国重汽",
+    "base": 0.0,
+    "cnone": 0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603279",
+    "name": "景津装备",
+    "base": 0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-02-27",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601658",
+    "name": "邮储银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-09-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002958",
+    "name": "青农商行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-03-12",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "300360",
+    "name": "炬华科技",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-11-11",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601009",
+    "name": "南京银行",
+    "base": 0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-07-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601963",
+    "name": "重庆银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-08",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601860",
+    "name": "紫金银行",
+    "base": 0.0,
+    "cnone": 0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002966",
+    "name": "苏州银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-08-05",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601128",
+    "name": "常熟银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-18",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600928",
+    "name": "西安银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-01-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002839",
+    "name": "张家港行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002948",
+    "name": "青岛银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-23",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601916",
+    "name": "浙商银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-02-02",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600908",
+    "name": "无锡银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-10-17",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601665",
+    "name": "齐鲁银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2023-08-21",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601187",
+    "name": "厦门银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600919",
+    "name": "江苏银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2023-08-21",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600188",
+    "name": "兖矿能源",
+    "base": 1.1,
+    "cnone": 1.1,
+    "diff": 0.0,
+    "base_maxw": 6.2,
+    "cnone_maxw": 6.2,
+    "cnone_maxw_day": "2016-02-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601528",
+    "name": "瑞丰银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": 0.0,
+    "base_maxw": 1.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-03-23",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601818",
+    "name": "光大银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.1,
+    "cnone_maxw_day": "2021-08-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600031",
+    "name": "三一重工",
+    "base": 0.2,
+    "cnone": 0.3,
+    "diff": 0.0,
+    "base_maxw": 0.5,
+    "cnone_maxw": 0.8,
+    "cnone_maxw_day": "2014-12-05",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002841",
+    "name": "视源股份",
+    "base": -0.1,
+    "cnone": -0.0,
+    "diff": 0.0,
+    "base_maxw": 2.6,
+    "cnone_maxw": 0.2,
+    "cnone_maxw_day": "2023-12-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601939",
+    "name": "建设银行",
+    "base": 0.0,
+    "cnone": 0.1,
+    "diff": 0.1,
+    "base_maxw": 0.1,
+    "cnone_maxw": 0.3,
+    "cnone_maxw_day": "2021-08-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002027",
+    "name": "分众传媒",
+    "base": 1.9,
+    "cnone": 2.0,
+    "diff": 0.1,
+    "base_maxw": 7.3,
+    "cnone_maxw": 7.6,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600315",
+    "name": "上海家化",
+    "base": 0,
+    "cnone": 0.1,
+    "diff": 0.1,
+    "base_maxw": 0,
+    "cnone_maxw": 2.0,
+    "cnone_maxw_day": "2016-08-25",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603156",
+    "name": "养元饮品",
+    "base": 1.9,
+    "cnone": 2.0,
+    "diff": 0.1,
+    "base_maxw": 6.3,
+    "cnone_maxw": 8.3,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002152",
+    "name": "广电运通",
+    "base": 3.7,
+    "cnone": 3.8,
+    "diff": 0.1,
+    "base_maxw": 16.8,
+    "cnone_maxw": 11.4,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600309",
+    "name": "万华化学",
+    "base": 1.7,
+    "cnone": 1.9,
+    "diff": 0.2,
+    "base_maxw": 3.9,
+    "cnone_maxw": 5.4,
+    "cnone_maxw_day": "2019-08-08",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002262",
+    "name": "恩华药业",
+    "base": 0,
+    "cnone": 0.3,
+    "diff": 0.3,
+    "base_maxw": 0,
+    "cnone_maxw": 0.7,
+    "cnone_maxw_day": "2022-10-14",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000001",
+    "name": "平安银行",
+    "base": 0.8,
+    "cnone": 1.2,
+    "diff": 0.4,
+    "base_maxw": 33.9,
+    "cnone_maxw": 34.6,
+    "cnone_maxw_day": "2026-06-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601577",
+    "name": "长沙银行",
+    "base": 0.1,
+    "cnone": 0.6,
+    "diff": 0.5,
+    "base_maxw": 1.1,
+    "cnone_maxw": 4.4,
+    "cnone_maxw_day": "2025-06-10",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "300316",
+    "name": "晶盛机电",
+    "base": 0.0,
+    "cnone": 0.6,
+    "diff": 0.6,
+    "base_maxw": 0.0,
+    "cnone_maxw": 1.9,
+    "cnone_maxw_day": "2024-10-08",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600566",
+    "name": "济川药业",
+    "base": -1.3,
+    "cnone": -0.5,
+    "diff": 0.8,
+    "base_maxw": 8.4,
+    "cnone_maxw": 8.9,
+    "cnone_maxw_day": "2020-03-23",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000423",
+    "name": "东阿阿胶",
+    "base": 4.1,
+    "cnone": 5.3,
+    "diff": 1.2,
+    "base_maxw": 16.6,
+    "cnone_maxw": 17.3,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601998",
+    "name": "中信银行",
+    "base": 4.9,
+    "cnone": 6.4,
+    "diff": 1.5,
+    "base_maxw": 9.5,
+    "cnone_maxw": 12.7,
+    "cnone_maxw_day": "2022-10-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "688516",
+    "name": "奥特维",
+    "base": 8.5,
+    "cnone": 10.1,
+    "diff": 1.6,
+    "base_maxw": 18.3,
+    "cnone_maxw": 16.3,
+    "cnone_maxw_day": "2026-01-08",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002128",
+    "name": "电投能源",
+    "base": 24.9,
+    "cnone": 26.6,
+    "diff": 1.7,
+    "base_maxw": 30.3,
+    "cnone_maxw": 38.6,
+    "cnone_maxw_day": "2024-01-25",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601997",
+    "name": "贵阳银行",
+    "base": 9.8,
+    "cnone": 11.5,
+    "diff": 1.7,
+    "base_maxw": 61.7,
+    "cnone_maxw": 63.6,
+    "cnone_maxw_day": "2025-07-10",
+    "cnone_over_days": 45,
+    "base_over_days": 9,
+    "cnone_over_buys": [
+     5,
+     6040006.0,
+     "2025-07-07",
+     "2025-07-14"
+    ]
+   },
+   {
+    "code": "002236",
+    "name": "大华股份",
+    "base": 2.6,
+    "cnone": 4.6,
+    "diff": 2.0,
+    "base_maxw": 8.1,
+    "cnone_maxw": 9.2,
+    "cnone_maxw_day": "2023-03-22",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601328",
+    "name": "交通银行",
+    "base": 3.1,
+    "cnone": 5.8,
+    "diff": 2.7,
+    "base_maxw": 6.1,
+    "cnone_maxw": 12.0,
+    "cnone_maxw_day": "2022-05-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600066",
+    "name": "宇通客车",
+    "base": 11.4,
+    "cnone": 15.0,
+    "diff": 3.6,
+    "base_maxw": 61.2,
+    "cnone_maxw": 41.0,
+    "cnone_maxw_day": "2017-09-19",
+    "cnone_over_days": 0,
+    "base_over_days": 6,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601166",
+    "name": "兴业银行",
+    "base": 3.3,
+    "cnone": 7.0,
+    "diff": 3.8,
+    "base_maxw": 12.3,
+    "cnone_maxw": 25.7,
+    "cnone_maxw_day": "2024-09-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600938",
+    "name": "中国海油",
+    "base": 16.5,
+    "cnone": 20.6,
+    "diff": 4.2,
+    "base_maxw": 24.9,
+    "cnone_maxw": 30.2,
+    "cnone_maxw_day": "2023-04-17",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600970",
+    "name": "中材国际",
+    "base": -9.5,
+    "cnone": -4.8,
+    "diff": 4.7,
+    "base_maxw": 55.0,
+    "cnone_maxw": 38.8,
+    "cnone_maxw_day": "2026-04-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600585",
+    "name": "海螺水泥",
+    "base": 34.9,
+    "cnone": 54.6,
+    "diff": 19.6,
+    "base_maxw": 75.7,
+    "cnone_maxw": 108.6,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 703,
+    "base_over_days": 208,
+    "cnone_over_buys": [
+     14,
+     19242863.0,
+     "2018-05-21",
+     "2021-09-13"
+    ]
+   },
+   {
+    "code": "000651",
+    "name": "格力电器",
+    "base": 100.1,
+    "cnone": 122.5,
+    "diff": 22.3,
+    "base_maxw": 68.1,
+    "cnone_maxw": 130.1,
+    "cnone_maxw_day": "2015-04-30",
+    "cnone_over_days": 318,
+    "base_over_days": 178,
+    "cnone_over_buys": [
+     36,
+     71199626.0,
+     "2015-01-21",
+     "2026-07-30"
+    ]
+   },
+   {
+    "code": "601088",
+    "name": "中国神华",
+    "base": 57.5,
+    "cnone": 83.7,
+    "diff": 26.1,
+    "base_maxw": 78.7,
+    "cnone_maxw": 109.0,
+    "cnone_maxw_day": "2022-03-15",
+    "cnone_over_days": 421,
+    "base_over_days": 602,
+    "cnone_over_buys": [
+     17,
+     17591698.0,
+     "2020-11-06",
+     "2021-09-06"
+    ]
+   },
+   {
+    "code": "600897",
+    "name": "厦门空港",
+    "base": 58.6,
+    "cnone": 94.9,
+    "diff": 36.4,
+    "base_maxw": 79.8,
+    "cnone_maxw": 125.8,
+    "cnone_maxw_day": "2013-07-08",
+    "cnone_over_days": 751,
+    "base_over_days": 651,
+    "cnone_over_buys": [
+     7,
+     861384.0,
+     "2011-11-22",
+     "2012-05-04"
+    ]
+   }
+  ],
+  "names": {
+   "000338": "潍柴动力",
+   "600897": "厦门空港",
+   "601088": "中国神华",
+   "600660": "福耀玻璃",
+   "002152": "广电运通",
+   "002128": "电投能源",
+   "002024": "ST易购",
+   "000651": "格力电器",
+   "002294": "信立泰",
+   "600066": "宇通客车",
+   "002001": "新和成",
+   "000933": "神火股份",
+   "002304": "洋河股份",
+   "000858": "五粮液",
+   "600031": "三一重工",
+   "601328": "交通银行",
+   "000333": "美的集团",
+   "600585": "海螺水泥",
+   "000568": "泸州老窖",
+   "600519": "贵州茅台",
+   "600690": "海尔智家",
+   "600188": "兖矿能源",
+   "601225": "陕西煤业",
+   "000423": "东阿阿胶",
+   "002027": "分众传媒",
+   "603156": "养元饮品",
+   "600309": "万华化学",
+   "002236": "大华股份",
+   "600566": "济川药业",
+   "601988": "中国银行",
+   "600015": "华夏银行",
+   "601169": "北京银行",
+   "601288": "农业银行",
+   "600016": "民生银行",
+   "600750": "华润江中",
+   "601998": "中信银行",
+   "601077": "渝农商行",
+   "601997": "贵阳银行",
+   "601398": "工商银行",
+   "601818": "光大银行",
+   "601939": "建设银行",
+   "600000": "浦发银行",
+   "601229": "上海银行",
+   "600176": "中国巨石",
+   "300782": "卓胜微",
+   "600938": "中国海油",
+   "601916": "浙商银行",
+   "002466": "天齐锂业",
+   "000792": "盐湖股份",
+   "601166": "兴业银行",
+   "601825": "沪农商行",
+   "002841": "视源股份",
+   "603323": "苏农银行",
+   "000661": "长春高新",
+   "601577": "长沙银行",
+   "002958": "青农商行",
+   "601658": "邮储银行",
+   "601860": "紫金银行",
+   "002807": "江阴银行",
+   "000063": "中兴通讯",
+   "300316": "晶盛机电",
+   "688516": "奥特维",
+   "600970": "中材国际",
+   "000733": "振华科技",
+   "600426": "华鲁恒升",
+   "002839": "张家港行",
+   "000001": "平安银行",
+   "601665": "齐鲁银行",
+   "300360": "炬华科技",
+   "601963": "重庆银行",
+   "000951": "中国重汽",
+   "600908": "无锡银行",
+   "603529": "爱玛科技",
+   "601128": "常熟银行",
+   "603369": "今世缘",
+   "601528": "瑞丰银行",
+   "600315": "上海家化",
+   "002262": "恩华药业",
+   "600919": "江苏银行",
+   "600928": "西安银行",
+   "601187": "厦门银行",
+   "603279": "景津装备",
+   "002948": "青岛银行",
+   "601009": "南京银行",
+   "002966": "苏州银行"
+  }
+ },
+ "20091101": {
+  "base": {
+   "final_equity": 714348722.4928,
+   "end": {
+    "000651": 0.6093,
+    "601225": 0.0102,
+    "000792": 0.0303,
+    "603323": 0.0025,
+    "002807": 0.0231,
+    "601166": 0.113,
+    "601577": 0.0408,
+    "600970": 0.3961,
+    "000001": 0.33,
+    "603529": 0.0576,
+    "603369": 0.072
+   },
+   "end_day": "2026-08-28",
+   "top1_days_over": {
+    "0.6": 0.3477600607441154,
+    "0.8": 0.0,
+    "1.0": 0.0,
+    "1.2": 0.0
+   },
+   "min_margin": [
+    1.962396,
+    "2019-01-03"
+   ],
+   "buys": 1331,
+   "sells": 609
+  },
+  "cnone": {
+   "final_equity": 936454274.7669,
+   "end": {
+    "000651": 0.6314,
+    "601229": 0.0407,
+    "601166": 0.1278,
+    "000792": 0.1044,
+    "601577": 0.0052,
+    "000001": 0.342,
+    "002807": 0.0267,
+    "600970": 0.2898,
+    "603529": 0.0709,
+    "603369": 0.0426
+   },
+   "end_day": "2026-08-28",
+   "top1_days_over": {
+    "0.6": 0.524930397367755,
+    "0.8": 0.27992913186535057,
+    "1.0": 0.03720577069096431,
+    "1.2": 0.004555808656036446
+   },
+   "min_margin": [
+    1.9547,
+    "2019-01-03"
+   ],
+   "buys": 1263,
+   "sells": 532
+  },
+  "base_over_buys": {},
+  "codes": [
+   {
+    "code": "601225",
+    "name": "陕西煤业",
+    "base": 36.7,
+    "cnone": 6.2,
+    "diff": -30.5,
+    "base_maxw": 47.3,
+    "cnone_maxw": 11.6,
+    "cnone_maxw_day": "2021-08-31",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000338",
+    "name": "潍柴动力",
+    "base": 69.1,
+    "cnone": 40.5,
+    "diff": -28.6,
+    "base_maxw": 75.0,
+    "cnone_maxw": 44.2,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 0,
+    "base_over_days": 318,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600660",
+    "name": "福耀玻璃",
+    "base": 37.1,
+    "cnone": 15.8,
+    "diff": -21.3,
+    "base_maxw": 45.7,
+    "cnone_maxw": 18.5,
+    "cnone_maxw_day": "2016-01-21",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601169",
+    "name": "北京银行",
+    "base": 18.7,
+    "cnone": 10.5,
+    "diff": -8.2,
+    "base_maxw": 53.1,
+    "cnone_maxw": 32.0,
+    "cnone_maxw_day": "2022-05-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002304",
+    "name": "洋河股份",
+    "base": 37.9,
+    "cnone": 29.9,
+    "diff": -8.0,
+    "base_maxw": 50.5,
+    "cnone_maxw": 38.8,
+    "cnone_maxw_day": "2016-02-01",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002128",
+    "name": "电投能源",
+    "base": 30.4,
+    "cnone": 25.1,
+    "diff": -5.3,
+    "base_maxw": 33.3,
+    "cnone_maxw": 30.3,
+    "cnone_maxw_day": "2024-01-25",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601988",
+    "name": "中国银行",
+    "base": 7.3,
+    "cnone": 2.6,
+    "diff": -4.7,
+    "base_maxw": 20.2,
+    "cnone_maxw": 7.8,
+    "cnone_maxw_day": "2022-10-31",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600750",
+    "name": "华润江中",
+    "base": 4.1,
+    "cnone": 0.0,
+    "diff": -4.1,
+    "base_maxw": 8.9,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2021-11-16",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601288",
+    "name": "农业银行",
+    "base": 6.8,
+    "cnone": 2.8,
+    "diff": -4.0,
+    "base_maxw": 14.2,
+    "cnone_maxw": 6.7,
+    "cnone_maxw_day": "2022-04-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600519",
+    "name": "贵州茅台",
+    "base": 40.3,
+    "cnone": 36.6,
+    "diff": -3.7,
+    "base_maxw": 45.5,
+    "cnone_maxw": 45.5,
+    "cnone_maxw_day": "2016-02-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000333",
+    "name": "美的集团",
+    "base": 7.1,
+    "cnone": 3.4,
+    "diff": -3.6,
+    "base_maxw": 6.2,
+    "cnone_maxw": 6.6,
+    "cnone_maxw_day": "2014-12-02",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002466",
+    "name": "天齐锂业",
+    "base": 8.3,
+    "cnone": 5.9,
+    "diff": -2.4,
+    "base_maxw": 19.9,
+    "cnone_maxw": 17.2,
+    "cnone_maxw_day": "2025-08-11",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002024",
+    "name": "ST易购",
+    "base": 8.5,
+    "cnone": 7.0,
+    "diff": -1.5,
+    "base_maxw": 17.6,
+    "cnone_maxw": 15.4,
+    "cnone_maxw_day": "2013-09-23",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600016",
+    "name": "民生银行",
+    "base": -0.6,
+    "cnone": -1.9,
+    "diff": -1.3,
+    "base_maxw": 10.7,
+    "cnone_maxw": 40.1,
+    "cnone_maxw_day": "2022-08-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000568",
+    "name": "泸州老窖",
+    "base": 4.9,
+    "cnone": 3.6,
+    "diff": -1.3,
+    "base_maxw": 7.8,
+    "cnone_maxw": 5.7,
+    "cnone_maxw_day": "2016-01-07",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600309",
+    "name": "万华化学",
+    "base": 1.5,
+    "cnone": 0.7,
+    "diff": -0.8,
+    "base_maxw": 3.4,
+    "cnone_maxw": 1.9,
+    "cnone_maxw_day": "2019-08-08",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601577",
+    "name": "长沙银行",
+    "base": 0.7,
+    "cnone": 0.1,
+    "diff": -0.7,
+    "base_maxw": 5.9,
+    "cnone_maxw": 0.7,
+    "cnone_maxw_day": "2025-06-10",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603156",
+    "name": "养元饮品",
+    "base": 2.5,
+    "cnone": 2.0,
+    "diff": -0.5,
+    "base_maxw": 8.3,
+    "cnone_maxw": 8.1,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601398",
+    "name": "工商银行",
+    "base": 0.5,
+    "cnone": 0.0,
+    "diff": -0.5,
+    "base_maxw": 0.9,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-08-28",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000661",
+    "name": "长春高新",
+    "base": -0.5,
+    "cnone": -1.0,
+    "diff": -0.5,
+    "base_maxw": 29.0,
+    "cnone_maxw": 25.6,
+    "cnone_maxw_day": "2025-04-18",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000858",
+    "name": "五粮液",
+    "base": 0.5,
+    "cnone": 0.1,
+    "diff": -0.4,
+    "base_maxw": 2.8,
+    "cnone_maxw": 0.3,
+    "cnone_maxw_day": "2015-04-15",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603369",
+    "name": "今世缘",
+    "base": 0.5,
+    "cnone": 0.2,
+    "diff": -0.3,
+    "base_maxw": 7.4,
+    "cnone_maxw": 4.8,
+    "cnone_maxw_day": "2026-05-27",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000933",
+    "name": "神火股份",
+    "base": 0.5,
+    "cnone": 0.2,
+    "diff": -0.3,
+    "base_maxw": 0.9,
+    "cnone_maxw": 0.4,
+    "cnone_maxw_day": "2026-01-28",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600031",
+    "name": "三一重工",
+    "base": 0.4,
+    "cnone": 0.2,
+    "diff": -0.3,
+    "base_maxw": 0.8,
+    "cnone_maxw": 0.3,
+    "cnone_maxw_day": "2014-12-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600015",
+    "name": "华夏银行",
+    "base": 0.7,
+    "cnone": 0.5,
+    "diff": -0.2,
+    "base_maxw": 6.3,
+    "cnone_maxw": 5.1,
+    "cnone_maxw_day": "2022-05-12",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "300316",
+    "name": "晶盛机电",
+    "base": 0.7,
+    "cnone": 0.5,
+    "diff": -0.2,
+    "base_maxw": 2.0,
+    "cnone_maxw": 2.1,
+    "cnone_maxw_day": "2024-07-25",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600176",
+    "name": "中国巨石",
+    "base": 0.2,
+    "cnone": 0.0,
+    "diff": -0.2,
+    "base_maxw": 5.6,
+    "cnone_maxw": 2.7,
+    "cnone_maxw_day": "2022-06-06",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603323",
+    "name": "苏农银行",
+    "base": 0.1,
+    "cnone": 0.0,
+    "diff": -0.1,
+    "base_maxw": 0.5,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-12-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600315",
+    "name": "上海家化",
+    "base": 0.1,
+    "cnone": 0,
+    "diff": -0.1,
+    "base_maxw": 2.0,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601077",
+    "name": "渝农商行",
+    "base": 0.1,
+    "cnone": 0.0,
+    "diff": -0.1,
+    "base_maxw": 5.3,
+    "cnone_maxw": 1.3,
+    "cnone_maxw_day": "2021-07-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "603529",
+    "name": "爱玛科技",
+    "base": -0.8,
+    "cnone": -0.9,
+    "diff": -0.1,
+    "base_maxw": 6.2,
+    "cnone_maxw": 7.6,
+    "cnone_maxw_day": "2026-07-10",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002841",
+    "name": "视源股份",
+    "base": -0.0,
+    "cnone": -0.1,
+    "diff": -0.1,
+    "base_maxw": 0.1,
+    "cnone_maxw": 1.8,
+    "cnone_maxw_day": "2024-03-01",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "300782",
+    "name": "卓胜微",
+    "base": 0.3,
+    "cnone": 0.3,
+    "diff": -0.0,
+    "base_maxw": 0.9,
+    "cnone_maxw": 0.8,
+    "cnone_maxw_day": "2023-01-30",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002807",
+    "name": "江阴银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 2.5,
+    "cnone_maxw": 2.9,
+    "cnone_maxw_day": "2026-07-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600000",
+    "name": "浦发银行",
+    "base": 0.1,
+    "cnone": 0.1,
+    "diff": -0.0,
+    "base_maxw": 1.5,
+    "cnone_maxw": 1.2,
+    "cnone_maxw_day": "2024-04-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601818",
+    "name": "光大银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.3,
+    "cnone_maxw": 0.2,
+    "cnone_maxw_day": "2021-08-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002948",
+    "name": "青岛银行",
+    "base": 0.0,
+    "cnone": 0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601825",
+    "name": "沪农商行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-06-04",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601665",
+    "name": "齐鲁银行",
+    "base": 0.0,
+    "cnone": 0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0,
+    "cnone_maxw_day": "",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600426",
+    "name": "华鲁恒升",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-10-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601658",
+    "name": "邮储银行",
+    "base": 0.0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-30",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601187",
+    "name": "厦门银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-06-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002839",
+    "name": "张家港行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-08-04",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600908",
+    "name": "无锡银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-10-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601128",
+    "name": "常熟银行",
+    "base": 0,
+    "cnone": -0.0,
+    "diff": -0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-07-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002958",
+    "name": "青农商行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": -0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2025-04-25",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601528",
+    "name": "瑞丰银行",
+    "base": -0.0,
+    "cnone": -0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-08-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600928",
+    "name": "西安银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2022-06-15",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601916",
+    "name": "浙商银行",
+    "base": 0.0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-01-22",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000951",
+    "name": "中国重汽",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2026-04-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601009",
+    "name": "南京银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-01-22",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600919",
+    "name": "江苏银行",
+    "base": 0,
+    "cnone": 0.0,
+    "diff": 0.0,
+    "base_maxw": 0,
+    "cnone_maxw": 0.0,
+    "cnone_maxw_day": "2024-01-22",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600188",
+    "name": "兖矿能源",
+    "base": 1.0,
+    "cnone": 1.1,
+    "diff": 0.0,
+    "base_maxw": 6.2,
+    "cnone_maxw": 6.2,
+    "cnone_maxw_day": "2016-03-02",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000733",
+    "name": "振华科技",
+    "base": 0.8,
+    "cnone": 0.8,
+    "diff": 0.0,
+    "base_maxw": 7.0,
+    "cnone_maxw": 2.5,
+    "cnone_maxw_day": "2025-03-12",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601939",
+    "name": "建设银行",
+    "base": 0.0,
+    "cnone": 0.1,
+    "diff": 0.1,
+    "base_maxw": 0.0,
+    "cnone_maxw": 0.3,
+    "cnone_maxw_day": "2021-08-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002262",
+    "name": "恩华药业",
+    "base": 0,
+    "cnone": 0.3,
+    "diff": 0.3,
+    "base_maxw": 0,
+    "cnone_maxw": 0.7,
+    "cnone_maxw_day": "2022-10-14",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000792",
+    "name": "盐湖股份",
+    "base": 7.4,
+    "cnone": 7.8,
+    "diff": 0.4,
+    "base_maxw": 18.1,
+    "cnone_maxw": 20.9,
+    "cnone_maxw_day": "2026-01-07",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002152",
+    "name": "广电运通",
+    "base": 2.0,
+    "cnone": 2.4,
+    "diff": 0.4,
+    "base_maxw": 15.6,
+    "cnone_maxw": 11.1,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000001",
+    "name": "平安银行",
+    "base": 0.8,
+    "cnone": 1.3,
+    "diff": 0.4,
+    "base_maxw": 34.6,
+    "cnone_maxw": 35.7,
+    "cnone_maxw_day": "2026-07-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002027",
+    "name": "分众传媒",
+    "base": 1.3,
+    "cnone": 1.8,
+    "diff": 0.5,
+    "base_maxw": 5.2,
+    "cnone_maxw": 7.3,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600690",
+    "name": "海尔智家",
+    "base": 16.1,
+    "cnone": 16.7,
+    "diff": 0.6,
+    "base_maxw": 26.9,
+    "cnone_maxw": 27.9,
+    "cnone_maxw_day": "2016-09-02",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600970",
+    "name": "中材国际",
+    "base": -6.7,
+    "cnone": -5.9,
+    "diff": 0.8,
+    "base_maxw": 52.3,
+    "cnone_maxw": 38.7,
+    "cnone_maxw_day": "2026-04-09",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600566",
+    "name": "济川药业",
+    "base": -1.3,
+    "cnone": -0.5,
+    "diff": 0.9,
+    "base_maxw": 8.7,
+    "cnone_maxw": 8.7,
+    "cnone_maxw_day": "2020-03-23",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000423",
+    "name": "东阿阿胶",
+    "base": 4.2,
+    "cnone": 5.2,
+    "diff": 1.0,
+    "base_maxw": 16.5,
+    "cnone_maxw": 17.4,
+    "cnone_maxw_day": "2020-02-03",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601998",
+    "name": "中信银行",
+    "base": 5.3,
+    "cnone": 6.4,
+    "diff": 1.1,
+    "base_maxw": 10.3,
+    "cnone_maxw": 12.6,
+    "cnone_maxw_day": "2022-10-24",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601229",
+    "name": "上海银行",
+    "base": 2.1,
+    "cnone": 3.3,
+    "diff": 1.1,
+    "base_maxw": 3.9,
+    "cnone_maxw": 6.4,
+    "cnone_maxw_day": "2025-04-07",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601328",
+    "name": "交通银行",
+    "base": 5.0,
+    "cnone": 6.2,
+    "diff": 1.2,
+    "base_maxw": 9.7,
+    "cnone_maxw": 13.0,
+    "cnone_maxw_day": "2022-05-26",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601997",
+    "name": "贵阳银行",
+    "base": 8.9,
+    "cnone": 11.1,
+    "diff": 2.2,
+    "base_maxw": 61.3,
+    "cnone_maxw": 60.0,
+    "cnone_maxw_day": "2025-07-10",
+    "cnone_over_days": 0,
+    "base_over_days": 13,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "688516",
+    "name": "奥特维",
+    "base": 8.6,
+    "cnone": 10.8,
+    "diff": 2.3,
+    "base_maxw": 18.9,
+    "cnone_maxw": 23.4,
+    "cnone_maxw_day": "2025-09-17",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "002236",
+    "name": "大华股份",
+    "base": 2.6,
+    "cnone": 5.0,
+    "diff": 2.4,
+    "base_maxw": 7.2,
+    "cnone_maxw": 9.1,
+    "cnone_maxw_day": "2023-03-22",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "601166",
+    "name": "兴业银行",
+    "base": 3.4,
+    "cnone": 5.9,
+    "diff": 2.5,
+    "base_maxw": 12.9,
+    "cnone_maxw": 21.7,
+    "cnone_maxw_day": "2024-09-13",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "000063",
+    "name": "中兴通讯",
+    "base": 0.9,
+    "cnone": 3.9,
+    "diff": 2.9,
+    "base_maxw": 3.4,
+    "cnone_maxw": 13.3,
+    "cnone_maxw_day": "2024-12-19",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600066",
+    "name": "宇通客车",
+    "base": 10.5,
+    "cnone": 16.1,
+    "diff": 5.6,
+    "base_maxw": 64.6,
+    "cnone_maxw": 47.9,
+    "cnone_maxw_day": "2016-02-15",
+    "cnone_over_days": 0,
+    "base_over_days": 51,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600938",
+    "name": "中国海油",
+    "base": 11.0,
+    "cnone": 26.3,
+    "diff": 15.3,
+    "base_maxw": 16.6,
+    "cnone_maxw": 38.1,
+    "cnone_maxw_day": "2023-12-29",
+    "cnone_over_days": 0,
+    "base_over_days": 0,
+    "cnone_over_buys": [
+     0,
+     0,
+     "",
+     ""
+    ]
+   },
+   {
+    "code": "600585",
+    "name": "海螺水泥",
+    "base": 34.9,
+    "cnone": 54.7,
+    "diff": 19.8,
+    "base_maxw": 75.9,
+    "cnone_maxw": 108.9,
+    "cnone_maxw_day": "2019-01-03",
+    "cnone_over_days": 692,
+    "base_over_days": 209,
+    "cnone_over_buys": [
+     13,
+     29356193.0,
+     "2018-05-21",
+     "2021-09-13"
+    ]
+   },
+   {
+    "code": "600897",
+    "name": "厦门空港",
+    "base": 40.9,
+    "cnone": 62.0,
+    "diff": 21.1,
+    "base_maxw": 66.0,
+    "cnone_maxw": 89.2,
+    "cnone_maxw_day": "2013-07-03",
+    "cnone_over_days": 722,
+    "base_over_days": 175,
+    "cnone_over_buys": [
+     4,
+     632551.0,
+     "2011-11-22",
+     "2011-11-29"
+    ]
+   },
+   {
+    "code": "601088",
+    "name": "中国神华",
+    "base": 58.2,
+    "cnone": 82.4,
+    "diff": 24.2,
+    "base_maxw": 79.5,
+    "cnone_maxw": 107.4,
+    "cnone_maxw_day": "2022-03-15",
+    "cnone_over_days": 396,
+    "base_over_days": 390,
+    "cnone_over_buys": [
+     17,
+     27923932.0,
+     "2020-11-06",
+     "2021-09-07"
+    ]
+   },
+   {
+    "code": "000651",
+    "name": "格力电器",
+    "base": 142.4,
+    "cnone": 200.9,
+    "diff": 58.5,
+    "base_maxw": 70.1,
+    "cnone_maxw": 127.2,
+    "cnone_maxw_day": "2015-04-30",
+    "cnone_over_days": 505,
+    "base_over_days": 345,
+    "cnone_over_buys": [
+     52,
+     53348882.0,
+     "2010-09-13",
+     "2026-07-30"
+    ]
+   }
+  ],
+  "names": {
+   "000651": "格力电器",
+   "600660": "福耀玻璃",
+   "000338": "潍柴动力",
+   "600897": "厦门空港",
+   "002128": "电投能源",
+   "601088": "中国神华",
+   "002152": "广电运通",
+   "002024": "ST易购",
+   "600066": "宇通客车",
+   "000933": "神火股份",
+   "002304": "洋河股份",
+   "600031": "三一重工",
+   "000858": "五粮液",
+   "000568": "泸州老窖",
+   "601328": "交通银行",
+   "000333": "美的集团",
+   "600585": "海螺水泥",
+   "600519": "贵州茅台",
+   "600690": "海尔智家",
+   "600188": "兖矿能源",
+   "601225": "陕西煤业",
+   "600315": "上海家化",
+   "000423": "东阿阿胶",
+   "002027": "分众传媒",
+   "600309": "万华化学",
+   "002236": "大华股份",
+   "600566": "济川药业",
+   "603156": "养元饮品",
+   "601169": "北京银行",
+   "601288": "农业银行",
+   "600015": "华夏银行",
+   "600016": "民生银行",
+   "601988": "中国银行",
+   "600750": "华润江中",
+   "601998": "中信银行",
+   "601077": "渝农商行",
+   "601229": "上海银行",
+   "601997": "贵阳银行",
+   "601818": "光大银行",
+   "601398": "工商银行",
+   "600000": "浦发银行",
+   "601939": "建设银行",
+   "600176": "中国巨石",
+   "300782": "卓胜微",
+   "600938": "中国海油",
+   "002466": "天齐锂业",
+   "601916": "浙商银行",
+   "000792": "盐湖股份",
+   "002958": "青农商行",
+   "601825": "沪农商行",
+   "601665": "齐鲁银行",
+   "002841": "视源股份",
+   "603323": "苏农银行",
+   "000661": "长春高新",
+   "601658": "邮储银行",
+   "600928": "西安银行",
+   "002807": "江阴银行",
+   "000063": "中兴通讯",
+   "601166": "兴业银行",
+   "002839": "张家港行",
+   "688516": "奥特维",
+   "002948": "青岛银行",
+   "600970": "中材国际",
+   "601577": "长沙银行",
+   "601187": "厦门银行",
+   "300316": "晶盛机电",
+   "000733": "振华科技",
+   "600426": "华鲁恒升",
+   "000001": "平安银行",
+   "600908": "无锡银行",
+   "601528": "瑞丰银行",
+   "603529": "爱玛科技",
+   "603369": "今世缘",
+   "002262": "恩华药业",
+   "601009": "南京银行",
+   "600919": "江苏银行",
+   "000951": "中国重汽",
+   "601128": "常熟银行"
+  }
+ }
+}

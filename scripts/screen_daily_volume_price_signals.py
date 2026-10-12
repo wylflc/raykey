@@ -456,7 +456,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--nav", type=float, default=0.0,
                         help="当日净资产，用于定一档 = NAV × §9.3.1 的比例。不给则只算 P/V、不出买入计划")
     parser.add_argument("--funds", type=float, default=None,
-                        help="当日**可用资金 = 现金 + 未用授信**（OI-062）。买入计划以此为预算；"
+                        help="当日**可用资金 = 券商可用保证金 + 现金**（§10.2，OI-062）。买入计划以此为预算；"
                              "不给则退回「可用资金＝净资产」的旧估算并显著告警。满仓/带融资账户必须给。")
     parser.add_argument("--cash", type=float, default=None,
                         help="当日现金（§9.3.1 股债总仓位上限受限期间用：预算 = 现金 − 融资负债）；缺省读账户快照 cash_cny")
@@ -979,7 +979,7 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
     买入侧（第 3、5 步）：`P/V` 升序、相关性只列报告、逐个买一档；已有冷却按 §9.3.3 跳过合格机会，计划不启动冷却。
     `counters` 是买入侧计数器、`sell_counters` 是卖出侧计数器（§9.3.3，两侧互不消费）。
     `holding_rows`：不在输入池内的持仓行情（出名单／无法估值者），只进卖出侧。
-    `exposure_cap`／`cap_cash`：§9.3.1 股债总仓位上限受限期间给（上限、现金 − 融资负债）；此时预算不含授信，
+    `exposure_cap`／`cap_cash`：§9.3.1 股债总仓位上限受限期间给（上限、现金 − 融资负债）；此时预算不计可用保证金，
     常规卖出后按持仓市值比例减仓至上限，每笔买入以买后总仓位 ≤ 上限为限（与回测 enforce_equity_bond_cap／equity_bond_buy_shares 同序同式）。
     `growth`：§9.3.6 成长股登记与重点复核状态（只在生产，回测不复现）。成长股持仓不做涨幅减持、不作换仓卖出源，
     持仓侧 P/V ≥ SEC93_GROWTH_TRIM_PV 减一档；改判的持仓每日减一档；无有效「通过」记录的不进合格集；买入受成长股总额上限。
@@ -1005,11 +1005,11 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
         return buy_trend_ok(r, held_codes)
 
     # ---------------- 卖出侧
-    # §10.2：`--funds` 为负（券商可用保证金为负、已超授信）时照负值起算——卖出款先补足该缺口，余额才进买入；
+    # §10.2：`--funds` 为负（券商可用保证金为负）时照负值起算——卖出款先补足该缺口，余额才进买入；
     # 负预算在买入段落入「不足一手」分支跳过，不会产生负手数。
     cash = nav if funds is None else funds
     if exposure_cap is not None and cap_cash is not None:
-        cash = cap_cash                      # 上限触发：授信视为 0，预算 = 现金 − 融资负债（可为负，卖出款先补缺口）
+        cash = cap_cash                      # 上限触发：不计可用保证金，预算 = 现金 − 融资负债（可为负，卖出款先补缺口）
     funds0 = cash
     sells: list[dict[str, object]] = []
     sell_notes: list[tuple[str, str]] = []     # (名称, 说明)：条件成立但未卖的解释行
@@ -1471,7 +1471,7 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
             print(head + "当前未受限，按原融资与买入规则执行")
         else:
             status = "低于触发线" if eb['spread'] < SEC93_EQUITY_BOND_THRESHOLD else "沿用受限状态，尚未达到恢复线"
-            print(head + f"**受限：上限 {eb['cap']:.0%}**（{status}）｜授信视为 0，预算 = 现金 {eb['cash'] / 1e4:,.2f} 万 − 融资负债 "
+            print(head + f"**受限：上限 {eb['cap']:.0%}**（{status}）｜不计可用保证金，预算 = 现金 {eb['cash'] / 1e4:,.2f} 万 − 融资负债 "
                   f"{eb['debt'] / 1e4:,.2f} 万 = {(eb['cash'] - eb['debt']) / 1e4:,.2f} 万（{eb['source']}）"
                   f"｜常规卖出后总仓位 {result['eb_stock_before'] / nav:.1%}"
                   + (f"，按比例减仓 {len(result['eb_sells'])} 只" if result.get("eb_sells") else "，未超限")
@@ -1540,9 +1540,9 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
     if result["funds_given"]:
         funds0 = float(result["funds0"])
         left = float(result["cash"])
-        funds_txt = (f"可用资金 {funds0 / 1e4:,.2f} 万（现金＋未用授信）" if funds0 >= 0 else
-                     f"可用资金 **{funds0 / 1e4:,.2f} 万（为负：已超授信 {-funds0 / 1e4:,.2f} 万，§10.2 卖出款先补缺口）**")
-        left_txt = f"余 {left / 1e4:,.2f} 万" if left >= 0 else f"**仍超授信 {-left / 1e4:,.2f} 万，不可新增买入**"
+        funds_txt = (f"可用资金 {funds0 / 1e4:,.2f} 万（券商可用保证金＋现金）" if funds0 >= 0 else
+                     f"可用资金 **{funds0 / 1e4:,.2f} 万（为负：缺口 {-funds0 / 1e4:,.2f} 万，§10.2 卖出款先补缺口）**")
+        left_txt = f"余 {left / 1e4:,.2f} 万" if left >= 0 else f"**仍缺 {-left / 1e4:,.2f} 万，不可新增买入**"
         print(f"  4. 买入清单：{funds_txt}"
               f"＋ 当日涨幅减持/换仓卖出款 {sold_cash / 1e4:,.2f} 万 → 投入 {invested / 1e4:,.2f} 万"
               f"（占净资产 {invested / nav * 100:.1f}%）｜{left_txt}")
