@@ -29,5 +29,6 @@
 | --- | --- |
 | `companies/ADBE_Adobe.md` | 复核全文，含来源链接 |
 | `tools/adbe_dcf.py` | 估值计算（输入写在脚本内），`python3 adbe_dcf.py` 复现正文数字 |
+| `companies/ADBE_vs_Figma.md`、`ADBE_vs_Canva.md` | 用户同日追问 Figma、Canva 与 Adobe 的具体关系、Adobe 的应对及对未来的影响；各由一个独立代理完成，约束同上，只读本批与上一批的 Adobe 评审 |
 
 原始下载（SEC 原文、GitHub 文档、媒体网页）存于会话临时目录，不入库；按正文来源链接可重取。
