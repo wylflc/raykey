@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T10:59:15.211344+00:00",
+ "checked_at_utc": "2026-10-13T11:26:14.400175+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -24,6 +24,7 @@
   "pool_exdiv_bands_normalized",
   "eligible_set_recomputed_from_published_quotes",
   "shenhuo_reaction_bar_is_notice_day",
+  "shuanghui_review_carried_to_scan",
   "divergence_review_registry_in_publication_inputs",
   "divergence_subset_is_holdings_plus_eligible"
  ],
@@ -79,9 +80,24 @@
   "scan": "27992831",
   "refresh_pool_second": "27999658",
   "scan_second": "28000002",
-  "scan_third": "28001090"
+  "scan_third": "28001090",
+  "refresh_pool_third": "28002071",
+  "scan_fourth": "28002267"
  },
- "publications": "当日发布三次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑",
+ "publications": "当日发布三次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑",
+ "quality_review": {
+  "000895": {
+   "name": "双汇发展",
+   "trigger": "行政处罚（公告日 2026-10-10）",
+   "attention_class": "worth_attention（不变）",
+   "quality_tier": "L2（不变）",
+   "q4": "66→60",
+   "quality_score": "70.1→69.2",
+   "candidate_pv": "1.7105",
+   "flags": "governance_open_issue",
+   "decision_id": "quality_review:2026-10-13:000895:penalty"
+  }
+ },
  "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
  "rule_version": "a-share-selection-operation-v4.249",
  "equity_bond": {
