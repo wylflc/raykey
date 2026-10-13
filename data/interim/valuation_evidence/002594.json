@@ -2122,5 +2122,33 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "自愿公告（2026-024）",
+   "notice_date": "2026-06-10",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606091823399140_1.pdf",
+   "summary": "美国国防部把公司列入中国军工企业名单；公司称该名单不是制裁名单，不影响正常业务，后续可能启动复核或诉讼程序。",
+   "use": "事件事实",
+   "source_sha256": "8e5421a2981bff2661a4954e1d47b60bd640f272188b5f96b4f30780f6a852ca"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "监管公示",
+   "title": "比亚迪汽车工业有限公司、比亚迪汽车有限公司召回部分国产汽车",
+   "notice_date": "2026-09-18",
+   "source_url": "https://www.samrdprc.org.cn/qczh/gnzhqc/202609/t20260918_116071.html",
+   "summary": "召回唐、秦系列共 183,211 辆，制动踏板限位垫材料批次性异常；公告未写事故或处罚。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "美国国防部名单与海外用工合规事件复核",
+   "summary": "2026-10-13 事件复核：2026-06 被美国国防部列入 1260H 名单（非制裁，美国业务小）；巴西强迫劳动名单与用工和解、匈牙利环保罚款与补贴审查；近一年三次召回共 38.8 万辆。维持 worth_attention、L2；Q4 78→76，登记 governance_open_issue 与侵蚀路径观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002594:event"
+  }
+ ]
 }

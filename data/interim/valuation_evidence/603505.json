@@ -1687,5 +1687,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于控股子公司重要事项的公告（2026-028）",
+   "notice_date": "2026-07-08",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607081826789424_1.pdf",
+   "summary": "金鄂博氟化工因安全生产隐患排查整改临时停产。",
+   "use": "事件事实",
+   "source_sha256": "58c9dbd6a248d97a0ef0fde71201625b5739e388769038c3a9245e0e3574b465"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于控股子公司重大事项的进展公告（2026-019）",
+   "notice_date": "2026-05-26",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202605251822858066_1.pdf",
+   "summary": "金鄂博氟化工污染环境案，检察院以情节轻微、已修复为由决定不起诉。",
+   "use": "事件事实",
+   "source_sha256": "87c9d9fa548f5f12f18c294ac35ba20bcd19eef05da4165775cffdefe3fe7852"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "控股子公司与矿山因安全整治停产事件复核",
+   "summary": "2026-10-13 事件复核：营收占比 68% 的控股子公司金鄂博氟化工 2026-07 起因安全隐患整改停产未复，浙江多座矿山 5 月下旬起停产复核；金鄂博废水外溢案获不起诉。维持 worth_attention、L1；Q4 72→68，登记 governance_open_issue 与观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:603505:event"
+  }
+ ]
 }

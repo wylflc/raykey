@@ -1585,5 +1585,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司及相关人员收到警示函的公告",
+   "notice_date": "2025-01-01",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202501011641502630_1.pdf",
+   "summary": "2022 年少量设备未发货交付即提前确认收入致 2022、2023 年年报披露不准确；募集资金与销售内控不规范。",
+   "use": "事件事实",
+   "source_sha256": "2802e38aac8ae29e62af807dc3b86728136adc4223f0a1fa236dfc19ae1438c4"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "浙江证监局警示函事件复核",
+   "summary": "2026-10-13 事件复核：2025-01 浙江证监局认定 2022 年少量设备未交付即提前确认收入及募集资金、销售内控不规范，公司与董事长兼总经理等 4 人被出具警示函。维持 worth_attention、L2；Q4 68→62，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300604:event"
+  }
+ ]
 }

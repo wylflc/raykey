@@ -1534,5 +1534,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司控股股东、实际控制人、董事长收到上海证监局警示函的公告",
+   "notice_date": "2024-03-01",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202403011624855997_1.pdf",
+   "summary": "持股比例累计减少超过 5% 时未公告、未停止交易，2023-08 才披露权益变动报告书。",
+   "use": "事件事实",
+   "source_sha256": "4eb994d183053c8cb789709a96c5d778cf18b4e1d86defa446ded66b70b67ba7"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "实控人权益变动未公告事件复核",
+   "summary": "2026-10-13 事件复核：实控人、董事长 2024-03 因持股变动达 5% 未公告、未停止交易被上海证监局出具警示函。维持 worth_attention、L2；Q4 72→70。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300627:event"
+  }
+ ]
 }

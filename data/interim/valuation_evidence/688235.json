@@ -1402,5 +1402,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于相关税务事项处理的公告（2026-020）",
+   "notice_date": "2026-06-27",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606261824670395_1.pdf",
+   "summary": "一家境内全资子公司调整此前纳税申报，补缴税款及滞纳金约 4.46 亿元，不涉及行政处罚，不属于前期差错，计入 2026 年当期损益。",
+   "use": "事件事实",
+   "source_sha256": "1a2af28ad77a671dd7ee22f066fb8319651eb244ea14f911f69b619b1892a664"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "子公司补缴所得税及滞纳金事件复核",
+   "summary": "2026-10-13 事件复核：2026-06 一家境内全资子公司经税务审计补缴所得税及滞纳金约 4.46 亿元，不涉及行政处罚，年度与原因未披露。维持 worth_attention、L2；Q4 62→60，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688235:event"
+  }
+ ]
 }

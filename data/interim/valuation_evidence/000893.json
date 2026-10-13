@@ -2095,5 +2095,44 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司董事长被留置的公告",
+   "notice_date": "2024-03-30",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202403301629183362_1.pdf",
+   "summary": "郭柏春因任银川市副市长期间涉嫌渎职犯罪被宁夏监委立案调查并留置。",
+   "use": "事件事实",
+   "source_sha256": "c673fef990a5b59d0ed311fc0af4720f709c017017555740b698402c1ed4221d"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司总经理被留置的公告",
+   "notice_date": "2024-04-20",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202404191630726007_1.pdf",
+   "summary": "马英军因涉嫌严重职务违法被宁夏监委立案调查并留置。",
+   "use": "事件事实",
+   "source_sha256": "3e42a0044f69b6a8c2dfa5ed48901315550d1954b29ada4698ad441de7303d32"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司董事长被采取强制措施的公告",
+   "notice_date": "2025-08-20",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202508191730570010_1.pdf",
+   "summary": "银川市检察院以涉嫌挪用公款罪、滥用职权罪对郭柏春作出逮捕决定。",
+   "use": "事件事实",
+   "source_sha256": "f9c0f2d73c74a4939159f709d1fa5171a14917aa4571b62e5cf7a235d6bc0273"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "董事长被逮捕、原总经理被留置事件复核",
+   "summary": "2026-10-13 事件复核：董事长 2024-03 起两度被留置、2025-08 被逮捕（事由在其任副市长期间），原总经理 2024-04 被留置后被更换，监事 2025-06 因内幕交易被立案；董事长职务长期由董事代行。维持 worth_attention、L2；Q4 60→54，governance_open_issue 更新。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:000893:event"
+  }
+ ]
 }

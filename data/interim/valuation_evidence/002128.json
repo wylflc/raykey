@@ -1836,6 +1836,23 @@
     "rebuild_performed": false,
     "basis": "全国行业价格不直接替代本公司实现价格、成本及完整财务输入"
    }
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司收到内蒙古证监局警示函的公告",
+   "notice_date": "2025-08-01",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202507311718991693_1.pdf",
+   "summary": "未披露募集资金经关联财务公司委托贷款投向募投项目，资金往来汇总表未披露与该财务公司的关联资金往来。",
+   "use": "事件事实",
+   "source_sha256": "e8d548bf696739e5a337da90e1b4dab7eb41fb198759dd09bd8fb616edbbd383"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "内蒙古证监局警示函事件复核",
+   "summary": "2026-10-13 事件复核：2025-07 内蒙古证监局因未披露募集资金经集团财务公司委托贷款及关联资金往来出具警示函。维持 worth_attention、L2；Q4 72→68，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002128:event"
   }
  ]
 }

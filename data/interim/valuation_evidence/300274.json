@@ -2122,5 +2122,23 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "监管公示",
+   "title": "FCC Public Notice DA 26-786",
+   "notice_date": "2026-07-28",
+   "source_url": "https://docs.fcc.gov/public/attachments/DA-26-786A1.pdf",
+   "summary": "外国生产的电力逆变器列入受管制设备清单，按生产地认定，只限制新型号的设备授权。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "美国对逆变器与电网设备的两轮限制事件复核",
+   "summary": "2026-10-13 事件复核：美国 FCC 2026-07 把外国产并网逆变器列入受管制清单，08-26 行政令授权能源部限制电网设备交易（含逆变器与储能），公司称美国业务量会逐步萎缩；美国子公司营收约为合并的 19%。维持 worth_attention、L2，分数不变，登记侵蚀路径观察项与复核触发。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300274:event"
+  }
+ ]
 }

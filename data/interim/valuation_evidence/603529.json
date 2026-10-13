@@ -1586,6 +1586,61 @@
     "rebuild_performed": false,
     "intrinsic_value": "30.6563"
    }
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于实际控制人、董事长兼总经理被留置的公告",
+   "notice_date": "2024-10-11",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202410101640249306_1.pdf",
+   "summary": "张剑被承德市监察委员会留置、立案调查，通知书 2024-10-09 送达家属。",
+   "use": "事件事实",
+   "source_sha256": "8068053781f3b7c66e176603aa866a38869c8155463000d79d5630a306ec47c2"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于实际控制人、董事长兼总经理解除留置的公告",
+   "notice_date": "2025-01-09",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202501081641854409_1.pdf",
+   "summary": "张剑已于 2025-01-08 解除留置并正常履职；调查结论未披露。",
+   "use": "事件事实",
+   "source_sha256": "60ee084197470865c02cddce700ae7c78762a6bbfdc535ffc628bb1ecd7aeee0"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于全资子公司产能转移并停产的公告",
+   "notice_date": "2026-06-23",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606221823737377_1.pdf",
+   "summary": "江苏车业（2025 年营收 32.12 亿元，占合并 12.80%）停产，产能转丽水车业与台州制造；财务影响未给数。",
+   "use": "事件事实",
+   "source_sha256": "95736ed43d3dd16d541ddb600869aaa8325a5398475c30cf3db2b1c6d5279705"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "每周质量报告丨先办牌照再造车 非标电动车黑灰产链条曝光",
+   "notice_date": "2026-07-19",
+   "source_url": "https://www.chinanews.com.cn/cj/2026/07-19/10662486.shtml",
+   "summary": "央视文字稿：爱玛出现两处，都是台州的爱玛专卖店；被走访并点名的生产企业是钻豹和绿佳。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "3C证书大面积暂停 国内电动自行车销售接近停滞",
+   "notice_date": "2026-10-11",
+   "source_url": "https://www.caixin.com/2026-10-11/102492306.html",
+   "summary": "只读到导语：认证机构飞行检查覆盖几乎所有头部品牌，大量证书暂停、门店无法上牌；没有点名爱玛。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "渠道非标车被央视点名与实控人曾被留置事件复核",
+   "summary": "2026-10-13 事件复核：实控人、董事长 2024-10 被留置、2025-01 解除，结论未披露；2026-07 央视点名台州爱玛专卖店的非标车销售，公司未回应；2026-10 报道称 CCC 证书大面积暂停，爱玛范围未核实。维持 worth_attention、L2；Q4 68→58，登记 governance_open_issue 与侵蚀路径观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:603529:event"
   }
  ]
 }

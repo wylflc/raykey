@@ -2122,5 +2122,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于关联交易事项监管工作函的回复及关联交易暂缓执行的公告",
+   "notice_date": "2024-12-06",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202412051641195546_1.pdf",
+   "summary": "现金收购关联方蒸汽综合管线资产，回复上交所问询后决定暂缓执行。",
+   "use": "事件事实",
+   "source_sha256": "b3956f019326b263fbf99c16d9785da12c8d46d3e0697ccd6516f95d0ef95e2b"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于子公司生产安全事故的公告",
+   "notice_date": "2024-04-19",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202404181630557180_1.pdf",
+   "summary": "东毅环保甲醇装置闪燃，2 人遇难、4 人受伤；受影响产能占甲醇总产能 3.4%。",
+   "use": "事件事实",
+   "source_sha256": "b555f0d609ca3d497ae406cf24e409373f8d3e8397c9bc1bcfb5d36d35759f46"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "安全事故与关联收购被问询事件复核",
+   "summary": "2026-10-13 事件复核：2024-11 向实控人方现金收购蒸汽管线资产被上交所问询后暂缓，2024-04 子公司闪燃事故 2 死 4 伤。维持 worth_attention、L2；Q4 72→68，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:600989:event"
+  }
+ ]
 }

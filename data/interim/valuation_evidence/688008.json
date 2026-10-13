@@ -1786,5 +1786,33 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "H 股自愿公告（韩国调查）",
+   "notice_date": "2026-07-17",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607171827039163_1.pdf",
+   "summary": "2026-07-15 首尔中央地方检察厅公平交易调查部在韩国办公室搜查取证，公司及董事、员工未被指控；2025 年韩国客户收入 29.25 亿元，占营收约 53.6%。",
+   "use": "事件事实",
+   "source_sha256": "cc11efaea2fbcddc36aeee6dbd57d3e9091579f07beb1843ee8ab92320be6bf3"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "发行文件",
+   "title": "Montage Technology Global Offering 招股说明书",
+   "notice_date": "2026-01-30",
+   "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0130/2026013000007.pdf",
+   "summary": "「近期发展」披露美国司法部反垄断局就半导体及半导体元件开展大陪审团调查，要求公司提交材料并作证。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "韩国与美国的反垄断调查事件复核",
+   "summary": "2026-10-13 事件复核：2026-07 韩国检方就内存接口芯片供货价格搜查公司韩国办公室（韩国客户占 2025 年营收 53.6%），美国司法部大陪审团调查自 2026-01 起且只在 H 股文件披露；公司称未被指控、未计提。维持 worth_attention、L1；Q4 76→66，登记 governance_open_issue 与侵蚀路径观察项，L1 定档断言留待调查结论复核。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688008:event"
+  }
+ ]
 }

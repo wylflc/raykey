@@ -1942,5 +1942,33 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于子公司浙江同花顺云软件有限公司收到行政监管措施决定书的公告",
+   "notice_date": "2024-11-15",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202411151640922576_1.pdf",
+   "summary": "投顾业务营销夸大误导、变相承诺收益、部分人员未登记为投资顾问等，责令改正并暂停新增客户 3 个月。",
+   "use": "事件事实",
+   "source_sha256": "1439482f47bbe8004aa716ff094d5458b8ec720abd9d6e2cb7efab0c49a7d8f2"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "浙江证监局对浙江同花顺基金销售有限公司采取责令改正措施的决定（转载）",
+   "notice_date": "2026-04-11",
+   "source_url": "https://finance.eastmoney.com/a/202604113702026995.html",
+   "summary": "五项问题，含与股东人员场所混同、部分人员无基金从业资格，要求 30 日内提交整改报告。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "持牌子公司接连被采取监管措施事件复核",
+   "summary": "2026-10-13 事件复核：2024-11 与 2026-04 两家持牌子公司先后被浙江证监局责令改正（投顾违规宣传、基金销售独立性与人员资格），2026-07 小程序因个人信息问题被通报；后两项公司未公告。维持 worth_attention、L2；Q4 70→66，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300033:event"
+  }
+ ]
 }

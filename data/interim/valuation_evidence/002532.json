@@ -1963,6 +1963,43 @@
     "rebuild_performed": false,
     "basis": "全国行业价格不直接替代本公司实现价格、成本及完整财务输入"
    }
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "天富能源 2026 年半年度报告",
+   "notice_date": "2026-08-15",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608141827988722_1.pdf",
+   "summary": "（2025）兵08民初2号：诉天铝有限电费差额 50,594.04 万元及利息，合计 52,685.14 万元，2026-03-23 开庭，等待判决；对天铝有限应收 6.05 亿元，坏账准备 2.88 亿元。",
+   "use": "事件事实",
+   "source_sha256": "973b3840f2a21192fb3469268376d010a9cc1b397d5a3099f38bad8823d16a24"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "天山铝业 2025 年年度报告",
+   "notice_date": "2026-03-30",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202603291820837251_1.pdf",
+   "summary": "附注或有事项：已反诉天富能源，要求返还和补偿多收电费及消纳光伏电量差额 59,040.65 万元，认为不会对财务报表产生重大影响；正文重大诉讼栏勾不适用。",
+   "use": "事件事实",
+   "source_sha256": "157fc338eee0e4e9b5cbd8c3d57994bb1f0323fadd49611230f5700a510cb419"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "天山铝业 2026 年半年度报告",
+   "notice_date": "2026-08-19",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608181828113227_1.pdf",
+   "summary": "写「无需要披露的重大或有事项」，未提本案。",
+   "use": "事件事实",
+   "source_sha256": "1736e974b95d751d29af1cee88b9760e966a03fbe0e2551374ed3ea266aeae93"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "电费差额诉讼事件复核",
+   "summary": "2026-10-13 事件复核：天富能源诉全资子公司天铝有限追电费差额及利息 5.27 亿元（相当于 2025 年归母的 10.9%），公司反诉 5.90 亿元，等待一审判决，未计提；披露只见于 2025 年年报附注，半年报未列。维持 worth_attention、L2；Q4 68→66，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002532:event"
   }
  ]
 }

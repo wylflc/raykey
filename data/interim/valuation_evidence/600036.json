@@ -2164,6 +2164,41 @@
     "rebuild_performed": false,
     "basis": "原文复核未产生可替换当前生产参数的输入；保留现行带，未执行无输入变化的历史建带链"
    }
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "监管公示",
+   "title": "国家金融监督管理总局行政处罚信息公示列表",
+   "notice_date": "2026-07-17",
+   "source_url": "https://www.nfra.gov.cn/cn/view/pages/ItemDetail.html?docId=1264901&itemId=4113&generaltype=9",
+   "summary": "招商银行股份有限公司：部分机构未纳入并表管理范围、未从银行集团层面对同一客户统一授信等，罚款 650 万元；只罚机构。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "招商银行原党委委员、副行长施顺华接受审查调查",
+   "notice_date": "2026-09-11",
+   "source_url": "https://finance.eastmoney.com/a/202609113872094186.html",
+   "summary": "中央纪委国家监委驻招商局集团纪检监察组、福建省纪委监委通报，未写事由与期间。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于执行董事及行长离任的公告",
+   "notice_date": "2026-05-01",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202604301821845650_1.pdf",
+   "summary": "行长王良因年龄原因辞任，与董事会无不同意见。",
+   "use": "事件事实",
+   "source_sha256": "9d70fca69993bea4863c9f1d28a709ba2a9ea7c27085481f72c15dd97d13abc5"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "总行被罚与原副行长被查事件复核",
+   "summary": "2026-10-13 事件复核：近两年三名原副行长先后被查（施顺华 2026-09、王庆彬 2025-09、丁伟 2025-05 被公诉），2026-07 总行因并表管理与统一授信被罚 650 万元；在任高管未涉及，行长正常交接。维持 worth_attention、L2；Q4 76→72，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:600036:event"
   }
  ]
 }

@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T14:05:10.249758+00:00",
+ "checked_at_utc": "2026-10-13T16:02:20.697340+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -24,6 +24,7 @@
   "pool_exdiv_bands_normalized",
   "eligible_set_recomputed_from_published_quotes",
   "shenhuo_reaction_bar_is_notice_day",
+  "holding_aima_review_carried_to_scan",
   "shuanghui_review_carried_to_scan",
   "event_reviews_carried_to_scan",
   "user_holds_frozen_in_scan",
@@ -91,9 +92,13 @@
   "refresh_pool_third": "28002071",
   "scan_fourth": "28002267",
   "refresh_pool_fifth": "28006851",
-  "scan_fifth": "28011520"
+  "scan_fifth": "28011520",
+  "news_retro": "28016512",
+  "announcement_retro": "28022415",
+  "refresh_pool_sixth": "28036824",
+  "scan_sixth": "28037679"
  },
- "publications": "当日发布五次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑，第五次为负面事件筛查上线（v4.250，结 OI-285、OI-286）、18 家存量事件复核、3 只成长股采用研究数与 5 只临时冻结登记后带刷新并重跑",
+ "publications": "当日发布六次，清单都是 0 买 0 卖（第六次于北京时间 10-14 凌晨发布：近 6 个月新闻与 2023 年以来公告回扫检出的 25 家存量事件复核落地后带刷新并重跑）：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑，第五次为负面事件筛查上线（v4.250，结 OI-285、OI-286）、18 家存量事件复核、3 只成长股采用研究数与 5 只临时冻结登记后带刷新并重跑",
  "quality_review": {
   "000895": {
    "name": "双汇发展",
@@ -108,12 +113,40 @@
   }
  },
  "event_reviews": {
+  "000426": {
+   "name": "兴业银锡",
+   "quality_tier": "L2",
+   "quality_score": "66",
+   "candidate_pv": "3.1823",
+   "review_frozen": "False"
+  },
   "000858": {
    "name": "五粮液",
    "quality_tier": "L2",
    "quality_score": "73.5",
    "candidate_pv": "1.0882",
    "review_frozen": "True"
+  },
+  "000893": {
+   "name": "亚钾国际",
+   "quality_tier": "L2",
+   "quality_score": "64.4",
+   "candidate_pv": "1.517",
+   "review_frozen": "False"
+  },
+  "000933": {
+   "name": "神火股份",
+   "quality_tier": "L2",
+   "quality_score": "68.9",
+   "candidate_pv": "0.9137",
+   "review_frozen": "False"
+  },
+  "002128": {
+   "name": "电投能源",
+   "quality_tier": "L2",
+   "quality_score": "71.1",
+   "candidate_pv": "1.3437",
+   "review_frozen": "False"
   },
   "002262": {
    "name": "恩华药业",
@@ -125,8 +158,50 @@
   "002475": {
    "name": "立讯精密",
    "quality_tier": "L2",
-   "quality_score": "71.3",
+   "quality_score": "71.0",
    "candidate_pv": "1.4324",
+   "review_frozen": "False"
+  },
+  "002532": {
+   "name": "天山铝业",
+   "quality_tier": "L2",
+   "quality_score": "69.4",
+   "candidate_pv": "0.9726",
+   "review_frozen": "False"
+  },
+  "002594": {
+   "name": "比亚迪",
+   "quality_tier": "L2",
+   "quality_score": "75.9",
+   "candidate_pv": "0.8455",
+   "review_frozen": "False"
+  },
+  "002714": {
+   "name": "牧原股份",
+   "quality_tier": "L2",
+   "quality_score": "63.7",
+   "candidate_pv": "1.6075",
+   "review_frozen": "False"
+  },
+  "300033": {
+   "name": "同花顺",
+   "quality_tier": "L2",
+   "quality_score": "71.7",
+   "candidate_pv": "3.7992",
+   "review_frozen": "False"
+  },
+  "300274": {
+   "name": "阳光电源",
+   "quality_tier": "L2",
+   "quality_score": "75.7",
+   "candidate_pv": "1.0372",
+   "review_frozen": "False"
+  },
+  "300308": {
+   "name": "中际旭创",
+   "quality_tier": "L2",
+   "quality_score": "67.55",
+   "candidate_pv": "2.3843",
    "review_frozen": "False"
   },
   "300316": {
@@ -136,12 +211,40 @@
    "candidate_pv": "1.1669",
    "review_frozen": "True"
   },
+  "300502": {
+   "name": "新易盛",
+   "quality_tier": "L2",
+   "quality_score": "67.1",
+   "candidate_pv": "2.0189",
+   "review_frozen": "False"
+  },
+  "300604": {
+   "name": "长川科技",
+   "quality_tier": "L2",
+   "quality_score": "67.3",
+   "candidate_pv": "5.4838",
+   "review_frozen": "False"
+  },
+  "300627": {
+   "name": "华测导航",
+   "quality_tier": "L2",
+   "quality_score": "70.4",
+   "candidate_pv": "1.5838",
+   "review_frozen": "False"
+  },
   "300832": {
    "name": "新产业",
    "quality_tier": "L2",
    "quality_score": "72.8",
    "candidate_pv": "1.4535",
    "review_frozen": "True"
+  },
+  "300866": {
+   "name": "安克创新",
+   "quality_tier": "L2",
+   "quality_score": "72.0",
+   "candidate_pv": "1.0701",
+   "review_frozen": "False"
   },
   "300896": {
    "name": "爱美客",
@@ -155,6 +258,13 @@
    "quality_tier": "L2",
    "quality_score": "71.3",
    "candidate_pv": "1.1127",
+   "review_frozen": "False"
+  },
+  "600036": {
+   "name": "招商银行",
+   "quality_tier": "L2",
+   "quality_score": "69.3",
+   "candidate_pv": "0.9891",
    "review_frozen": "False"
   },
   "600436": {
@@ -171,6 +281,13 @@
    "candidate_pv": "1.389",
    "review_frozen": "False"
   },
+  "600989": {
+   "name": "宝丰能源",
+   "quality_tier": "L2",
+   "quality_score": "72.4",
+   "candidate_pv": "1.5229",
+   "review_frozen": "False"
+  },
   "601100": {
    "name": "恒立液压",
    "quality_tier": "L2",
@@ -185,6 +302,13 @@
    "candidate_pv": "2.2092",
    "review_frozen": "False"
   },
+  "603067": {
+   "name": "振华股份",
+   "quality_tier": "L2",
+   "quality_score": "73.0",
+   "candidate_pv": "3.8347",
+   "review_frozen": "False"
+  },
   "603279": {
    "name": "景津装备",
    "quality_tier": "L2",
@@ -192,11 +316,32 @@
    "candidate_pv": "0.9591",
    "review_frozen": "True"
   },
+  "603505": {
+   "name": "金石资源",
+   "quality_tier": "L1",
+   "quality_score": "74.3",
+   "candidate_pv": "",
+   "review_frozen": "False"
+  },
   "603508": {
    "name": "思维列控",
    "quality_tier": "L2",
    "quality_score": "72",
    "candidate_pv": "1.4623",
+   "review_frozen": "False"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "quality_tier": "L2",
+   "quality_score": "68.6",
+   "candidate_pv": "0.8779",
+   "review_frozen": "False"
+  },
+  "603596": {
+   "name": "伯特利",
+   "quality_tier": "L2",
+   "quality_score": "71.3",
+   "candidate_pv": "1.0263",
    "review_frozen": "False"
   },
   "603606": {
@@ -206,11 +351,32 @@
    "candidate_pv": "1.7886",
    "review_frozen": "False"
   },
+  "603993": {
+   "name": "洛阳钼业",
+   "quality_tier": "L2",
+   "quality_score": "72.0",
+   "candidate_pv": "1.4802",
+   "review_frozen": "False"
+  },
+  "688008": {
+   "name": "澜起科技",
+   "quality_tier": "L1",
+   "quality_score": "76.7",
+   "candidate_pv": "3.2899",
+   "review_frozen": "False"
+  },
   "688018": {
    "name": "乐鑫科技",
    "quality_tier": "L2",
    "quality_score": "71.6",
    "candidate_pv": "1.6199",
+   "review_frozen": "False"
+  },
+  "688122": {
+   "name": "西部超导",
+   "quality_tier": "L1",
+   "quality_score": "74.8",
+   "candidate_pv": "3.3002",
    "review_frozen": "False"
   },
   "688190": {
@@ -226,6 +392,13 @@
    "quality_score": "64.9",
    "candidate_pv": "1.4385",
    "review_frozen": "True"
+  },
+  "688235": {
+   "name": "百济神州",
+   "quality_tier": "L2",
+   "quality_score": "63.7",
+   "candidate_pv": "2.7934",
+   "review_frozen": "False"
   },
   "688692": {
    "name": "达梦数据",
@@ -313,7 +486,7 @@
    "600436 2026-10-13 每经晚参（董事长离任，已在当日复核计入）",
    "688018 2026-10-13 科创板晚报（三季度预告，负面词属他司）"
   ],
-  "backfill_reviews": 16,
+  "backfill_reviews": 41,
   "user_holds": [
    "000858",
    "300832",
@@ -321,6 +494,23 @@
    "603279",
    "688208"
   ]
+ },
+ "retro_reviews": {
+  "news_window": "2026-04-13～2026-10-13（东财资讯搜索只保留约 6 个月）",
+  "news_hit_companies": 73,
+  "news_titles": 535,
+  "announcement_window": "2023-01-01～2025-09-30",
+  "announcement_rows": 66841,
+  "announcement_vocabulary_hits": 223,
+  "registered": 25,
+  "event_review": 24,
+  "not_event": [
+   "603195"
+  ],
+  "supplement": [
+   "002475"
+  ],
+  "evidence": "data/experiments/exp_news_retro_20261013/"
  },
  "growth_research": {
   "688235": {

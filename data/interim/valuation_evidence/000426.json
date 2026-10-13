@@ -1636,5 +1636,33 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于子公司发生安全事故的公告",
+   "notice_date": "2026-07-28",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607281827407353_1.pdf",
+   "summary": "银漫矿业 2026-07-26 发生安全事故，1 人死亡，采区停产。",
+   "use": "事件事实",
+   "source_sha256": "f0956c3aa6201c8ecac672cdc47623e8f66d0986f4b8cdb023e499199f07196b"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "内蒙古自治区矿山安全监管局约谈内蒙古兴业银锡矿业股份有限公司",
+   "notice_date": "2026-09-08",
+   "source_url": "http://finance.eastmoney.com/a/202609083868209873.html",
+   "summary": "警示约谈公司及所属 7 家矿山主要负责人：接连发生事故、重大事故隐患、主体责任缺位、外委施工管理不严。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "接连发生亡人事故被约谈事件复核",
+   "summary": "2026-10-13 事件复核：三年三起亡人事故，2026-09 被内蒙古矿山安全监管局警示约谈，银漫矿业采区自 07-26 停产未复。维持 worth_attention、L2；参考分未拆分、本次不调，登记 governance_open_issue 与观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:000426:event"
+  }
+ ]
 }

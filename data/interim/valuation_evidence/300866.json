@@ -2023,5 +2023,23 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "监管公示",
+   "title": "安克创新科技股份有限公司扩大召回部分安克牌移动电源",
+   "notice_date": "2025-06-20",
+   "source_url": "http://amr.hunan.gov.cn/ztx/zlqsx/gzxx/202506/t20250620_33716450.html",
+   "summary": "境内召回 7 个型号共 712,964 件，原因是供应商电芯来料批次问题。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "充电宝召回事件复核",
+   "summary": "2026-10-13 事件复核：2025-06 至 10 月因供应商电芯问题在美、中、日召回充电宝约 290 万台，没有罚款，损失不超过 2025 年收入的 1%，事后业绩仍增长；美国有拟议集体诉讼。维持 worth_attention、L2；Q4 76→74，登记 governance_open_issue 与观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300866:event"
+  }
+ ]
 }

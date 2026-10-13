@@ -1489,5 +1489,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司总经理收到行政处罚决定书的公告",
+   "notice_date": "2025-07-29",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202507281717154744_1.pdf",
+   "summary": "柯愈胜之子程序化买卖公司股票 529.10 万元，构成短线交易；警告并罚款 10 万元。",
+   "use": "事件事实",
+   "source_sha256": "6c79aa51727c8fbbcdf5c0bbecb09b0bc43daa10ada9c54212712db97f265bb3"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "时任总经理短线交易被处罚事件复核",
+   "summary": "2026-10-13 事件复核：时任总经理因其子短线交易公司股票 2025-07 被湖北证监局罚款 10 万元，2025-12 已离任总经理。维持 worth_attention、L2；Q4 72→70。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:603067:event"
+  }
+ ]
 }

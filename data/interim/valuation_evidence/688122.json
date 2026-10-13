@@ -1534,5 +1534,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司及相关人员收到陕西证监局行政监管措施决定书的公告",
+   "notice_date": "2025-08-27",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202508261734782954_1.pdf",
+   "summary": "收入核算不规范（2024 年个别客户收入确认不及时）、募集资金现金管理空窗期、前五大客户披露不准确；公司责令改正，4 人警示函。",
+   "use": "事件事实",
+   "source_sha256": "934d0b8c891f77cbbc5b78b86f5a35a52fa50f34c0635c12878d269fb51a54c3"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "陕西证监局责令改正事件复核",
+   "summary": "2026-10-13 事件复核：2025-08 陕西证监局认定 2024 年个别客户收入确认不及时、募集资金现金管理超期、前五大客户披露不准确，公司被责令改正，董事长等 4 人被出具警示函。维持 worth_attention、L1；Q4 74→68，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688122:event"
+  }
+ ]
 }

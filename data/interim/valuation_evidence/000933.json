@@ -1916,6 +1916,33 @@
     "https://pdf.dfcfw.com/pdf/H2_AN202609071829103635_1.pdf",
     "https://pdf.dfcfw.com/pdf/H2_AN202609071829103639_1.pdf"
    ]
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司及相关人员收到河南证监局行政监管措施决定书的公告",
+   "notice_date": "2025-09-06",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202509051739273249_1.pdf",
+   "summary": "〔2025〕35 号：四项问题（关联方非经营性资金往来未披露、同业竞争未披露、募集资金置换未履行程序、三会不规范），公司责令改正，7 人警示函。",
+   "use": "事件事实",
+   "source_sha256": "826b75f2dfc2bbeb70d6743fb394d9d19b65d862e1553ada6eaad05bf45e9d47"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于收到河南证监局行政监管措施决定书的整改报告",
+   "notice_date": "2025-09-23",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202509221748589945_1.pdf",
+   "summary": "逐项列学习与制度类整改措施，未给资金往来金额。",
+   "use": "事件事实",
+   "source_sha256": "9574566f4eecd788b5bea2eaa9074b05f0e069e6f04d0f7ff18a4a34dce3561d"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "河南证监局责令改正事件复核",
+   "summary": "2026-10-13 事件复核：2025-09 河南证监局认定未披露与控股股东的非经营性资金往来、同业竞争未披露等四项问题，公司被责令改正，董事长等 7 人被出具警示函；整改报告未给金额。维持 worth_attention、L2；Q4 66→60，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:000933:event"
   }
  ]
 }

@@ -2294,6 +2294,22 @@
    "review_method": "公司PDF文本；H股报表另与新浪托管同份公告的可读文本交叉核对",
    "notice_date": "2026-09-16",
    "reviewed_at_utc": "2026-09-16T08:00:16.600072+00:00"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "新闻",
+   "title": "养殖场污水疑似排入河道，牧原股份子公司被立案调查",
+   "notice_date": "2026-05-14",
+   "source_url": "http://finance.eastmoney.com/a/202605143737313888.html",
+   "summary": "乐安县联合调查组通报：水肥还田时渗漏流入下游沟渠，已处置，生态环境部门已立案调查。",
+   "use": "事件线索"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "子公司环保立案事件复核",
+   "summary": "2026-10-13 事件复核：子公司乐安牧原 2026-05 因水肥渗漏被当地生态环境部门立案，媒体称四年内第四次，公司未回应；公司披露的环保处罚量级小。维持 worth_attention、L2；Q4 74→72，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002714:event"
   }
  ]
 }
