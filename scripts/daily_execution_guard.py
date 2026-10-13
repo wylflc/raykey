@@ -204,6 +204,9 @@ def validate_inputs(args):
     paths.update(Path(p) for p in proof['inputs'])
     if DEFAULT_LEDGER.exists():
         paths.add(DEFAULT_LEDGER)
+    from check_report_day_price_divergence import DEFAULT_REVIEWS   # §7.5.2 复带登记：登记后解除拦截
+    if DEFAULT_REVIEWS.exists():
+        paths.add(DEFAULT_REVIEWS)
     for extra in (getattr(args, 'business', None), getattr(args, 'dossiers', None)):   # §9.3.6 成长股登记与重点复核记录
         if extra is not None and Path(extra).exists():
             paths.add(Path(extra))

@@ -447,6 +447,52 @@ class PublicationRecovery(unittest.TestCase):
                           tactical=tactical,growth=growth,strict=True,**kw)
                     self.assertEqual(sorted(c.args[0] for c in check.call_args_list),expected)
 
+    def divergence(self, e, bars, notice):
+        with patch.object(e.S,'fetch_daily_rows',return_value=('synthetic',[dict(date=d,close=c) for d,c in bars])):
+            return e.divergence_for('000651','SZSE',notice,date.fromisoformat(DAY),180.,220.,1,strict=True)
+
+    def test_report_reaction_bar_is_first_bar_on_or_after_official_notice_date(self):
+        # OI-284：官方公告日是交易日时当天那根就是反应日；公告日落在周末时取其后第一根
+        import check_report_day_price_divergence as e
+        bars=[('2026-09-10',200.),('2026-09-11',170.),('2026-09-14',171.)]
+        hit=self.divergence(e,bars,'2026-09-11')
+        self.assertEqual((hit['after_date'],hit['before_close'],hit['after_close'],hit['pushed']),('2026-09-11',200.,170.,'跌穿带底'))
+        weekend=self.divergence(e,[('2026-09-10',200.),('2026-09-11',200.),('2026-09-14',170.)],'2026-09-12')
+        self.assertEqual((weekend['after_date'],weekend['before_close']),('2026-09-14',200.))
+        self.assertIsNone(self.divergence(e,[('2026-09-10',200.),('2026-09-11',199.)],'2026-09-14'))   # 反应日尚无行情
+
+    def test_registered_divergence_review_releases_publication_block(self):
+        # OI-283：命中拦截；按（代码, 公告日）登记复带结论后不再拦截，早于反应日的登记无效
+        import check_report_day_price_divergence as e
+        with tempfile.TemporaryDirectory() as tmp:
+            pool,holdings,reviews,log=(Path(tmp)/n for n in ('pool.csv','holdings.csv','reviews.csv','log.csv'))
+            GuardedExecution.write(pool,[dict(security_code='000651',security_name='synthetic',fair_price_low=180,fair_price_high=220)])
+            GuardedExecution.write(holdings,[dict(security_code='000651',current_shares=100)])
+            bars=[dict(date='2026-09-10',close=200.),dict(date='2026-09-11',close=170.),dict(date=DAY,close=171.)]
+            def run():
+                with contextlib.redirect_stdout(io.StringIO()) as out, \
+                        patch.object(e,'latest_notice_dates',return_value={'000651':('2026-09-11','periodic_report')}), \
+                        patch.object(e.S,'fetch_daily_rows',return_value=('synthetic',bars)):
+                    return e.run(date.fromisoformat(DAY),10,1,candidate_rows=[],pool_path=pool,holdings_path=holdings,
+                                 members={'000651'},tactical=set(),growth=s.GrowthState(),reviews_path=reviews,strict=True),out.getvalue()
+            pending,text=run()
+            self.assertEqual([h['security_code'] for h in pending],['000651'])
+            self.assertIn('带待复核 1 只',text)
+            with self.assertRaises(ValueError):   # 结论须在取值内
+                e.register_review('000651','2026-09-11',DAY,'再看看','依据',reviews_path=reviews,pool_path=pool,log_path=log)
+            e.register_review('000651','2026-09-11','2026-09-11','带不变','中报与模型锚一致',reviews_path=reviews,pool_path=pool,log_path=log)
+            pending,text=run()
+            self.assertEqual(pending,[])
+            self.assertIn('已登记复带 1 只（不拦截）',text)
+            with log.open(newline='') as f:logged=list(csv.DictReader(f))
+            self.assertEqual([(r['decision_type'],r['decision_result'],r['security_code']) for r in logged],
+                             [('report_divergence_review','带不变','000651')])
+            with self.assertRaises(ValueError):   # 同一披露只登记一次
+                e.register_review('000651','2026-09-11',DAY,'已复带','重复',reviews_path=reviews,pool_path=pool,log_path=log)
+            GuardedExecution.write(reviews,[dict(security_code='000651',security_name='synthetic',notice_date='2026-09-11',
+                                                 reviewed_at='2026-09-10',conclusion='带不变',note='早于反应日')])
+            self.assertEqual([h['security_code'] for h in run()[0]],['000651'])
+
     def test_newer_rejection_prevents_older_model_revival(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'bands.csv'

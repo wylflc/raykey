@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.248
+# A股选股-估值-量价操作流程 v4.249
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -58,6 +58,7 @@
 | 结构性增长复核（§7.3） | `data/interim/structural_growth_review.csv` |
 | 谷底侧复核（§7.3） | `data/interim/trough_anchor_review.csv` |
 | 临时冻结名单（§7.5） | `data/reference/review_holds.csv`（用户裁定，人工登记） |
+| 财报日背离复带登记（§7.5.2） | `data/reference/report_divergence_reviews.csv`（`--register` 登记） |
 | 业务属性登记（个人投资体系第 5.12 节） | `data/processed/a_share_business_attributes.csv`（人工登记） |
 | 财报更新队列 | `data/interim/a_share_report_update_queue.csv` |
 | 每日行情与两侧 P/V | `data/processed/daily_buy_candidates.csv`（§8.2；`--since auto` 由它检出上次扫描日） |
@@ -652,11 +653,20 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 
 #### 7.5.2 财报日价格背离
 
-披露后首个交易日若相对披露前收盘绝对涨跌至少 7%，且到当前带的距离扩大，则持仓与当日合格集（§9.3.2 第 1～2 步，脚本与扫描器共用 `eligible_rows`）的股票必须在 T+1 内强制复带：
+披露后首个交易日若相对披露前收盘绝对涨跌至少 7%，且到当前带的距离扩大，则持仓与当日合格集（§9.3.2 第 1～2 步，脚本与扫描器共用 `eligible_rows`）的股票必须在 T+1 内强制复带。披露后首个交易日取公告日当天或之后的第一个交易日（预告表与披露表记官方公告日）。
 
 ```bash
 python3 scripts/check_report_day_price_divergence.py --as-of YYYY-MM-DD
 ```
+
+命中即拦截当日发布（§9.1 第 4 步）。当晚按 §7.4 express 口径复带，结论（`带不变` 或 `已复带`）按代码与公告日登记 `data/reference/report_divergence_reviews.csv`，同时写决策日志，再重跑当日扫描：
+
+```bash
+python3 scripts/check_report_day_price_divergence.py --as-of <复核日> --register <代码> \
+  --notice-date <公告日> --conclusion <带不变或已复带> --note "<复带依据>"
+```
+
+复核日不早于反应日的登记行使该披露不再拦截，当日报告「需人工处理」照列命中与结论；同一披露只登记一次。登记表计入发布凭据的输入摘要。
 
 ## 8. 阶段四：每日行情取数
 

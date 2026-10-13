@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T10:38:09.323300+00:00",
+ "checked_at_utc": "2026-10-13T10:59:15.211344+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -23,6 +23,8 @@
   "no_holding_exdiv_today",
   "pool_exdiv_bands_normalized",
   "eligible_set_recomputed_from_published_quotes",
+  "shenhuo_reaction_bar_is_notice_day",
+  "divergence_review_registry_in_publication_inputs",
   "divergence_subset_is_holdings_plus_eligible"
  ],
  "problems": [],
@@ -76,11 +78,12 @@
   "refresh_pool": "27992640",
   "scan": "27992831",
   "refresh_pool_second": "27999658",
-  "scan_second": "28000002"
+  "scan_second": "28000002",
+  "scan_third": "28001090"
  },
- "publications": "当日发布两次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑",
+ "publications": "当日发布三次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑",
  "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
- "rule_version": "a-share-selection-operation-v4.248",
+ "rule_version": "a-share-selection-operation-v4.249",
  "equity_bond": {
   "spread_pct": 6.33,
   "observed_on": "2026-10-12",
@@ -211,10 +214,10 @@
  },
  "divergence_check": {
   "automated_subset": "持仓 2 + 当日合格集 6，去重后 7 只（与扫描器同一判定），10 日内有披露且有带的 1 只（神火股份），无命中",
+  "reaction_bar": "披露后首个交易日取公告日当天或之后的第一根：神火股份公告日 2026-10-13，脚本读到 2026-10-13 收盘 26.7，较前收 26.21 涨跌 +1.87%，低于 7% 阈值",
   "first_publication": "第一次发布时脚本按旧走势口径取子集 5 只，漏中材国际、青岛啤酒，当时已用 --universe pool 补核：全池 10 日内有披露且有带的 3 只（神火股份、中国巨石、鼎龙股份），无命中",
-  "shenhuo": "神火股份预告后首个交易日（10-13）收盘 26.70，较披露前收盘 26.21 上涨 1.87%，低于 7% 阈值",
-  "closed_issue": "OI-279（v4.248）",
-  "open_issue": "OI-283（命中后的解除口径）"
+  "review_registry": "data/reference/report_divergence_reviews.csv（0 行；命中后登记复带结论解除拦截）",
+  "closed_issues": "OI-279（v4.248）、OI-283、OI-284（v4.249）"
  },
  "announcements": {
   "query_window": "2026-10-12～2026-10-14",

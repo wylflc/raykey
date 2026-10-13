@@ -27,11 +27,18 @@ T+1 内必须复带，不得只让价格改档。**该触发的成因与市场�
   |Δ| 大而仍在带内的，说明带本来就容得下这次重定价，不构成对带的反证。
 * **结论是「带待复核」，不是改带**：命中即在当日报告标注并按 §7.4 express 口径在 T+1
   内完成一次带复核。复核结论可以是「带不变」，但必须显式做过。
+* **复带登记**（OI-283，用户 2026-10-13 裁定）：结论按（代码, 公告日）登记
+  `data/reference/report_divergence_reviews.csv` 并写决策日志；复核日不早于反应日的登记行使该披露
+  不再拦截发布，报告照列。
+* **披露后首个交易日**（OI-284，用户 2026-10-13 裁定）：公告日当天或之后的第一根 K 线。预告表与披露表记官方
+  公告日，盘后发布的公告已记为下一日。
 
 用法::
 
     python3 scripts/check_report_day_price_divergence.py --as-of 2026-08-07
     python3 scripts/check_report_day_price_divergence.py --as-of 2026-08-07 --lookback 15
+    python3 scripts/check_report_day_price_divergence.py --as-of 2026-08-07 --register 600519 \
+        --notice-date 2026-08-07 --conclusion 带不变 --note "复带依据"
 """
 from __future__ import annotations
 
@@ -40,7 +47,7 @@ import contextlib
 import csv
 import io
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +59,9 @@ DEFAULT_POOL = ROOT / "data/processed/a_share_core_valuation_pool.csv"
 DEFAULT_HOLDINGS = ROOT / "data/processed/a_share_holdings.csv"
 DEFAULT_DISCLOSURES = ROOT / "data/interim/a_share_report_disclosures.csv"
 DEFAULT_FORECASTS = ROOT / "data/interim/a_share_earnings_forecasts.csv"
+DEFAULT_REVIEWS = ROOT / "data/reference/report_divergence_reviews.csv"
+REVIEW_FIELDS = ["security_code", "security_name", "notice_date", "reviewed_at", "conclusion", "note"]
+REVIEW_CONCLUSIONS = ("带不变", "已复带")
 
 # §6.8 第 ③ 条的初始校准值。**A 股侧未校准**——见模块 docstring。
 DIVERGENCE_THRESHOLD_PCT = 7.0
@@ -105,11 +115,9 @@ def divergence_for(code: str, exchange: str, notice: str, as_of: date,
             raise ValueError(f"背离检查行情不足：{code}")
         return None
 
-    # 披露后首个交易日 = 公告日当天或其后的第一个有 bar 的交易日。
-    # 公告日盘后披露时当天的 bar 尚未吸收它，故取"公告日之后"的第一根；公告日盘前/盘中
-    # 披露则当天即吸收——两种都存在，取"公告日当天或之后第一根且其前一根为披露前收盘"
-    # 会把盘后披露算错一天。故一律取**公告日之后**的第一根，代价是盘前披露晚判一天。
-    after_idx = next((i for i, r in enumerate(rows) if str(r.get("date", "")) > notice), None)
+    # 披露后首个交易日 = 公告日当天或之后的第一根。`notice` 是官方公告日：盘后发布的公告记为下一日，
+    # 盘前、盘中发布的记当天，两种情形当天那根都已吸收披露（2026 年中报回看见回测日志 §12.335）。
+    after_idx = next((i for i, r in enumerate(rows) if str(r.get("date", "")) >= notice), None)
     if after_idx is None or after_idx == 0:
         return None
     before_close = to_float(rows[after_idx - 1].get("close"))
@@ -149,9 +157,50 @@ def divergence_for(code: str, exchange: str, notice: str, as_of: date,
     }
 
 
+def load_reviews(path: Path = DEFAULT_REVIEWS) -> dict[tuple[str, str], dict[str, str]]:
+    """§7.5.2 复带登记 {(代码, 公告日): 登记行}；键或结论无效、重复即报错。"""
+    reviews: dict[tuple[str, str], dict[str, str]] = {}
+    for row in load_csv(path):
+        key = (row.get("security_code") or "").zfill(6), (row.get("notice_date") or "")[:10]
+        if (len(key[1]) != 10 or len((row.get("reviewed_at") or "")) != 10 or key in reviews
+                or row.get("conclusion") not in REVIEW_CONCLUSIONS):
+            raise ValueError(f"背离复带登记无效或重复：{key}")
+        reviews[key] = row
+    return reviews
+
+
+def register_review(code: str, notice: str, reviewed_at: str, conclusion: str, note: str, *,
+                    reviews_path: Path = DEFAULT_REVIEWS, pool_path: Path = DEFAULT_POOL, log_path: Path | None = None) -> dict:
+    """登记一次复带结论并写决策日志；同一（代码, 公告日）只登记一次。"""
+    from workflow_decision_log import DEFAULT_DECISION_LOG, WORKFLOW_VERSION, append_decision_log
+    code = code.zfill(6)
+    name = next((r.get("security_name", "") for r in load_csv(pool_path) if r["security_code"].zfill(6) == code), None)
+    date.fromisoformat(notice), date.fromisoformat(reviewed_at)
+    if name is None or conclusion not in REVIEW_CONCLUSIONS or not note.strip() or reviewed_at < notice:
+        raise ValueError("复带登记须给池内代码、有效结论与说明，复核日不早于公告日")
+    if (code, notice) in load_reviews(reviews_path):
+        raise ValueError(f"该披露已登记复带：{code} {notice}")
+    row = dict(zip(REVIEW_FIELDS, (code, name, notice, reviewed_at, conclusion, note.strip())))
+    new_file = not reviews_path.exists() or reviews_path.stat().st_size == 0
+    with reviews_path.open("a", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=REVIEW_FIELDS)
+        if new_file:
+            writer.writeheader()
+        writer.writerow(row)
+    append_decision_log(log_path or DEFAULT_DECISION_LOG, [{
+        "logged_at_utc": datetime.now(timezone.utc).isoformat(), "workflow_stage": "valuation_review",
+        "run_id": f"report_divergence_review_{reviewed_at}", "as_of": reviewed_at, "security_code": code,
+        "security_name": name, "decision_type": "report_divergence_review", "decision_result": conclusion,
+        "summary_reason": f"§7.5.2 财报日价格背离复带：公告日 {notice}｜{note.strip()}",
+        "input_files": str(pool_path), "source_urls": "", "output_file": str(reviews_path),
+        "operator_or_script": "check_report_day_price_divergence.py", "workflow_version": WORKFLOW_VERSION,
+        "decision_id": f"report_divergence_review:{code}:{notice}", "supersedes_decision_id": ""}])
+    return row
+
+
 def run(as_of: date, lookback: int, timeout: float, universe: str = "subset", *, candidate_rows=None,
         pool_path=DEFAULT_POOL, holdings_path=DEFAULT_HOLDINGS, members=None, tactical=None,
-        blocked=None, growth=None, strict=False) -> list[dict[str, object]]:
+        blocked=None, growth=None, reviews_path=DEFAULT_REVIEWS, strict=False) -> list[dict[str, object]]:
     pool = {row["security_code"].zfill(6): row for row in load_csv(pool_path)}
     holdings = {row["security_code"].zfill(6) for row in load_csv(holdings_path)
                 if (to_float(row.get("current_shares")) or 0) > 0}
@@ -203,23 +252,42 @@ def run(as_of: date, lookback: int, timeout: float, universe: str = "subset", *,
             })
             hits.append(result)
 
+    # 已登记复带的披露（复核日不早于反应日）不再拦截，报告照列。
+    reviews = load_reviews(reviews_path) if hits else {}
+    for hit in hits:
+        review = reviews.get((str(hit["security_code"]), str(hit["notice_date"])))
+        hit["review"] = review if review and review["reviewed_at"] >= str(hit["after_date"]) else None
+    pending = [hit for hit in hits if not hit["review"]]
+
     scope = (f"全池 {len(subset)} 只（**校准口径，非生效范围**）" if universe == "pool"
              else f"子集 {len(subset)} 只（持仓 {len(holdings)} + 当日合格集 {len(buyable)}，去重后）")
     print(f"§7.5.2 财报日价格背离检出（{as_of}，OI-026）｜{scope}"
           f"｜其中 {lookback} 日内有披露且有带的 {checked} 只")
     if not hits:
         print(f"  无命中（阈值 |Δ| ≥ {DIVERGENCE_THRESHOLD_PCT:g}% 且被推出带）")
-        return hits
+        return pending
 
-    print(f"  **带待复核 {len(hits)} 只**（T+1 内按 §7.4 express 口径复带，不得只让价格改档）：")
-    for hit in sorted(hits, key=lambda h: -abs(float(h["delta_pct"]))):
+    def line(hit: dict[str, object]) -> str:
         low, high = hit["band"]                                # type: ignore[misc]
         tag = "持仓" if hit["in_holdings"] else ("可买" if hit.get("buyable") else "池内")
-        print(f"    - {hit['security_name']}（{hit['security_code']}，{tag}）"
-              f"{hit['disclosure_kind']} 公告日 {hit['notice_date']}："
-              f"{hit['before_close']:g} → {hit['after_close']:g}（{hit['after_date']}）"
-              f"**{float(hit['delta_pct']):+.2f}%**，{hit['pushed']}（带 {low:g}-{high:g}）")
-    return hits
+        return (f"    - {hit['security_name']}（{hit['security_code']}，{tag}）"
+                f"{hit['disclosure_kind']} 公告日 {hit['notice_date']}："
+                f"{hit['before_close']:g} → {hit['after_close']:g}（{hit['after_date']}）"
+                f"**{float(hit['delta_pct']):+.2f}%**，{hit['pushed']}（带 {low:g}-{high:g}）")
+
+    by_move = sorted(hits, key=lambda h: -abs(float(h["delta_pct"])))
+    if pending:
+        print(f"  **带待复核 {len(pending)} 只**（T+1 内按 §7.4 express 口径复带并登记，不得只让价格改档）：")
+        for hit in by_move:
+            if not hit["review"]:
+                print(line(hit))
+    if len(pending) < len(hits):
+        print(f"  已登记复带 {len(hits) - len(pending)} 只（不拦截）：")
+        for hit in by_move:
+            if hit["review"]:
+                review = hit["review"]                         # type: ignore[assignment]
+                print(line(hit) + f"｜{review['conclusion']}（复核 {review['reviewed_at']}）：{review['note']}")
+    return pending
 
 
 def main() -> int:
@@ -229,7 +297,17 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=8.0)
     parser.add_argument("--universe", choices=("subset", "pool"), default="subset",
                         help="subset=生效范围（持仓+当日合格集）；pool=全池，仅供阈值校准")
+    parser.add_argument("--register", metavar="代码", help="登记该代码的复带结论（复核日取 --as-of），不做检出")
+    parser.add_argument("--notice-date", help="--register：被复核披露的公告日 YYYY-MM-DD")
+    parser.add_argument("--conclusion", choices=REVIEW_CONCLUSIONS, help="--register：复带结论")
+    parser.add_argument("--note", default="", help="--register：复带依据")
     args = parser.parse_args()
+    if args.register:
+        if not args.notice_date or not args.conclusion:
+            parser.error("--register 须同时给 --notice-date 与 --conclusion")
+        row = register_review(args.register, args.notice_date, args.as_of, args.conclusion, args.note)
+        print(f"已登记复带：{row['security_name']}（{row['security_code']}）公告日 {row['notice_date']}，{row['conclusion']}")
+        return 0
     hits = run(date.fromisoformat(args.as_of), args.lookback, args.timeout, args.universe, strict=True)
     return 1 if hits else 0
 
