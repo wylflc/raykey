@@ -1,0 +1,213 @@
+{
+ "signal_date": "2026-10-13",
+ "checked_at_utc": "2026-10-13T08:40:03.269869+00:00",
+ "status": "passed",
+ "checks": [
+  "whole_pool_unique_codes",
+  "trade_date",
+  "plans_trade_date",
+  "publication_as_of",
+  "publication_verify_passed",
+  "holdings_rows",
+  "tracking_scope",
+  "tracking_close_matches_scan_000651",
+  "independent_quote_000651",
+  "no_price_stop_000651",
+  "tracking_close_matches_scan_603529",
+  "independent_quote_603529",
+  "no_price_stop_603529",
+  "user_account_registered_before_scan",
+  "holdings_and_reported_assets_match",
+  "strategy_columns_check",
+  "cooldown_all_zero",
+  "no_holding_exdiv_today",
+  "pool_exdiv_bands_normalized"
+ ],
+ "problems": [],
+ "holdings_market_value_cny": "4955436.00",
+ "reported_total_assets_cny": "4955436.00",
+ "tranche_cny": "140962.15",
+ "scan_funds_cny": "-189140.79",
+ "coverage": {
+  "scanned": 182,
+  "valid_pv": 178,
+  "buy_line": 19,
+  "trend_eligible": 6,
+  "held": 2
+ },
+ "holdings": {
+  "000651": {
+   "name": "格力电器",
+   "shares": "108000",
+   "close": "39.63",
+   "cost": "38.6984",
+   "gain_pct": 2.41,
+   "ma5": "38.93",
+   "ma20": "38.5345",
+   "ma60": "38.6548",
+   "close_over_ma20": 1.0284,
+   "hold_pv": "0.5051",
+   "candidate_pv": "0.54",
+   "action": "持有",
+   "market_value_cny": "4280040.00"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "shares": "29200",
+   "close": "23.13",
+   "cost": "21.2292",
+   "gain_pct": 8.95,
+   "ma5": "22.964",
+   "ma20": "21.67",
+   "ma60": "21.15",
+   "close_over_ma20": 1.0674,
+   "hold_pv": "0.8779",
+   "candidate_pv": "0.8779",
+   "action": "持有",
+   "market_value_cny": "675396.00"
+  }
+ },
+ "buy_plan": [],
+ "sell_plan": [],
+ "jobs": {
+  "evidence": "27992160",
+  "refresh_pool": "27992640",
+  "scan": "27992831"
+ },
+ "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
+ "rule_version": "a-share-selection-operation-v4.247",
+ "equity_bond": {
+  "spread_pct": 6.33,
+  "observed_on": "2026-10-12",
+  "pe_ttm": 12.49,
+  "cgb10y": 0.016722,
+  "restricted": false,
+  "note": "取数时（北京时间 16:17）沪深300 PE 与 10 年国债最新观测均为 10-12"
+ },
+ "eligible": [
+  "600970",
+  "920599",
+  "600600",
+  "603529",
+  "000933",
+  "600036"
+ ],
+ "eligible_change_vs_previous": {
+  "added": [
+   "000933"
+  ],
+  "removed": [
+   "601717",
+   "600690",
+   "601009",
+   "601838",
+   "603279"
+  ]
+ },
+ "eligible_removed_reason": {
+  "601717": {
+   "name": "中创智领",
+   "close": "13.65",
+   "ma5": "13.612",
+   "ma20": "13.806",
+   "candidate_pv": "0.7143"
+  },
+  "600690": {
+   "name": "海尔智家",
+   "close": "20.6",
+   "ma5": "20.65",
+   "ma20": "20.669",
+   "candidate_pv": "0.7384"
+  },
+  "601009": {
+   "name": "南京银行",
+   "close": "11.94",
+   "ma5": "12.026",
+   "ma20": "11.985",
+   "candidate_pv": "0.8436"
+  },
+  "601838": {
+   "name": "成都银行",
+   "close": "19.25",
+   "ma5": "19.384",
+   "ma20": "19.3024",
+   "candidate_pv": "0.9656"
+  },
+  "603279": {
+   "name": "景津装备",
+   "close": "10.96",
+   "ma5": "11.096",
+   "ma20": "11.168",
+   "candidate_pv": "0.9591"
+  }
+ },
+ "buy_line_new_vs_previous": [
+  "601318"
+ ],
+ "valuation_update": {
+  "financial_update": "当日无估值更新（队列财报触发 0：预告 0、快报 0、定期报告 0；当日新增预告只有池外的兴森科技）",
+  "exright_normalization": {
+   "300470": {
+    "name": "中密控股",
+    "cash_per_share": 0.5,
+    "v_before": 23.7966,
+    "v_after": 23.2966,
+    "hold_v_before": 25.1383,
+    "hold_v_after": 24.6383
+   }
+  },
+  "open_issue": "OI-280"
+ },
+ "queue": {
+  "rows": 19,
+  "trough_anchor": 13,
+  "structural_growth": 6,
+  "report_triggered": 0,
+  "lowest_frozen_pv": {
+   "688516": 1.0414
+  }
+ },
+ "divergence_check": {
+  "automated_subset": "持仓 2 + 当日可买 4（脚本按旧走势口径 收>MA20>MA60 取子集），10 日内有披露且有带的 1 只，无命中",
+  "eligible_not_in_subset_basis": "合格集 6 只中 MA20 ≤ MA60 的新建仓候选不进脚本子集：中材国际、青岛啤酒",
+  "manual_coverage": "check_report_day_price_divergence.py --universe pool：全池 10 日内有披露且有带的 3 只（神火股份、中国巨石、鼎龙股份），无命中；神火股份预告后首个交易日（10-13）收盘 26.70，较披露前收盘 26.21 上涨 1.87%，低于 7% 阈值",
+  "open_issue": "OI-279"
+ },
+ "announcements": {
+  "query_window": "2026-10-12～2026-10-14",
+  "retrieved_at_beijing": "2026-10-13 16:26",
+  "all_market_rows": 1879,
+  "pool_rows": 44,
+  "new_vs_1012_snapshot": 6,
+  "mandatory_companies": [
+   "000651",
+   "603529",
+   "600970",
+   "920599",
+   "600600",
+   "000933",
+   "600036"
+  ],
+  "primary_reviewed_announcements": [
+   "AN202610131830403311"
+  ],
+  "new_pool_titles_screened": [
+   "AN202610131830403940",
+   "AN202610131830405458",
+   "AN202610131830404690",
+   "AN202610131830403971",
+   "AN202610131830403574"
+  ],
+  "restatement_new_candidates": 0
+ },
+ "scheduled_q3_reports": {
+  "000933": "2026-10-20",
+  "600970": "2026-10-22",
+  "603529": "2026-10-24",
+  "000651": "2026-10-27",
+  "920599": "2026-10-28",
+  "600600": "2026-10-29",
+  "600036": "2026-10-31",
+  "source": "东财 RPT_PUBLIC_BS_APPOIN（预约披露日，2026-10-13 查询）"
+ }
+}
