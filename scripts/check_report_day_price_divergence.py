@@ -17,9 +17,9 @@ T+1 内必须复带，不得只让价格改档。**该触发的成因与市场�
 
 口径
 ----
-* **子集**：全部持仓 ∪ 当日可买（最近一次扫描中 `model_pv ≤ 买入线` 且 `收>MA20>MA60`）。理由是决策后果——
-  持仓的卖出侧无冻结保护，可买股票的 `P/V` 直接决定当天能不能下单；其余 200 余家逐日判定
-  既不可执行，也没有对应的当日决策。
+* **子集**：全部持仓 ∪ 当日合格集（§9.3.2 第 1～2 步，与扫描器同一判定 `eligible_rows`；用户 2026-10-13 裁定，
+  OI-279）。理由是决策后果——持仓的卖出侧无冻结保护，可买股票的 `P/V` 直接决定当天能不能下单；其余 200 余家
+  逐日判定既不可执行，也没有对应的当日决策。
 * **阈值 |Δ| ≥ 7%**：沿用 §6.8 第 ③ 条的海外初始校准值，**明标为未校准值**。A 股有
   10%/20% 涨跌停制度，7% 在此可能偏敏感；本脚本每次运行打印实际触发家数，跑一个
   披露季后按实测频次重定（改阈值先改 §7.5.1 正文）。
@@ -36,7 +36,9 @@ T+1 内必须复带，不得只让价格改档。**该触发的成因与市场�
 from __future__ import annotations
 
 import argparse
+import contextlib
 import csv
+import io
 import sys
 from datetime import date, timedelta
 from pathlib import Path
@@ -149,12 +151,12 @@ def divergence_for(code: str, exchange: str, notice: str, as_of: date,
 
 def run(as_of: date, lookback: int, timeout: float, universe: str = "subset", *, candidate_rows=None,
         pool_path=DEFAULT_POOL, holdings_path=DEFAULT_HOLDINGS, members=None, tactical=None,
-        strict=False) -> list[dict[str, object]]:
+        blocked=None, growth=None, strict=False) -> list[dict[str, object]]:
     pool = {row["security_code"].zfill(6): row for row in load_csv(pool_path)}
-    holdings = {row["security_code"].zfill(6) for row in load_csv(holdings_path)}
-    # 「当日可买」取最近一次扫描落盘的候选表（§8.2 产物）：model_pv ≤ 买入线且收>MA20>MA60。
-    # （旧口径读池表 `matrix_state=="buyable"`——该列随三态矩阵 v1.27 退役后恒空，子集因此只剩持仓。）
-    buyable: set[str] = set()
+    holdings = {row["security_code"].zfill(6) for row in load_csv(holdings_path)
+                if (to_float(row.get("current_shares")) or 0) > 0}
+    # 「当日可买」= 扫描器的当日合格集（`S.eligible_rows`）：扫描内调用传本次行情行与同一组排除集，
+    # 单独运行时读最近一次扫描落盘的候选表（§8.2 产物）、队列冻结列、分层表与成长股登记。
     cand_rows = (load_csv(ROOT / "data/processed/daily_buy_candidates.csv")
                  if candidate_rows is None else candidate_rows)
     members = S.load_worth_attention_codes() if members is None else members
@@ -162,21 +164,18 @@ def run(as_of: date, lookback: int, timeout: float, universe: str = "subset", *,
     if members is None:
         raise ValueError('背离复核缺三类表')
     scan_day = max((r.get("trade_date", "") for r in cand_rows), default="")
-    for r in cand_rows:
-        code = str(r.get("security_code", "")).zfill(6)
-        if code not in members or code in tactical or r.get("signal_state", "ok") != "ok":
-            continue
-        if r.get("trade_date") != as_of.isoformat() or str(r.get("review_frozen", "")).lower() == "true":
-            continue
-        try:
-            pv, close, ma20, ma60 = (float(r["model_pv"]), float(r["close"]),
-                                     float(r["ma20"]), float(r["ma60"]))
-        except (KeyError, TypeError, ValueError):
-            continue
-        if pv <= S.SEC93_BUY_LINE and ma20 > ma60 and (code in holdings or close > ma20):
-            buyable.add(str(r.get("security_code", "")).zfill(6))
+    day_rows = [r for r in cand_rows if r.get("trade_date") == as_of.isoformat()]
+    if blocked is None:
+        blocked = {str(r.get("security_code", "")).zfill(6) for r in day_rows
+                   if str(r.get("review_frozen", "")).lower() == "true"}
+    if growth is None:
+        with contextlib.redirect_stdout(io.StringIO()):
+            bands = S.load_model_bands(S.DEFAULT_MODEL_BANDS, S.evidence_iso_for_signal(as_of.isoformat()))
+        growth = S.load_growth_state(bands=bands)
+    buyable = {str(r["security_code"]).zfill(6)
+               for r in S.eligible_rows(day_rows, holdings, blocked, tactical, growth, members)}
     if scan_day:
-        print(f"  当日可买子集取自最近一次扫描（trade_date={scan_day}，{len(buyable)} 只）")
+        print(f"  当日合格集取自最近一次扫描（trade_date={scan_day}，{len(buyable)} 只）")
     # `--universe pool` 只用于**阈值校准**（测全池触发频次），不是生效范围。
     # 生效范围由用户 2026-08-07 裁定为「持仓 + 当日可买」，见模块 docstring。
     subset = sorted(pool) if universe == "pool" else sorted(holdings | buyable)
@@ -205,7 +204,7 @@ def run(as_of: date, lookback: int, timeout: float, universe: str = "subset", *,
             hits.append(result)
 
     scope = (f"全池 {len(subset)} 只（**校准口径，非生效范围**）" if universe == "pool"
-             else f"子集 {len(subset)} 只（持仓 {len(holdings)} + 当日可买 {len(buyable)}，去重后）")
+             else f"子集 {len(subset)} 只（持仓 {len(holdings)} + 当日合格集 {len(buyable)}，去重后）")
     print(f"§7.5.2 财报日价格背离检出（{as_of}，OI-026）｜{scope}"
           f"｜其中 {lookback} 日内有披露且有带的 {checked} 只")
     if not hits:
@@ -229,7 +228,7 @@ def main() -> int:
     parser.add_argument("--lookback", type=int, default=10, help="披露回溯窗口（自然日，缺省 10）")
     parser.add_argument("--timeout", type=float, default=8.0)
     parser.add_argument("--universe", choices=("subset", "pool"), default="subset",
-                        help="subset=生效范围（持仓+当日可买）；pool=全池，仅供阈值校准")
+                        help="subset=生效范围（持仓+当日合格集）；pool=全池，仅供阈值校准")
     args = parser.parse_args()
     hits = run(date.fromisoformat(args.as_of), args.lookback, args.timeout, args.universe, strict=True)
     return 1 if hits else 0

@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T08:40:03.269869+00:00",
+ "checked_at_utc": "2026-10-13T10:38:09.323300+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -21,7 +21,9 @@
   "strategy_columns_check",
   "cooldown_all_zero",
   "no_holding_exdiv_today",
-  "pool_exdiv_bands_normalized"
+  "pool_exdiv_bands_normalized",
+  "eligible_set_recomputed_from_published_quotes",
+  "divergence_subset_is_holdings_plus_eligible"
  ],
  "problems": [],
  "holdings_market_value_cny": "4955436.00",
@@ -72,10 +74,13 @@
  "jobs": {
   "evidence": "27992160",
   "refresh_pool": "27992640",
-  "scan": "27992831"
+  "scan": "27992831",
+  "refresh_pool_second": "27999658",
+  "scan_second": "28000002"
  },
+ "publications": "当日发布两次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑",
  "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
- "rule_version": "a-share-selection-operation-v4.247",
+ "rule_version": "a-share-selection-operation-v4.248",
  "equity_bond": {
   "spread_pct": 6.33,
   "observed_on": "2026-10-12",
@@ -156,7 +161,44 @@
     "hold_v_after": 24.6383
    }
   },
-  "open_issue": "OI-280"
+  "exright_verification": [
+   {
+    "code": "300470",
+    "name": "中密控股",
+    "ex_date": "2026-10-13",
+    "differentiated": false,
+    "actual_cash": 0.5,
+    "price_cash": 0.5,
+    "registered": false,
+    "basis": "实施公告：以股权登记日总股本为基数向全体股东每 10 股派 5 元",
+    "source": "https://pdf.dfcfw.com/pdf/H2_AN202609281829962520_1.pdf"
+   },
+   {
+    "code": "300308",
+    "name": "中际旭创",
+    "ex_date": "2026-10-12",
+    "differentiated": true,
+    "actual_cash": 1.2,
+    "price_cash": 1.1939172,
+    "registered": true,
+    "basis": "实施公告：回购专户 5,653,063 股不参与，除权除息价格 = 股权登记日收盘价 − 1.1939172 元",
+    "source": "https://pdf.dfcfw.com/pdf/H2_AN202609281829961300_1.pdf",
+    "v_before": 308.2546,
+    "v_after": 308.2607
+   },
+   {
+    "code": "688072",
+    "name": "拓荆科技",
+    "ex_date": "2026-10-12",
+    "differentiated": true,
+    "actual_cash": 0.35,
+    "price_cash": 0.35,
+    "registered": true,
+    "basis": "实施公告：回购专户 702,102 股不参与，虚拟分派的现金红利约 0.35 元（保留两位小数）",
+    "source": "https://pdf.dfcfw.com/pdf/H2_AN202609281829963780_1.pdf"
+   }
+  ],
+  "closed_issue": "OI-280（v4.248）"
  },
  "queue": {
   "rows": 19,
@@ -168,10 +210,11 @@
   }
  },
  "divergence_check": {
-  "automated_subset": "持仓 2 + 当日可买 4（脚本按旧走势口径 收>MA20>MA60 取子集），10 日内有披露且有带的 1 只，无命中",
-  "eligible_not_in_subset_basis": "合格集 6 只中 MA20 ≤ MA60 的新建仓候选不进脚本子集：中材国际、青岛啤酒",
-  "manual_coverage": "check_report_day_price_divergence.py --universe pool：全池 10 日内有披露且有带的 3 只（神火股份、中国巨石、鼎龙股份），无命中；神火股份预告后首个交易日（10-13）收盘 26.70，较披露前收盘 26.21 上涨 1.87%，低于 7% 阈值",
-  "open_issue": "OI-279"
+  "automated_subset": "持仓 2 + 当日合格集 6，去重后 7 只（与扫描器同一判定），10 日内有披露且有带的 1 只（神火股份），无命中",
+  "first_publication": "第一次发布时脚本按旧走势口径取子集 5 只，漏中材国际、青岛啤酒，当时已用 --universe pool 补核：全池 10 日内有披露且有带的 3 只（神火股份、中国巨石、鼎龙股份），无命中",
+  "shenhuo": "神火股份预告后首个交易日（10-13）收盘 26.70，较披露前收盘 26.21 上涨 1.87%，低于 7% 阈值",
+  "closed_issue": "OI-279（v4.248）",
+  "open_issue": "OI-283（命中后的解除口径）"
  },
  "announcements": {
   "query_window": "2026-10-12～2026-10-14",

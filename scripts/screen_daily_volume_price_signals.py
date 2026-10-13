@@ -879,6 +879,26 @@ def buy_trend_ok(row: dict[str, object], held_codes: set[str]) -> bool:
     return bool(stable and ma5 and math.isfinite(ma5) and close > ma5 and close > ma20)
 
 
+def eligible_rows(rows: Iterable[dict[str, object]], held_codes: set[str], blocked: set[str] | None = None,
+                  tactical_gated: set[str] | None = None, growth: GrowthState | None = None,
+                  members: set[str] | None = None) -> list[dict[str, object]]:
+    """§9.3.2 第 1～2 步的合格集（未排序）；执行清单与 §7.5.2 财报日价格背离检查共用。
+    `model_pv` 接受扫描内存行的浮点数，也接受已发布候选表的文本。"""
+    blocked, tactical_gated, growth = blocked or set(), tactical_gated or set(), growth or GrowthState()
+    growth_hold_exit = {c for c in growth.exiting if c in held_codes}
+    out = []
+    for r in rows:
+        code = str(r["security_code"]).zfill(6)
+        pv = r.get("model_pv")
+        pv = pv if isinstance(pv, float) else to_float(pv) if isinstance(pv, str) else None
+        if (pv is not None and pv <= SEC93_BUY_LINE and buy_trend_ok(r, held_codes)
+                and code not in blocked and code not in tactical_gated
+                and not growth.gated(code) and code not in growth_hold_exit
+                and (members is None or code in members)):
+            out.append(r)
+    return out
+
+
 def build_pv_top10(rows: list[dict[str, object]], as_of: str,
                    held_codes: set[str], members: set[str]) -> list[dict[str, object]]:
     """§9.2 只按候选侧 P/V 排名；读取扫描快照，不改行情、交易计划或状态。"""
@@ -1147,17 +1167,7 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
                   if growth.gated(str(r["security_code"]).zfill(6))
                   and isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE]
     growth_trend_fail = {str(r["security_code"]).zfill(6) for r in growth_out if not trend_ok(r)}
-    growth_hold_exit = {c for c in growth.exiting if c in held_codes}
-    eligible = [
-        r for r in rows
-        if isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE
-        and trend_ok(r)
-        and str(r["security_code"]).zfill(6) not in blocked
-        and str(r["security_code"]).zfill(6) not in tactical_gated
-        and not growth.gated(str(r["security_code"]).zfill(6))
-        and str(r["security_code"]).zfill(6) not in growth_hold_exit
-        and (members is None or str(r["security_code"]).zfill(6) in members)
-    ]
+    eligible = eligible_rows(rows, held_codes, blocked, tactical_gated, growth, members)
     eligible.sort(key=lambda r: r["model_pv"])
     n_cheap = sum(1 for r in rows
                   if isinstance(r.get("model_pv"), float) and r["model_pv"] <= SEC93_BUY_LINE)
@@ -1685,7 +1695,7 @@ def run_execution(args, publication):
     from datetime import date
     hits = review_events(date.fromisoformat(args.as_of), 10, args.timeout,
                          candidate_rows=rows, pool_path=args.input, holdings_path=args.holdings,
-                         members=members, tactical=tactical, strict=True)
+                         members=members, tactical=tactical, blocked=blocked, growth=growth, strict=True)
     if hits:
         raise ValueError("财报价格背离待复核，未发布计划")
     eb_signal, eb_cap = equity_bond_signal(args.as_of)

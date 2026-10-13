@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 内容 |
 | --- | --- | --- |
+| v4.248 | 2026-10-13 | §7.5.2／§9.1 第 4 步：财报日价格背离检查的子集取持仓 ∪ 扫描器当日合格集，判定共用一份实现（用户裁定，结 OI-279）；§9.1 第 2～3 步：池成员除权日逐只按实施公告核对、差异化分派登记价格口径，带未折到信号日时跑 §6.7 第 4～6 步，发布前校验两侧带已折到信号日（用户裁定，结 OI-280）；§9.2「除权除息」列核对结果。落点：`screen_daily_volume_price_signals.eligible_rows`、`check_report_day_price_divergence.run`、`apply_forecast_band_overlay.exright_events`／`exright_hits`、`daily_execution_guard.stale_exright_bands` 与 `exright` 动作、`test_workflow_execution_consistency` |
 | v4.247 | 2026-10-13 | §6.8：客户按长期供货协议预付、合同约定履约后返还的保证金，经用户裁定后视同有息负债（补充表字段 `customer_deposits`，计入有息负债，投入资本同式重算，现金照计；季报观察点沿用 15 个月内最近一期）。落点：`fetch_overseas_statements.apply_customer_deposits`、`overseas_statement_supplements.csv`（美光 FY2026）、`test_overseas_supplements` |
 | v4.246 | 2026-10-13 | §6.4：预告、快报叠加行的估值事件写报告期类型加「预告」或「快报」（结 OI-282）；§9.1 第 1 步：证据取数之后才发布的公告、预告、快报与定期报告由下一次扫描补取，当日不为此重发（用户裁定，结 OI-281）。落点：`apply_valuation_band_cards.band_event`、`test_apply_valuation_band_cards`、池表 `valuation_evidence_event` 与阅读版「估值事件」列 |
 | v4.245 | 2026-10-12 | §6.9 第 3 条：独立估值登记的现行行自成一体（`conclusion` 写全部主要结论与操作结论），新增 `key_events`（关键事件与日期）、`key_metrics`（关键指标读数与跟踪门槛）两列，公告或事件的独立审计同样登记。落点：`data/processed/independent_valuations.csv`、`build_independent_valuations.py`（两列与阅读版「关键事件」「关键指标」两项，有值才显示）、README 文档表 |

@@ -336,6 +336,53 @@ class GuardedExecution(unittest.TestCase):
         self.a.cigar_pool.write_text('changed')
         with self.assertRaises(ValueError):guard.verify_publication(self.a.publication,DAY)
 
+    def exright_fixture(self, ex_date=DAY, **band):
+        # OI-280：带公告日早于除权日，事件库当日每股派 1 元；`exright_note` 为空即未折
+        import corporate_actions
+        patch.object(corporate_actions,'PRICE_TERMS_PATH',None).start()
+        actions={'000651':[dict(security_code='000651',ex_dividend_date=ex_date,cash_per_share='1.0',share_ratio='0',
+                                report_date='2026-06-30',plan_notice_date='2026-08-31')]}
+        patch.object(guard,'action_rows',return_value=actions).start()
+        rows=[dict(dict(security_code='000651',security_name='synthetic',intrinsic_value='200',band_low='180',
+                        band_high='220',available_at='2026-08-31',notice_date='2026-08-31',status='ok',roic_path='growth',
+                        forecast_overlay='',exright_factor='',exright_cash='',exright_note=''),**band)]
+        for path in (self.a.model_bands,self.a.hold_bands):self.write(path,rows)
+        return rows,actions
+
+    def test_exright_band_not_normalized_to_signal_day_blocks_publication(self):
+        import apply_forecast_band_overlay as overlay
+        rows,actions=self.exright_fixture()
+        self.assertEqual([r[2] for r in guard.stale_exright_bands(self.a.model_bands,DAY)],[f'{DAY} 现金1/送转0'])
+        self.assertEqual(s.main(),1)
+        s.scan.assert_not_called()
+        self.assertFalse(self.a.plan_out.exists())
+        self.assertEqual(overlay.exright_normalize(rows[0],actions['000651'],DAY),(200.,199.))
+        for path in (self.a.model_bands,self.a.hold_bands):self.write(path,rows)
+        self.assertEqual(guard.stale_exright_bands(self.a.model_bands,DAY),[])
+        self.assertEqual(s.main(),0)
+
+    def test_exright_after_signal_day_or_bank_path_is_not_due(self):
+        self.exright_fixture(ex_date='2026-09-15')
+        self.assertEqual(s.main(),0)
+        self.exright_fixture(roic_path='bank_divspread')
+        self.assertEqual(guard.stale_exright_bands(self.a.model_bands,DAY),[])
+
+    def test_price_terms_registered_after_normalization_make_band_stale(self):
+        import apply_forecast_band_overlay as overlay
+        import corporate_actions
+        rows,actions=self.exright_fixture()
+        overlay.exright_normalize(rows[0],actions['000651'],DAY)
+        for path in (self.a.model_bands,self.a.hold_bands):self.write(path,rows)
+        self.assertEqual(guard.stale_exright_bands(self.a.model_bands,DAY),[])
+        rule=dict(security_code='000651',ex_dividend_date=DAY,cash_per_share='1.0',share_ratio='0',rights_ratio='0',
+                  rights_price='0',price_cash_per_share='0.99',price_share_ratio='0',price_rights_ratio='0',
+                  price_rights_price='0',source_url='synthetic')
+        with patch.object(corporate_actions,'price_overrides',return_value={('000651',DAY):rule}):
+            actions['000651']=list(actions['000651'])   # 新列表对象，绕开按对象身份的事件缓存
+            stale=guard.stale_exright_bands(self.a.model_bands,DAY)
+            self.assertEqual([(r[2],r[3]) for r in stale],[(f'{DAY} 现金0.99/送转0',f'{DAY} 现金1/送转0')])
+            self.assertEqual(s.main(),1)
+
 
 class PublicationRecovery(unittest.TestCase):
     def test_concurrent_change_is_not_overwritten_by_rollback(self):
@@ -363,8 +410,42 @@ class PublicationRecovery(unittest.TestCase):
              patch.object(e,'latest_notice_dates',return_value={'000651':('2026-09-11','periodic_report')}), \
              patch.object(e,'divergence_for',side_effect=ValueError('unavailable')) as check:
             with self.assertRaises(ValueError):
-                e.run(date.fromisoformat(DAY),10,1,candidate_rows=[row()],members={'000651'},tactical=set(),strict=True)
+                e.run(date.fromisoformat(DAY),10,1,candidate_rows=[row()],members={'000651'},tactical=set(),
+                      growth=s.GrowthState(),strict=True)
             self.assertEqual(check.call_args.args[0],'000651')
+
+    def test_event_review_subset_is_scanner_eligible_set_plus_holdings(self):
+        # OI-279：子集 = 持仓 ∪ 扫描器当日合格集；新建仓不要求 MA20 > MA60，加仓不要求收盘 > MA20
+        import check_report_day_price_divergence as e
+        rows=[row('000001',ma60=96.),                       # 新建仓，MA20 ≤ MA60：旧口径漏检
+              row('000002',ma5=101.),                       # 新建仓，收盘 < MA5：不合格
+              row('000003',ma20=105.,ma5=106.),             # 持仓，MA20 > MA60 且收盘 < MA20：合格加仓
+              row('000004',ma60=96.),                       # 持仓，MA20 < MA60：不合格但属持仓
+              row('000005'),row('000006'),row('000007'),    # 冻结／L3 战术闸门／成长股未通过
+              row('000008',pv=1.5)]                         # 买入线外
+        codes=[r['security_code'] for r in rows]
+        held,blocked,tactical={'000003','000004'},{'000005'},{'000006'}
+        growth=s.GrowthState(growth={'000007'})
+        with tempfile.TemporaryDirectory() as tmp:
+            pool,holdings,quotes=(Path(tmp)/n for n in ('pool.csv','holdings.csv','quotes.csv'))
+            GuardedExecution.write(pool,[dict(security_code=c,fair_price_low=180,fair_price_high=220) for c in codes])
+            GuardedExecution.write(holdings,[dict(security_code=c,current_shares=100) for c in sorted(held)]
+                                   +[dict(security_code='000001',current_shares=0)])
+            for r in rows:r['review_frozen']=r['security_code'] in blocked
+            GuardedExecution.write(quotes,rows)
+            s.CLOSE_SERIES.clear()
+            planned=s.section93_execution_plan(copy.deepcopy(rows),1e6,100000.,{c:holding() for c in held},blocked,tactical,
+                                               set(codes),growth=growth)
+            expected=sorted({r['security_code'] for r in planned['eligible']}|held)
+            self.assertEqual(expected,['000001','000003','000004'])
+            with quotes.open(newline='') as f:published=list(csv.DictReader(f))
+            for label,kw in (('scan',dict(candidate_rows=rows,blocked=blocked)),('published',dict(candidate_rows=published))):
+                with self.subTest(source=label), contextlib.redirect_stdout(io.StringIO()), \
+                        patch.object(e,'latest_notice_dates',return_value={c:('2026-09-11','periodic_report') for c in codes}), \
+                        patch.object(e,'divergence_for',return_value=None) as check:
+                    e.run(date.fromisoformat(DAY),10,1,pool_path=pool,holdings_path=holdings,members=set(codes),
+                          tactical=tactical,growth=growth,strict=True,**kw)
+                    self.assertEqual(sorted(c.args[0] for c in check.call_args_list),expected)
 
     def test_newer_rejection_prevents_older_model_revival(self):
         with tempfile.TemporaryDirectory() as tmp:

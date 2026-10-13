@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.247
+# A股选股-估值-量价操作流程 v4.248
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -652,7 +652,7 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 
 #### 7.5.2 财报日价格背离
 
-披露后首个交易日若相对披露前收盘绝对涨跌至少 7%，且到当前带的距离扩大，则持仓与当日可买股票必须在 T+1 内强制复带：
+披露后首个交易日若相对披露前收盘绝对涨跌至少 7%，且到当前带的距离扩大，则持仓与当日合格集（§9.3.2 第 1～2 步，脚本与扫描器共用 `eligible_rows`）的股票必须在 T+1 内强制复带：
 
 ```bash
 python3 scripts/check_report_day_price_divergence.py --as-of YYYY-MM-DD
@@ -710,13 +710,15 @@ python3 scripts/screen_daily_volume_price_signals.py --as-of YYYY-MM-DD \
 信号口径与执行时点只认 §9.3.1。执行日价格变化不重算信号日合格集；停牌或执行日新增 §7 事件时跳过该票并重新复核。
 
 1. **同步证据**：按 **§7.1** 取披露、预告并重建队列；刷新公司行动，抓取上次成功扫描以来的公告与市场背景，核查 §7.4 的每日范围。用下列 evidence 阶段生成同日完成凭据；只重建队列不算同步证据。取数之后才发布的公告、预告、快报与定期报告由下一次扫描补取，当日不为此重发。
-2. **更新估值**：队列出现 `valuation_review_needed` 时**当晚以同一信号日执行 §6.7**（含其第 1 步的逐季财务刷新）；随后重建队列，再刷新核心池阅读版。
-3. **公司行动与输入核验**：先按 §11.4 处理持仓除权除息并登记台账；完成同日证据阶段证明，再校验队列、分层、持仓、三类表、烟蒂池表、两侧模型带及账户输入。空持仓可接受，文件缺失不可接受。队列即使为空也须有当日生成凭据；账户现金和负债须来自信号日快照或当日显式输入。
+2. **更新估值**：
+   - 池成员除权：运行 `python3 scripts/daily_execution_guard.py exright --as-of YYYY-MM-DD --since <上次成功扫描日>`。期间除权的池成员逐只按实施公告核对除权参考价口径，差异化分派登记 `data/reference/a_share_exright_terms.csv`（§11.4）；核对结果写入当日报告，未能核对的列名单。命令报带未折到信号日（退出码非 0）时跑 §6.7 第 4～6 步（`scripts/slurm/refresh_pool_from_bands.sbatch`，给 `SIGNAL_DATE`、`SINCE`）；登记了价格口径而不必跑的，重做同日证据凭据（`daily_execution_guard.py evidence`）。
+   - 队列出现 `valuation_review_needed` 时**当晚以同一信号日执行 §6.7**（含其第 1 步的逐季财务刷新；价格口径登记须先于其第 4 步）；随后重建队列，再刷新核心池阅读版。
+3. **公司行动与输入核验**：先按 §11.4 处理持仓除权除息并登记台账；完成同日证据阶段证明，再校验队列、分层、持仓、三类表、烟蒂池表、两侧模型带及账户输入。两侧模型带须已按事件库与价格口径把除权折到信号日（与第 2 步检出同一判定），否则不发布。空持仓可接受，文件缺失不可接受。队列即使为空也须有当日生成凭据；账户现金和负债须来自信号日快照或当日显式输入。
 4. **暂存行情与事件复核**：取当日行情、计算两侧 P/V，以本次行情形成的合格集和持仓做 §7.5.2 复核；复核完成前不发布执行清单，也不回写冷却。随后跟踪持仓。
 5. **校验并发布执行清单**：按 §9.3.2 先卖后买生成买卖计划；整批校验通过后发布行情、清单、冷却及含日期和文件摘要的成功凭据。缺失或摘要不符的成功凭据表示计划不可用。失败返回非零，不推进冷却；四张表即使为空也必须显示。
 6. **输出与留痕**：回复用户，并将同一内容置顶写入 `docs/000_daily_scan_log.md`；成交后按 §11.5 回写。每月首个扫描日运行 `python3 scripts/archive_daily_scan_log.py --before <本月 1 日> --apply`，把信号日早于本月 1 日的条目移入 `data/archive/daily_scan_log_<起>_to_<止>.md`（并入既有归档加 `--into <文件>`）。
 
-当日无估值更新时可以省略 §6.7 重建，但必须明确写“当日无估值更新”。队列行 `as_of` 为信号日推导的证据截止，旁置 `.meta.json` 的 `as_of` 为信号日；凭据同时校验输入摘要。估值链改变事件文件后须重新完成 evidence 凭据；新增池或持仓代码未在公告取证范围内时重新取证。
+当日无估值更新时可以省略 §6.7 重建（第 2 步的除权折算除外），但必须明确写“当日无估值更新”。队列行 `as_of` 为信号日推导的证据截止，旁置 `.meta.json` 的 `as_of` 为信号日；凭据同时校验输入摘要。估值链改变事件文件后须重新完成 evidence 凭据；新增池或持仓代码未在公告取证范围内时重新取证。
 
 常设调度入口为 `scripts/slurm/daily_postclose.sbatch`，四个阶段按 `SCAN_STAGE` 选择，逐日不另建包装脚本：`evidence` 要给 `SCAN_DATE`、`SCAN_SINCE`（上次成功扫描日）、`SCAN_REPORT_DATE`；`preview` 只要 `SCAN_DATE`，刷新下述两项行情输入后写 §8.2 行情预览；`events` 要给 `SCAN_DATE`、`SCAN_SINCE`，只重取公告、公司行动与市场背景并重做同日证据凭据（截止时间后补取用）；`scan` 要给 `SCAN_DATE`、`SCAN_NAV`、`SCAN_FUNDS`，现金和负债可给 `SCAN_CASH`、`SCAN_DEBT`，否则读当日账户快照。evidence 阶段依次运行 `fetch_equity_bond_inputs.py --refresh` 与 `fetch_cost_of_equity_inputs.py`（§9.3.1 股债总仓位上限与扫描器 `--rf` 缺省的输入）、§7.1 两个取数脚本、`fetch_ohlcv_history.py --actions-only`、`fetch_daily_market_evidence.py --as-of YYYY-MM-DD --since 上次扫描日`、`daily_execution_guard.py evidence --as-of YYYY-MM-DD --since 上次扫描日`、队列重建；随后完成必要的模型与公司行动回写再运行 scan。
 
@@ -746,6 +748,8 @@ python3 scripts/screen_daily_volume_price_signals.py --as-of YYYY-MM-DD \
 P/V 前十从当日扫描的 `worth_attention` 中，按候选侧 `model_pv` 升序取十只，同值按代码升序；仅纳入报价日等于信号日、收盘与 P/V 均为有限正数的行。排名不应用买入线、走势、复核冻结、L3 战术闸门、冷却或账户资金限制，仅作观察名单，不产生买卖动作。走势列按 §9.3.1 区分已有持仓与新建仓，标注达标、未达标或数据不足；均线不足但当日收盘与 P/V 有效的仍可入榜。少于十只有效值时列全部并注明数量，无有效值时显式报空。正式扫描与行情预览均输出该表，用户回复及每日阅读日志同步保留。
 
 合格集为空时写“今日无合格标的，持币”，不得放宽阈值或用盘面事实补位。
+
+「除权除息」列持仓与期间除权的池成员，逐只写实施公告的核对结果（是否差异化分派、登记的价格口径）和未核对名单（§9.1 第 2 步）。
 
 ### 9.3 唯一交易口径
 
@@ -929,7 +933,7 @@ python3 scripts/track_holdings_daily.py --as-of YYYY-MM-DD
 | 每 10 股配 `r` 股、配股价 `p` | `(原值 + r/10 × p) ÷ (1+r/10)` | 认购则 `× (1+r/10)`、付 `股数 × r/10 × p`；不认购不变 |
 | 并存 | `(原值 − D + r/10 × p) ÷ (1 + k/10 + r/10)` | `× (1 + k/10 + r/10)` |
 
-**带的调整由建带链机械维护**：生产带文件在 §6.7 第 4 步末段按 §6.5.1 的现金与送转起算日归一化到现价口径（现金＋送转＋配股；银行与保险走股利折现、分子按财年归属，不参与减项），回测逐日状态同一规则；调整持续到公告日晚于除息日的下一份报告接管为止，重建不抹掉。事件库 `data/raw/corporate_actions/a_share_corporate_actions.csv` 的分红送转取东财、配股取新浪配股表（`rights_ratio`／`rights_price` 列），随 §6.7 第 1 步刷新。**持仓表按事件落地**：`entry_stop_price` 是历史价格，须按上表调整并永久保留；`cost_basis` 与股数同批调整。差异化分派按交易所价格口径处理。
+**带的调整由建带链机械维护**：生产带文件在 §6.7 第 4 步末段按 §6.5.1 的现金与送转起算日归一化到现价口径（现金＋送转＋配股；银行与保险走股利折现、分子按财年归属，不参与减项），回测逐日状态同一规则；调整持续到公告日晚于除息日的下一份报告接管为止，重建不抹掉。事件库 `data/raw/corporate_actions/a_share_corporate_actions.csv` 的分红送转取东财、配股取新浪配股表（`rights_ratio`／`rights_price` 列），随 §6.7 第 1 步刷新。**持仓表按事件落地**：`entry_stop_price` 是历史价格，须按上表调整并永久保留；`cost_basis` 与股数同批调整。差异化分派按交易所价格口径处理。池成员除权日的核对与折算见 §9.1 第 2 步。
 
 ```bash
 python3 scripts/apply_holdings_corporate_action.py --as-of YYYY-MM-DD --code <代码>            # 事件取事件库当日行，缺则东财当日接口

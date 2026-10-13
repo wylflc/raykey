@@ -43,17 +43,16 @@ FADE = dict(n=10, n1=0, consistent=True, roe_lam=0.12, horizon=50)
 TERMINAL_EXCESS = 0.02
 
 
-def exright_normalize(band: dict, code_actions: list[dict], as_of: str) -> tuple[float, float] | None:
-    """按现金分红、送转和配股事件折算带值。
+def exright_events(band: dict, code_actions: list[dict], as_of: str) -> list[tuple] | None:
+    """带的除权窗口内、除权日不晚于 `as_of` 的事件 [(除权日, 现金, 送转比, 配股比, 配股价)]，交易所价格口径。
 
     现金从公告日起算；叠加行从预告报告期末起算。
     送转从 BPS 股本基准日起算，无该字段时退公告日；银行股利折现不折。
+    窗口或带值缺失、银行路径返回 None。只读窗口列，归一化前后的行给出同一结果。
     """
     path = (band.get("roic_path") or "").strip()
     overlay = (band.get("forecast_overlay") or "").strip()
-    if overlay == "manual_override":
-        raise ValueError("生产带含人工覆盖值，请按工作流程重建模型带")
-    if path == "bank_divspread" or overlay == "bank_no_change" or band.get("exright_note"):
+    if path == "bank_divspread" or overlay == "bank_no_change":
         return None
     if overlay in ("forecast", "express"):
         split_since = ((band.get("pre_overlay_notice_date") or "")[:10]
@@ -67,11 +66,9 @@ def exright_normalize(band: dict, code_actions: list[dict], as_of: str) -> tuple
         split_since = band["bps_basis_date"].strip()[:10]
     if not split_since or not cash_since:
         return None
-    iv, lo, hi = (num(band.get("intrinsic_value")), num(band.get("band_low")),
-                  num(band.get("band_high")))
-    if iv is None or lo is None or hi is None:
+    if any(num(band.get(k)) is None for k in ("intrinsic_value", "band_low", "band_high")):
         return None
-    factor, cash_cum, hits = 1.0, 0.0, []
+    events = []
     floor_since = min(split_since, cash_since)
     from corporate_actions import company_events
     for act in company_events(code_actions, price_basis=True):
@@ -85,13 +82,33 @@ def exright_normalize(band: dict, code_actions: list[dict], as_of: str) -> tuple
         rp = num(act.get("rights_price")) or 0.0
         if cash == 0.0 and ratio == 0.0 and rr == 0.0:
             continue
+        events.append((ex, cash, ratio, rr, rp))
+    return events
+
+
+def exright_hits(events: list[tuple] | None) -> list[str]:
+    """`exright_note` 里逐事件的记法；发布校验（`daily_execution_guard.stale_exright_bands`）按它比对。"""
+    return [f"{ex} 现金{cash:g}/送转{ratio:g}" + (f"/配股{rr:g}@{rp:g}" if rr else "")
+            for ex, cash, ratio, rr, rp in events or []]
+
+
+def exright_normalize(band: dict, code_actions: list[dict], as_of: str) -> tuple[float, float] | None:
+    """按现金分红、送转和配股事件（`exright_events`）折算带值；`exright_note` 非空的行不再折。"""
+    if (band.get("forecast_overlay") or "").strip() == "manual_override":
+        raise ValueError("生产带含人工覆盖值，请按工作流程重建模型带")
+    if band.get("exright_note"):
+        return None
+    events = exright_events(band, code_actions, as_of)
+    if not events:
+        return None
+    iv, lo, hi = (num(band.get("intrinsic_value")), num(band.get("band_low")),
+                  num(band.get("band_high")))
+    factor, cash_cum, hits = 1.0, 0.0, exright_hits(events)
+    for _ex, cash, ratio, rr, rp in events:
         denom, shift = 1 + ratio + rr, rr * rp - cash
         iv, lo, hi = ((iv + shift) / denom, (lo + shift) / denom, (hi + shift) / denom)
         factor *= denom
         cash_cum = (cash_cum + cash) / denom
-        hits.append(f"{ex} 现金{cash:g}/送转{ratio:g}" + (f"/配股{rr:g}@{rp:g}" if rr else ""))
-    if not hits:
-        return None
     if iv <= 0:
         band["exright_note"] = f"⚠ 除权调整后 IV {iv:.4f} ≤ 0，未采用，须人工核对：{'；'.join(hits)}"
         return None

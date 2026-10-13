@@ -78,6 +78,63 @@ def read_required(path, columns, allow_empty=False):
     return rows
 
 
+def action_rows(path=None):
+    """事件库逐笔明细，按代码分组。"""
+    from backtest_valuation_strategy import ACTIONS
+    by_code = {}
+    with Path(path or ACTIONS).open(newline='', encoding='utf-8-sig') as f:
+        for row in csv.DictReader(f):
+            by_code.setdefault((row.get('security_code') or '').strip(), []).append(row)
+    return by_code
+
+
+def stale_exright_bands(bands, as_of, actions=None):
+    """§9.1 第 2～3 步：带文件中除权事件未折到信号日的行，[(代码, 名称, 应折事件, 已折事件)]。
+
+    应折事件按事件库与 §11.4 价格口径重算（`exright_events`），与 `exright_note` 所记逐事件比对；
+    新除权日、事后登记的价格口径和事件库订正都会检出。银行与保险不在带文件折算，不检查。
+    """
+    from apply_forecast_band_overlay import exright_events, exright_hits
+    with Path(bands).open(newline='', encoding='utf-8-sig') as f:
+        rows = [r for r in csv.DictReader(f) if exright_events(r, [], as_of) is not None]
+    if not rows:
+        return []
+    by_code = action_rows() if actions is None else actions
+    stale = []
+    for band in rows:
+        code = (band.get('security_code') or '').strip()
+        due = '；'.join(exright_hits(exright_events(band, by_code.get(code, []), as_of)))
+        done = (band.get('exright_note') or '').partition('：')[2].strip()
+        if due != done:
+            stale.append((code, band.get('security_name') or code, due, done))
+    return stale
+
+
+def report_exright(as_of, since, model_bands, hold_bands):
+    """§9.1 第 2 步检出：列出须核对实施公告的除权池成员，以及带未折到信号日的行；后者非空返回 1。"""
+    from corporate_actions import company_events
+    by_code = action_rows()
+    with Path(model_bands).open(newline='', encoding='utf-8-sig') as f:
+        members = {(r.get('security_code') or '').strip(): r.get('security_name') or '' for r in csv.DictReader(f)}
+    due = [(e['ex_dividend_date'][:10], code, name, e) for code, name in sorted(members.items())
+           for e in company_events(by_code.get(code, []), price_basis=True)
+           if since < (e.get('ex_dividend_date') or '')[:10] <= as_of]
+    print(f'池成员除权（{since}，{as_of}]：{len(due)} 起' + ('，逐只按实施公告核对价格口径（§11.4）' if due else ''))
+    for ex, code, name, e in sorted(due):
+        registered = e['price_terms_source'] != 'unverified_actual_fallback'
+        print(f"  {ex} {code} {name}：除权参考价口径 现金 {float(e['cash_per_share']):.10g}／送转 {float(e['share_ratio']):.10g}"
+              f"／配股 {float(e['rights_ratio']):.10g}｜"
+              + (f"已登记（{e['price_terms_source']}）" if registered else '未登记，现按实付值'))
+    failed = 0
+    for path in (model_bands, hold_bands):
+        stale = stale_exright_bands(path, as_of, by_code)
+        failed += len(stale)
+        print(f'{Path(path).name}：带未折到信号日 {len(stale)} 行' + ('，须跑 §6.7 第 4～6 步' if stale else ''))
+        for code, name, want, have in stale:
+            print(f"  {code} {name}：应折 {want or '无'}｜已折 {have or '无'}")
+    return 1 if failed else 0
+
+
 def validate_inputs(args):
     import screen_daily_volume_price_signals as s
     required = {
@@ -123,6 +180,12 @@ def validate_inputs(args):
             raise ValueError(f'证据阶段后输入已改变：{path}')
     if not pool_codes <= set(proof.get('covered_codes', [])):
         raise ValueError('新增候选未被证据阶段覆盖，须重新同步证据')
+    for path in (args.model_bands, args.hold_bands):   # §9.1 第 3 步：两侧带须已折到信号日
+        stale = stale_exright_bands(path, args.as_of)
+        if stale:
+            raise ValueError(f'带未折到信号日（{Path(path).name}），先按 §9.1 第 2 步跑 §6.7 第 4～6 步：'
+                             + '、'.join(f'{name}（应折 {want or "无"}｜已折 {have or "无"}）'
+                                        for _, name, want, have in stale[:8]))
     from backtest_valuation_strategy import ACTIONS, load_actions
     from apply_holdings_corporate_action import DEFAULT_LEDGER, load_ledger, ledger_index
     applied = ledger_index(load_ledger(DEFAULT_LEDGER))
@@ -277,21 +340,26 @@ def verify_strategy_columns(as_of, snapshot=None):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('evidence', 'verify'))
+    parser.add_argument('action', choices=('evidence', 'verify', 'exright'))
     parser.add_argument('--as-of', required=True)
     parser.add_argument('--since')
     parser.add_argument('--publication', type=Path, default=ROOT / 'data/processed/daily_execution_publication.json')
+    parser.add_argument('--model-bands', type=Path, default=ROOT / 'data/processed/a_share_pool_model_bands_adopted.csv')
+    parser.add_argument('--hold-bands', type=Path, default=ROOT / 'data/processed/a_share_pool_model_bands_hold.csv')
     args = parser.parse_args()
     if args.action == 'verify':
         verify_publication(args.publication, args.as_of)
         verify_strategy_columns(args.as_of)
         print('执行批次日期、产物摘要与 §10.3 策略列均通过')
-    else:
-        if not args.since:
-            parser.error('evidence requires --since (previous successful scan date)')
-        finish_evidence(args.as_of, args.since)
-        print('同日证据阶段完成')
+        return 0
+    if not args.since:
+        parser.error(f'{args.action} requires --since (previous successful scan date)')
+    if args.action == 'exright':
+        return report_exright(args.as_of, args.since, args.model_bands, args.hold_bands)
+    finish_evidence(args.as_of, args.since)
+    print('同日证据阶段完成')
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

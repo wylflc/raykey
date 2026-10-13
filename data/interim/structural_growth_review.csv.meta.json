@@ -1,9 +1,9 @@
 {
   "as_of": "2026-10-13",
-  "generated_at_utc": "2026-10-13T08:33:40.469248+00:00",
+  "generated_at_utc": "2026-10-13T10:34:25.329256+00:00",
   "sha256": "b6e502bfa5fbaa75a68caa475254f4aeeffc750578b842b86d5c8f8fb0b316cf",
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "335732af7c9a1b8b1a01f12485114bd47def23b8a129251d746a46ade81f5935",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "22f13b5e9119e6f355f114f3e8d4d710b8ca64332e3ce9a72a27c7be97324829",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_business_attributes.csv": "6f16862ea99df580a3c6cf4b9b01ba47ad0f934d82d59d6318f91df008c2900a"
   }
 }
