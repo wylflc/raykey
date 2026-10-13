@@ -40,6 +40,8 @@ DEFAULT_STRUCTURAL_GROWTH = ROOT / "data/interim/structural_growth_review.csv"
 DEFAULT_TROUGH_REVIEW = ROOT / "data/interim/trough_anchor_review.csv"
 # §7.5 用户裁定的临时冻结（OI-265）：released_at 为空的行冻结新增买入。
 DEFAULT_REVIEW_HOLDS = ROOT / "data/reference/review_holds.csv"
+# §7.4 负面事件登记（OI-285）：disposition 为空的待复核行冻结新增买入，处置后解除。
+DEFAULT_EVENT_REVIEWS = ROOT / "data/reference/pool_event_reviews.csv"
 # §7.3（OI-209）：档案研究正常化盈利与模型盈利锚（生产带机械每股 NOPAT × shares_est，ROIC 路径）差距超过 30% 入队，
 # 生产所用的锚较高时同时冻结新增买入；维持模型的行复核后任一数变动超过 10% 且差距仍超过 30% 时重新入队，
 # 采用研究数的行任一数变动超过 10% 或复核日后公告新年报即重新入队。
@@ -227,7 +229,10 @@ def build_queue(
     growth_rows: list[dict[str, str]] | None = None,
     trough_rows: list[dict[str, str]] | None = None,
     hold_rows: list[dict[str, str]] | None = None,
+    event_rows: list[dict[str, str]] | None = None,
 ) -> list[dict[str, object]]:
+    from screen_pool_events import pending_rows
+    events_by_code = pending_rows(event_rows or [])
     dossiers_by_code = {row["security_code"].zfill(6): row for row in dossier_rows or [] if row.get("security_code")}
     growth_by_code = {row["security_code"].zfill(6): row for row in growth_rows or []
                       if row.get("security_code") and str(row.get("flagged")) == "True"}
@@ -331,6 +336,7 @@ def build_queue(
         trough_flag = trough_by_code.get(code) if in_valuation_scope else None
         trough_trigger = bool(trough_flag and not research_registered)
         hold = holds_by_code.get(code)
+        event = events_by_code.get(code)
         report_driven_review = (
             report_valuation_trigger
             or forecast_valuation_trigger
@@ -338,7 +344,8 @@ def build_queue(
             or periodic_valuation_trigger
         )
         valuation_review_needed = report_driven_review or divergence_trigger or growth_trigger or trough_trigger
-        buy_blocked = report_driven_review or bool(divergence and divergence["freeze"]) or trough_trigger or bool(hold)
+        buy_blocked = (report_driven_review or bool(divergence and divergence["freeze"]) or trough_trigger or bool(hold)
+                       or bool(event))
 
         event_reasons: list[str] = []
         if quality_review_needed:
@@ -359,12 +366,17 @@ def build_queue(
             event_reasons.append("trough_anchor_review")
         if hold:
             event_reasons.append("user_review_hold")
+        if event:
+            event_reasons.append("event_review")
 
         if not event_reasons:
             continue
 
         if valuation_review_needed:
             update_scope = "quality_and_valuation"
+            priority = "high"
+        elif event:
+            update_scope = "quality_only"
             priority = "high"
         elif quality_review_needed:
             update_scope = "quality_only"
@@ -413,6 +425,8 @@ def build_queue(
                 "structural_growth_cut": (growth_flag or {}).get("cut", "") if growth_trigger else "",
                 "trough_anchor_multiple": ((trough_flag or {}).get("anchor_ttm_multiple") or "ttm_nonpositive") if trough_trigger else "",
                 "review_hold_basis": (hold or {}).get("basis", "") if hold else "",
+                "event_review_headline": (f"{event.get('detected_on', '')} {event.get('headline', '')}".strip()
+                                          if event else ""),
                 "as_of": as_of_date.isoformat(),
                 "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             }
@@ -437,6 +451,7 @@ def build_queue_for_signal(
     growth_rows: list[dict[str, str]] | None = None,
     trough_rows: list[dict[str, str]] | None = None,
     hold_rows: list[dict[str, str]] | None = None,
+    event_rows: list[dict[str, str]] | None = None,
 ) -> list[dict[str, object]]:
     """Production entry: derive the evidence cutoff from one signal date."""
     return build_queue(
@@ -453,6 +468,7 @@ def build_queue_for_signal(
         growth_rows,
         trough_rows,
         hold_rows,
+        event_rows,
     )
 
 
@@ -485,6 +501,8 @@ def parse_args() -> argparse.Namespace:
                         help="§7.3 谷底侧复核（OI-265）：structural_growth_review.py 当日产出，须为本信号日且与当前池带一致")
     parser.add_argument("--review-holds", type=Path, default=DEFAULT_REVIEW_HOLDS,
                         help="§7.5 用户裁定的临时冻结名单（OI-265）；文件缺失视为无冻结")
+    parser.add_argument("--event-reviews", type=Path, default=DEFAULT_EVENT_REVIEWS,
+                        help="§7.4 负面事件登记（OI-285）；文件缺失视为无待复核事件")
     return parser.parse_args()
 
 
@@ -510,6 +528,8 @@ def main() -> None:
     except (FileNotFoundError, ValueError) as exc:
         raise SystemExit(f"§7.3 谷底侧复核文件不可用（先跑 scripts/structural_growth_review.py --signal-date {args.signal_date}）：{exc}")
     hold_rows = load_csv(args.review_holds) if args.review_holds.exists() else []
+    from screen_pool_events import load_register
+    event_rows = load_register(args.event_reviews)
     rows = build_queue_for_signal(
         load_csv(args.attention_triage),
         load_csv(args.tiers),
@@ -524,6 +544,7 @@ def main() -> None:
         load_csv(args.structural_growth),
         load_csv(args.trough_review),
         hold_rows,
+        event_rows,
     )
     fieldnames = [
         "market_type",
@@ -559,6 +580,7 @@ def main() -> None:
         "structural_growth_cut",
         "trough_anchor_multiple",
         "review_hold_basis",
+        "event_review_headline",
         "as_of",
         "generated_at_utc",
     ]
@@ -566,7 +588,8 @@ def main() -> None:
     from daily_execution_guard import stamp
     stamp(args.output, args.signal_date, (args.forecasts, args.report_disclosures, args.attention_triage, args.tiers,
                                          args.valuation_pool, args.dossiers, args.model_bands, args.structural_growth,
-                                         args.trough_review) + ((args.review_holds,) if args.review_holds.exists() else ()))
+                                         args.trough_review) + tuple(p for p in (args.review_holds, args.event_reviews)
+                                                                     if p.exists()))
     forecast_hits = sum(1 for row in rows if "forecast_after_last_valuation_review" in str(row["queue_reasons"]))
     express_hits = sum(1 for row in rows if "express_report_after_last_valuation_review" in str(row["queue_reasons"]))
     periodic_hits = sum(1 for row in rows if "report_disclosure_after_last_valuation_review" in str(row["queue_reasons"]))
@@ -574,13 +597,15 @@ def main() -> None:
     growth_hits = [str(row["security_name"]) for row in rows if "structural_growth_review" in str(row["queue_reasons"])]
     trough_hits = [str(row["security_name"]) for row in rows if "trough_anchor_review" in str(row["queue_reasons"])]
     hold_hits = [str(row["security_name"]) for row in rows if "user_review_hold" in str(row["queue_reasons"])]
+    event_hits = [str(row["security_name"]) for row in rows if "event_review" in str(row["queue_reasons"])]
     print(
         f"wrote {len(rows)} rows to {args.output}; "
         f"forecast-triggered {forecast_hits}, express-triggered {express_hits}, periodic-triggered {periodic_hits}, "
         f"research-model divergence {len(divergence_hits)}{('（' + '、'.join(divergence_hits) + '）') if divergence_hits else ''}, "
         f"structural growth {len(growth_hits)}{('（' + '、'.join(growth_hits) + '）') if growth_hits else ''}, "
         f"trough anchor {len(trough_hits)}{('（' + '、'.join(trough_hits) + '）') if trough_hits else ''}, "
-        f"user holds {len(hold_hits)}{('（' + '、'.join(hold_hits) + '）') if hold_hits else ''}"
+        f"user holds {len(hold_hits)}{('（' + '、'.join(hold_hits) + '）') if hold_hits else ''}, "
+        f"event reviews {len(event_hits)}{('（' + '、'.join(event_hits) + '）') if event_hits else ''}"
     )
 
 

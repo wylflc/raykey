@@ -1432,5 +1432,34 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司 2025 年年度报告的信息披露监管问询函回复公告",
+   "notice_date": "2026-08-01",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607311827533182_1.pdf",
+   "summary": "问询业绩下滑与存货：肝病用药高单价产品销量降 21%；原材料 48.11 亿元、跌价准备率 0.28%；向福建同春采购 2023～2025 年为 1.15、1.92、3.07 亿元；会计师监盘 90.41%。",
+   "use": "事件事实",
+   "source_sha256": "9c9830324c7506d23b197154d31f5fd62b69ca92b8356188216a1bf3defdf403"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于董事长暨法定代表人离任的公告",
+   "notice_date": "2026-10-14",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202610131830413745_1.pdf",
+   "summary": "董事长林志辉因工作调整辞去董事长、董事及专门委员会职务，不再在公司任职；公告称尽快选聘新任董事长，未写明代行人。",
+   "use": "事件事实",
+   "source_sha256": "7d84d4e76dcce3571234afeddd66b94f754709a82758ef18dcb58edfdf82d0fa"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "年报问询函与管理层变动事件复核",
+   "summary": "2026-10-13 事件复核：2025 年报问询函（存货与关联采购）、并表门店超适应症宣传被立案、一年内总会计师至董事长相继变动且董事会逾期未换届。维持 worth_attention、L1；Q4 64→60，登记 governance_open_issue，L1 定档断言留三季报质量复核。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:600436:event"
+  }
+ ]
 }

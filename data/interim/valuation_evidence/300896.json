@@ -1996,5 +1996,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司控股子公司 REGEN Biotech, Inc. 重大仲裁的进展公告",
+   "notice_date": "2026-01-30",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202601301818584810_1.pdf",
+   "summary": "仲裁庭 2026-01-29 决定不再实施 2025-09-10 紧急仲裁员作出的临时措施；案件尚在审理。",
+   "use": "事件事实",
+   "source_sha256": "889977238c8352a799b1d24d4d11d73b391a6e8b3725dea15b400da27495aa19"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司控股子公司 REGEN Biotech, Inc. 重大仲裁的公告",
+   "notice_date": "2025-08-14",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202508141727444135_1.pdf",
+   "summary": "达透申请确认至 2032-08-28 的独家代理权并继续供货，否则赔偿暂计 16 亿元。",
+   "use": "事件事实",
+   "source_sha256": "db3c00d8f6d7a8a3d284c1e943ce4047717878f05c5b105d95b6ffb5131e5f61"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "收购标的经销权仲裁事件复核",
+   "summary": "2026-10-13 事件复核：收购的 REGEN 解除内地独家经销权引发仲裁，对方暂计索赔 16 亿元，临时措施已于 2026-01 解除，未计提预计负债；收购公告未披露该经销安排。维持 worth_attention、L2；Q3 70→68、Q4 72→70，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300896:event"
+  }
+ ]
 }

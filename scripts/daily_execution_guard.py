@@ -207,6 +207,9 @@ def validate_inputs(args):
     from check_report_day_price_divergence import DEFAULT_REVIEWS   # §7.5.2 复带登记：登记后解除拦截
     if DEFAULT_REVIEWS.exists():
         paths.add(DEFAULT_REVIEWS)
+    from screen_pool_events import DEFAULT_REGISTER   # §7.4 负面事件登记：待复核行冻结买入，处置后须重建队列
+    if DEFAULT_REGISTER.exists():
+        paths.add(DEFAULT_REGISTER)
     for extra in (getattr(args, 'business', None), getattr(args, 'dossiers', None)):   # §9.3.6 成长股登记与重点复核记录
         if extra is not None and Path(extra).exists():
             paths.add(Path(extra))
@@ -323,6 +326,15 @@ def finish_evidence(as_of, since):
             if value['query_start'] > since or value['queried_all_market_rows'] < value['reported_total_hits']:
                 raise ValueError('公告证据区间或分页不完整')
             covered = value['locally_filtered_codes']
+    path = ROOT / f'data/interim/pool_event_hits_{as_of}.json'   # §7.4 负面事件筛查：当日、同区间、全覆盖
+    value = json.loads(path.read_text())
+    if value['signal_date'] != as_of or value['since'] > since:
+        raise ValueError(f'负面事件筛查的日期或区间不符：{path}')
+    if not set(covered) <= set(value['covered_codes']):
+        raise ValueError('负面事件筛查未覆盖全部池与持仓代码，须重跑 screen_pool_events.py')
+    if value['news_failed_codes'] and not value.get('news_gaps_allowed'):
+        raise ValueError('负面事件筛查的新闻源有缺口，重跑或加 --allow-news-gaps')
+    paths.append(path)
     atomic_json(ROOT / f'data/interim/daily_evidence_{as_of}.json',
                 dict(status='complete', as_of=as_of, since=since, covered_codes=covered,
                      inputs={str(p.resolve()): digest(p) for p in paths}))

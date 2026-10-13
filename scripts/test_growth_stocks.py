@@ -36,6 +36,43 @@ class ReviewStatusTest(unittest.TestCase):
             self.assertEqual(status, "stale")
             self.assertIn("记录失效", why)
 
+    def test_report_check_due_after_band_absorbs_newer_report(self) -> None:
+        """§9.3.6 第 6 条：带的定期报告晚于登记日与上次核对日的较晚者才待核对；预告不算。"""
+        self.assertIsNone(gs.report_check_due(self.register, self.band))
+        self.assertIsNone(gs.report_check_due(self.register, {"available_at": "2026-08-22", "forecast_notice_date": "2026-10-09"}))
+        self.assertIn("2026-10-24", gs.report_check_due(self.register, {"available_at": "2026-10-24"}))
+        checked = dict(self.register, falsifier_checked_at="2026-10-24")
+        self.assertIsNone(gs.report_check_due(checked, {"available_at": "2026-10-24"}))
+        self.assertIsNotNone(gs.report_check_due(checked, {"available_at": "2027-03-28"}))
+
+    def test_prereview_only_near_buy_line_without_valid_pass(self) -> None:
+        state = gs.GrowthState(growth={"A", "B", "C"}, report_checks={"A": "x", "B": "x"},
+                               reviews={"A": ("missing", ""), "B": ("pass", ""), "C": ("missing", "")})
+        line = 1.0
+        self.assertTrue(gs.prereview_needed(state, "A", line * gs.PREREVIEW_PV_MULTIPLE, line))
+        self.assertFalse(gs.prereview_needed(state, "A", line * gs.PREREVIEW_PV_MULTIPLE + 0.001, line))
+        self.assertFalse(gs.prereview_needed(state, "B", 0.9, line))    # 已有有效通过记录
+        self.assertFalse(gs.prereview_needed(state, "C", 0.9, line))    # 当晚无新报告待核对
+
+    def test_record_check_writes_only_the_two_columns_and_keeps_bytes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            business, log = Path(tmp) / "business.csv", Path(tmp) / "log.csv"
+            head = "security_code,security_name,derived_class,falsifier,registered_at\r\n"
+            body = '688278,特宝生物,结构成长型,"营收年增<10%,连续两年",2026-10-01\r\n600519,贵州茅台,稳定型,x,2026-10-01\r\n'
+            business.write_bytes((head + body).encode("utf-8"))
+            row = gs.record_check("688278", "2026-10-24", "三季报营收 +21%，未触发", business=business, log_path=log)
+            self.assertEqual(row["falsifier_checked_at"], "2026-10-24")
+            self.assertEqual(business.read_bytes().decode("utf-8"),
+                             "security_code,security_name,derived_class,falsifier,registered_at,falsifier_checked_at,falsifier_check_note\r\n"
+                             '688278,特宝生物,结构成长型,"营收年增<10%,连续两年",2026-10-01,2026-10-24,三季报营收 +21%，未触发\r\n'
+                             "600519,贵州茅台,稳定型,x,2026-10-01,,\r\n")
+            self.assertIn("growth_falsifier_check:688278:2026-10-24", log.read_text(encoding="utf-8"))
+            state = gs.load_growth_state(business, None, {"688278": {"available_at": "2026-10-24"}})
+            self.assertEqual(state.report_checks, {})
+            for code, day in (("600519", "2026-10-24"), ("688278", "2026-10-20"), ("000001", "2026-10-24")):
+                with self.assertRaises(ValueError):
+                    gs.record_check(code, day, "x", business=business, log_path=log)
+
     def test_load_state_reads_register_and_dossiers(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             business, dossiers = Path(tmp) / "business.csv", Path(tmp) / "dossiers.csv"

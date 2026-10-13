@@ -27,7 +27,8 @@ from workflow_decision_log import DEFAULT_DECISION_LOG, WORKFLOW_VERSION, append
 from pv_ratio import trading_pv  # noqa: E402  v4.62 OI-091：P/V 唯一实现
 from lot_cooldown import (CooldownBook, Opportunities, cooldown_skips,
                           DEFAULT_STATE as DEFAULT_COOLDOWN_STATE)
-from growth_stocks import DEFAULT_BUSINESS, DEFAULT_DOSSIERS, GrowthState, load_growth_state
+from growth_stocks import (DEFAULT_BUSINESS, DEFAULT_DOSSIERS, PREREVIEW_PV_MULTIPLE, GrowthState, load_growth_state,
+                           prereview_needed)
 from screen_cigar_butts import POOL as DEFAULT_CIGAR_POOL, cigar_butt_rows, pv_cb_at
 
 
@@ -1432,6 +1433,11 @@ def section93_execution_plan(rows: list[dict[str, object]], nav: float, funds: f
             "frozen_out": frozen_out, "tactical_out": tactical_out,
             "growth_out": growth_out, "growth_trend_fail": growth_trend_fail, "growth_capped": growth_capped, "growth": growth,
             "growth_value_before": growth_value0, "growth_value_after": growth_value,
+            "growth_report_checks": sorted(
+                (str(r["security_code"]).zfill(6), r.get("security_name", ""), float(r["model_pv"]),
+                 growth.report_checks[str(r["security_code"]).zfill(6)])
+                for r in rows if str(r["security_code"]).zfill(6) in growth.report_checks
+                and isinstance(r.get("model_pv"), float)),
             "n_cheap": n_cheap, "cash": cash, "tranche": tranche,
             "funds0": funds0, "funds_given": funds is not None, "exposure_cap": exposure_cap, "eb_sells": eb_sells, "eb_capped": eb_capped,
             "valuation_complete": valuation_complete, "unvalued_holdings": unvalued,
@@ -1508,6 +1514,10 @@ def report_section93(result: dict[str, object], nav: float, out_path: Path,
         print(f"     [成长股待重点复核·§9.3.6] {gr.get('security_name','')} P/V {gr['model_pv']:.4f}｜{why}"
               + ("｜可复制性把握低，复核须重判" if gcode in growth_state.low_confidence else "")
               + ("｜走势条件当日未满足" if gcode in (result.get("growth_trend_fail") or set()) else ""))
+    for code, name, pv, why in result.get("growth_report_checks") or []:
+        print(f"     [成长股定期报告后核对·§9.3.6 第 6 条] {name} P/V {pv:.4f}｜{why}｜核对可证伪条件"
+              + (f"｜P/V ≤ 买入线 × {PREREVIEW_PV_MULTIPLE:g}，同晚预做重点复核"
+                 if prereview_needed(growth_state, code, pv, SEC93_BUY_LINE) else ""))
     for fz in result.get("frozen_out") or []:
         print(f"     [冻结排除·review_pending] {fz.get('security_name','')} P/V {fz['model_pv']:.2f}"
               f"（两闸已开，待 §6.7 重建解冻后按当日名次重入）")

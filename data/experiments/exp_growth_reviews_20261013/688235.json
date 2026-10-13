@@ -1,0 +1,259 @@
+{
+ "security_code": "688235",
+ "security_name": "百济神州",
+ "research_nopat_yi": 106.4,
+ "research_range_yi": [
+  84.4,
+  137.1
+ ],
+ "research_evidence_date": "2026-10-02",
+ "research_falsifier": "2026年报营收低于449亿或经营利润低于65亿；百悦泽美国销售额单季同比低于10%；其被列入美国医保价格谈判",
+ "research_source": "公司 2026-08-06 指引（中国会计准则）：2026 年营收 449～462 亿、经营利润（营收 − 营业成本 − 研发、销售、管理费用 − 税金及附加）65～71 亿、其他收支为支出 1.8～3.5 亿。2026 年半年报（公告日 2026-08-27）：营收 222.20 亿、毛利率 89.45%、销售与管理费用率 35.3%、研发 79.53 亿、经营利润 39.98 亿、利润总额 40.83 亿、所得税 8.12 亿（19.9%，含以前期间调整 4.80 亿与未确认亏损净额 −5.99 亿，剔除后约 23%）、归母 32.71 亿；百悦泽全球 161.27 亿（美国 113.90 亿）、百泽安 29.84 亿、安进授权产品 20.65 亿。正常化归母（现有已上市产品与已获批适应症，研发全额费用化）=（指引中值 68 − 其他支出 2.65）×（1 − 20%）= 52.3 亿，不计在研管线上市，也不计 2027 年后的销量增长与费用率下降；÷(1 − 生产带 minority_share 0.0000) + 54.08 亿（2025 年报 NOPAT 68.69 − 合并净利 14.61，本目录 annual_nopat.py：医药制造业研发按 10 年摊销，2025 年研发 155.08、摊销 69.79，税前加回 85.29、按封顶税率 40% 税后 51.17，另 2.91 为财务费用、金融损益还原与税率封顶）= 106.4 亿。区间 84.4～137.1 亿：保守端取指引下限（经营利润 65、其他支出 3.5）且百悦泽美国净价降 10%（2026E 美国销售约 236 亿），归母 30.3 亿；乐观端取中报后四家券商 2027E 归母中位约 83 亿（东吴 08-06 96.81 亿、中邮 08-07 78.4 亿、中金 08-07 12 亿美元、浦银国际 08-07 12.53 亿美元，美元按指引隐含的 6.8 折算），对应在治患者池再累积一年、销售与管理费用率续降。直接法对照（2026E 息税前利润约 70.5 亿 + 研发约 170 亿）：模型摊销 85.30 亿、税率 20% 为 124.2 亿，税率 40% 为 93.1 亿；按维持现有研发资产所需支出（约 694 亿 ÷ 5.5 = 126 亿）计提为 91.5 亿；研发全额费用化为 56.4 亿。同一产能口径：收入取 2026 年指引，全部来自已上市产品；按 TTM 归母 42.82 亿过桥为 96.9 亿。",
+ "equity_bridge": {
+  "parent_yi": 52.3,
+  "minority_share": 0.0,
+  "annual_nopat_yi": 68.69,
+  "annual_net_profit_yi": 14.61
+ },
+ "research_v": 87.35,
+ "research_pv": 2.793,
+ "price_for_pv_1": 87.65,
+ "replicability": {
+  "judgment": "难复制",
+  "confidence": "中",
+  "evidence": "维持难复制，把握由高降为中。难复制的部分：百悦泽 2026H1 全球收入 23.43 亿美元，在四款 BTK 抑制剂中占 37.3%（阿可替尼 19.44 亿、伊布替尼 16.35 亿、匹妥布替尼 3.57 亿美元，浦银国际 2026-08-07 整理）；公司称其为唯一在头对头试验中对伊布替尼取得 PFS 优效的 BTK 抑制剂（ALPINE），美国 CLL/SLL 新患份额超过 50%、平均用药约 42 个月（2026-08-06 投资者关系记录）；Medicare 一线 CLL 真实世界数据 12／24 个月在治比例 72.3%／63.2%，高于阿可替尼 62.6%／48.9%；化合物专利中美均到 2034-04-22（2025 年报），与 MSN 和解后美国仿制药不早于 2037-06-15（2024-11-19 公告）；全球多中心临床与美欧中商业化平台两年内无法复制。削弱因素：盈利集中于单品（百悦泽占 2026H1 营收 72.6%，其美国销售占 51.3%）；阿可替尼联合维奈克拉固定疗程 2026-02-20 获 FDA 批准一线 CLL，匹妥布替尼 2026-10-02 获批一线 CLL/SLL（无 17p 缺失，BRUIN CLL-313），固定疗程会缩短单患者用药时长；自有固定疗程方案 CELESTIAL-301 的 uMRD 分析未达优效；Zydus 就片剂提交仿制申请，2026-02-25 起诉讼在审。美国净价取决于政策而非公司定价权。"
+ },
+ "demand_runway": {
+  "judgment": "结构扩张",
+  "driver": "在治患者池累积（美国新患启动处于上市以来最高水平，持续用药至进展，平均用药时长仍在延长）；美国以外放量（2026Q2 欧洲 1.96 亿美元 +30%、其他市场 +92%，已在 80 多个市场获批）；伊布替尼存量向新一代 BTK 抑制剂转换（伊布替尼 2026H1 仍有 16.35 亿美元）；非 CLL 适应症贡献上升。2026H1 百悦泽全球 +28.7%、美国 +27.2%。百泽安（+12.9%）与安进授权产品（商业化期有限）只作补充。",
+  "falsifier": "百悦泽全球销售额同比增速低于10%，或公司口径美国CLL新患份额低于40%"
+ },
+ "recommendation": "采用研究数",
+ "recommendation_reason": "研究数 106.4 亿与模型锚 28.86 亿差距 269%。模型锚是峰守卫（w = 1）取的五年比率中位，窗口含 2021～2022 年亏损与 2023 年刚转正的年份，把扭亏放量当成周期高点：TTM 归母 42.82 亿已高于模型锚，研发全额费用化的 2026E 税后经营利润约 56 亿也近其两倍，保守端 84.4 亿为其 2.9 倍。采用后 V 37.02→87.35、P/V 6.59→2.79，仍远高于买入线，不触发交易。须知：研究数的 51%（54.08 亿）是研发资本化加回，摊销每年上升约 15 亿，研发若不再增长则加回额到 2030 年约降到 45 亿（税前），2026 年报后须重核；不设守卫的机械值 227.5 亿（V 165.97）不可作参照，主要因归母 TTM 因子 2.93 乘到了含研发加回的全部 NOPAT 上。",
+ "key_risks": [
+  "美国药价政策：百悦泽美国销售占营收约 51%，Medicare 约占其美国销售三分之二（据 Health Affairs 所列 Medicare 支出与公司美国销售推断）。现因五项适应症均为罕见病被 OBBBA 排除在医保谈判之外（2025-08 二手来源，未见 CMS 或公司确认）；排除条款被修改、获批非罕见病适应症或最惠国定价（GUARD 模式拟 2027-01-01 启动，未定稿）落地时，若 Medicare 部分降价四成，研究数降到约 56 亿",
+  "一线竞争与治疗范式：匹妥布替尼 2026-10-02 获批一线 CLL/SLL，阿可替尼联合维奈克拉固定疗程 2026-02-20 获批；阿可替尼 2027 年起执行医保谈判价（约降 40%），伊布替尼 2026 年起执行，支付方可能压低同类净价",
+  "研发资本化加回缩小：2026 年摊销 85.30 亿、2027 年约 102 亿、2030 年约 145 亿（研发按 170～190 亿计），加回额由 85 亿降到约 45 亿（税前）；按维持研发资产所需支出计提时研究数约 91.5 亿",
+  "专利与仿制：化合物专利 2034-04-22 到期（中美），美国仿制药和解日 2037-06-15；Zydus 片剂仿制申请诉讼在审。零增长永续不含专利到期后的收入下滑，粗算按一致预期峰值（约 75 亿美元）与 2037 年失去独占折现，收入现值约为 2026 年水平永续的 0.94 倍，2028 年见顶后年降 5% 时为 0.72 倍",
+  "指引隐含下半年经营利润 25～31 亿，低于上半年 39.98 亿；研发、销售与管理费用合计指引 333～348 亿，下半年较上半年增约 16%",
+  "税率：2025 年 43.7%，2026H1 19.9%（含一次性补缴与动用未确认亏损）；未确认可抵扣亏损 533 亿，公司称未来十二个月可能转回大额估值准备，届时账面税率失真",
+  "安进授权产品（2026H1 20.65 亿）商业化期为获批后五或七年，期满移交；特许权出售负债约 63 亿未计入带内有息负债"
+ ],
+ "research_range_v": [
+  73.07,
+  107.27
+ ],
+ "research_range_pv": [
+  3.339,
+  2.275
+ ],
+ "model_anchor_yi": 28.86,
+ "divergence_ratio": 2.687,
+ "close_2026_10_13": 244.0,
+ "normalization_check": {
+  "gross_margin": "2025 年 87.61%、2026Q1 89.02%、2026H1 89.45%，指引为 80% 区间高位；来自产品结构（2025 年境外 97.05%、境内 67.08%），已到常态，不含稀缺溢价",
+  "sga_ratio": "销售与管理费用率 2023 年 61.9%、2024 年 48.3%、2025 年 39.1%、2026H1 35.3%，全年指引推算约 37%；未到常态，仍随规模下降（浦银国际 2028E 33.8%），点估计不计后续下降",
+  "rd": "研发费用率 2025 年 40.6%、2026H1 35.8%；模型口径 10 年摊销，2026 年摊销 85.30 亿（约为营收的 19%），成熟药企研发费用率 20%～25%",
+  "tax": "正常化税率取 20%：2026H1 账面 19.9%，剔除以前期间调整与未确认亏损影响后约 23%；券商取 15%～20%"
+ },
+ "direct_build_check_2026e_yi": {
+  "ebit_before_rd": 240.5,
+  "model_amortization_85.3_tax_20pct": 124.2,
+  "model_amortization_85.3_tax_40pct": 93.1,
+  "rd_asset_replacement_126_tax_20pct": 91.5,
+  "rd_fully_expensed_tax_20pct": 56.4,
+  "bridge_on_ttm_parent_42.82": 96.9
+ },
+ "broker_forecasts_parent_yi": [
+  {
+   "org": "东吴证券",
+   "date": "2026-08-06",
+   "e2026": 52.58,
+   "e2027": 96.81,
+   "e2028": 113.76,
+   "note": "人民币，中国会计准则；与 05-12 预测相同"
+  },
+  {
+   "org": "中邮证券",
+   "date": "2026-08-07",
+   "e2026": 56.3,
+   "e2027": 78.4,
+   "e2028": 103.3,
+   "note": "人民币"
+  },
+  {
+   "org": "中金公司",
+   "date": "2026-08-07",
+   "e2026": 59.2,
+   "e2027": 81.6,
+   "e2028": null,
+   "note": "美国会计准则 8.71／12 亿美元，按 6.8 折算；据同花顺转述"
+  },
+  {
+   "org": "浦银国际",
+   "date": "2026-08-07",
+   "e2026": 60.0,
+   "e2027": 85.2,
+   "e2028": 126.4,
+   "note": "美国会计准则 8.83／12.53／18.59 亿美元，按 6.8 折算；东财收录日 08-11"
+  },
+  {
+   "org": "湘财证券",
+   "date": "2026-09-15",
+   "e2026": null,
+   "e2027": null,
+   "e2028": null,
+   "note": "维持买入，转述中未见预测数"
+  }
+ ],
+ "product_revenue_yi": {
+  "2025": {
+   "revenue": 382.25,
+   "brukinsa_global": 280.67,
+   "brukinsa_us": 202.06,
+   "brukinsa_europe": 42.65,
+   "brukinsa_china": 24.72,
+   "tevimbra": 52.97,
+   "amgen_products": 34.71,
+   "source": "2025 年度业绩快报 2026-02-27（分产品）；营收取 2025 年报"
+  },
+  "2026Q1": {
+   "revenue": 105.44,
+   "brukinsa_global": 75.98,
+   "brukinsa_us": 52.83,
+   "brukinsa_europe": 12.66,
+   "brukinsa_china": 6.51,
+   "tevimbra": 14.29,
+   "amgen_products": 9.89
+  },
+  "2026H1": {
+   "revenue": 222.2,
+   "brukinsa_global": 161.27,
+   "brukinsa_us": 113.9,
+   "tevimbra": 29.84,
+   "amgen_products": 20.65
+  }
+ },
+ "lifecycle_pv_check": {
+  "method": "粗算，非研究数依据：百悦泽收入按情景逐年列示，10% 折现，与「2026E 约 335 亿元永续」的现值相比；美元按 6.8 折算",
+  "consensus_like": {
+   "ratio": 0.94,
+   "assumption": "2031 年前后见顶约 510 亿元（Visible Alpha 一致预期峰值约 75 亿美元，由浦银国际报告「高 26.6%」反推），2034-04 中国专利到期，2037-06 美国仿制药进入后两年内降到约四分之一"
+  },
+  "optimistic": {
+   "ratio": 1.1,
+   "assumption": "浦银国际峰值 94.6 亿美元（约 643 亿元，2033 年前后）"
+  },
+  "pessimistic": {
+   "ratio": 0.72,
+   "assumption": "2028～2029 年见顶约 400 亿元，其后年降约 5%，2037 年失去美国独占"
+  }
+ },
+ "sources": [
+  {
+   "title": "百济神州2026年半年度报告（利润表、所得税调节、风险因素）",
+   "date": "2026-08-27",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202608261828489322_1.pdf"
+  },
+  {
+   "title": "2026年半年度主要财务数据公告（分产品销售额）",
+   "date": "2026-08-06",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202608051827675387_1.pdf"
+  },
+  {
+   "title": "自愿披露关于2026年度经营业绩预测调整的公告（指引）",
+   "date": "2026-08-06",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202608051827675384_1.pdf"
+  },
+  {
+   "title": "投资者关系活动记录表（2026年8月；新患份额、用药时长、税务和解影响）",
+   "date": "2026-08-07",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202608071827755567_1.pdf"
+  },
+  {
+   "title": "关于相关税务事项处理的公告（补缴约4.46亿元）",
+   "date": "2026-06-27",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202606261824670395_1.pdf"
+  },
+  {
+   "title": "2026年第一季度主要财务数据公告",
+   "date": "2026-05-07",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202605061821992204_1.pdf"
+  },
+  {
+   "title": "百济神州2025年年度报告（分地区毛利率、专利期限、所得税调节、安进合作）",
+   "date": "2026-04-15",
+   "url_or_path": "data/raw/annual_reports/688235/2025.txt.gz；http://static.cninfo.com.cn/finalpage/2026-04-15/1225104515.PDF"
+  },
+  {
+   "title": "2025年度业绩快报公告（分产品、分地区销售额）",
+   "date": "2026-02-27",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H2_AN202602261820069778_1.pdf"
+  },
+  {
+   "title": "BeOne Medicines Q2 2026 earnings release（8-K 附件；美元口径产品收入与指引）",
+   "date": "2026-08-05",
+   "url_or_path": "https://www.sec.gov/Archives/edgar/data/0001651308/000162828026052877/exhibit991-q22026earningsr.htm"
+  },
+  {
+   "title": "东吴证券：2026年半年报点评：盈利加速释放，百悦泽驱动增长持续超预期",
+   "date": "2026-08-06",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608061827725396_1.pdf"
+  },
+  {
+   "title": "中邮证券：美国市场表现亮眼，实体瘤研发高效推进",
+   "date": "2026-08-07",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608071827743755_1.pdf"
+  },
+  {
+   "title": "浦银国际：泽布替尼远期收入重估，后续管线待验证（BTK 抑制剂收入份额、真实世界在治比例、峰值预测）",
+   "date": "2026-08-07",
+   "url_or_path": "https://pdf.dfcfw.com/pdf/H3_AP202608111827844852_1.pdf"
+  },
+  {
+   "title": "同花顺转述中金：百济神州次季业绩胜预期（2026E 8.71亿美元、2027E 12亿美元）",
+   "date": "2026-08-07",
+   "url_or_path": "https://stock.10jqka.com.cn/20260807/c678756750.shtml"
+  },
+  {
+   "title": "同花顺转述湘财证券：维持百济神州买入评级",
+   "date": "2026-09-15",
+   "url_or_path": "https://stock.10jqka.com.cn/20260915/c679927433.shtml"
+  },
+  {
+   "title": "BeiGene Announces Settlement of Litigation Against Generic Filer of BRUKINSA（MSN，不早于2037-06-15）",
+   "date": "2024-11-19",
+   "url_or_path": "https://www.businesswire.com/news/home/20241119466214/en"
+  },
+  {
+   "title": "Health Affairs Forefront：OBBBA 扩大罕见病药排除条款后的受影响药品清单（列入 Brukinsa；经检索摘要读取，原文 403）",
+   "date": "2025-08-27",
+   "url_or_path": "https://www.healthaffairs.org/doi/full/10.1377/forefront.20250827.726892"
+  },
+  {
+   "title": "ONS Voice：Three oral cancer drugs among latest to see price drops（阿可替尼 2027 年医保谈判价约降 40%）",
+   "date": "2025-11",
+   "url_or_path": "https://www.ons.org/publications-research/voice/advocacy/11-2025/three-oral-cancer-drugs-among-latest-see-price-drops"
+  },
+  {
+   "title": "CMS：GUARD Model（拟议规则，2027-01-01 启动）",
+   "date": "2025-12",
+   "url_or_path": "https://www.cms.gov/priorities/innovation/innovation-models/guard"
+  },
+  {
+   "title": "OncLive：FDA approves first-line acalabrutinib plus venetoclax for CLL/SLL",
+   "date": "2026-02-20",
+   "url_or_path": "https://www.onclive.com/view/fda-approves-first-line-acalabrutinib-plus-venetoclax-for-cll-sll"
+  },
+  {
+   "title": "ONS Voice：FDA approves pirtobrutinib for previously untreated CLL/SLL（BRUIN CLL-313）",
+   "date": "2026-10-02",
+   "url_or_path": "https://www.ons.org/publications-research/voice/news-views/10-2026/fda-approves-pirtobrutinib-previously-untreated-chronic-lymphocytic-leukemia-or-small-lymphocytic"
+  },
+  {
+   "title": "仓库逐季面板、三大报表、研报元数据与模型口径年度 NOPAT、研究口径 V",
+   "date": "2026-10-13",
+   "url_or_path": "data/raw/financials/2026-06-30.csv; data/raw/financials_statements/income.csv; data/raw/research_reports/reports_2026.csv; data/experiments/exp_growth_reviews_20261013/annual_nopat.py; research_grid.py; inputs.json"
+  }
+ ]
+}

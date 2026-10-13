@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.249
+# A股选股-估值-量价操作流程 v4.250
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -13,6 +13,7 @@
 | 对 `worth_attention` 做 L1-L3 分层 | §5.7-§5.8 | `docs/Ashare_quality_rubric.md` |
 | 更新估值与核心池 | §6 | §6.7 估值重建链 |
 | 财报披露后的滚动更新 | §7 | `build_report_update_queue.py` |
+| 处罚、留置、监管措施、诉讼等负面事件的检出与复核 | §7.4 | `screen_pool_events.py`、`data/reference/pool_event_reviews.csv` |
 | 单票研究（含点名建档与 L4） | §5 → §6 → §9.3 | 逐层判断，任一层否决即止 |
 | 海外单票研究（港股／美股／韩股点名） | §5 → §6.8 | 逐层判断；建档、入清单、重出阅读版三步缺一不可 |
 | 独立估值、独立审计、是否真的低估（个股或名单） | §6.9 | 先查 `data/processed/independent_valuations.csv`，可复用即引用 |
@@ -59,6 +60,7 @@
 | 谷底侧复核（§7.3） | `data/interim/trough_anchor_review.csv` |
 | 临时冻结名单（§7.5） | `data/reference/review_holds.csv`（用户裁定，人工登记） |
 | 财报日背离复带登记（§7.5.2） | `data/reference/report_divergence_reviews.csv`（`--register` 登记） |
+| 负面事件登记（§7.4） | `data/reference/pool_event_reviews.csv`（筛查脚本登记待复核行，`--dispose` 处置）；当日命中 `data/interim/pool_event_hits_<日期>.json`；新闻别名 `data/reference/pool_news_aliases.csv`（人工登记） |
 | 业务属性登记（个人投资体系第 5.12 节） | `data/processed/a_share_business_attributes.csv`（人工登记） |
 | 财报更新队列 | `data/interim/a_share_report_update_queue.csv` |
 | 每日行情与两侧 P/V | `data/processed/daily_buy_candidates.csv`（§8.2；`--since auto` 由它检出上次扫描日） |
@@ -190,7 +192,7 @@ python3 scripts/build_quarterly_quality_review_queue.py \
 
 ### 5.6 复核队列条件
 
-满足任一条件进入队列：新上市；新报告晚于上次复核；原 L1/L2；L3 出现经营或技术改善；`boundary_pending` 出现硬触发；关键利润率、现金流或增长发生重大变化；发生诉讼、处罚、审计或控股股东风险。
+满足任一条件进入队列：新上市；新报告晚于上次复核；原 L1/L2；L3 出现经营或技术改善；`boundary_pending` 出现硬触发；关键利润率、现金流或增长发生重大变化；发生诉讼、处罚、审计或控股股东风险（检出与复核按 §7.4 负面事件）。
 
 `garbage`、无硬触发的 `boundary_pending`、以及只有价格或传闻变化的公司不进入队列。
 
@@ -633,15 +635,38 @@ quality_cutoff = max(last_quality_review_date, evidence_available_at)
 
 以下事件当天复核：披露；前期会计差错更正或追溯重述（§6.3 第 2 条：登记原文版本或按重述日延后，再按 §6.7 重建该代码）；重大订单或客户认证；产品与技术兑现；并购、资产出售或控制权变化；问询、处罚或审计异常；产业政策、商品价格或竞争格局重大变化；档案列明的高频指标越过触发线。
 
-每天必查范围：全部持仓、当日披露触发、当日通过买入线与走势条件的股票、用户点名股票。若未覆盖完整范围，必须报告实际覆盖度。
+每天必查范围：全部持仓、当日披露触发、当日通过买入线与走势条件的股票、用户点名股票，以及当日命中负面事件的池成员。若未覆盖完整范围，必须报告实际覆盖度。
+
+**负面事件**：全部池成员与持仓每晚筛查两个来源，不论 `P/V`；命中的公司在 `data/reference/pool_event_reviews.csv` 登记一条待复核行。
+
+- 交易所公告：当日取证的公告标题命中负面词表，即处罚、立案、留置、监管措施、警示函、监管工作函、通报批评、定期报告问询函、诉讼仲裁、安全事故、制裁、337 与反倾销调查、召回、非标审计意见、会计差错更正、澄清一类。
+- 新闻：东财资讯搜索按证券代码、公司简称与登记别名（`data/reference/pool_news_aliases.csv`，`security_code,security_name,alias`）各检索一次，取上次成功扫描日以来、标题含简称或别名且命中负面词表的条目。新闻只作线索，结论取证按 §5.2。
+
+```bash
+python3 scripts/screen_pool_events.py --signal-date YYYY-MM-DD --since <上次成功扫描日>
+```
+
+词表与排除词只在 `screen_pool_events.py` 的 `ANNOUNCEMENT_TERMS`、`NEWS_TERMS`、`EXCLUDE_TERMS` 常量。新闻源取数失败的公司记入产物 `news_failed_codes`，命令非零退出；加 `--allow-news-gaps` 才继续，当日报告列出缺口名单。未能按时间取全的关键词（翻到页数上限，或被无关文章淹没）记入 `news_partial_queries`，不拦截，当日报告列出。
+
+待复核行当晚逐条读原文并处置，处置前按 §7.5 冻结该公司新增买入：
+
+- `事件复核`：构成事件。按事件首次公开时已知的事实做事件质量复核（§5.8），不等监管结论；处罚决定、整改结果、解除留置等后续进展再次命中时各自再复核。结论写分层表、估值证据与决策日志。
+- `不构成事件`：重复报道、例行事项或与公司无关，写明理由。
+
+```bash
+python3 scripts/screen_pool_events.py --dispose <代码> --detected-on YYYY-MM-DD \
+  --disposition 事件复核|不构成事件 --note "..."
+```
+
+处置写决策日志。处置后重建队列再扫描；清单发布后才处置的，重建队列并重跑当日扫描重新发布（§9.1 第 5 步）。同日重跑筛查不改已处置的行，新见的条目在输出列为「重跑新见·未计入」，当晚人工看。
 
 处理顺序：先更新档案证据与关键指标，再重算模型带，再完成 §6.7 下游落地与校验。重新取证后带变动不超过 2% 时只刷新证据日；超过 2% 时同时更新估值复核日与证据事件。
 
 ### 7.5 复核期冻结
 
-估值或事件复核触发后（§7.3 生产所用锚较低的差距复核除外），将 `buy_blocked` 设为 `review_pending`，冻结新增买入但继续持仓跟踪。完成复核、更新证据与复核日期并重建队列后自动解除。
+估值或事件复核触发后（§7.3 生产所用锚较低的差距复核除外），将 `buy_blocked` 设为 `review_pending`，冻结新增买入但继续持仓跟踪。完成复核、更新证据与复核日期并重建队列后自动解除。§7.4 负面事件登记表的待复核行由队列记 `event_review` 并冻结，处置后解除。
 
-**用户裁定的临时冻结**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
+**用户裁定的临时冻结**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股，以及用户按 §10.1 第 2 条裁定暂停买入的个股，登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
 
 **预告与快报触发的估值复核由 §6.4 的叠加机械完成**：叠加把带与 `valuation_reviewed_at` 一并推进到公告日，队列重建后冻结自动解除。叠加覆盖不到的行（银行与保险、`zero_growth` 路径输入不全、股本多期倒推不一致；脚本逐行打印跳过原因）走人工复核。
 
@@ -719,7 +744,7 @@ python3 scripts/screen_daily_volume_price_signals.py --as-of YYYY-MM-DD \
 
 信号口径与执行时点只认 §9.3.1。执行日价格变化不重算信号日合格集；停牌或执行日新增 §7 事件时跳过该票并重新复核。
 
-1. **同步证据**：按 **§7.1** 取披露、预告并重建队列；刷新公司行动，抓取上次成功扫描以来的公告与市场背景，核查 §7.4 的每日范围。用下列 evidence 阶段生成同日完成凭据；只重建队列不算同步证据。取数之后才发布的公告、预告、快报与定期报告由下一次扫描补取，当日不为此重发。
+1. **同步证据**：按 **§7.1** 取披露、预告并重建队列；刷新公司行动，抓取上次成功扫描以来的公告与市场背景，跑 §7.4 负面事件筛查并处置待复核行，核查 §7.4 的每日范围。用下列 evidence 阶段生成同日完成凭据；只重建队列不算同步证据。取数之后才发布的公告、预告、快报与定期报告由下一次扫描补取，当日不为此重发。
 2. **更新估值**：
    - 池成员除权：运行 `python3 scripts/daily_execution_guard.py exright --as-of YYYY-MM-DD --since <上次成功扫描日>`。期间除权的池成员逐只按实施公告核对除权参考价口径，差异化分派登记 `data/reference/a_share_exright_terms.csv`（§11.4）；核对结果写入当日报告，未能核对的列名单。命令报带未折到信号日（退出码非 0）时跑 §6.7 第 4～6 步（`scripts/slurm/refresh_pool_from_bands.sbatch`，给 `SIGNAL_DATE`、`SINCE`）；登记了价格口径而不必跑的，重做同日证据凭据（`daily_execution_guard.py evidence`）。
    - 队列出现 `valuation_review_needed` 时**当晚以同一信号日执行 §6.7**（含其第 1 步的逐季财务刷新；价格口径登记须先于其第 4 步）；随后重建队列，再刷新核心池阅读版。
@@ -730,7 +755,7 @@ python3 scripts/screen_daily_volume_price_signals.py --as-of YYYY-MM-DD \
 
 当日无估值更新时可以省略 §6.7 重建（第 2 步的除权折算除外），但必须明确写“当日无估值更新”。队列行 `as_of` 为信号日推导的证据截止，旁置 `.meta.json` 的 `as_of` 为信号日；凭据同时校验输入摘要。估值链改变事件文件后须重新完成 evidence 凭据；新增池或持仓代码未在公告取证范围内时重新取证。
 
-常设调度入口为 `scripts/slurm/daily_postclose.sbatch`，四个阶段按 `SCAN_STAGE` 选择，逐日不另建包装脚本：`evidence` 要给 `SCAN_DATE`、`SCAN_SINCE`（上次成功扫描日）、`SCAN_REPORT_DATE`；`preview` 只要 `SCAN_DATE`，刷新下述两项行情输入后写 §8.2 行情预览；`events` 要给 `SCAN_DATE`、`SCAN_SINCE`，只重取公告、公司行动与市场背景并重做同日证据凭据（截止时间后补取用）；`scan` 要给 `SCAN_DATE`、`SCAN_NAV`、`SCAN_FUNDS`，现金和负债可给 `SCAN_CASH`、`SCAN_DEBT`，否则读当日账户快照。evidence 阶段依次运行 `fetch_equity_bond_inputs.py --refresh` 与 `fetch_cost_of_equity_inputs.py`（§9.3.1 股债总仓位上限与扫描器 `--rf` 缺省的输入）、§7.1 两个取数脚本、`fetch_ohlcv_history.py --actions-only`、`fetch_daily_market_evidence.py --as-of YYYY-MM-DD --since 上次扫描日`、`daily_execution_guard.py evidence --as-of YYYY-MM-DD --since 上次扫描日`、队列重建；随后完成必要的模型与公司行动回写再运行 scan。
+常设调度入口为 `scripts/slurm/daily_postclose.sbatch`，四个阶段按 `SCAN_STAGE` 选择，逐日不另建包装脚本：`evidence` 要给 `SCAN_DATE`、`SCAN_SINCE`（上次成功扫描日）、`SCAN_REPORT_DATE`；`preview` 只要 `SCAN_DATE`，刷新下述两项行情输入后写 §8.2 行情预览；`events` 要给 `SCAN_DATE`、`SCAN_SINCE`，只重取公告、公司行动与市场背景，重跑负面事件筛查并重做同日证据凭据（截止时间后补取用）；`scan` 要给 `SCAN_DATE`、`SCAN_NAV`、`SCAN_FUNDS`，现金和负债可给 `SCAN_CASH`、`SCAN_DEBT`，否则读当日账户快照。evidence 阶段依次运行 `fetch_equity_bond_inputs.py --refresh` 与 `fetch_cost_of_equity_inputs.py`（§9.3.1 股债总仓位上限与扫描器 `--rf` 缺省的输入）、§7.1 两个取数脚本、`fetch_ohlcv_history.py --actions-only`、`fetch_daily_market_evidence.py --as-of YYYY-MM-DD --since 上次扫描日`、`screen_pool_events.py --signal-date YYYY-MM-DD --since 上次扫描日`（§7.4）、`daily_execution_guard.py evidence --as-of YYYY-MM-DD --since 上次扫描日`、队列重建；随后完成必要的模型与公司行动回写再运行 scan。
 
 使用执行计划前运行 `python3 scripts/daily_execution_guard.py verify --as-of YYYY-MM-DD`；成功凭据必须与行情、买卖计划、跟踪表、冷却、日志和输入摘要一致，且账户快照到信号日为止的 §10.3 策略列已登记并与重算一致（缺行、空列或不一致即失败）。扫描采用同一发布锁；暂存或失败批次不可执行，中断安装会在下次扫描读取冷却前恢复。
 
@@ -752,7 +777,7 @@ python3 scripts/screen_daily_volume_price_signals.py --as-of YYYY-MM-DD \
 | 排名 | 代码 | 名称 | 层级 | 收盘 | 模型价值 V | P/V | 走势条件 |
 
 ### 四、需人工处理
-除权除息、待复核、停牌、执行日新增事件和数据缺失
+除权除息、负面事件、待复核、停牌、执行日新增事件和数据缺失
 ```
 
 P/V 前十从当日扫描的 `worth_attention` 中，按候选侧 `model_pv` 升序取十只，同值按代码升序；仅纳入报价日等于信号日、收盘与 P/V 均为有限正数的行。排名不应用买入线、走势、复核冻结、L3 战术闸门、冷却或账户资金限制，仅作观察名单，不产生买卖动作。走势列按 §9.3.1 区分已有持仓与新建仓，标注达标、未达标或数据不足；均线不足但当日收盘与 P/V 有效的仍可入榜。少于十只有效值时列全部并注明数量，无有效值时显式报空。正式扫描与行情预览均输出该表，用户回复及每日阅读日志同步保留。
@@ -760,6 +785,8 @@ P/V 前十从当日扫描的 `worth_attention` 中，按候选侧 `model_pv` 升
 合格集为空时写“今日无合格标的，持币”，不得放宽阈值或用盘面事实补位。
 
 「除权除息」列持仓与期间除权的池成员，逐只写实施公告的核对结果（是否差异化分派、登记的价格口径）和未核对名单（§9.1 第 2 步）。
+
+「负面事件」列当日命中的公司、来源、标题与处置结论，以及新闻源缺口与未取全关键词名单（§7.4）；成长股定期报告后的核对结果同列（§9.3.6 第 6 条）。
 
 ### 9.3 唯一交易口径
 
@@ -863,8 +890,16 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
    - 下跌原因：价格进入买入线来自市场、行业周期还是公司经营恶化；属经营恶化的先按 §7.4 事件复核。
    - 结论（`通过`／`不通过`）由用户裁定。档案记 `growth_reviewed_at`、`growth_review_conclusion`、`growth_review_note`、`growth_reviewed_pv`，决策日志同记。
    - 失效：生产带此后吸收新定期报告或预告（`available_at` 或 `forecast_notice_date` 晚于复核日），或该公司登记行变动（`registered_at` 晚于复核日），记录即失效、须重做。
+   - 预做：定期报告后按第 6 条。
 4. **买入**：通过的成长股与其他候选同一合格集，按 §9.3.1 的走势条件、一档、单票上限与成长股总额上限执行。
 5. **卖出**：按 §9.3.1 成长股卖出行。复核改判（证伪，或改判为其他类别）时，登记表该行改 `derived_class`，并记 `rejudged_from = 结构成长型` 与 `rejudged_at`；仍有持仓的按该行每日减一档直至清空。
+6. **定期报告后核对**：生产带吸收成长股新定期报告后（带 `available_at` 晚于登记行 `registered_at` 与 `falsifier_checked_at` 的较晚者），扫描报告逐只列入「需人工处理」，当晚核对：
+   - 可证伪条件：按新报告核对登记行 `falsifier`。触发的提请用户改判（第 5 条）；核对后在登记行记 `falsifier_checked_at`（核对日）与 `falsifier_check_note`（读数与结论），`registered_at` 不动。
+   - 预做重点复核：候选侧 `P/V` 不高于 §9.3.1 买入线的 1.2 倍（`growth_stocks.PREREVIEW_PV_MULTIPLE`）且无有效「通过」记录的，同晚按第 3 条预做，结论由用户裁定；其余仍在达买入线当晚做。
+
+   ```bash
+   python3 scripts/growth_stocks.py --check <代码> --checked-at YYYY-MM-DD --note "..."
+   ```
 
 ## 10. 买入过滤与账户约束
 
@@ -873,7 +908,7 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
 以下任一命中即跳过并顺位补下一名：
 
 1. 不在 `worth_attention`。
-2. thesis 已证伪，或存在造假、审计、资金占用与重大治理风险。
+2. thesis 已证伪，或存在造假、审计、资金占用与重大治理风险。是否命中由用户裁定，命中的登记 §7.5 临时冻结名单。
 3. `buy_blocked = review_pending`。
 4. 成长股（§9.3.6）无有效的重点复核「通过」记录，或复核改判后仍有持仓。
 

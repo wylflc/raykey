@@ -1035,5 +1035,34 @@
    }
   ],
   "ycmx": []
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司董事长兼总经理解除留置的公告",
+   "notice_date": "2026-02-09",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202602081819824689_1.pdf",
+   "summary": "相关部门已解除对李晓雨的留置措施，恢复履职；未披露解除日期与结论。",
+   "use": "事件事实",
+   "source_sha256": "37ba5d14f4086210f647781dab4d29919252667dc2fbb7ff99fbcfbd8e788564"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于董事长、总经理、法定代表人离任的公告",
+   "notice_date": "2026-04-20",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202604191821321533_1.pdf",
+   "summary": "李晓雨因个人原因辞去董事长、总经理、法定代表人，留任董事并任首席战略官。",
+   "use": "事件事实",
+   "source_sha256": "086924ce6b5c48452876606a18005bebaf75a3c02ab269e04de06cca5876b585"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "原董事长曾被留置事件复核",
+   "summary": "2026-10-13 事件复核：原董事长兼总经理 2025-06 被留置约八个月、2026-04 辞任，班子由国有控股股东接手；印度反倾销调查列观察项。维持 worth_attention、L2；Q4 72→66，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688190:event"
+  }
+ ]
 }

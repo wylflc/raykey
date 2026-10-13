@@ -1534,5 +1534,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于涉及诉讼事项的提示性公告",
+   "notice_date": "2026-09-24",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202609241829869516_1.pdf",
+   "summary": "Linton 在得州东区法院起诉公司侵犯晶体生长籽晶提拉旋转系统专利；公司称技术方法完全不一致、尚未收到法院文书。",
+   "use": "事件事实",
+   "source_sha256": "43fb0a84785b30e8c4168e3269c3e0a8c0b46608c8a02c84e8a43b273eb7f537"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "美国专利诉讼事件复核",
+   "summary": "2026-10-13 事件复核：2026-09 连城数控子公司在美国起诉专利侵权，无金额，境外收入占比约 6.7%；商业纠纷、不涉及治理，维持 worth_attention、L2，分数不变。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300316:event"
+  }
+ ]
 }

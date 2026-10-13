@@ -1919,5 +1919,34 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司实际控制人被留置的公告",
+   "notice_date": "2026-07-06",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607061826753411_1.pdf",
+   "summary": "2026-07-06 收到家属通知，实际控制人翁先定被相关监察委员会留置；其自 2021-09-08 起不在公司任职；公司称不涉及公司、经营正常。",
+   "use": "事件事实",
+   "source_sha256": "ca841e14158fc7771e1ed3d6eb8837b93c42cf146a39249af0e2046cce387b53"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于控股股东部分质押股份办理延期购回手续的公告",
+   "notice_date": "2026-08-31",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608311828807703_1.pdf",
+   "summary": "西藏新产业累计质押 10,546 万股，占其持股 49.94%。",
+   "use": "事件事实",
+   "source_sha256": "2b556825cc787c39c1ecc42e3e6569313e671b05d831b07d038539a9129051b5"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "实际控制人被留置事件复核",
+   "summary": "2026-10-13 事件复核：实际控制人 2026-07-06 被留置（不任职，合计控制 30.05%，控股股东质押约五成），事由未披露、未见解除。维持 worth_attention、L2；Q4 74→66，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300832:event"
+  }
+ ]
 }

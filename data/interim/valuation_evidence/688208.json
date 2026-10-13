@@ -1828,5 +1828,44 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于收到深圳证监局对公司采取责令改正并对相关责任人出具警示函措施的公告",
+   "notice_date": "2025-12-06",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202512051794492598_1.pdf",
+   "summary": "〔2025〕234 号：未审议并披露关联交易变更、未披露关联方资金占用、未披露前十大股东一致行动关系、股东大会文件记录不全；对公司责令改正，对李红京、农颖斌、方文彬出具警示函。",
+   "use": "事件事实",
+   "source_sha256": "0755afaae779aa0737a41cf83a27fd2ecbf764dfa9abe47dd082e5939d3e937a"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "上交所关于对道通科技及有关责任人予以通报批评的决定",
+   "notice_date": "2025-12-05",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202512051794500796_1.pdf",
+   "summary": "〔2025〕225 号：对公司及时任董事长兼总经理李红京、时任董事兼副总经理农颖斌通报批评，驳回不构成资金占用的申辩。",
+   "use": "事件事实",
+   "source_sha256": "bddd2ae53172a66b3a10428e2513992800618acf4880120ae25503cca01b0f78"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于 2025 年年度报告信息披露监管问询函的回复公告",
+   "notice_date": "2026-07-11",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202607101826877054_1.pdf",
+   "summary": "九问：塞防科技股权转让、境外收入（占 97.56%，回函确认 40.01%）、经销、应收与保理、存货库龄等；会计师均出具肯定意见。",
+   "use": "事件事实",
+   "source_sha256": "0f77d4251dde845db94bd0f7d4f7707e5c9edd115f170da7ba3a9c92cb9e3f6f"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "资金占用与信披违规被监管处分事件复核",
+   "summary": "2026-10-13 事件复核：2025-12 监管认定实控人关联方占用上市公司资金 2,442 万元未披露等四项问题，公司与实控人被通报批评；实控人兼董事长、总经理并代行财务总监 21 个月；年报问询境外收入核验。维持 worth_attention、L2；Q4 70→56、报表可信度扣分 0→3，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688208:event"
+  }
+ ]
 }

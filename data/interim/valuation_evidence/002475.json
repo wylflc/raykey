@@ -1687,5 +1687,24 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司及控股子公司涉及美国国际贸易委员会 337 调查的公告",
+   "notice_date": "2026-10-10",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202610101830317008_1.pdf",
+   "summary": "ITC 对垂直供电系统立案 337 调查，公司与东莞立讯技术被列为被申请人；公司称涉案产品处于客户验证阶段、尚未量产。",
+   "use": "事件事实",
+   "source_sha256": "60562d24bc231c67a3267f556ab335908cbfc583194bb64ebe0535559db2ef27"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "美国 337 调查事件复核",
+   "summary": "2026-10-13 事件复核：2026-10 ITC 立案 337-TA-1526（Vicor，垂直供电），涉案产品未量产；另有 2026-02 立案的 337-TA-1484 未见公司披露。维持 worth_attention、L2，分数不变，登记复核触发。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002475:event"
+  }
+ ]
 }

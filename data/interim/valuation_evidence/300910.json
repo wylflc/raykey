@@ -1374,5 +1374,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司被欧盟列入制裁名单的公告",
+   "notice_date": "2026-06-16",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606161823611028_1.pdf",
+   "summary": "欧盟理事会 2026-06-15 把公司列入对俄制裁名单，称公司供应用于俄军用机械润滑油的添加剂；公司否认，称产品用于民用领域。",
+   "use": "事件事实",
+   "source_sha256": "90a7547bd13f363144e8894a8dbfefb2d7cc7f7dcb11c3b898bf45661da4107f"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "2026 年半年度报告（关于欧盟制裁的说明）",
+   "notice_date": "2026-08-26",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202608250006749157_1.pdf",
+   "summary": "已委托律师申请行政复议并拟提起撤销之诉；2025 年对欧盟销售约 1.42 亿元、占营收约 4.00%；上半年外销 −9.32%、内销 +75.58%。",
+   "use": "事件事实",
+   "source_sha256": "fd299f57459a1d22baede62061852d05569ed95336993f545bbd523971008e59"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "欧盟制裁事件复核",
+   "summary": "2026-10-13 事件复核：2026-06-15 被欧盟列入对俄制裁名单（资产冻结类），对欧盟销售占营收约 4%，公司已申请复议；对俄业务此前未披露。维持 worth_attention、L2；Q4 72→68，登记 governance_open_issue 与侵蚀路径观察项。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:300910:event"
+  }
+ ]
 }

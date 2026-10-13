@@ -228,5 +228,28 @@ class ReviewHoldTest(unittest.TestCase):
         self.assertEqual(self.queue(released="2026-10-20"), [])
 
 
+class EventReviewTest(unittest.TestCase):
+    """§7.4 负面事件登记（OI-285）：待复核行冻结新增买入，处置后不再入队。"""
+
+    def queue(self, disposition=""):
+        events = [{"security_code": "601100", "detected_on": "2026-03-23", "headline": "董事长被留置",
+                   "disposition": disposition}]
+        return q.build_queue([], [_tier("601100")], [_pool("601100", "2026-09-01")], [], [], [], "2026-09-24",
+                             [], [], None, [], [], [], events)
+
+    def test_pending_event_freezes_buying(self) -> None:
+        rows = self.queue()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["queue_reasons"], "event_review")
+        self.assertEqual(rows[0]["buy_blocked"], "review_pending")
+        self.assertEqual((rows[0]["update_scope"], rows[0]["queue_priority"]), ("quality_only", "high"))
+        self.assertFalse(rows[0]["valuation_review_needed"])
+        self.assertEqual(rows[0]["event_review_headline"], "2026-03-23 董事长被留置")
+
+    def test_disposed_event_is_ignored(self) -> None:
+        self.assertEqual(self.queue(disposition="事件复核"), [])
+        self.assertEqual(self.queue(disposition="不构成事件"), [])
+
+
 if __name__ == "__main__":
     unittest.main()

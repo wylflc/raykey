@@ -1483,5 +1483,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司重大事项的公告",
+   "notice_date": "2025-11-04",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202511031774460749_1.pdf",
+   "summary": "董事、副总经理赵建州被天津市滨海新区监察委员会实施留置、立案调查。",
+   "use": "事件事实",
+   "source_sha256": "e463cf638ce3f3df1e23532d15dae57b8f70323c29e7122180eb3beeb9f62827"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于自愿披露公司原董事、副总经理解除留置的公告",
+   "notice_date": "2026-01-06",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202601051815394208_1.pdf",
+   "summary": "赵建州 2025-12-31 收到《解除留置通知书》。",
+   "use": "事件事实",
+   "source_sha256": "b3d999bd471f25e73ff96820b04ad964d5b8d5fa17ae49d7870748115622db3a"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "原董事、副总经理曾被留置事件复核",
+   "summary": "2026-10-13 事件复核：时任董事、副总经理兼子公司负责人 2025-11 被留置约两个月，已离任并减持，事由与结论未披露；同期控制权变更筹划后终止。维持 worth_attention、L2，参考分不动，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:603508:event"
+  }
+ ]
 }

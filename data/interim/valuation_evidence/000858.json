@@ -1840,5 +1840,44 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于董事长被留置的公告",
+   "notice_date": "2026-02-28",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202602281820143891_1.pdf",
+   "summary": "收到宜宾市纪委监委关于董事长曾从钦的《立案通知书》及宜宾市监委的《留置通知书》；日常经营由高管团队负责。",
+   "use": "事件事实",
+   "source_sha256": "1413480964d9a1537841a91ef677d903ac051a472d5076fdf0458859e89412ed"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于前期会计差错更正的公告",
+   "notice_date": "2026-04-30",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202604301821851560_1.pdf",
+   "summary": "更正 2025 年一季报、半年报、三季报合并资产负债表与利润表：前三季度营收 609.45→306.38 亿元、归母 215.11→64.75 亿元；原因是梳理 2025 年业务模式后基于谨慎性原则调整部分业务收入确认。",
+   "use": "事件事实",
+   "source_sha256": "466e1e18f25c1391fd160945b5977ce83732a40f223fc0dee7407bd90bb0e10d"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于董事长离任及选举董事长的公告",
+   "notice_date": "2026-06-27",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606261824706788_1.pdf",
+   "summary": "股东会免去曾从钦董事职务，邓敏当选董事长。",
+   "use": "事件事实",
+   "source_sha256": "48b55870545e1d68738902953715071049a3c8afa0d7566e08e460ed07d3768f"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "董事长被立案留置并免职事件复核",
+   "summary": "2026-10-13 事件复核：董事长 2026-02 被立案留置并于 06 月被免职，2025 年三份季报收入确认更正（前三季度营收调减 303 亿元），2026-07 班子再调整。维持 worth_attention、L2；Q4 72→60，报表可信度扣分维持 5 分，governance_open_issue 补记。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:000858:event"
+  }
+ ]
 }

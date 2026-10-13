@@ -29,6 +29,7 @@ case "$SCAN_STAGE" in
     python3 scripts/fetch_ohlcv_history.py --signal-date "$SCAN_DATE" --actions-only
     python3 scripts/fetch_daily_market_evidence.py --as-of "$SCAN_DATE" --since "$SCAN_SINCE"
     python3 scripts/scan_restatement_announcements.py --snapshot "data/interim/daily_announcements_${SCAN_DATE}.json"
+    python3 scripts/screen_pool_events.py --signal-date "$SCAN_DATE" --since "$SCAN_SINCE"   # §7.4 负面事件筛查（OI-285）
     python3 scripts/daily_execution_guard.py evidence --as-of "$SCAN_DATE" --since "$SCAN_SINCE"
     python3 scripts/structural_growth_review.py --signal-date "$SCAN_DATE"   # §7.3 结构性增长复核（OI-249、OI-250）
     python3 scripts/build_report_update_queue.py --market A_SHARE --signal-date "$SCAN_DATE"
@@ -57,6 +58,7 @@ case "$SCAN_STAGE" in
     : "${SCAN_SINCE:?Set SCAN_SINCE to the previous successful scan date}"
     python3 scripts/fetch_daily_market_evidence.py --as-of "$SCAN_DATE" --since "$SCAN_SINCE"
     python3 scripts/scan_restatement_announcements.py --snapshot "data/interim/daily_announcements_${SCAN_DATE}.json"
+    python3 scripts/screen_pool_events.py --signal-date "$SCAN_DATE" --since "$SCAN_SINCE"   # §7.4 负面事件筛查（OI-285）
     python3 scripts/daily_execution_guard.py evidence --as-of "$SCAN_DATE" --since "$SCAN_SINCE"
     ;;
   *) printf '%s\n' 'SCAN_STAGE must be evidence, preview, events or scan' >&2; exit 2 ;;

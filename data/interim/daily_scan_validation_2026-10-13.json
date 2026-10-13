@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T11:26:14.400175+00:00",
+ "checked_at_utc": "2026-10-13T14:05:10.249758+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -25,6 +25,13 @@
   "eligible_set_recomputed_from_published_quotes",
   "shenhuo_reaction_bar_is_notice_day",
   "shuanghui_review_carried_to_scan",
+  "event_reviews_carried_to_scan",
+  "user_holds_frozen_in_scan",
+  "adopted_research_bands_in_scan",
+  "negative_event_screen_covers_pool_and_holdings",
+  "negative_event_register_has_no_pending_rows",
+  "negative_event_register_in_publication_inputs",
+  "negative_event_hits_in_evidence_certificate",
   "divergence_review_registry_in_publication_inputs",
   "divergence_subset_is_holdings_plus_eligible"
  ],
@@ -82,9 +89,11 @@
   "scan_second": "28000002",
   "scan_third": "28001090",
   "refresh_pool_third": "28002071",
-  "scan_fourth": "28002267"
+  "scan_fourth": "28002267",
+  "refresh_pool_fifth": "28006851",
+  "scan_fifth": "28011520"
  },
- "publications": "当日发布三次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑",
+ "publications": "当日发布五次，清单都是 0 买 0 卖：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑，第五次为负面事件筛查上线（v4.250，结 OI-285、OI-286）、18 家存量事件复核、3 只成长股采用研究数与 5 只临时冻结登记后带刷新并重跑",
  "quality_review": {
   "000895": {
    "name": "双汇发展",
@@ -98,8 +107,255 @@
    "decision_id": "quality_review:2026-10-13:000895:penalty"
   }
  },
+ "event_reviews": {
+  "000858": {
+   "name": "五粮液",
+   "quality_tier": "L2",
+   "quality_score": "73.5",
+   "candidate_pv": "1.0882",
+   "review_frozen": "True"
+  },
+  "002262": {
+   "name": "恩华药业",
+   "quality_tier": "L2",
+   "quality_score": "75.1",
+   "candidate_pv": "1.0426",
+   "review_frozen": "False"
+  },
+  "002475": {
+   "name": "立讯精密",
+   "quality_tier": "L2",
+   "quality_score": "71.3",
+   "candidate_pv": "1.4324",
+   "review_frozen": "False"
+  },
+  "300316": {
+   "name": "晶盛机电",
+   "quality_tier": "L2",
+   "quality_score": "67.1",
+   "candidate_pv": "1.1669",
+   "review_frozen": "True"
+  },
+  "300832": {
+   "name": "新产业",
+   "quality_tier": "L2",
+   "quality_score": "72.8",
+   "candidate_pv": "1.4535",
+   "review_frozen": "True"
+  },
+  "300896": {
+   "name": "爱美客",
+   "quality_tier": "L2",
+   "quality_score": "75.0",
+   "candidate_pv": "1.0678",
+   "review_frozen": "True"
+  },
+  "300910": {
+   "name": "瑞丰新材",
+   "quality_tier": "L2",
+   "quality_score": "71.3",
+   "candidate_pv": "1.1127",
+   "review_frozen": "False"
+  },
+  "600436": {
+   "name": "片仔癀",
+   "quality_tier": "L1",
+   "quality_score": "78.4",
+   "candidate_pv": "2.2341",
+   "review_frozen": "True"
+  },
+  "600519": {
+   "name": "贵州茅台",
+   "quality_tier": "L1",
+   "quality_score": "89.1",
+   "candidate_pv": "1.389",
+   "review_frozen": "False"
+  },
+  "601100": {
+   "name": "恒立液压",
+   "quality_tier": "L2",
+   "quality_score": "74.7",
+   "candidate_pv": "3.2965",
+   "review_frozen": "True"
+  },
+  "601138": {
+   "name": "工业富联",
+   "quality_tier": "L2",
+   "quality_score": "68",
+   "candidate_pv": "2.2092",
+   "review_frozen": "False"
+  },
+  "603279": {
+   "name": "景津装备",
+   "quality_tier": "L2",
+   "quality_score": "70.4",
+   "candidate_pv": "0.9591",
+   "review_frozen": "True"
+  },
+  "603508": {
+   "name": "思维列控",
+   "quality_tier": "L2",
+   "quality_score": "72",
+   "candidate_pv": "1.4623",
+   "review_frozen": "False"
+  },
+  "603606": {
+   "name": "东方电缆",
+   "quality_tier": "L3",
+   "quality_score": "57.4",
+   "candidate_pv": "1.7886",
+   "review_frozen": "False"
+  },
+  "688018": {
+   "name": "乐鑫科技",
+   "quality_tier": "L2",
+   "quality_score": "71.6",
+   "candidate_pv": "1.6199",
+   "review_frozen": "False"
+  },
+  "688190": {
+   "name": "云路股份",
+   "quality_tier": "L2",
+   "quality_score": "72.2",
+   "candidate_pv": "1.3418",
+   "review_frozen": "True"
+  },
+  "688208": {
+   "name": "道通科技",
+   "quality_tier": "L2",
+   "quality_score": "64.9",
+   "candidate_pv": "1.4385",
+   "review_frozen": "True"
+  },
+  "688692": {
+   "name": "达梦数据",
+   "quality_tier": "L2",
+   "quality_score": "71.3",
+   "candidate_pv": "2.1531",
+   "review_frozen": "False"
+  }
+ },
+ "negative_events": {
+  "window": "（2026-10-12，2026-10-13]",
+  "covered": 182,
+  "retrieved_at_utc": "2026-10-13T14:00:27.564707+00:00",
+  "screened_hits": {
+   "000895": {
+    "name": "双汇发展",
+    "sources": "新闻",
+    "titles": 3,
+    "disposition": "事件复核",
+    "headline": "双汇发展：行政处罚将致净利减少6380万元｜ESG热搜榜"
+   },
+   "002027": {
+    "name": "分众传媒",
+    "sources": "新闻",
+    "titles": 1,
+    "disposition": "不构成事件",
+    "headline": "壹评级：分众传媒收购新潮传媒通过反垄断审查，竞争格局改善可期"
+   },
+   "002475": {
+    "name": "立讯精密",
+    "sources": "新闻",
+    "titles": 7,
+    "disposition": "事件复核",
+    "headline": "A股盘前速览：美股上个交易日三大指数集体收涨 光通信、中国资产爆发；证监会召开座谈会；立讯精密、工业富联回应遭美国337调查"
+   },
+   "601138": {
+    "name": "工业富联",
+    "sources": "公告+新闻",
+    "titles": 7,
+    "disposition": "事件复核",
+    "headline": "工业富联:富士康工业互联网股份有限公司关于美国国际贸易委员会对公司及控股子公司开展337调查的公告"
+   },
+   "601288": {
+    "name": "农业银行",
+    "sources": "新闻",
+    "titles": 1,
+    "disposition": "不构成事件",
+    "headline": "农行江苏分行及下辖14家分支共被罚600万，涉贷款管理不到位等多项违规"
+   },
+   "601398": {
+    "name": "工商银行",
+    "sources": "新闻",
+    "titles": 1,
+    "disposition": "不构成事件",
+    "headline": "工商银行石家庄分行3个月遭监管罚款3次"
+   },
+   "601965": {
+    "name": "中国汽研",
+    "sources": "新闻",
+    "titles": 1,
+    "disposition": "不构成事件",
+    "headline": "尊界V800检测报告出炉，面对真实性质疑，知情人士称系中国汽研检测出具，“事情已经这么大了，尊界不可能做这种事情”"
+   }
+  },
+  "news_failed_codes": [],
+  "news_partial_queries": {
+   "002001": [
+    "新和成"
+   ],
+   "002027": [
+    "分众"
+   ],
+   "002475": [
+    "立讯"
+   ],
+   "002714": [
+    "牧原股份"
+   ],
+   "688271": [
+    "联影"
+   ]
+  },
+  "rerun_new_items_not_counted": [
+   "000895 2026-10-12 双汇抽奖奖品误寄投诉（已读，不构成事件）",
+   "600436 2026-10-13 每经晚参（董事长离任，已在当日复核计入）",
+   "688018 2026-10-13 科创板晚报（三季度预告，负面词属他司）"
+  ],
+  "backfill_reviews": 16,
+  "user_holds": [
+   "000858",
+   "300832",
+   "601100",
+   "603279",
+   "688208"
+  ]
+ },
+ "growth_research": {
+  "688235": {
+   "name": "百济神州",
+   "conclusion": "采用研究数",
+   "v": 87.3489,
+   "candidate_pv": 2.7934
+  },
+  "002463": {
+   "name": "沪电股份",
+   "conclusion": "采用研究数",
+   "v": 44.8808,
+   "candidate_pv": 2.5824
+  },
+  "300054": {
+   "name": "鼎龙股份",
+   "conclusion": "采用研究数",
+   "v": 17.6509,
+   "candidate_pv": 3.5381
+  },
+  "688012": {
+   "name": "中微公司",
+   "conclusion": "维持模型",
+   "v": 60.2455,
+   "candidate_pv": 5.1073
+  },
+  "300394": {
+   "name": "天孚通信",
+   "conclusion": "维持模型",
+   "v": 22.1411,
+   "candidate_pv": 11.1422
+  }
+ },
  "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
- "rule_version": "a-share-selection-operation-v4.249",
+ "rule_version": "a-share-selection-operation-v4.250",
  "equity_bond": {
   "spread_pct": 6.33,
   "observed_on": "2026-10-12",
@@ -222,10 +478,12 @@
  "queue": {
   "rows": 19,
   "trough_anchor": 13,
-  "structural_growth": 6,
+  "structural_growth": 1,
+  "user_review_hold": 5,
+  "event_review": 0,
   "report_triggered": 0,
   "lowest_frozen_pv": {
-   "688516": 1.0414
+   "603279": 0.9591
   }
  },
  "divergence_check": {

@@ -1501,5 +1501,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于收到上海证监局行政监管措施决定书的公告",
+   "notice_date": "2026-06-19",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606181823669521_1.pdf",
+   "summary": "沪证监决〔2026〕168 号警示函：购置研发大楼（含税不低于 4.37 亿元）未按规定格式披露；取得明栈信息控制权达到披露标准后未及时披露。只处理公司。",
+   "use": "事件事实",
+   "source_sha256": "23ebb2c87e92e5ffa30d456bfe0bbc12328e75fe633c4c08d7445f32d1e1b473"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "上交所关于对乐鑫科技予以监管警示的决定",
+   "notice_date": "2026-06-18",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606181823668902_1.pdf",
+   "summary": "上证科创公监函〔2026〕0037 号：就同一事实监管警示，要求一个月内提交全体董事、高管签字的整改报告。",
+   "use": "事件事实",
+   "source_sha256": "8905f3a895b3a62c3bc9dd3af7703dca35c4926977099343dd678da567d8b5ca"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "信披警示函事件复核",
+   "summary": "2026-10-13 事件复核：2026-06 上海证监局警示函与上交所监管警示（两项重大事项未按规定披露，未处理个人，无资金或关联方问题），维持 worth_attention、L2；Q4 74→70，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688018:event"
+  }
+ ]
 }

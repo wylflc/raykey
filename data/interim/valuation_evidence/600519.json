@@ -2122,5 +2122,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于高级管理人员被实施留置的公告",
+   "notice_date": "2026-03-14",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202603131820551839_1.pdf",
+   "summary": "收到遵义市监察委员会对党委委员、副总经理、财务总监、董事会秘书蒋焰实施留置的通知；董事长陈华代行董秘职责。",
+   "use": "事件事实",
+   "source_sha256": "1c2cf0e9e7d37c41d942bfb26b7be282de9312097990924f45a54da5fcc6c582"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "第四届董事会 2026 年度第四次会议决议公告",
+   "notice_date": "2026-03-31",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202603301820864177_1.pdf",
+   "summary": "免去蒋焰副总经理、财务总监、董事会秘书职务。",
+   "use": "事件事实",
+   "source_sha256": "7cd899ba96a4f94a3471c85c1ca864438dc45949fb065c231367f23c9e2f5842"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "财务总监兼董秘被留置事件复核",
+   "summary": "2026-10-13 事件复核：财务总监兼董秘 2026-03 被留置并免职，前任董事长 2026-05 被公诉，子公司原总经理等 2026-08 至 09 被通报；审计意见标准、无差错更正。维持 worth_attention、L1；Q4 75→68，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:600519:event"
+  }
+ ]
 }

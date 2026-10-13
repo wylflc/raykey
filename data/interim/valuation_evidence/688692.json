@@ -1318,5 +1318,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司董事兼总经理被留置的公告",
+   "notice_date": "2025-08-20",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202508191730513211_1.pdf",
+   "summary": "董事兼总经理皮宇被湖北省应城市监察委员会实施留置。",
+   "use": "事件事实",
+   "source_sha256": "34b1f99ad00bd972e142e4398081a8dc02f02610cb2d365a036c90b0c7b3b665"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司高级副总经理解除留置的公告",
+   "notice_date": "2026-02-14",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202602131819918795_1.pdf",
+   "summary": "陈文 2025-08-22 公告被立案调查并实施管护，应城市监察委员会已解除留置，恢复履行高级副总经理职责。",
+   "use": "事件事实",
+   "source_sha256": "1b662a9d3d6fab2ceed1105784db62bbdf9cbedc2525bd0ddcd9fd79b3754efa"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "总经理等两名高管曾被留置事件复核",
+   "summary": "2026-10-13 事件复核：总经理与高级副总经理 2025 年被监察机关立案调查并留置、后解除，事由与结论未披露，披露晚于两人缺席约两个月，2025 年度内控审计带强调事项段。维持 worth_attention、L2；Q4 70→62，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:688692:event"
+  }
+ ]
 }

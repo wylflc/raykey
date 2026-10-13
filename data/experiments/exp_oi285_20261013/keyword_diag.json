@@ -1,0 +1,3642 @@
+[
+ {
+  "security_code": "000333",
+  "security_name": "美的集团",
+  "name": {
+   "total": 2025,
+   "n": 100,
+   "titled": 31,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 259,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-08",
+   "oldest": "2026-07-27",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "000338",
+  "security_name": "潍柴动力",
+  "name": {
+   "total": 1294,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-18",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 248,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-29",
+   "newest_titled": "2026-09-20"
+  }
+ },
+ {
+  "security_code": "000408",
+  "security_name": "藏格矿业",
+  "name": {
+   "total": 1096,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 192,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-21",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "000423",
+  "security_name": "东阿阿胶",
+  "name": {
+   "total": 335,
+   "n": 100,
+   "titled": 23,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-11",
+   "newest_titled": "2026-10-01"
+  },
+  "code": {
+   "total": 98,
+   "n": 98,
+   "titled": 27,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-10-01"
+  }
+ },
+ {
+  "security_code": "000426",
+  "security_name": "兴业银锡",
+  "name": {
+   "total": 1134,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 295,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-12",
+   "oldest": "2026-08-11",
+   "newest_titled": "2026-09-16"
+  }
+ },
+ {
+  "security_code": "000538",
+  "security_name": "云南白药",
+  "name": {
+   "total": 497,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 160,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-10",
+   "newest_titled": "2026-09-18"
+  }
+ },
+ {
+  "security_code": "000568",
+  "security_name": "泸州老窖",
+  "name": {
+   "total": 1049,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-09-24"
+  },
+  "code": {
+   "total": 166,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-09",
+   "newest_titled": "2026-09-16"
+  }
+ },
+ {
+  "security_code": "000596",
+  "security_name": "古井贡酒",
+  "name": {
+   "total": 749,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 141,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-10",
+   "oldest": "2026-07-09",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "000651",
+  "security_name": "格力电器",
+  "name": {
+   "total": 1172,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-14",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 188,
+   "n": 100,
+   "titled": 34,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-21",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "000725",
+  "security_name": "京东方A",
+  "name": {
+   "total": 4154,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-29",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 816,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "000786",
+  "security_name": "北新建材",
+  "name": {
+   "total": 258,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-29",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 111,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-09-28",
+   "oldest": "2026-04-28",
+   "newest_titled": "2026-08-23"
+  }
+ },
+ {
+  "security_code": "000792",
+  "security_name": "盐湖股份",
+  "name": {
+   "total": 1366,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 194,
+   "n": 100,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-02",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "000858",
+  "security_name": "五粮液",
+  "name": {
+   "total": 1688,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 287,
+   "n": 100,
+   "titled": 43,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-25",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "000893",
+  "security_name": "亚钾国际",
+  "name": {
+   "total": 320,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-22",
+   "newest_titled": "2026-09-10"
+  },
+  "code": {
+   "total": 90,
+   "n": 90,
+   "titled": 18,
+   "newest": "2026-10-08",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "000895",
+  "security_name": "双汇发展",
+  "name": {
+   "total": 545,
+   "n": 100,
+   "titled": 43,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-28",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 214,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-18",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "000933",
+  "security_name": "神火股份",
+  "name": {
+   "total": 651,
+   "n": 100,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 168,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-22",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "000975",
+  "security_name": "山金国际",
+  "name": {
+   "total": 1034,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 225,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-22",
+   "newest_titled": "2026-08-20"
+  }
+ },
+ {
+  "security_code": "000999",
+  "security_name": "华润三九",
+  "name": {
+   "total": 369,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-13",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 106,
+   "n": 100,
+   "titled": 34,
+   "newest": "2026-09-30",
+   "oldest": "2026-04-20",
+   "newest_titled": "2026-09-16"
+  }
+ },
+ {
+  "security_code": "001232",
+  "security_name": "嘉立创",
+  "name": {
+   "total": 595,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-16",
+   "newest_titled": "2026-09-28"
+  },
+  "code": {
+   "total": 298,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-09-14"
+  }
+ },
+ {
+  "security_code": "002001",
+  "security_name": "新和成",
+  "name": {
+   "total": 10000,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-13",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 166,
+   "n": 100,
+   "titled": 23,
+   "newest": "2026-09-21",
+   "oldest": "2026-06-16",
+   "newest_titled": "2026-09-10"
+  }
+ },
+ {
+  "security_code": "002003",
+  "security_name": "伟星股份",
+  "name": {
+   "total": 236,
+   "n": 100,
+   "titled": 37,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-13",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 143,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-09-28",
+   "oldest": "2026-05-06",
+   "newest_titled": "2026-08-27"
+  }
+ },
+ {
+  "security_code": "002027",
+  "security_name": "分众传媒",
+  "name": {
+   "total": 464,
+   "n": 100,
+   "titled": 39,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-01",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 143,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-05-25",
+   "newest_titled": "2026-10-11"
+  }
+ },
+ {
+  "security_code": "002032",
+  "security_name": "苏泊尔",
+  "name": {
+   "total": 334,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-03",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 166,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-09-30",
+   "oldest": "2026-05-21",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "002050",
+  "security_name": "三花智控",
+  "name": {
+   "total": 1347,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 195,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-09",
+   "oldest": "2026-06-15",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "002128",
+  "security_name": "电投能源",
+  "name": {
+   "total": 431,
+   "n": 100,
+   "titled": 34,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 154,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-08",
+   "oldest": "2026-06-01",
+   "newest_titled": "2026-09-17"
+  }
+ },
+ {
+  "security_code": "002138",
+  "security_name": "顺络电子",
+  "name": {
+   "total": 748,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 327,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "002142",
+  "security_name": "宁波银行",
+  "name": {
+   "total": 1333,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 231,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-09-18"
+  }
+ },
+ {
+  "security_code": "002179",
+  "security_name": "中航光电",
+  "name": {
+   "total": 577,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-04",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 233,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-10",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "002222",
+  "security_name": "福晶科技",
+  "name": {
+   "total": 324,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-09-02"
+  },
+  "code": {
+   "total": 132,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-05-12",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "002262",
+  "security_name": "恩华药业",
+  "name": {
+   "total": 300,
+   "n": 100,
+   "titled": 34,
+   "newest": "2026-09-30",
+   "oldest": "2026-07-22",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 162,
+   "n": 100,
+   "titled": 23,
+   "newest": "2026-09-30",
+   "oldest": "2026-05-20",
+   "newest_titled": "2026-09-29"
+  }
+ },
+ {
+  "security_code": "002270",
+  "security_name": "华明装备",
+  "name": {
+   "total": 271,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-17",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 154,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-08",
+   "oldest": "2026-05-29",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "002287",
+  "security_name": "奇正藏药",
+  "name": {
+   "total": 88,
+   "n": 88,
+   "titled": 54,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 50,
+   "n": 50,
+   "titled": 18,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "002311",
+  "security_name": "海大集团",
+  "name": {
+   "total": 927,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 174,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-09-28",
+   "oldest": "2026-06-26",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "002352",
+  "security_name": "顺丰控股",
+  "name": {
+   "total": 681,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-09",
+   "newest_titled": "2026-09-22"
+  },
+  "code": {
+   "total": 164,
+   "n": 100,
+   "titled": 37,
+   "newest": "2026-10-08",
+   "oldest": "2026-06-10",
+   "newest_titled": "2026-09-21"
+  }
+ },
+ {
+  "security_code": "002371",
+  "security_name": "北方华创",
+  "name": {
+   "total": 3700,
+   "n": 100,
+   "titled": 1,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-28",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 455,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-12",
+   "oldest": "2026-08-21",
+   "newest_titled": "2026-09-02"
+  }
+ },
+ {
+  "security_code": "002372",
+  "security_name": "伟星新材",
+  "name": {
+   "total": 184,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-10",
+   "oldest": "2026-06-16",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 133,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-09-28",
+   "oldest": "2026-04-30",
+   "newest_titled": "2026-08-12"
+  }
+ },
+ {
+  "security_code": "002379",
+  "security_name": "宏桥控股",
+  "name": {
+   "total": 573,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-04",
+   "oldest": "2026-08-22",
+   "newest_titled": "2026-09-22"
+  },
+  "code": {
+   "total": 220,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-09-30",
+   "oldest": "2026-07-31",
+   "newest_titled": "2026-09-19"
+  }
+ },
+ {
+  "security_code": "002409",
+  "security_name": "雅克科技",
+  "name": {
+   "total": 1125,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-09-15"
+  },
+  "code": {
+   "total": 387,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-03",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "002415",
+  "security_name": "海康威视",
+  "name": {
+   "total": 1405,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-18",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 283,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-28",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "002463",
+  "security_name": "沪电股份",
+  "name": {
+   "total": 2664,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 558,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-03",
+   "newest_titled": "2026-09-29"
+  }
+ },
+ {
+  "security_code": "002466",
+  "security_name": "天齐锂业",
+  "name": {
+   "total": 1771,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 247,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-08",
+   "newest_titled": "2026-09-25"
+  }
+ },
+ {
+  "security_code": "002475",
+  "security_name": "立讯精密",
+  "name": {
+   "total": 3840,
+   "n": 100,
+   "titled": 31,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 555,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-29",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "002532",
+  "security_name": "天山铝业",
+  "name": {
+   "total": 654,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-19",
+   "newest_titled": "2026-09-08"
+  },
+  "code": {
+   "total": 131,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-05-19",
+   "newest_titled": "2026-08-19"
+  }
+ },
+ {
+  "security_code": "002568",
+  "security_name": "百润股份",
+  "name": {
+   "total": 415,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-12",
+   "oldest": "2026-08-05",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 165,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-29",
+   "newest_titled": "2026-09-07"
+  }
+ },
+ {
+  "security_code": "002594",
+  "security_name": "比亚迪",
+  "name": {
+   "total": 7217,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 408,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-03",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "002595",
+  "security_name": "豪迈科技",
+  "name": {
+   "total": 267,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-21",
+   "newest_titled": "2026-09-09"
+  },
+  "code": {
+   "total": 99,
+   "n": 99,
+   "titled": 9,
+   "newest": "2026-09-22",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-07"
+  }
+ },
+ {
+  "security_code": "002648",
+  "security_name": "卫星化学",
+  "name": {
+   "total": 733,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 189,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-08",
+   "oldest": "2026-06-22",
+   "newest_titled": "2026-08-17"
+  }
+ },
+ {
+  "security_code": "002690",
+  "security_name": "美亚光电",
+  "name": {
+   "total": 117,
+   "n": 100,
+   "titled": 46,
+   "newest": "2026-09-23",
+   "oldest": "2026-04-23",
+   "newest_titled": "2026-08-26"
+  },
+  "code": {
+   "total": 73,
+   "n": 73,
+   "titled": 14,
+   "newest": "2026-09-23",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "002714",
+  "security_name": "牧原股份",
+  "name": {
+   "total": 10000,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-13",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 333,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-17",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "002916",
+  "security_name": "深南电路",
+  "name": {
+   "total": 2003,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 533,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-07"
+  }
+ },
+ {
+  "security_code": "002920",
+  "security_name": "德赛西威",
+  "name": {
+   "total": 405,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-10",
+   "oldest": "2026-08-14",
+   "newest_titled": "2026-09-21"
+  },
+  "code": {
+   "total": 139,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-09-29",
+   "oldest": "2026-05-19",
+   "newest_titled": "2026-09-08"
+  }
+ },
+ {
+  "security_code": "002938",
+  "security_name": "鹏鼎控股",
+  "name": {
+   "total": 1757,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-11",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 431,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-14",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "300015",
+  "security_name": "爱尔眼科",
+  "name": {
+   "total": 502,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 138,
+   "n": 100,
+   "titled": 36,
+   "newest": "2026-09-17",
+   "oldest": "2026-05-20",
+   "newest_titled": "2026-09-01"
+  }
+ },
+ {
+  "security_code": "300033",
+  "security_name": "同花顺",
+  "name": {
+   "total": 4624,
+   "n": 100,
+   "titled": 1,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-09",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 216,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-20",
+   "newest_titled": "2026-08-22"
+  }
+ },
+ {
+  "security_code": "300054",
+  "security_name": "鼎龙股份",
+  "name": {
+   "total": 924,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 394,
+   "n": 100,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-31",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "300059",
+  "security_name": "东方财富",
+  "name": {
+   "total": 7171,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-13",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 206,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-02",
+   "newest_titled": "2026-08-22"
+  }
+ },
+ {
+  "security_code": "300124",
+  "security_name": "汇川技术",
+  "name": {
+   "total": 1753,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-28",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 314,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "300274",
+  "security_name": "阳光电源",
+  "name": {
+   "total": 3332,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-26",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 411,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "300308",
+  "security_name": "中际旭创",
+  "name": {
+   "total": 10000,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 1220,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "300316",
+  "security_name": "晶盛机电",
+  "name": {
+   "total": 639,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 227,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-10",
+   "oldest": "2026-07-07",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "300357",
+  "security_name": "我武生物",
+  "name": {
+   "total": 208,
+   "n": 100,
+   "titled": 41,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-10-11"
+  },
+  "code": {
+   "total": 113,
+   "n": 100,
+   "titled": 42,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-24",
+   "newest_titled": "2026-10-11"
+  }
+ },
+ {
+  "security_code": "300394",
+  "security_name": "天孚通信",
+  "name": {
+   "total": 5419,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-10",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 795,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-14",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "300395",
+  "security_name": "菲利华",
+  "name": {
+   "total": 686,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 201,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-24",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "300408",
+  "security_name": "三环集团",
+  "name": {
+   "total": 2857,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-28",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 470,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-28",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "300415",
+  "security_name": "伊之密",
+  "name": {
+   "total": 154,
+   "n": 100,
+   "titled": 59,
+   "newest": "2026-10-08",
+   "oldest": "2026-05-14",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 46,
+   "n": 46,
+   "titled": 17,
+   "newest": "2026-09-07",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-08-25"
+  }
+ },
+ {
+  "security_code": "300470",
+  "security_name": "中密控股",
+  "name": {
+   "total": 161,
+   "n": 100,
+   "titled": 33,
+   "newest": "2026-10-12",
+   "oldest": "2026-04-30",
+   "newest_titled": "2026-09-28"
+  },
+  "code": {
+   "total": 105,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-08",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-09-15"
+  }
+ },
+ {
+  "security_code": "300487",
+  "security_name": "蓝晓科技",
+  "name": {
+   "total": 380,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-20",
+   "newest_titled": "2026-09-21"
+  },
+  "code": {
+   "total": 234,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-14",
+   "newest_titled": "2026-09-14"
+  }
+ },
+ {
+  "security_code": "300502",
+  "security_name": "新易盛",
+  "name": {
+   "total": 10000,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 828,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-14",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "300529",
+  "security_name": "健帆生物",
+  "name": {
+   "total": 84,
+   "n": 84,
+   "titled": 39,
+   "newest": "2026-09-29",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-15"
+  },
+  "code": {
+   "total": 36,
+   "n": 36,
+   "titled": 18,
+   "newest": "2026-08-25",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-07"
+  }
+ },
+ {
+  "security_code": "300604",
+  "security_name": "长川科技",
+  "name": {
+   "total": 2648,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 435,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-09-28"
+  }
+ },
+ {
+  "security_code": "300627",
+  "security_name": "华测导航",
+  "name": {
+   "total": 312,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-27",
+   "newest_titled": "2026-09-01"
+  },
+  "code": {
+   "total": 100,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-16",
+   "newest_titled": "2026-08-18"
+  }
+ },
+ {
+  "security_code": "300628",
+  "security_name": "亿联网络",
+  "name": {
+   "total": 270,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-18",
+   "newest_titled": "2026-09-14"
+  },
+  "code": {
+   "total": 160,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-01",
+   "newest_titled": "2026-08-21"
+  }
+ },
+ {
+  "security_code": "300661",
+  "security_name": "圣邦股份",
+  "name": {
+   "total": 786,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-09-23"
+  },
+  "code": {
+   "total": 230,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-09-06"
+  }
+ },
+ {
+  "security_code": "300685",
+  "security_name": "艾德生物",
+  "name": {
+   "total": 268,
+   "n": 100,
+   "titled": 45,
+   "newest": "2026-10-09",
+   "oldest": "2026-06-05",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 107,
+   "n": 100,
+   "titled": 50,
+   "newest": "2026-09-30",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-09-17"
+  }
+ },
+ {
+  "security_code": "300699",
+  "security_name": "光威复材",
+  "name": {
+   "total": 180,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-10",
+   "newest_titled": "2026-08-25"
+  },
+  "code": {
+   "total": 125,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-01",
+   "newest_titled": "2026-08-25"
+  }
+ },
+ {
+  "security_code": "300750",
+  "security_name": "宁德时代",
+  "name": {
+   "total": 10000,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 913,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "300759",
+  "security_name": "康龙化成",
+  "name": {
+   "total": 1318,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 246,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-05",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "300760",
+  "security_name": "迈瑞医疗",
+  "name": {
+   "total": 1038,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-18",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 204,
+   "n": 100,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-20",
+   "newest_titled": "2026-09-09"
+  }
+ },
+ {
+  "security_code": "300776",
+  "security_name": "帝尔激光",
+  "name": {
+   "total": 849,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 270,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-27",
+   "newest_titled": "2026-08-20"
+  }
+ },
+ {
+  "security_code": "300811",
+  "security_name": "铂科新材",
+  "name": {
+   "total": 422,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-12",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 223,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-09",
+   "newest_titled": "2026-09-07"
+  }
+ },
+ {
+  "security_code": "300832",
+  "security_name": "新产业",
+  "name": {
+   "total": 3822,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 192,
+   "n": 100,
+   "titled": 33,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-07",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "300866",
+  "security_name": "安克创新",
+  "name": {
+   "total": 593,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 178,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-10",
+   "newest_titled": "2026-09-28"
+  }
+ },
+ {
+  "security_code": "300896",
+  "security_name": "爱美客",
+  "name": {
+   "total": 506,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 268,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-21",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "300910",
+  "security_name": "瑞丰新材",
+  "name": {
+   "total": 170,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-09-30",
+   "oldest": "2026-05-07",
+   "newest_titled": "2026-09-15"
+  },
+  "code": {
+   "total": 59,
+   "n": 59,
+   "titled": 12,
+   "newest": "2026-09-18",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "301589",
+  "security_name": "诺瓦星云",
+  "name": {
+   "total": 163,
+   "n": 100,
+   "titled": 26,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-01",
+   "newest_titled": "2026-09-09"
+  },
+  "code": {
+   "total": 100,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-12",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-07"
+  }
+ },
+ {
+  "security_code": "600007",
+  "security_name": "中国国贸",
+  "name": {
+   "total": 140,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-09-29",
+   "oldest": "2026-05-27",
+   "newest_titled": "2026-08-31"
+  },
+  "code": {
+   "total": 94,
+   "n": 94,
+   "titled": 11,
+   "newest": "2026-09-29",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-31"
+  }
+ },
+ {
+  "security_code": "600031",
+  "security_name": "三一重工",
+  "name": {
+   "total": 853,
+   "n": 100,
+   "titled": 32,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-16",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 164,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-02",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "600036",
+  "security_name": "招商银行",
+  "name": {
+   "total": 3571,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-09",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 243,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "600066",
+  "security_name": "宇通客车",
+  "name": {
+   "total": 574,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 216,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-06",
+   "newest_titled": "2026-09-14"
+  }
+ },
+ {
+  "security_code": "600085",
+  "security_name": "同仁堂",
+  "name": {
+   "total": 387,
+   "n": 100,
+   "titled": 44,
+   "newest": "2026-10-12",
+   "oldest": "2026-08-11",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 83,
+   "n": 83,
+   "titled": 45,
+   "newest": "2026-09-30",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-21"
+  }
+ },
+ {
+  "security_code": "600132",
+  "security_name": "重庆啤酒",
+  "name": {
+   "total": 238,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-09",
+   "newest_titled": "2026-09-24"
+  },
+  "code": {
+   "total": 75,
+   "n": 75,
+   "titled": 21,
+   "newest": "2026-09-24",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-09-24"
+  }
+ },
+ {
+  "security_code": "600160",
+  "security_name": "巨化股份",
+  "name": {
+   "total": 867,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-09-21"
+  },
+  "code": {
+   "total": 202,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-08",
+   "oldest": "2026-06-19",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "600176",
+  "security_name": "中国巨石",
+  "name": {
+   "total": 2067,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-02",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 481,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-10-10"
+  }
+ },
+ {
+  "security_code": "600183",
+  "security_name": "生益科技",
+  "name": {
+   "total": 3028,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 502,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-03",
+   "newest_titled": "2026-09-23"
+  }
+ },
+ {
+  "security_code": "600276",
+  "security_name": "恒瑞医药",
+  "name": {
+   "total": 3071,
+   "n": 100,
+   "titled": 36,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-30",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 592,
+   "n": 100,
+   "titled": 50,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-09",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "600285",
+  "security_name": "羚锐制药",
+  "name": {
+   "total": 191,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-18",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 112,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-28",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "600298",
+  "security_name": "安琪酵母",
+  "name": {
+   "total": 455,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 157,
+   "n": 100,
+   "titled": 33,
+   "newest": "2026-09-30",
+   "oldest": "2026-06-15",
+   "newest_titled": "2026-09-28"
+  }
+ },
+ {
+  "security_code": "600309",
+  "security_name": "万华化学",
+  "name": {
+   "total": 1367,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-14",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 224,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-08",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "600406",
+  "security_name": "国电南瑞",
+  "name": {
+   "total": 557,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-17",
+   "newest_titled": "2026-10-11"
+  },
+  "code": {
+   "total": 129,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-09-29",
+   "oldest": "2026-05-11",
+   "newest_titled": "2026-09-01"
+  }
+ },
+ {
+  "security_code": "600415",
+  "security_name": "小商品城",
+  "name": {
+   "total": 346,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-28",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 109,
+   "n": 100,
+   "titled": 20,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-23",
+   "newest_titled": "2026-09-23"
+  }
+ },
+ {
+  "security_code": "600426",
+  "security_name": "华鲁恒升",
+  "name": {
+   "total": 594,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 140,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-08",
+   "oldest": "2026-04-30",
+   "newest_titled": "2026-09-29"
+  }
+ },
+ {
+  "security_code": "600436",
+  "security_name": "片仔癀",
+  "name": {
+   "total": 582,
+   "n": 100,
+   "titled": 36,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-29",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 169,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-29",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "600486",
+  "security_name": "扬农化工",
+  "name": {
+   "total": 201,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-11",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 71,
+   "n": 71,
+   "titled": 6,
+   "newest": "2026-09-18",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-25"
+  }
+ },
+ {
+  "security_code": "600519",
+  "security_name": "贵州茅台",
+  "name": {
+   "total": 4067,
+   "n": 100,
+   "titled": 36,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 573,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-21",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "600563",
+  "security_name": "法拉电子",
+  "name": {
+   "total": 283,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-20",
+   "newest_titled": "2026-09-21"
+  },
+  "code": {
+   "total": 97,
+   "n": 97,
+   "titled": 22,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "600570",
+  "security_name": "恒生电子",
+  "name": {
+   "total": 479,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-09-08"
+  },
+  "code": {
+   "total": 65,
+   "n": 65,
+   "titled": 21,
+   "newest": "2026-09-16",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-09-08"
+  }
+ },
+ {
+  "security_code": "600600",
+  "security_name": "青岛啤酒",
+  "name": {
+   "total": 469,
+   "n": 100,
+   "titled": 36,
+   "newest": "2026-10-12",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 105,
+   "n": 100,
+   "titled": 26,
+   "newest": "2026-09-23",
+   "oldest": "2026-04-16",
+   "newest_titled": "2026-09-04"
+  }
+ },
+ {
+  "security_code": "600660",
+  "security_name": "福耀玻璃",
+  "name": {
+   "total": 439,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-25",
+   "newest_titled": "2026-10-02"
+  },
+  "code": {
+   "total": 78,
+   "n": 78,
+   "titled": 37,
+   "newest": "2026-10-04",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "600690",
+  "security_name": "海尔智家",
+  "name": {
+   "total": 910,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 150,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-12",
+   "oldest": "2026-05-19",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "600750",
+  "security_name": "华润江中",
+  "name": {
+   "total": 261,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-09-10"
+  },
+  "code": {
+   "total": 86,
+   "n": 86,
+   "titled": 15,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-10"
+  }
+ },
+ {
+  "security_code": "600803",
+  "security_name": "新奥股份",
+  "name": {
+   "total": 341,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-03",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 95,
+   "n": 95,
+   "titled": 15,
+   "newest": "2026-10-12",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-29"
+  }
+ },
+ {
+  "security_code": "600809",
+  "security_name": "山西汾酒",
+  "name": {
+   "total": 857,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-04",
+   "newest_titled": "2026-09-16"
+  },
+  "code": {
+   "total": 169,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-09",
+   "newest_titled": "2026-09-04"
+  }
+ },
+ {
+  "security_code": "600862",
+  "security_name": "中航高科",
+  "name": {
+   "total": 219,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-13",
+   "newest_titled": "2026-09-08"
+  },
+  "code": {
+   "total": 62,
+   "n": 62,
+   "titled": 9,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-08"
+  }
+ },
+ {
+  "security_code": "600885",
+  "security_name": "宏发股份",
+  "name": {
+   "total": 492,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-24",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 204,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-23",
+   "newest_titled": "2026-07-30"
+  }
+ },
+ {
+  "security_code": "600887",
+  "security_name": "伊利股份",
+  "name": {
+   "total": 847,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 155,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-10",
+   "newest_titled": "2026-09-17"
+  }
+ },
+ {
+  "security_code": "600900",
+  "security_name": "长江电力",
+  "name": {
+   "total": 1026,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-11",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 104,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-12",
+   "oldest": "2026-04-23",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "600938",
+  "security_name": "中国海油",
+  "name": {
+   "total": 1457,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-23",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 167,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-18",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "600970",
+  "security_name": "中材国际",
+  "name": {
+   "total": 143,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-29",
+   "newest_titled": "2026-08-28"
+  },
+  "code": {
+   "total": 69,
+   "n": 69,
+   "titled": 12,
+   "newest": "2026-09-23",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "600989",
+  "security_name": "宝丰能源",
+  "name": {
+   "total": 695,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-03",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 148,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-08",
+   "oldest": "2026-05-07",
+   "newest_titled": "2026-08-31"
+  }
+ },
+ {
+  "security_code": "600993",
+  "security_name": "马应龙",
+  "name": {
+   "total": 160,
+   "n": 100,
+   "titled": 40,
+   "newest": "2026-09-30",
+   "oldest": "2026-05-22",
+   "newest_titled": "2026-09-16"
+  },
+  "code": {
+   "total": 79,
+   "n": 79,
+   "titled": 30,
+   "newest": "2026-09-30",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-16"
+  }
+ },
+ {
+  "security_code": "601009",
+  "security_name": "南京银行",
+  "name": {
+   "total": 1030,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 189,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-21",
+   "newest_titled": "2026-09-15"
+  }
+ },
+ {
+  "security_code": "601088",
+  "security_name": "中国神华",
+  "name": {
+   "total": 1324,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 233,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-15",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "601100",
+  "security_name": "恒立液压",
+  "name": {
+   "total": 601,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-04",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 84,
+   "n": 84,
+   "titled": 19,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-25"
+  }
+ },
+ {
+  "security_code": "601138",
+  "security_name": "工业富联",
+  "name": {
+   "total": 2928,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 509,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "601225",
+  "security_name": "陕西煤业",
+  "name": {
+   "total": 734,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-09",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 158,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-10",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "601288",
+  "security_name": "农业银行",
+  "name": {
+   "total": 3502,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-10",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 232,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-03",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "601318",
+  "security_name": "中国平安",
+  "name": {
+   "total": 2648,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-23",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 237,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "601398",
+  "security_name": "工商银行",
+  "name": {
+   "total": 5151,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-12",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 283,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-07",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "601717",
+  "security_name": "中创智领",
+  "name": {
+   "total": 315,
+   "n": 100,
+   "titled": 38,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-31",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 119,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-24",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "601838",
+  "security_name": "成都银行",
+  "name": {
+   "total": 779,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-12",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 174,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-12",
+   "newest_titled": "2026-08-27"
+  }
+ },
+ {
+  "security_code": "601899",
+  "security_name": "紫金矿业",
+  "name": {
+   "total": 3871,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 533,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "601939",
+  "security_name": "建设银行",
+  "name": {
+   "total": 4061,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-10",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 227,
+   "n": 100,
+   "titled": 21,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-28",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "601965",
+  "security_name": "中国汽研",
+  "name": {
+   "total": 220,
+   "n": 100,
+   "titled": 48,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-09",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 53,
+   "n": 53,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "603067",
+  "security_name": "振华股份",
+  "name": {
+   "total": 300,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-22",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 98,
+   "n": 98,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "603129",
+  "security_name": "春风动力",
+  "name": {
+   "total": 439,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-12",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 153,
+   "n": 100,
+   "titled": 18,
+   "newest": "2026-10-12",
+   "oldest": "2026-05-21",
+   "newest_titled": "2026-09-18"
+  }
+ },
+ {
+  "security_code": "603156",
+  "security_name": "养元饮品",
+  "name": {
+   "total": 231,
+   "n": 100,
+   "titled": 33,
+   "newest": "2026-09-30",
+   "oldest": "2026-08-10",
+   "newest_titled": "2026-09-16"
+  },
+  "code": {
+   "total": 103,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-09-14",
+   "oldest": "2026-04-24",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "603195",
+  "security_name": "公牛集团",
+  "name": {
+   "total": 212,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-14",
+   "newest_titled": "2026-10-10"
+  },
+  "code": {
+   "total": 74,
+   "n": 74,
+   "titled": 16,
+   "newest": "2026-10-03",
+   "oldest": "2026-04-29",
+   "newest_titled": "2026-10-03"
+  }
+ },
+ {
+  "security_code": "603259",
+  "security_name": "药明康德",
+  "name": {
+   "total": 3936,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-30",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 430,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-24",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "603279",
+  "security_name": "景津装备",
+  "name": {
+   "total": 73,
+   "n": 73,
+   "titled": 34,
+   "newest": "2026-09-29",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 30,
+   "n": 30,
+   "titled": 16,
+   "newest": "2026-08-28",
+   "oldest": "2026-04-23",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "603288",
+  "security_name": "海天味业",
+  "name": {
+   "total": 718,
+   "n": 100,
+   "titled": 28,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-13",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 128,
+   "n": 100,
+   "titled": 32,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-22",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "603338",
+  "security_name": "浙江鼎力",
+  "name": {
+   "total": 130,
+   "n": 100,
+   "titled": 33,
+   "newest": "2026-09-11",
+   "oldest": "2026-04-16",
+   "newest_titled": "2026-08-29"
+  },
+  "code": {
+   "total": 45,
+   "n": 45,
+   "titled": 10,
+   "newest": "2026-09-11",
+   "oldest": "2026-04-16",
+   "newest_titled": "2026-08-28"
+  }
+ },
+ {
+  "security_code": "603369",
+  "security_name": "今世缘",
+  "name": {
+   "total": 434,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-18",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 90,
+   "n": 90,
+   "titled": 23,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-19"
+  }
+ },
+ {
+  "security_code": "603501",
+  "security_name": "豪威集团",
+  "name": {
+   "total": 691,
+   "n": 100,
+   "titled": 23,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-19",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 196,
+   "n": 100,
+   "titled": 15,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-30",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "603505",
+  "security_name": "金石资源",
+  "name": {
+   "total": 231,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-12",
+   "oldest": "2026-06-22",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 95,
+   "n": 95,
+   "titled": 20,
+   "newest": "2026-10-12",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-09-28"
+  }
+ },
+ {
+  "security_code": "603508",
+  "security_name": "思维列控",
+  "name": {
+   "total": 68,
+   "n": 68,
+   "titled": 28,
+   "newest": "2026-09-07",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-07"
+  },
+  "code": {
+   "total": 25,
+   "n": 25,
+   "titled": 11,
+   "newest": "2026-09-07",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-09-07"
+  }
+ },
+ {
+  "security_code": "603529",
+  "security_name": "爱玛科技",
+  "name": {
+   "total": 182,
+   "n": 100,
+   "titled": 64,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-13",
+   "newest_titled": "2026-09-28"
+  },
+  "code": {
+   "total": 68,
+   "n": 68,
+   "titled": 44,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-09-24"
+  }
+ },
+ {
+  "security_code": "603596",
+  "security_name": "伯特利",
+  "name": {
+   "total": 295,
+   "n": 100,
+   "titled": 31,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 81,
+   "n": 81,
+   "titled": 29,
+   "newest": "2026-10-10",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-10-09"
+  }
+ },
+ {
+  "security_code": "603606",
+  "security_name": "东方电缆",
+  "name": {
+   "total": 275,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-21",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 72,
+   "n": 72,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-20",
+   "newest_titled": "2026-08-24"
+  }
+ },
+ {
+  "security_code": "603806",
+  "security_name": "福斯特",
+  "name": {
+   "total": 329,
+   "n": 100,
+   "titled": 26,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-27",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 102,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-04-17",
+   "newest_titled": "2026-08-20"
+  }
+ },
+ {
+  "security_code": "603855",
+  "security_name": "华荣股份",
+  "name": {
+   "total": 125,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-08",
+   "oldest": "2026-05-08",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 80,
+   "n": 80,
+   "titled": 10,
+   "newest": "2026-09-09",
+   "oldest": "2026-04-28",
+   "newest_titled": "2026-08-27"
+  }
+ },
+ {
+  "security_code": "603993",
+  "security_name": "洛阳钼业",
+  "name": {
+   "total": 2183,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 284,
+   "n": 100,
+   "titled": 31,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-19",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "605117",
+  "security_name": "德业股份",
+  "name": {
+   "total": 948,
+   "n": 100,
+   "titled": 17,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-10",
+   "newest_titled": "2026-10-12"
+  },
+  "code": {
+   "total": 126,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-12",
+   "oldest": "2026-05-06",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "605305",
+  "security_name": "中际联合",
+  "name": {
+   "total": 282,
+   "n": 100,
+   "titled": 29,
+   "newest": "2026-10-09",
+   "oldest": "2026-07-13",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 167,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-09",
+   "oldest": "2026-05-26",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "605499",
+  "security_name": "东鹏饮料",
+  "name": {
+   "total": 972,
+   "n": 100,
+   "titled": 22,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-08",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 220,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-12",
+   "oldest": "2026-07-27",
+   "newest_titled": "2026-09-18"
+  }
+ },
+ {
+  "security_code": "688008",
+  "security_name": "澜起科技",
+  "name": {
+   "total": 7539,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-09",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 937,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "688012",
+  "security_name": "中微公司",
+  "name": {
+   "total": 5528,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 851,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-12"
+  }
+ },
+ {
+  "security_code": "688018",
+  "security_name": "乐鑫科技",
+  "name": {
+   "total": 923,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 426,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "688019",
+  "security_name": "安集科技",
+  "name": {
+   "total": 1693,
+   "n": 100,
+   "titled": 1,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 492,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-02",
+   "newest_titled": "2026-09-03"
+  }
+ },
+ {
+  "security_code": "688041",
+  "security_name": "海光信息",
+  "name": {
+   "total": 5938,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 609,
+   "n": 100,
+   "titled": 8,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "688072",
+  "security_name": "拓荆科技",
+  "name": {
+   "total": 4025,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-08",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 601,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-04",
+   "newest_titled": ""
+  }
+ },
+ {
+  "security_code": "688082",
+  "security_name": "盛美上海",
+  "name": {
+   "total": 1608,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-28",
+   "newest_titled": "2026-09-30"
+  },
+  "code": {
+   "total": 526,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "688111",
+  "security_name": "金山办公",
+  "name": {
+   "total": 1785,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-22",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 408,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-28",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "688120",
+  "security_name": "华海清科",
+  "name": {
+   "total": 2254,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-24",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 472,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-22",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "688122",
+  "security_name": "西部超导",
+  "name": {
+   "total": 502,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-28",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 97,
+   "n": 97,
+   "titled": 14,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-14",
+   "newest_titled": "2026-08-27"
+  }
+ },
+ {
+  "security_code": "688188",
+  "security_name": "柏楚电子",
+  "name": {
+   "total": 326,
+   "n": 100,
+   "titled": 25,
+   "newest": "2026-10-08",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-09-29"
+  },
+  "code": {
+   "total": 195,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-09-29",
+   "oldest": "2026-06-18",
+   "newest_titled": "2026-09-29"
+  }
+ },
+ {
+  "security_code": "688190",
+  "security_name": "云路股份",
+  "name": {
+   "total": 154,
+   "n": 100,
+   "titled": 24,
+   "newest": "2026-10-12",
+   "oldest": "2026-05-28",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 83,
+   "n": 83,
+   "titled": 11,
+   "newest": "2026-09-29",
+   "oldest": "2026-04-13",
+   "newest_titled": "2026-08-29"
+  }
+ },
+ {
+  "security_code": "688200",
+  "security_name": "华峰测控",
+  "name": {
+   "total": 1932,
+   "n": 100,
+   "titled": 0,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-28",
+   "newest_titled": ""
+  },
+  "code": {
+   "total": 401,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-04",
+   "newest_titled": "2026-09-09"
+  }
+ },
+ {
+  "security_code": "688208",
+  "security_name": "道通科技",
+  "name": {
+   "total": 327,
+   "n": 100,
+   "titled": 44,
+   "newest": "2026-10-06",
+   "oldest": "2026-07-28",
+   "newest_titled": "2026-09-23"
+  },
+  "code": {
+   "total": 141,
+   "n": 100,
+   "titled": 35,
+   "newest": "2026-09-15",
+   "oldest": "2026-05-14",
+   "newest_titled": "2026-09-15"
+  }
+ },
+ {
+  "security_code": "688235",
+  "security_name": "百济神州",
+  "name": {
+   "total": 3060,
+   "n": 100,
+   "titled": 3,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-30",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 440,
+   "n": 100,
+   "titled": 12,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-17",
+   "newest_titled": "2026-09-07"
+  }
+ },
+ {
+  "security_code": "688271",
+  "security_name": "联影医疗",
+  "name": {
+   "total": 1059,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-17",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 280,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-17",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "688278",
+  "security_name": "特宝生物",
+  "name": {
+   "total": 439,
+   "n": 100,
+   "titled": 11,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 125,
+   "n": 100,
+   "titled": 27,
+   "newest": "2026-10-13",
+   "oldest": "2026-05-11",
+   "newest_titled": "2026-10-08"
+  }
+ },
+ {
+  "security_code": "688281",
+  "security_name": "华秦科技",
+  "name": {
+   "total": 227,
+   "n": 100,
+   "titled": 23,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-17",
+   "newest_titled": "2026-08-26"
+  },
+  "code": {
+   "total": 75,
+   "n": 75,
+   "titled": 13,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-28",
+   "newest_titled": "2026-08-20"
+  }
+ },
+ {
+  "security_code": "688300",
+  "security_name": "联瑞新材",
+  "name": {
+   "total": 818,
+   "n": 100,
+   "titled": 7,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-10-08"
+  },
+  "code": {
+   "total": 395,
+   "n": 100,
+   "titled": 1,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-27",
+   "newest_titled": "2026-08-27"
+  }
+ },
+ {
+  "security_code": "688301",
+  "security_name": "奕瑞科技",
+  "name": {
+   "total": 660,
+   "n": 100,
+   "titled": 13,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-07",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 233,
+   "n": 100,
+   "titled": 14,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-30",
+   "newest_titled": "2026-10-13"
+  }
+ },
+ {
+  "security_code": "688516",
+  "security_name": "奥特维",
+  "name": {
+   "total": 347,
+   "n": 100,
+   "titled": 30,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-04",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 159,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-06-02",
+   "newest_titled": "2026-08-25"
+  }
+ },
+ {
+  "security_code": "688617",
+  "security_name": "惠泰医疗",
+  "name": {
+   "total": 678,
+   "n": 100,
+   "titled": 10,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-11",
+   "newest_titled": "2026-09-22"
+  },
+  "code": {
+   "total": 291,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-21",
+   "newest_titled": "2026-09-20"
+  }
+ },
+ {
+  "security_code": "688692",
+  "security_name": "达梦数据",
+  "name": {
+   "total": 432,
+   "n": 100,
+   "titled": 19,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-10-09"
+  },
+  "code": {
+   "total": 234,
+   "n": 100,
+   "titled": 6,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-29",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "688708",
+  "security_name": "佳驰科技",
+  "name": {
+   "total": 119,
+   "n": 100,
+   "titled": 46,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-24",
+   "newest_titled": "2026-09-11"
+  },
+  "code": {
+   "total": 51,
+   "n": 51,
+   "titled": 17,
+   "newest": "2026-10-09",
+   "oldest": "2026-04-15",
+   "newest_titled": "2026-08-26"
+  }
+ },
+ {
+  "security_code": "688777",
+  "security_name": "中控技术",
+  "name": {
+   "total": 1089,
+   "n": 100,
+   "titled": 16,
+   "newest": "2026-10-13",
+   "oldest": "2026-09-15",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 224,
+   "n": 100,
+   "titled": 9,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-08",
+   "newest_titled": "2026-09-30"
+  }
+ },
+ {
+  "security_code": "688981",
+  "security_name": "中芯国际",
+  "name": {
+   "total": 9755,
+   "n": 100,
+   "titled": 5,
+   "newest": "2026-10-13",
+   "oldest": "2026-10-09",
+   "newest_titled": "2026-10-13"
+  },
+  "code": {
+   "total": 724,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-31",
+   "newest_titled": "2026-09-21"
+  }
+ },
+ {
+  "security_code": "920394",
+  "security_name": "民士达",
+  "name": {
+   "total": 387,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-25",
+   "newest_titled": "2026-09-21"
+  },
+  "code": {
+   "total": 257,
+   "n": 100,
+   "titled": 2,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-24",
+   "newest_titled": "2026-09-15"
+  }
+ },
+ {
+  "security_code": "920599",
+  "security_name": "同力股份",
+  "name": {
+   "total": 337,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-08-26",
+   "newest_titled": "2026-09-16"
+  },
+  "code": {
+   "total": 220,
+   "n": 100,
+   "titled": 4,
+   "newest": "2026-10-13",
+   "oldest": "2026-07-22",
+   "newest_titled": "2026-09-16"
+  }
+ }
+]

@@ -1972,5 +1972,24 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于美国国际贸易委员会对公司及控股子公司开展 337 调查的公告",
+   "notice_date": "2026-10-12",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202610111830333618_1.pdf",
+   "summary": "ITC 立案 337-TA-1526，公司及三家全资子公司被列为被申请人；公司称涉案产品处于内部验证评估阶段，不造成实质性影响。",
+   "use": "事件事实",
+   "source_sha256": "2b59ba802b1bc86f2a60b21996bfda4ec446fc96417533338fd87b250dd99e58"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "美国 337 调查事件复核",
+   "summary": "2026-10-13 事件复核：2026-10 ITC 立案 337-TA-1526（Vicor，AI 服务器垂直供电）；此前 337-TA-1370 已于 2025-02 终裁签发有限排除令，未见公司披露。维持 worth_attention、L2，分数不变，登记复核触发。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:601138:event"
+  }
+ ]
 }

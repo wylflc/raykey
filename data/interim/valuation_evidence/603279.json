@@ -1534,5 +1534,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司实际控制人、董事长兼总经理被留置的公告",
+   "notice_date": "2025-06-13",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202506121689663678_1.pdf",
+   "summary": "姜桂廷被保德县监察委员会实施留置、立案调查；公告未写事由，未称与公司无关。",
+   "use": "事件事实",
+   "source_sha256": "12dd26cda808d4e3cdf65d08a3233453987d103e29b71baeebbd0fb3fb6a9a46"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司实际控制人、董事长兼总经理解除留置的公告",
+   "notice_date": "2025-11-07",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202511061776242047_1.pdf",
+   "summary": "2025-11-06 收到《解除留置通知书》，已能正常履行董事长、总经理职责；未披露案件结论。",
+   "use": "事件事实",
+   "source_sha256": "2fea7df8c827e299050852b959ceca9ef2c6736a22ccf8425dbc0733051d89d1"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "实际控制人曾被留置事件复核",
+   "summary": "2026-10-13 事件复核：实控人兼董事长、总经理 2025-06 被留置立案调查、11 月解除，事由与结论未披露，留置期间无公告的代行安排，解除后减持。维持 worth_attention、L2；Q4 72→62，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:603279:event"
+  }
+ ]
 }

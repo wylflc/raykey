@@ -1432,5 +1432,34 @@
     "RATING": "买入"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于贾汪分公司收到《行政处罚决定书》的公告",
+   "notice_date": "2026-06-09",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202606081823362099_1.pdf",
+   "summary": "中央安全生产考核巡查组 2026-04-07 检查发现超品种生产、超范围存储，贾汪区应急管理局合并罚款 49.17 万元；05-10 整改完成。",
+   "use": "事件事实",
+   "source_sha256": "5cef836e2d1a946e9472d75664a477be95a1adcdb3a9bac789a72a80950c5823"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于子公司召回重酒石酸卡巴拉汀胶囊的公告",
+   "notice_date": "2026-01-30",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202601291818545238_1.pdf",
+   "summary": "国家药监局自 2026-01-23 起暂停印度 Sun Pharma 该产品进口、销售和使用，恩华和信作为境内责任人启动召回。",
+   "use": "事件事实",
+   "source_sha256": "1335d851072dbf249d9c6e4dbbf805274d4d5f8d2ea7527b4c69a41f83bbe5eb"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "安全生产处罚与代理产品召回事件复核",
+   "summary": "2026-10-13 事件复核：贾汪原料药厂 2026-04 被中央安全生产巡查组查出重大事故隐患并罚款 49.17 万元，代理的进口药 2026-01 被暂停召回；金额小、不涉及主力制剂。维持 worth_attention、L2；Q4 70→68。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:002262:event"
+  }
+ ]
 }

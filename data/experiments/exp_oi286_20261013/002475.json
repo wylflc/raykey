@@ -1,0 +1,65 @@
+{
+  "security_code": "002475",
+  "security_name": "立讯精密",
+  "events": [
+    {
+      "event": "美国国际贸易委员会应 Vicor Corporation 申请，对垂直供电系统（VPD）、其组件及含该产品的计算系统立案 337 调查（337-TA-1526），公司及控股子公司东莞立讯技术股份有限公司被列为被申请人；Vicor 同时在得州东区联邦法院就同一专利起诉",
+      "category": "调查",
+      "first_public_date": "2026-09-14",
+      "authority": "美国国际贸易委员会（USITC，337-TA-1526）；平行诉讼在美国得克萨斯州东区联邦地区法院（2:26-cv-00796）",
+      "subject": "立讯精密工业股份有限公司、东莞立讯技术股份有限公司（Dongguan Luxshare Technology Co., Ltd. a/k/a Luxshare-Tech）",
+      "subject_role": "上市公司本身及控股子公司",
+      "company_involved": "是",
+      "facts": "时间线：Vicor 2026-09-08 在得州东区法院起诉（Vicor Corporation v. Delta Electronics, Inc. et al.，被告含立讯精密、东莞立讯技术，附件一为 '734 专利，原告要求陪审团审理）；09-09 向 ITC 提交申诉、09-10 补充；《联邦公报》2026-09-14 刊登收到申诉通知（91 FR 58175，DN 3936），已把立讯精密和东莞立讯技术列为拟定被申请人；ITC 于美东时间 2026-10-09 投票立案并发布立案通知和新闻稿；公司 2026-10-10 公告（2026-107）。本条 first_public_date 取《联邦公报》刊登日，公司公告日为 10-10。涉案专利：US 10,903,734 一件，立案范围为权利要求 1-8、11-14、18-26、40-56、65-71、80、81、83、84、90-93、95。涉案产品（立案通知的通俗描述）：用于数据中心服务器、人工智能和云计算系统，为 AI 加速器、TPU、GPU、CPU 供电的垂直供电系统及其组件，以及含该产品的计算系统。申请人请求的救济：有限排除令和禁止令（cease and desist orders），收到申诉通知另载请求在 60 天总统审查期内征收保证金；没有请求普遍排除令。被申请人共 20 家：Delta Electronics, Inc.、Delta Electronics (Americas) Ltd.、DET Logistics (USA) Corporation、Infineon Technologies AG、Luxshare Precision Industry Co., Ltd.、Dongguan Luxshare Technology Co., Ltd.、Monolithic Power Systems, Inc.、Chengdu Monolithic Power Systems Co., Ltd.、MPS International (Shanghai) Ltd.、Flex Ltd.、Celestica Inc.、Quanta Computer Inc.、Quanta Cloud Technology Inc.、Quanta Cloud Technology USA LLC、Quanta Computer USA Inc.、Hon Hai Precision Industry Co. Ltd.（Foxconn）、Foxconn Industrial Internet Co. Ltd.（工业富联）、FII USA Inc.、Ingrasys Technology Inc.、Ingrasys Technology USA Inc.。不公平进口调查办公室（OUII）不作为当事方参加。公司公告只披露了调查编号、专利号、产品类别和本公司两家主体，没有披露申请人请求的救济、其他被申请人和得州平行诉讼。",
+      "status_as_of_2026_10_13": "立案初期，ITC 未就侵权作任何实体认定（新闻稿原文）。程序：首席行政法官指定主审行政法官；被申请人须在申诉书和立案通知送达后 20 日内答辩；ITC 在立案后 45 天内（约 2026-11-23 前）确定目标结案日；救济令签发即生效，60 日内美国贸易代表未否决则终局。截至查询时《联邦公报》尚未检索到 337-TA-1526 的立案通知（立案通知读的是 USITC 文件的网页存档）。得州平行诉讼：案卷索引显示 09-08 签发传票，其后有律师出庭通知、一条送达回执、09-21 与 10-02 两次无异议延期答辩申请，最近一次备案为 10-06，未结案；索引不显示这些条目对应哪位被告。",
+      "company_arrangement": "公告称已启动对涉案专利和相关产品的研究，组织技术、法律、业务团队，“结合此前相关案件的应对经验”制定应对策略；将积极应诉，推进专利技术分析、产品方案评估及必要的技术优化，并加强与客户、供应链伙伴沟通。未披露聘请的律师、是否提出专利无效请求。",
+      "financial_impact": "未披露涉案产品收入金额。公司表述：涉案产品主要用于数据中心领域电源模块与处理器的集成供电方案，处于客户验证阶段、尚未量产，预计不会对现阶段生产经营及当期经营业绩产生重大不利影响。可对照的已披露口径：2026 年半年报“通讯及数据中心”收入 166.09 亿元、占营收 9.52%、同比 +49.66%；半年报称 DC-DC 低压服务器模块电源业务已实现从三次电源到一次电源的规模化量产出货，正布局高压和特高压电源产品；2026-08-27 投资者关系记录称通过 VPD 方案降低线路损耗是公司与客户共同推进的方向，DC-DC 预计未来三年每年有 2 至 5 倍增长；半年报外销收入 1,460.59 亿元、占 83.70%，美国占比未单列；被列名子公司东莞立讯技术 2026 年上半年营收 73.53 亿元、净利润 7.37 亿元。"
+    },
+    {
+      "event": "Vicor 此前另一案：ITC 2026-02-11 立案的 337-TA-1484 调查（电源转换器、电路板组件及含该产品的计算系统，专利 US 12,395,087）已把公司和东莞立讯技术列为被申请人，同案得州东区诉讼 2:26-cv-00018 已因 ITC 程序中止；公告标题清单中没有这一案的专项公告",
+      "category": "调查",
+      "first_public_date": "2026-01-09",
+      "authority": "美国国际贸易委员会（337-TA-1484）；美国得克萨斯州东区联邦地区法院（2:26-cv-00018）",
+      "subject": "立讯精密工业股份有限公司、东莞立讯技术股份有限公司",
+      "subject_role": "上市公司本身及控股子公司",
+      "company_involved": "是",
+      "facts": "得州东区法院案卷索引：Vicor Corporation v. Luxshare Precision Industry Co., Ltd. et al. 于 2026-01-09 起诉，被告为立讯精密、东莞立讯技术、Shanghai Peiyuan Electronics Co., Ltd.（d/b/a MetaPWR）；两家立讯主体 2026-01-16 被送达，02-04 被告律师出庭；03-02 法院依 28 U.S.C. §1659 准许中止，03-09 出具更正后的中止令（等待 ITC 相关程序）；05-15 一名被告律师退出通知。ITC：Vicor 2026-01-12 提交申诉（01-21、23、26 补充，01-27 重新提交公开版），2026-02-11 立案，《联邦公报》2026-02-17 刊登（91 FR 7300，文号 2026-03032）；涉案专利 US 12,395,087 的权利要求 1-20、24、25、28-39、41-50、60-63、66、68-74、76、77、80-85、87-90、94；涉案产品为用于数据中心服务器、AI 与云计算系统、为 AI 加速器、TPU、GPU、CPU 供电的电源转换器，以及含该产品的电路板组件和计算系统；被申请人 15 家：Delta 三家、立讯精密、东莞立讯技术、Shanghai Peiyuan Electronics（MetaPWR）、Monolithic Power Systems 三家、Wistron、Wiwynn、Quanta 四家；申请人请求有限排除令和禁止令；OUII 不参加。A 股披露情况：公司 2025-10-01 至 2026-10-14 的公告标题里只有 10-10 一则 337 公告；2025 年年报和 2026 年半年报全文检索“Vicor”“337调查”“国际贸易委员会”“ITC”均无命中，两份报告都写无重大诉讼仲裁；10-10 公告写到“此前 Vicor 已多次围绕数据中心电源相关技术向产业链企业发起 337 调查”，没有写明公司已是其中一案的被申请人。",
+      "status_as_of_2026_10_13": "ITC 调查在审，未见终止或裁决的《联邦公报》通知（没有逐一检索）；媒体称目标结案日为 2027-09-20，未核到 ITC 文件。得州诉讼处于中止状态，索引最近备案日 2026-05-15。",
+      "company_arrangement": "未见公司就该案的公告或说明；法院索引显示公司已聘律师出庭并申请中止诉讼。",
+      "financial_impact": "未披露"
+    }
+  ],
+  "management_changes_since_event": "事件后（2026-10-10 至 10-13）公告清单中没有董事、高级管理人员变动。2026 年内与治理相关的公告为 02-06 变更签字注册会计师及质量控制复核人、多次修订内部制度和章程，未见董事长或高管更换公告。",
+  "operating_readthrough": "337-TA-1526 立案在 2026-10-09，其后尚无定期报告（三季报未披露）。事件前最近披露：2026 年半年报（2026-08-25 披露）营收 1,745.04 亿元、同比 +40.16%，归母净利润 78.43 亿元、同比 +18.04%，扣非归母 59.62 亿元、同比 +6.47%；2026 年第三季度业绩预告（公告 2026-090，2026-08-25 披露）预计前三季度归母净利润 132.46 亿—143.98 亿元、同比 +15%—25%，扣非 103.65 亿—117.17 亿元、同比 +8.63%—22.79%；2026 年一季报营收 838.88 亿元、同比 +35.77%，归母 36.60 亿元、同比 +20.24%；2025 年报营收 3,323.44 亿元、同比 +23.64%，归母 166.00 亿元、同比 +24.20%（来源：公告原文及仓库面板 data/raw/financials/2026-06-30.csv、2026-03-31.csv、2025-12-31.csv）。半年报和业绩预告均早于 337-TA-1526 立案，但晚于 337-TA-1484 立案。",
+  "prior_history": "（1）安费诺 337 调查：安费诺集团 2020-12-18 向 ITC 申请调查公司及子公司的电连接器与壳体产品（媒体称案号 337-TA-1241），公司 2020-12-22、2021-01-25、2022-03-15 公告声明与进展；2022-09-13 公告终裁：ITC 于 2022-09-09 确认初裁并终止调查，仅少数已不再出口美国的上一代产品落入安费诺一件专利的部分权利要求，另两件专利涉及的被控产品不侵权或专利权利要求无效，现行设计方案被认定不侵权，公司称未对生产经营造成实质性影响。（2）监管措施：2021-12-28 深交所公司部监管函〔2021〕第 220 号，事由为 2021-12-03 披露的股票期权注销数量等数据不准确、其后两次更正；2022-02-22 公司公告最近五年无处罚、仅此一份监管函并列出整改措施。（3）2023-01-05 澄清公告：否认台湾地区媒体“苹果要求供应商减产，立讯精密受创最大”的报道。（4）2025 年年报、2026 年半年报均载无处罚及整改；年报其他诉讼已结 8,307.54 万元、在审 26,290.65 万元，半年报已结 527.5 万元、未结 1,238.18 万元。",
+  "open_questions": [
+    "涉案 VPD 产品的具体型号、客户、在美进口或销售金额，公司没有披露；“客户验证、未量产”为公司自述，无外部佐证。",
+    "337-TA-1526 的主审行政法官和目标结案日尚未公布；Vicor 申诉书公开版（EDIS）没有读到。",
+    "得州东区 2:26-cv-00796 中立讯两家主体是否已被送达、是否申请中止，公开索引辨认不出。",
+    "337-TA-1484 当前程序阶段与目标结案日（媒体称 2027-09-20）没有核到 ITC 文件；该案被控的立讯产品是否已量产、涉及多少收入不明。",
+    "公司是否在 A 股公告以外的渠道（如 H 股招股说明书）披露过 337-TA-1484 和得州诉讼，没有查；公告标题清单和两份定期报告里没有。",
+    "安费诺案案号 337-TA-1241 取自媒体，公司公告未写案号。"
+  ],
+  "sources": [
+    {"title": "立讯精密：关于公司及控股子公司涉及美国国际贸易委员会337调查的公告（2026-107）", "date": "2026-10-10", "url": "https://pdf.dfcfw.com/pdf/H2_AN202610101830317008_1.pdf"},
+    {"title": "USITC Notice of Institution of Investigation, Inv. No. 337-TA-1526（经网页存档读取）", "date": "2026-10-09", "url": "https://web.archive.org/web/20261010053447id_/https://www.usitc.gov/secretary/fed_reg_notices/337/337_1526_notice10092026sgl.pdf"},
+    {"title": "USITC 新闻稿：USITC Institutes Section 337 Investigation of Certain Vertical Power Delivery Systems（经网页存档读取）", "date": "2026-10-09", "url": "https://web.archive.org/web/20261012044655/https://www.usitc.gov/press_room/news_release/2026/er1009_69342.htm"},
+    {"title": "Federal Register 91 FR 58175：Notice of Receipt of Complaint, DN 3936（文号 2026-18644）", "date": "2026-09-14", "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18644/notice-of-receipt-of-complaint-solicitation-of-comments-relating-to-the-public-interest"},
+    {"title": "法院案卷索引：Vicor Corporation v. Delta Electronics, Inc. et al., 2:26-cv-00796 (E.D. Tex.)", "date": "2026-09-08", "url": "https://www.courtlistener.com/docket/74758555/vicor-corporation-v-delta-electronics-inc/"},
+    {"title": "Federal Register 91 FR 7300：337-TA-1484 Notice of Institution of Investigation（文号 2026-03032）", "date": "2026-02-17", "url": "https://www.federalregister.gov/documents/2026/02/17/2026-03032/certain-power-converters-circuit-board-assemblies-and-computing-systems-containing-the-same-notice"},
+    {"title": "法院案卷索引：Vicor Corporation v. Luxshare Precision Industry Co., Ltd. et al., 2:26-cv-00018 (E.D. Tex.)", "date": "2026-01-09", "url": "https://www.courtlistener.com/docket/72124000/vicor-corporation-v-luxshare-precision-industry-co-ltd/"},
+    {"title": "立讯精密：2026 年半年度报告", "date": "2026-08-25", "url": "https://pdf.dfcfw.com/pdf/H2_AN202608240006746756_1.pdf"},
+    {"title": "立讯精密：2026 年第三季度业绩预告（2026-090）", "date": "2026-08-25", "url": "https://pdf.dfcfw.com/pdf/H2_AN202608241828374645_1.pdf"},
+    {"title": "立讯精密：投资者关系管理信息 20260827", "date": "2026-08-27", "url": "https://pdf.dfcfw.com/pdf/H2_AN202608271828529930_1.pdf"},
+    {"title": "立讯精密：2025 年年度报告", "date": "2026-04-15", "url": "https://pdf.dfcfw.com/pdf/H2_AN202604141821200692_1.pdf"},
+    {"title": "立讯精密：关于美国国际贸易委员会对公司开展337调查的最终裁决结果公告（2022-075）", "date": "2022-09-13", "url": "https://pdf.dfcfw.com/pdf/H2_AN202209131578309148_1.pdf"},
+    {"title": "立讯精密：关于美国国际贸易委员会对公司开展337调查的声明公告（2020-109）", "date": "2020-12-22", "url": "https://pdf.dfcfw.com/pdf/H2_AN202012211442494079_1.pdf"},
+    {"title": "深交所：关于对立讯精密工业股份有限公司的监管函（公司部监管函〔2021〕第220号）", "date": "2021-12-28", "url": "https://pdf.dfcfw.com/pdf/H2_AN202112281537156209_1.pdf"},
+    {"title": "立讯精密：关于最近五年被证券监管部门和证券交易所采取监管措施或处罚情况的公告（2022-013）", "date": "2022-02-22", "url": "https://pdf.dfcfw.com/pdf/H2_AN202202211548369772_1.pdf"},
+    {"title": "立讯精密：关于媒体报道的澄清公告（2023-003）", "date": "2023-01-05", "url": "https://pdf.dfcfw.com/pdf/H2_AN202301051581711806_1.pdf"},
+    {"title": "中国经营报：立讯精密、工业富联紧急回应！AI服务器供电技术争夺升温", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892492768.html"},
+    {"title": "理财周刊-财事汇：美国启动337调查！一场围绕AI服务器“垂直供电”的专利战", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892764311.html"},
+    {"title": "21世纪经济报道：立讯精密、工业富联积极应对337调查 业绩影响或有限", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892764113.html"},
+    {"title": "Focus Taiwan：USITC 对 20 家企业立案 337 调查的报道", "date": "2026-10-11", "url": "https://focustaiwan.tw/business/202610110004"}
+  ]
+}

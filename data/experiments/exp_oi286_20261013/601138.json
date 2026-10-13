@@ -1,0 +1,79 @@
+{
+  "security_code": "601138",
+  "security_name": "工业富联",
+  "events": [
+    {
+      "event": "美国国际贸易委员会应 Vicor Corporation 申请，对垂直供电系统（VPD）、其组件及含该产品的计算系统立案 337 调查（337-TA-1526，与立讯精密同一案），公司及控股子公司 FII USA Inc.、Ingrasys Technology Inc.（鸿佰科技）、Ingrasys Technology USA Inc. 被列为被申请人；Vicor 同时在得州东区联邦法院就同一专利起诉公司和鸿佰科技",
+      "category": "调查",
+      "first_public_date": "2026-09-14",
+      "authority": "美国国际贸易委员会（USITC，337-TA-1526）；平行诉讼在美国得克萨斯州东区联邦地区法院（2:26-cv-00796）",
+      "subject": "富士康工业互联网股份有限公司及控股子公司 FII USA Inc.（工业富联美国）、Ingrasys Technology Inc.（鸿佰科技，中国台湾）、Ingrasys Technology USA Inc.（美国鸿佰科技）；间接控股股东鸿海精密（Hon Hai Precision Industry Co. Ltd.）同案被列名",
+      "subject_role": "上市公司本身及三家全资子公司",
+      "company_involved": "是",
+      "facts": "时间线：Vicor 2026-09-08 在得州东区法院起诉（Vicor Corporation v. Delta Electronics, Inc. et al.，被告含 Foxconn Industrial Internet Co. Ltd.、Ingrasys Technology Inc.、鸿海精密，附件一为 '734 专利，原告要求陪审团审理）；09-09 向 ITC 提交申诉、09-10 补充；《联邦公报》2026-09-14 刊登收到申诉通知（91 FR 58175，DN 3936），已把公司及三家子公司列为拟定被申请人；ITC 于美东时间 2026-10-09 投票立案；公司公告（2026-046）落款 2026-10-12，10-11 晚间发布。本条 first_public_date 取《联邦公报》刊登日。涉案专利：US 10,903,734 一件（公司公告只称“一项垂直供电系统的专利权”，未写专利号），立案范围为权利要求 1-8、11-14、18-26、40-56、65-71、80、81、83、84、90-93、95。涉案产品（立案通知的通俗描述）：用于数据中心服务器、人工智能和云计算系统，为 AI 加速器、TPU、GPU、CPU 供电的垂直供电系统及其组件，以及含该产品的计算系统。申请人请求的救济：有限排除令和禁止令，收到申诉通知另载请求在 60 天总统审查期内征收保证金；没有请求普遍排除令。被申请人共 20 家：Delta Electronics, Inc.、Delta Electronics (Americas) Ltd.、DET Logistics (USA) Corporation、Infineon Technologies AG、Luxshare Precision Industry Co., Ltd.、Dongguan Luxshare Technology Co., Ltd.、Monolithic Power Systems, Inc.、Chengdu Monolithic Power Systems Co., Ltd.、MPS International (Shanghai) Ltd.、Flex Ltd.、Celestica Inc.、Quanta Computer Inc.、Quanta Cloud Technology Inc.、Quanta Cloud Technology USA LLC、Quanta Computer USA Inc.、Hon Hai Precision Industry Co. Ltd.（Foxconn）、Foxconn Industrial Internet Co. Ltd.、FII USA Inc.、Ingrasys Technology Inc.、Ingrasys Technology USA Inc.。OUII 不作为当事方参加。公司公告没有披露申请人请求的救济、其他被申请人和得州平行诉讼。",
+      "status_as_of_2026_10_13": "立案阶段，ITC 未就侵权作任何实体认定。程序：首席行政法官指定主审行政法官；被申请人须在申诉书和立案通知送达后 20 日内答辩；ITC 在立案后 45 天内（约 2026-11-23 前）确定目标结案日；救济令签发即生效，60 日内美国贸易代表未否决则终局。截至查询时《联邦公报》尚未检索到 337-TA-1526 的立案通知（立案通知读的是 USITC 文件的网页存档）。得州平行诉讼：案卷索引显示 09-08 签发传票，其后有律师出庭通知、一条送达回执、09-21 与 10-02 两次无异议延期答辩申请，最近一次备案为 10-06，未结案；索引不显示这些条目对应哪位被告。",
+      "company_arrangement": "公告称公司设有知识产权部门，筛选供应商时要求供应商提供不侵权保证及相关技术的许可和授权；将持续跟踪案件、审慎评估影响、与相关方保持沟通并及时披露。公告没有写“应诉”或聘请律师的安排。",
+      "financial_impact": "未披露涉案产品收入金额。公司表述：经内部核查，涉案相关产品处于内部验证评估阶段，对公司目前的生产、经营及业绩不造成实质性影响。涉案产品在业务中的位置（已披露口径）：属于云计算板块 AI 服务器、整机柜的电源环节，2026 年半年报称公司“已涵盖整机柜设计、液冷散热、电源管理等关键环节”；2025 年年报云计算收入 6,026.79 亿元，占营业收入 66.75%；2026 年上半年云计算收入同比 +75.7%，云服务商 AI 服务器收入同比增长 2.3 倍。被列名子公司：Ingrasys Technology USA Inc. 在半年报“境外资产”表中列为境外接单法人，上半年营业收入 1,786.94 亿元、净利润 0.48 亿元（单体口径）；鸿佰科技主营服务器、存储设备、云端运算，FII USA Inc. 主营软件开发、云计算，均为 100% 持股。2025 年年报按生产制造地的主营收入：墨西哥 3,070.45 亿元、越南 830.55 亿元、新加坡 63.16 亿元、中国大陆及其他 5,048.08 亿元；对美销售占比未单列。"
+    },
+    {
+      "event": "Vicor 此前一案已有结论：337-TA-1370（功率转换器模块及含该模块的计算系统）把公司及同样三家子公司列为被申请人，ITC 2025-02-13 终裁认定存在违反 337 条款的行为，签发有限排除令，并向 FII USA Inc.、Ingrasys Technology USA Inc. 等签发禁止令；公告标题清单和定期报告里没有这一案的披露",
+      "category": "调查",
+      "first_public_date": "2023-07-12",
+      "authority": "美国国际贸易委员会（337-TA-1370）；相关诉讼在得州东区、马萨诸塞州联邦地区法院及联邦巡回上诉法院",
+      "subject": "富士康工业互联网股份有限公司、FII USA Inc.、Ingrasys Technology Inc.、Ingrasys Technology USA Inc.（同案被申请人还有鸿海精密、台达电子及 Cyntec、广达电脑等）",
+      "subject_role": "上市公司本身及三家全资子公司",
+      "company_involved": "是",
+      "facts": "Vicor 2023-07-12 向 ITC 申诉并于同日在得州东区法院起诉（2:23-cv-00323，当事人含 Foxconn Industrial Internet Co. Ltd.、Ingrasys Technology Inc.）；ITC 2023-08-11 立案，《联邦公报》2023-08-17 刊登（88 FR 56050），涉案专利 US 9,166,481、9,516,761、10,199,950，产品为用于数据中心服务器、AI 和云计算系统的功率转换器模块及含该模块的计算系统，被申请人名单列有公司及上述三家子公司，申请人请求有限排除令和禁止令。2024-09-27 行政法官作出最终初裁（Final ID），认定存在违反。ITC 2025-02-13 终裁（《联邦公报》2025-02-20，90 FR 9975）：就 '481、'761 两件专利认定违反 337 条款，'950 专利不构成违反；被控侵权的是 Cyntec 制造的模块（'481 专利）和台达制造的模块（'761 专利）；推翻初裁，认定 FII USA Inc. 和 Ingrasys Technology Inc. 拥有 '761 专利的许可；救济为有限排除令，禁止由各被申请人或代其制造、进口的未经许可的侵权功率转换器模块及含该模块的计算系统入境，并向 Delta Electronics (Americas) Ltd.、FII USA Inc.、Ingrasys Technology USA Inc.、Quanta Computer Inc.、Quanta Computer USA Inc. 签发禁止令，总统审查期保证金按产品分别设定；调查终止。A 股披露情况：按标题检索 2018-06 至 2025-09 的公告（337、诉讼、仲裁、调查等）没有这一案的公告；2025 年年报、2026 年半年报全文检索“Vicor”“337调查”“国际贸易委员会”“ITC”无命中，两份报告均写无重大诉讼仲裁；2026-10-12 公告也没有提到此案。",
+      "status_as_of_2026_10_13": "ITC 程序已于 2025-02 终结并签发救济令。法院案卷索引显示：得州东区 2:23-cv-00323 于 2025-05-13 终结（检索摘要称双方联合申请不可再诉的撤诉，未读到裁定）；联邦巡回上诉法院 Vicor Corporation v. ITC（25-1616，2025-04-03 立案）、马萨诸塞州地区法院 Vicor Corporation v. FII USA Inc.（1:24-cv-10060，2024-01-08 立案）及第一巡回上诉法院 24-1620 在索引中没有终结日期。排除令和禁止令现在是否仍然有效、是否影响公司在产产品，没有核到。",
+      "company_arrangement": "未见公司公告或说明。",
+      "financial_impact": "未披露"
+    },
+    {
+      "event": "2025-11-25 澄清公告：公司否认网络流传的“下调第四季度业绩目标”“大客户在 L10/L11 商业模式上会有调整”等说法",
+      "category": "其他",
+      "first_public_date": "2025-11-24",
+      "authority": "无（市场传闻，公司自行澄清，公告编号临2025-083；未见交易所问询或监管措施）",
+      "subject": "富士康工业互联网股份有限公司",
+      "subject_role": "上市公司本身",
+      "company_involved": "否（传闻针对公司经营预期，不是公司行为被监管或司法机关认定）",
+      "facts": "传闻于 2025-11-24 在网络流传（公告原文口径），公司公告落款 2025-11-25。公司声明：相关言论不属实；第四季度整体经营、包括 GB200、GB300 等产品出货均按既定计划推进，客户需求持续畅旺，生产及出货正常；未收到任何主要客户关于调整业务模式、下修份额或价格的要求；公司未向市场下调第四季度利润目标，不存在应披露未披露的信息；与客户合作开发的下一代产品按计划推进。",
+      "status_as_of_2026_10_13": "已有后续业绩可对照：2026-01-29 业绩预增公告预计 2025 年第四季度归母净利润 126 亿—132 亿元、同比 +56%—63%，全年 351 亿—357 亿元；2025 年年报（2026-03-11 披露）全年归母 352.86 亿元、同比 +51.99%，营收 9,028.87 亿元、同比 +48.22%。未见针对该传闻的监管问询或处罚。",
+      "company_arrangement": "发布澄清公告，无其他安排。",
+      "financial_impact": "未披露；公司称第四季度利润目标未下调。"
+    }
+  ],
+  "management_changes_since_event": "337-TA-1526 公告后（2026-10-12 至 10-13）公告清单中没有董事、高级管理人员变动。此前 2026-07-08 公告第四届董事会完成换届（公告 2026-032）：郑弘孟继续任董事长兼总经理（其为第三届董事长、总经理），副总经理张瑞雄、白家南、吴振廷，财务总监沈道邦，董事会秘书刘宗长；职工代表董事林奂汝于 06-12 选出。换届早于 337-TA-1526 立案。",
+  "operating_readthrough": "337-TA-1526 立案在 2026-10-09，其后尚无定期报告；截至 10-13 公告清单中没有 2026 年三季度业绩预告，三季报未披露。事件前最近披露：2026 年半年报（2026-08-12 披露）营收 5,578.61 亿元、同比 +54.63%，归母净利润 237.40 亿元、同比 +95.99%，扣非归母 229.84 亿元、同比 +96.99%；2026 年一季报营收 2,510.78 亿元、同比 +56.52%，归母 105.95 亿元、同比 +102.55%；2025 年报营收 9,028.87 亿元、同比 +48.22%，归母 352.86 亿元、同比 +51.99%（来源：公告原文及仓库面板 data/raw/financials/2026-06-30.csv、2026-03-31.csv、2025-12-31.csv）。这些报告期都在 337-TA-1370 排除令签发（2025-02）之后。",
+  "prior_history": "（1）337-TA-1370 见 events 第二条。（2）澄清公告另有两则：2023-04-20 否认“丢失订单”报道；2023-07-19 否认“已签订在印度投资设厂协议”的传闻。（3）标题检索另见 2018-06、2019-04、2023-03、2023-05、2023-06、2024-03 六则股票交易异常波动问询函回复（未读原文）。（4）2025 年年报、2026 年半年报均载公司及董事、高管、控股股东、实际控制人无涉嫌违法违规、受到处罚及整改情况，无重大诉讼仲裁。未查到证券监管处罚或监管措施公告。",
+  "open_questions": [
+    "涉案产品的具体型号、对应客户和在美进口或销售金额，公司没有披露；“内部验证评估阶段”为公司自述，无外部佐证。",
+    "337-TA-1526 的主审行政法官和目标结案日尚未公布；Vicor 申诉书公开版（EDIS）没有读到。",
+    "得州东区 2:26-cv-00796 中公司和鸿佰科技是否已被送达、是否申请中止，公开索引辨认不出。",
+    "337-TA-1370 的有限排除令和禁止令目前是否有效、联邦巡回上诉法院 25-1616 的结果、马萨诸塞州诉讼（1:24-cv-10060）的内容和进展、公司产品是否已改用获许可或规避设计的电源模块，均没有核到。",
+    "公司是否在公告标题和两份定期报告之外的渠道披露过 337-TA-1370，没有逐份检索 2023、2024 年年报。",
+    "2025-11-24 传闻的原始出处没有核到，只有公司公告的转述。",
+    "Ingrasys Technology USA Inc. 上半年 1,786.94 亿元营业收入是否含集团内部交易，半年报表内没有说明。"
+  ],
+  "sources": [
+    {"title": "工业富联：关于美国国际贸易委员会对公司及控股子公司开展337调查的公告（2026-046）", "date": "2026-10-12", "url": "https://pdf.dfcfw.com/pdf/H2_AN202610111830333618_1.pdf"},
+    {"title": "USITC Notice of Institution of Investigation, Inv. No. 337-TA-1526（经网页存档读取）", "date": "2026-10-09", "url": "https://web.archive.org/web/20261010053447id_/https://www.usitc.gov/secretary/fed_reg_notices/337/337_1526_notice10092026sgl.pdf"},
+    {"title": "USITC 新闻稿：USITC Institutes Section 337 Investigation of Certain Vertical Power Delivery Systems（经网页存档读取）", "date": "2026-10-09", "url": "https://web.archive.org/web/20261012044655/https://www.usitc.gov/press_room/news_release/2026/er1009_69342.htm"},
+    {"title": "Federal Register 91 FR 58175：Notice of Receipt of Complaint, DN 3936（文号 2026-18644）", "date": "2026-09-14", "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18644/notice-of-receipt-of-complaint-solicitation-of-comments-relating-to-the-public-interest"},
+    {"title": "法院案卷索引：Vicor Corporation v. Delta Electronics, Inc. et al., 2:26-cv-00796 (E.D. Tex.)", "date": "2026-09-08", "url": "https://www.courtlistener.com/docket/74758555/vicor-corporation-v-delta-electronics-inc/"},
+    {"title": "Federal Register 88 FR 56050：337-TA-1370 Institution of Investigation（文号 2023-17717）", "date": "2023-08-17", "url": "https://www.federalregister.gov/documents/2023/08/17/2023-17717/certain-power-converter-modules-and-computing-systems-containing-the-same-institution-of"},
+    {"title": "Federal Register 90 FR 9975：337-TA-1370 Final Determination Finding a Violation; Limited Exclusion Order and Cease and Desist Orders（文号 2025-02831）", "date": "2025-02-20", "url": "https://www.federalregister.gov/documents/2025/02/20/2025-02831/certain-power-converter-modules-and-computing-systems-containing-the-same-notice-of-the-commissions"},
+    {"title": "法院案卷索引：Vicor Corporation v. Delta Electronics, Inc., 2:23-cv-00323 (E.D. Tex.)", "date": "2023-07-12", "url": "https://www.courtlistener.com/docket/67602631/vicor-corporation-v-delta-electronics-inc/"},
+    {"title": "法院案卷索引：Vicor Corporation v. ITC, 25-1616 (Fed. Cir.)", "date": "2025-04-03", "url": "https://www.courtlistener.com/docket/70808641/vicor-corporation-v-itc/"},
+    {"title": "法院案卷索引：Vicor Corporation v. FII USA Inc., 1:24-cv-10060 (D. Mass.)", "date": "2024-01-08", "url": "https://www.courtlistener.com/docket/68143629/vicor-corporation-v-fii-usa-inc/"},
+    {"title": "工业富联：澄清公告（临2025-083）", "date": "2025-11-25", "url": "https://pdf.dfcfw.com/pdf/H2_AN202511241787537904_1.pdf"},
+    {"title": "工业富联：2025 年度业绩预增公告（2026-006）", "date": "2026-01-29", "url": "https://pdf.dfcfw.com/pdf/H2_AN202601281818505588_1.pdf"},
+    {"title": "工业富联：2026 年半年度报告", "date": "2026-08-12", "url": "https://pdf.dfcfw.com/pdf/H2_AN202608111827859009_1.pdf"},
+    {"title": "工业富联：2026 年半年度业绩预增公告（2026-033）", "date": "2026-07-10", "url": "https://pdf.dfcfw.com/pdf/H2_AN202607091826847541_1.pdf"},
+    {"title": "工业富联：2025 年年度报告", "date": "2026-03-11", "url": "https://pdf.dfcfw.com/pdf/H2_AN202603101820464731_1.pdf"},
+    {"title": "工业富联：关于媒体报道的澄清公告（临2023-068）", "date": "2023-07-19", "url": "https://pdf.dfcfw.com/pdf/H2_AN202307181592400133_1.pdf"},
+    {"title": "工业富联：关于媒体报道的澄清公告（临2023-032）", "date": "2023-04-20", "url": "https://pdf.dfcfw.com/pdf/H2_AN202304191585582038_1.pdf"},
+    {"title": "理财周刊-财事汇：美国启动337调查！一场围绕AI服务器“垂直供电”的专利战", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892764311.html"},
+    {"title": "中国经营报：立讯精密、工业富联紧急回应！AI服务器供电技术争夺升温", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892492768.html"},
+    {"title": "21世纪经济报道：立讯精密、工业富联积极应对337调查 业绩影响或有限", "date": "2026-10-12", "url": "http://finance.eastmoney.com/a/202610123892764113.html"}
+  ]
+}

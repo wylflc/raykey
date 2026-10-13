@@ -2122,5 +2122,34 @@
     "RATING": "增持"
    }
   ]
- }
+ },
+ "manual_evidence": [
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司实际控制人、董事长被留置的公告",
+   "notice_date": "2026-03-21",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202603201820667528_1.pdf",
+   "summary": "江苏省监察委员会对汪立平签发《立案通知书》和《留置通知书》；公司称经营正常，日常经营由高管团队负责。",
+   "use": "事件事实",
+   "source_sha256": "84e5ce684c56a723d6b43d5466318d32fb0531891978f45b8e9f0602634bfd75"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "公告",
+   "title": "关于公司实际控制人、董事长正常履职的公告",
+   "notice_date": "2026-04-14",
+   "source_url": "https://pdf.dfcfw.com/pdf/H2_AN202604131821157443_1.pdf",
+   "summary": "汪立平已正常履行法定代表人、董事长等职责；公告未写解除留置或立案结论。",
+   "use": "事件事实",
+   "source_sha256": "273c37d8245dc4b388310d55ae17f37f71278a424bd19adb8ff0b22767f44363"
+  },
+  {
+   "recorded_at": "2026-10-13",
+   "evidence_type": "质量复核结论",
+   "title": "实际控制人、董事长被立案留置事件复核",
+   "summary": "2026-10-13 事件复核：实控人、董事长 2026-03 被江苏省监察委员会立案留置，24 天后恢复履职，立案结论未披露，定期报告未提。维持 worth_attention、L2；Q4 78→66，登记 governance_open_issue。",
+   "use": "结构化结论见分层表与决策日志 quality_review:2026-10-13:601100:event"
+  }
+ ]
 }
