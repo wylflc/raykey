@@ -83,6 +83,35 @@ class LexiconTest(unittest.TestCase):
         self.assertEqual(ev.clean_name("贵州茅台"), "贵州茅台")
 
 
+class RetroTest(unittest.TestCase):
+    """§7.4 回扫：近 3 年公告与近 6 个月新闻的命中标题，只读。"""
+
+    def test_retro_lists_vocabulary_hits_from_both_sources(self) -> None:
+        asked = []
+
+        def ann_fetch(code, begin, end, page):
+            asked.append((code, begin, end, page))
+            rows = [dict(art_code="AN1", title="爱玛科技:关于实际控制人、董事长兼总经理被留置的公告", notice_date="2024-10-11 00:00:00", columns=[]),
+                    dict(art_code="AN2", title="爱玛科技:2024年第三季度报告", notice_date="2024-10-26 00:00:00", columns=[])]
+            return (rows, 3) if page == 1 else ([dict(art_code="AN3", title="爱玛科技:关于收到警示函的公告",
+                                                    notice_date="2025-01-05 00:00:00", columns=[])], 3)
+
+        def news_fetch(query, page, sort="time"):
+            if query == "爱玛" and page == 1:
+                return [dict(date="2026-07-20", title="业绩承压：爱玛台州门店涉违规非标车争议", url="n1", media="m"),
+                        dict(date="2026-06-16", title="爱玛科技启动新品发布", url="n2", media="m")], 2
+            return [], 0
+
+        hits, coverage = ev.retro("603529", "爱玛科技", ["爱玛科技", "爱玛"], "2026-10-13", ann_fetch=ann_fetch,
+                                  news_fetch=news_fetch, pause=0)
+        self.assertEqual([(h["date"], h["source"], h["key"]) for h in hits],
+                         [("2024-10-11", "公告", "ann:AN1"), ("2025-01-05", "公告", "ann:AN3"), ("2026-07-20", "新闻", "news:n1")])
+        self.assertEqual(asked[0][:3], ("603529", "2023-10-13", "2026-10-13"))
+        self.assertEqual([a[3] for a in asked], [1, 2])
+        self.assertIn("取到 3 条", coverage["announcements"])
+        self.assertEqual(coverage["news"], "最早取到 2026-06-16")
+
+
 class RunTest(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()

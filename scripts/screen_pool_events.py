@@ -15,6 +15,8 @@
     # 筛查之外发现的事件（用户点名、存量补核）
     python3 scripts/screen_pool_events.py --add <代码> --detected-on YYYY-MM-DD --headline "..." \\
         [--first-event-date YYYY-MM-DD]
+    # 入池与质量复核定分之前的回扫：近 3 年公告、近 6 个月新闻，只列标题不登记
+    python3 scripts/screen_pool_events.py --retro <代码> [--name <简称>]
 
 新闻源取数失败的公司记入产物 `news_failed_codes` 并非零退出；`--allow-news-gaps` 才继续（当日报告须列缺口）。
 """
@@ -44,6 +46,9 @@ NEWS_PAGE_SIZE = 100
 NEWS_MAX_PAGES = 5
 NEWS_WORKERS = 4
 NEWS_HITS_CAP = 10000   # 搜索接口的命中数上限；到上限的关键词并取相关度第一页
+ANN_URL = "https://np-anotice-stock.eastmoney.com/api/security/ann"
+RETRO_ANNOUNCEMENT_YEARS = 3   # §7.4 回扫：公告回看年数
+RETRO_NEWS_PAGES = 10          # §7.4 回扫：新闻每个关键词最多翻页数（搜索接口约保留 6 个月）
 
 # §7.4 负面词表：唯一定义。公告与新闻各一张，排除词两者共用。
 ANNOUNCEMENT_TERMS = re.compile(
@@ -124,6 +129,56 @@ def search_news(keyword: str, page: int, sort: str = "time") -> tuple[list[dict[
     rows = [dict(date=(a.get("date") or "")[:10], title=a.get("title") or "", media=a.get("mediaName") or "",
                  url=a.get("url") or "") for a in (data.get("result") or {}).get("cmsArticleWebOld") or []]
     return rows, int(data.get("hitsTotal") or 0)
+
+
+def list_announcements(code: str, begin: str, end: str, page: int) -> tuple[list[dict], int]:
+    """东财公告列表一页（按代码）；返回 (条目, 接口报告的总数)。"""
+    query = urllib.parse.urlencode(dict(sr=-1, page_size=100, page_index=page, ann_type="A", client_source="web",
+                                        stock_list=code, begin_time=begin, end_time=end))
+    request = urllib.request.Request(ANN_URL + "?" + query, headers={"User-Agent": "Mozilla/5.0"})
+    data = json.loads(urllib.request.urlopen(request, timeout=30).read().decode("utf-8", "replace")).get("data") or {}
+    return data.get("list") or [], int(data.get("total_hits") or 0)
+
+
+def retro(code: str, name: str, names: list[str], today: str, *, ann_fetch=list_announcements, news_fetch=search_news,
+          pause: float = 0.2) -> tuple[list[dict[str, str]], dict[str, str]]:
+    """§7.4 回扫：一家公司近 3 年公告与近 6 个月新闻里命中词表的标题；返回 (命中, 覆盖说明)。只读，不登记。"""
+    day = date.fromisoformat(today)
+    try:
+        begin = day.replace(year=day.year - RETRO_ANNOUNCEMENT_YEARS).isoformat()
+    except ValueError:   # 2 月 29 日
+        begin = day.replace(year=day.year - RETRO_ANNOUNCEMENT_YEARS, day=28).isoformat()
+    hits: dict[str, dict[str, str]] = {}
+    page, got, total = 1, 0, 0
+    while True:
+        rows, total = ann_fetch(code, begin, today, page)
+        for item in rows:
+            title = re.sub(r"</?em>", "", item.get("title") or item.get("title_ch") or "")
+            if announcement_hit(title, [c.get("column_name") or "" for c in item.get("columns") or []]):
+                art = item.get("art_code") or ""
+                hits[f"ann:{art}"] = dict(code=code, name=name, source="公告", date=(item.get("notice_date") or "")[:10],
+                                          title=title, key=f"ann:{art}", url=f"https://pdf.dfcfw.com/pdf/H2_{art}_1.pdf")
+        got += len(rows)
+        if not rows or got >= total:
+            break
+        page += 1
+        time.sleep(pause)
+    oldest = today
+    for query in dict.fromkeys([code, *names]):
+        for page in range(1, RETRO_NEWS_PAGES + 1):
+            rows, _ = news_fetch(query, page, "time")
+            for row in rows:
+                if news_hit(row["title"], names):
+                    key = f"news:{row['url'] or row['title']}"
+                    hits[key] = dict(code=code, name=name, source="新闻", date=row["date"], title=row["title"].strip(),
+                                     key=key, url=row["url"])
+            if rows:
+                oldest = min(oldest, min(r["date"] for r in rows))
+            if len(rows) < NEWS_PAGE_SIZE:
+                break
+            time.sleep(pause)
+    coverage = dict(announcements=f"{begin}～{today}，取到 {got} 条（接口报 {total} 条）", news=f"最早取到 {oldest}")
+    return sorted(hits.values(), key=lambda h: (h["date"], h["source"], h["title"])), coverage
 
 
 def screen_announcements(snapshot: dict, members: dict[str, str]) -> list[dict[str, str]]:
@@ -385,7 +440,22 @@ def main() -> int:
     parser.add_argument("--reviewed-at", help="--dispose：处置日，缺省同检出日")
     parser.add_argument("--headline", default="", help="--add：事件标题")
     parser.add_argument("--first-event-date", default="", help="--add：事件首次公开日，缺省同检出日")
+    parser.add_argument("--retro", metavar="代码", help="回扫：列出该代码近 3 年公告与近 6 个月新闻的命中标题，不登记")
+    parser.add_argument("--name", default="", help="--retro：公司简称（不在池与持仓表内的代码须给）")
+    parser.add_argument("--as-of", help="--retro：回扫截止日，缺省今日")
     args = parser.parse_args()
+    if args.retro:
+        code = args.retro.zfill(6)
+        name = args.name or load_members().get(code, "")
+        if not name:
+            parser.error("--retro 的代码不在池与持仓表内，须给 --name")
+        names = [clean_name(name)] + load_aliases().get(code, [])
+        hits, coverage = retro(code, name, names, args.as_of or date.today().isoformat())
+        print(f"回扫 {code} {name}：公告 {coverage['announcements']}；新闻 {coverage['news']}；命中 {len(hits)} 条"
+              "（逐条对照分层表，未入分的用 --add 登记后按 §7.4 处置）")
+        for hit in hits:
+            print(f"  {hit['date']}｜{hit['source']}｜{hit['title'][:70]}｜{hit['url']}")
+        return 0
     if args.dispose:
         if not (args.detected_on and args.disposition):
             parser.error("--dispose 须同时给 --detected-on 与 --disposition")

@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-13",
- "checked_at_utc": "2026-10-13T16:02:20.697340+00:00",
+ "checked_at_utc": "2026-10-13T16:56:17.265639+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -45,7 +45,7 @@
   "scanned": 182,
   "valid_pv": 178,
   "buy_line": 19,
-  "trend_eligible": 6,
+  "trend_eligible": 4,
   "held": 2
  },
  "holdings": {
@@ -96,9 +96,10 @@
   "news_retro": "28016512",
   "announcement_retro": "28022415",
   "refresh_pool_sixth": "28036824",
-  "scan_sixth": "28037679"
+  "scan_sixth": "28037679",
+  "scan_seventh": "28042839"
  },
- "publications": "当日发布六次，清单都是 0 买 0 卖（第六次于北京时间 10-14 凌晨发布：近 6 个月新闻与 2023 年以来公告回扫检出的 25 家存量事件复核落地后带刷新并重跑）：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑，第五次为负面事件筛查上线（v4.250，结 OI-285、OI-286）、18 家存量事件复核、3 只成长股采用研究数与 5 只临时冻结登记后带刷新并重跑",
+ "publications": "当日发布七次，清单都是 0 买 0 卖（第六、七次于北京时间 10-14 凌晨发布：第六次为回扫检出的 25 家存量事件复核落地后带刷新并重跑；第七次为用户裁定爱玛科技、神火股份、阳光电源、天山铝业、亚钾国际、澜起科技登记临时冻结后重建队列并重跑，合格集由 6 只变为 4 只）：第二次为 OI-279、OI-280 修复（v4.248）与中际旭创价格口径登记后重跑，第三次为 OI-283、OI-284 修复（v4.249）后重跑，第四次为双汇发展质量复核写入分层表后重建池表并重跑，第五次为负面事件筛查上线（v4.250，结 OI-285、OI-286）、18 家存量事件复核、3 只成长股采用研究数与 5 只临时冻结登记后带刷新并重跑",
  "quality_review": {
   "000895": {
    "name": "双汇发展",
@@ -132,14 +133,14 @@
    "quality_tier": "L2",
    "quality_score": "64.4",
    "candidate_pv": "1.517",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "000933": {
    "name": "神火股份",
    "quality_tier": "L2",
    "quality_score": "68.9",
    "candidate_pv": "0.9137",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "002128": {
    "name": "电投能源",
@@ -167,7 +168,7 @@
    "quality_tier": "L2",
    "quality_score": "69.4",
    "candidate_pv": "0.9726",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "002594": {
    "name": "比亚迪",
@@ -195,7 +196,7 @@
    "quality_tier": "L2",
    "quality_score": "75.7",
    "candidate_pv": "1.0372",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "300308": {
    "name": "中际旭创",
@@ -335,7 +336,7 @@
    "quality_tier": "L2",
    "quality_score": "68.6",
    "candidate_pv": "0.8779",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "603596": {
    "name": "伯特利",
@@ -363,7 +364,7 @@
    "quality_tier": "L1",
    "quality_score": "76.7",
    "candidate_pv": "3.2899",
-   "review_frozen": "False"
+   "review_frozen": "True"
   },
   "688018": {
    "name": "乐鑫科技",
@@ -489,9 +490,15 @@
   "backfill_reviews": 41,
   "user_holds": [
    "000858",
+   "000893",
+   "000933",
+   "002532",
+   "300274",
    "300832",
    "601100",
    "603279",
+   "603529",
+   "688008",
    "688208"
   ]
  },
@@ -545,7 +552,7 @@
   }
  },
  "calendar": "10-13（周二）信号的执行日为 10-14（周三）。",
- "rule_version": "a-share-selection-operation-v4.250",
+ "rule_version": "a-share-selection-operation-v4.251",
  "equity_bond": {
   "spread_pct": 6.33,
   "observed_on": "2026-10-12",
@@ -558,18 +565,19 @@
   "600970",
   "920599",
   "600600",
-  "603529",
-  "000933",
   "600036"
  ],
+ "eligible_frozen_out": {
+  "603529": "爱玛科技（持仓，挡加仓）",
+  "000933": "神火股份"
+ },
  "eligible_change_vs_previous": {
-  "added": [
-   "000933"
-  ],
+  "added": [],
   "removed": [
    "601717",
    "600690",
    "601009",
+   "603529",
    "601838",
    "603279"
   ]
@@ -595,6 +603,13 @@
    "ma5": "12.026",
    "ma20": "11.985",
    "candidate_pv": "0.8436"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "close": "23.13",
+   "ma5": "22.964",
+   "ma20": "21.67",
+   "candidate_pv": "0.8779"
   },
   "601838": {
    "name": "成都银行",
@@ -666,18 +681,18 @@
   "closed_issue": "OI-280（v4.248）"
  },
  "queue": {
-  "rows": 19,
+  "rows": 25,
   "trough_anchor": 13,
   "structural_growth": 1,
-  "user_review_hold": 5,
+  "user_review_hold": 11,
   "event_review": 0,
   "report_triggered": 0,
   "lowest_frozen_pv": {
-   "603279": 0.9591
+   "603529": 0.8779
   }
  },
  "divergence_check": {
-  "automated_subset": "持仓 2 + 当日合格集 6，去重后 7 只（与扫描器同一判定），10 日内有披露且有带的 1 只（神火股份），无命中",
+  "automated_subset": "持仓 2 + 当日合格集 4，去重后 6 只（与扫描器同一判定），10 日内有披露且有带的 0 只（神火股份被临时冻结后不在合格集；第六次发布前它在子集内，公告日当天 +1.87%，未命中），无命中",
   "reaction_bar": "披露后首个交易日取公告日当天或之后的第一根：神火股份公告日 2026-10-13，脚本读到 2026-10-13 收盘 26.7，较前收 26.21 涨跌 +1.87%，低于 7% 阈值",
   "first_publication": "第一次发布时脚本按旧走势口径取子集 5 只，漏中材国际、青岛啤酒，当时已用 --universe pool 补核：全池 10 日内有披露且有带的 3 只（神火股份、中国巨石、鼎龙股份），无命中",
   "review_registry": "data/reference/report_divergence_reviews.csv（0 行；命中后登记复带结论解除拦截）",
