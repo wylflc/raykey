@@ -76,6 +76,7 @@ class LexiconTest(unittest.TestCase):
         self.assertFalse(ev.news_hit("万华化学：烟台产业园乙烯二期装置停产检修", ["万华化学", "万华"]))
         self.assertFalse(ev.news_hit("中船财务被罚100万，涉员工行为管理严重违规", ["工商银行", "工行"]))   # 别名撞词
         self.assertTrue(ev.news_hit("工行安庆分行被罚30万，涉员工行为管理不到位", ["工商银行", "工行"]))
+        self.assertFalse(ev.news_hit("格力博：全资公司召回Kobalt品牌部分园林电动工具", ["格力电器", "格力"]))
 
     def test_share_class_suffix_is_dropped_for_news(self) -> None:
         self.assertEqual(ev.clean_name("京东方A"), "京东方")

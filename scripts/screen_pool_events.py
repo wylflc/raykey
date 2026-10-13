@@ -101,8 +101,8 @@ def announcement_hit(title: str, columns: list[str] | None = None) -> bool:
     return bool(ANNOUNCEMENT_TERMS.search(title) or any(ANNOUNCEMENT_COLUMNS.search(c or "") for c in columns or []))
 
 
-# 别名在标题里撞上的无关词：「工行」之于「员工行为」「员工行拘」。
-NAME_NOISE = re.compile("员工行")
+# 别名在标题里撞上的无关词：「工行」之于「员工行为」「员工行拘」，「格力」之于另一家上市公司格力博。
+NAME_NOISE = re.compile("员工行|格力博")
 
 
 def news_hit(title: str, names: list[str]) -> bool:
