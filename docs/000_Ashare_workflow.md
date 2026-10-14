@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.251
+# A股选股-估值-量价操作流程 v4.252
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -900,11 +900,12 @@ python3 scripts/sweep_backtest_configs.py --report --out <结果文件>
    - 下跌原因：价格进入买入线来自市场、行业周期还是公司经营恶化；属经营恶化的先按 §7.4 事件复核。
    - 结论（`通过`／`不通过`）由用户裁定。档案记 `growth_reviewed_at`、`growth_review_conclusion`、`growth_review_note`、`growth_reviewed_pv`，决策日志同记。
    - 失效：生产带此后吸收新定期报告或预告（`available_at` 或 `forecast_notice_date` 晚于复核日），或该公司登记行变动（`registered_at` 晚于复核日），记录即失效、须重做。
+   - 日期：复核日与第 6 条的核对日都记当晚扫描的证据日（信号日之后的首个工作日，§6.7），与生产带吸收的晚间公告日戳同口径。
    - 预做：定期报告后按第 6 条。
 4. **买入**：通过的成长股与其他候选同一合格集，按 §9.3.1 的走势条件、一档、单票上限与成长股总额上限执行。
 5. **卖出**：按 §9.3.1 成长股卖出行。复核改判（证伪，或改判为其他类别）时，登记表该行改 `derived_class`，并记 `rejudged_from = 结构成长型` 与 `rejudged_at`；仍有持仓的按该行每日减一档直至清空。
 6. **定期报告后核对**：生产带吸收成长股新定期报告后（带 `available_at` 晚于登记行 `registered_at` 与 `falsifier_checked_at` 的较晚者），扫描报告逐只列入「需人工处理」，当晚核对：
-   - 可证伪条件：按新报告核对登记行 `falsifier`。触发的提请用户改判（第 5 条）；核对后在登记行记 `falsifier_checked_at`（核对日）与 `falsifier_check_note`（读数与结论），`registered_at` 不动。
+   - 可证伪条件：按新报告核对登记行 `falsifier`。触发的提请用户改判（第 5 条）；核对后在登记行记 `falsifier_checked_at`（核对日，口径见第 3 条）与 `falsifier_check_note`（读数与结论），`registered_at` 不动。
    - 预做重点复核：候选侧 `P/V` 不高于 §9.3.1 买入线的 1.2 倍（`growth_stocks.PREREVIEW_PV_MULTIPLE`）且无有效「通过」记录的，同晚按第 3 条预做，结论由用户裁定；其余仍在达买入线当晚做。
 
    ```bash

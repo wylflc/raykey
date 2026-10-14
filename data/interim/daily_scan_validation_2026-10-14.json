@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-14",
- "checked_at_utc": "2026-10-14T13:17:48.413046+00:00",
+ "checked_at_utc": "2026-10-14T16:06:08.952874+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -37,7 +37,15 @@
   "two_side_bands_same_members",
   "fst_exright_terms_registered",
   "eligible_set_four",
-  "divergence_subset_holdings_plus_eligible"
+  "divergence_subset_holdings_plus_eligible",
+  "second_publication_jobs_completed",
+  "second_publication_band_validation",
+  "growth_report_checks_registered",
+  "growth_report_check_prompts_cleared",
+  "deye_growth_review_pass_valid",
+  "deye_research_registered_not_adopted",
+  "hudian_divergence_review_recorded",
+  "queue_rows_26"
  ],
  "problems": [],
  "holdings_market_value_cny": "4976836.00",
@@ -90,10 +98,12 @@
   "chain_steps_1_3": "28075103",
   "refresh_pool_steps_4_6": "28075105",
   "swap_drift_step_7": "28077504",
-  "scan": "28077689"
+  "scan": "28077689",
+  "refresh_pool_second": "28087799",
+  "scan_second": "28087800"
  },
  "calendar": "10-14（周三）信号的执行日为 10-15（周四）。",
- "rule_version": "a-share-selection-operation-v4.251",
+ "rule_version": "a-share-selection-operation-v4.252",
  "equity_bond": {
   "spread_pct": 6.41,
   "observed_on": "2026-10-14",
@@ -140,5 +150,16 @@
   "all_market_rows": 3194,
   "pool_rows": 110,
   "new_vs_1013_snapshot": 77
+ },
+ "publications": "当日发布两次，清单都是 0 买 0 卖：第一次（北京 10-14 21:06）在宇通客车三季报全链重建与三份预告叠加之后；第二次（10-15 00:04）在用户裁定 OI-287（v4.252）、德业股份预做重点复核通过与登记行证伪条件改分产品口径、沪电股份维持采用研究数之后，带刷新并重跑；带值与 P/V 不变，队列 27→26 行。",
+ "growth": {
+  "checks": {
+   "002463": "未触发",
+   "605117": "未触发（旧条件）"
+  },
+  "deye_review": "通过（复核日 10-15）",
+  "deye_research_yi": 46.2,
+  "deye_falsifier_new": "新兴市场户储需求连续两年负增长，或储能逆变器毛利率连续两个半年度低于45%，或电池包毛利率连续两个半年度低于22% → 复核",
+  "hudian_divergence": "维持采用研究数 48.80（模型锚 32.26）"
  }
 }
