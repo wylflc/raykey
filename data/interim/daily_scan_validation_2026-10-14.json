@@ -1,0 +1,144 @@
+{
+ "signal_date": "2026-10-14",
+ "checked_at_utc": "2026-10-14T13:17:48.413046+00:00",
+ "status": "passed",
+ "checks": [
+  "whole_pool_unique_codes",
+  "trade_date",
+  "plans_trade_date",
+  "publication_as_of",
+  "publication_verify_passed",
+  "holdings_rows",
+  "tracking_scope",
+  "tracking_close_matches_scan_000651",
+  "independent_quote_000651",
+  "no_price_stop_000651",
+  "tracking_close_matches_scan_603529",
+  "independent_quote_603529",
+  "no_price_stop_603529",
+  "user_account_registered_before_scan",
+  "holdings_and_reported_assets_match",
+  "strategy_columns_check",
+  "cooldown_all_zero",
+  "pool_exdiv_bands_normalized",
+  "negative_event_register_has_no_pending_rows",
+  "negative_event_hits_in_evidence_certificate",
+  "negative_event_register_in_publication_inputs",
+  "divergence_review_registry_in_publication_inputs",
+  "exright_terms_in_publication_inputs",
+  "queue_has_no_report_triggers",
+  "full_chain_jobs_completed",
+  "statement_and_valuation_gaps_empty",
+  "band_validation_all_pass",
+  "panel_audit_no_severe",
+  "swap_margin_drift_within_tolerance",
+  "yutong_q3_absorbed",
+  "forecast_overlays_applied",
+  "two_side_bands_same_members",
+  "fst_exright_terms_registered",
+  "eligible_set_four",
+  "divergence_subset_holdings_plus_eligible"
+ ],
+ "problems": [],
+ "holdings_market_value_cny": "4976836.00",
+ "reported_total_assets_cny": "4976836.00",
+ "holdings": {
+  "000651": {
+   "name": "格力电器",
+   "shares": "108000",
+   "close": "39.72",
+   "cost": "38.6984",
+   "gain_pct": 2.64,
+   "ma5": "39.218",
+   "ma20": "38.606",
+   "ma60": "38.6971",
+   "close_over_ma20": 1.0289,
+   "hold_pv": "0.5062",
+   "candidate_pv": "0.5413",
+   "action": "持有",
+   "market_value_cny": "4289760.00"
+  },
+  "603529": {
+   "name": "爱玛科技",
+   "shares": "29200",
+   "close": "23.53",
+   "cost": "21.2292",
+   "gain_pct": 10.84,
+   "ma5": "23.224",
+   "ma20": "21.7757",
+   "ma60": "21.2161",
+   "close_over_ma20": 1.0806,
+   "hold_pv": "0.8931",
+   "candidate_pv": "0.8931",
+   "action": "持有",
+   "market_value_cny": "687076.00"
+  }
+ },
+ "buy_plan": [],
+ "sell_plan": [],
+ "coverage": {
+  "scanned": 182,
+  "valid_pv": 178,
+  "buy_line": 19,
+  "trend_eligible": 4,
+  "held": 2
+ },
+ "tranche_cny": "142021.78",
+ "scan_funds_cny": "-189140.79",
+ "jobs": {
+  "evidence": "28074481",
+  "chain_steps_1_3": "28075103",
+  "refresh_pool_steps_4_6": "28075105",
+  "swap_drift_step_7": "28077504",
+  "scan": "28077689"
+ },
+ "calendar": "10-14（周三）信号的执行日为 10-15（周四）。",
+ "rule_version": "a-share-selection-operation-v4.251",
+ "equity_bond": {
+  "spread_pct": 6.41,
+  "observed_on": "2026-10-14",
+  "pe_ttm": 12.41,
+  "cgb10y": 0.016516,
+  "restricted": false
+ },
+ "eligible": [
+  "600970",
+  "920599",
+  "600600",
+  "600036"
+ ],
+ "valuation_updates": {
+  "periodic": [
+   "600066"
+  ],
+  "forecasts": [
+   "000792",
+   "002463",
+   "605117"
+  ],
+  "exright": [
+   "603806",
+   "605117"
+  ],
+  "late_after_fetch": {
+   "002648": "卫星化学前三季度预告 19:39 发布，晚于 19:38 预告取数，下次扫描补取"
+  },
+  "missing_source": {
+   "688018": "乐鑫科技单季自愿披露预告不在东财预告表（OI-288）"
+  }
+ },
+ "negative_events": {
+  "window": "2026-10-13～2026-10-14",
+  "hits": 5,
+  "disposed": "不构成事件×5",
+  "news_failed": 0,
+  "news_partial": 5
+ },
+ "announcements": {
+  "query_window": "2026-10-13～2026-10-15",
+  "retrieved_at_beijing": "2026-10-14 19:47",
+  "all_market_rows": 3194,
+  "pool_rows": 110,
+  "new_vs_1013_snapshot": 77
+ }
+}

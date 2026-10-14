@@ -67,8 +67,8 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 000725,京东方Ａ,2023-08-29,correction,,0,第十届监事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2023-08-29/1217675794.PDF,cninfo:追溯调整,2026-09-23T15:14:15+00:00
 000725,京东方Ａ,2024-04-02,correction,,0,第十届监事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2024-04-02/1219494147.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
 000725,京东方Ａ,2024-04-02,correction,,0,第十届董事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2024-04-02/1219494110.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
-000725,京东方Ａ,2025-04-22,correction,,0,第十一届董事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-22/1223193320.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-000725,京东方Ａ,2025-04-22,correction,,0,第十一届监事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-22/1223193244.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
+000725,京东方Ａ,2025-04-22,correction,,0,第十一届董事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-22/1223193320.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+000725,京东方Ａ,2025-04-22,correction,,0,第十一届监事会关于追溯调整财务报表的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-22/1223193244.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
 000733,振华科技,2011-04-09,correction,,0,重大会计政策、会计估计变更以及重大前期会计差错更正情况专项说明,http://static.cninfo.com.cn/finalpage/2011-04-09/59242393.PDF,cninfo:前期差错,2026-09-23T15:11:09+00:00
 000733,振华科技,2011-04-09,correction,,0,关于对2010年度财务报表年初数追溯调整的公告,http://static.cninfo.com.cn/finalpage/2011-04-09/59242386.PDF,cninfo:追溯调整,2026-09-23T15:13:25+00:00
 000733,振华科技,2015-04-25,correction,,0,关于追溯调整2014年度财务报表年初数及上年同期数的公告,http://static.cninfo.com.cn/finalpage/2015-04-25/1200910231.PDF,cninfo:追溯调整,2026-09-23T15:13:41+00:00
@@ -78,10 +78,10 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 000778,新兴铸管,2015-04-21,correction,,0,独立董事关于对前期财务报表数据进行追溯调整的专项声明,http://static.cninfo.com.cn/finalpage/2015-04-21/1200876817.PDF,cninfo:追溯调整,2026-09-23T15:13:41+00:00
 000778,新兴铸管,2019-04-02,correction,,0,关于同一控制下企业合并追溯调整前期有关财务报表数据的公告,http://static.cninfo.com.cn/finalpage/2019-04-02/1205983330.PDF,cninfo:追溯调整,2026-09-23T15:13:57+00:00
 000792,盐湖钾肥,2009-07-25,correction,,0,关于公司会计政策变更、会计差错更正的专项说明,http://static.cninfo.com.cn/finalpage/2009-07-25/55105174.PDF,cninfo:会计差错更正,2026-09-23T15:07:52+00:00
-000858,五 粮 液,2026-04-30,correction,,1,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273122.PDF,cninfo:前期差错,2026-09-23T15:13:15+00:00
-000858,五 粮 液,2026-04-30,updated_report,2025-03-31,1,2025年第一季度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273125.PDF,cninfo:pairing,2026-09-23T15:15:39+00:00
-000858,五 粮 液,2026-04-30,updated_report,2025-06-30,1,2025年半年度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273126.PDF,cninfo:pairing,2026-09-23T15:15:39+00:00
-000858,五 粮 液,2026-04-30,updated_report,2025-09-30,1,2025年第三季度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273123.PDF,cninfo:pairing,2026-09-23T15:15:39+00:00
+000858,五 粮 液,2026-04-30,correction,,1,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273122.PDF,cninfo:前期差错,2026-10-14T12:21:21+00:00
+000858,五 粮 液,2026-04-30,updated_report,2025-03-31,1,2025年第一季度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273125.PDF,cninfo:pairing,2026-10-14T12:21:46+00:00
+000858,五 粮 液,2026-04-30,updated_report,2025-06-30,1,2025年半年度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273126.PDF,cninfo:pairing,2026-10-14T12:21:46+00:00
+000858,五 粮 液,2026-04-30,updated_report,2025-09-30,1,2025年第三季度报告（更新后）,http://static.cninfo.com.cn/finalpage/2026-04-30/1225273123.PDF,cninfo:pairing,2026-10-14T12:21:46+00:00
 000893,*ST东凌,2019-04-24,correction,,1,关于2017年资产减值调整暨关于前期会计差错更正及追溯调整的公告,http://static.cninfo.com.cn/finalpage/2019-04-24/1206080519.PDF,cninfo:追溯调整,2026-09-23T15:13:57+00:00
 000893,*ST东凌,2019-04-24,correction,,1,独立董事关于2017年资产减值调整暨关于前期会计差错更正及追溯调整的独立意见,http://static.cninfo.com.cn/finalpage/2019-04-24/1206080511.PDF,cninfo:追溯调整,2026-09-23T15:13:57+00:00
 000893,*ST东凌,2019-04-24,updated_report,2018-09-30,1,2018年第三季度报告全文（更新后）,http://static.cninfo.com.cn/finalpage/2019-04-24/1206080518.PDF,cninfo:pairing,2026-09-23T15:15:40+00:00
@@ -130,13 +130,13 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 002022,*ST 科华,2022-12-29,correction,,1,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2022-12-29/1215469323.PDF,cninfo:前期差错,2026-09-23T15:12:12+00:00
 002022,*ST 科华,2022-12-29,updated_report,2021-12-31,1,2021年年度报告（更正后）,http://static.cninfo.com.cn/finalpage/2022-12-29/1215469324.PDF,cninfo:pairing,2026-09-23T15:15:56+00:00
 002022,*ST 科华,2022-12-29,updated_report,2022-09-30,1,2022年第三季度报告（更正后）,http://static.cninfo.com.cn/finalpage/2022-12-29/1215469321.PDF,cninfo:pairing,2026-09-23T15:15:56+00:00
-002049,紫光国微,2025-04-23,correction,,0,关于同一控制下企业合并及会计政策变更追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-23/1223222879.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-002049,紫光国微,2025-04-23,correction,,0,2024年度同一控制下企业合并及会计政策变更追溯调整财务数据的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-23/1223222876.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
+002049,紫光国微,2025-04-23,correction,,0,关于同一控制下企业合并及会计政策变更追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-23/1223222879.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+002049,紫光国微,2025-04-23,correction,,0,2024年度同一控制下企业合并及会计政策变更追溯调整财务数据的专项说明,http://static.cninfo.com.cn/finalpage/2025-04-23/1223222876.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
 002050,三花股份,2009-08-11,correction,,1,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2009-08-11/55636732.PDF,cninfo:前期差错,2026-09-23T15:11:05+00:00
 002050,三花股份,2009-08-11,correction,,1,关于公司2008年度财务报表重要会计差错更正说明的专项审核报告,http://static.cninfo.com.cn/finalpage/2009-08-11/55636731.PDF,cninfo:会计差错更正,2026-09-23T15:07:52+00:00
 002050,三花股份,2009-08-11,updated_report,2008-12-31,1,2008年年度报告（更正后）,http://static.cninfo.com.cn/finalpage/2009-08-11/55636725.PDF,cninfo:pairing,2026-09-23T15:16:00+00:00
 002128,露天煤业,2010-10-26,correction,,0,对前期财务报表相关数据进行追溯调整的公告,http://static.cninfo.com.cn/finalpage/2010-10-26/58570382.PDF,cninfo:追溯调整,2026-09-23T15:13:20+00:00
-002128,电投能源,2026-08-26,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-08-26/1225504327.PDF,cninfo:追溯调整,2026-09-23T15:14:41+00:00
+002128,电投能源,2026-08-26,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-08-26/1225504327.PDF,cninfo:追溯调整,2026-10-14T12:21:40+00:00
 002153,石基信息,2009-07-11,correction,,1,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2009-07-11/54456671.PDF,cninfo:前期差错,2026-09-23T15:11:05+00:00
 002153,石基信息,2009-07-11,correction,,1,独立董事关于前期会计差错更正事项的独立意见,http://static.cninfo.com.cn/finalpage/2009-07-11/54456674.PDF,cninfo:前期差错,2026-09-23T15:11:05+00:00
 002153,石基信息,2009-07-11,correction,,1,武汉众环会计师事务所关于公司会计差错更正的专项说明,http://static.cninfo.com.cn/finalpage/2009-07-11/54456673.PDF,cninfo:会计差错更正,2026-09-23T15:07:52+00:00
@@ -145,14 +145,14 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 002270,华明装备,2021-10-26,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2021-10-26/1211371522.PDF,cninfo:追溯调整,2026-09-23T15:14:04+00:00
 002287,奇正藏药,2024-04-19,correction,,0,董事会关于会计政策变更追溯调整财务报表数据的专项说明,http://static.cninfo.com.cn/finalpage/2024-04-19/1219662657.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
 002287,奇正藏药,2024-04-19,correction,,0,监事会关于会计政策变更追溯调整财务报表数据的专项说明,http://static.cninfo.com.cn/finalpage/2024-04-19/1219662644.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
-002371,北方华创,2025-04-26,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-26/1223309168.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-002371,北方华创,2025-08-29,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-08-29/1224615656.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-002371,北方华创,2025-10-31,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-10-31/1224774314.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-002371,北方华创,2026-04-18,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-04-18/1225122929.PDF,cninfo:追溯调整,2026-09-23T15:14:41+00:00
+002371,北方华创,2025-04-26,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-26/1223309168.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+002371,北方华创,2025-08-29,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-08-29/1224615656.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+002371,北方华创,2025-10-31,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-10-31/1224774314.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+002371,北方华创,2026-04-18,correction,,0,关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-04-18/1225122929.PDF,cninfo:追溯调整,2026-10-14T12:21:40+00:00
 002466,天齐锂业,2015-04-13,correction,,0,关于同一控制下企业合并追溯调整期初及上年同期数的公告,http://static.cninfo.com.cn/finalpage/2015-04-13/1200815509.PDF,cninfo:追溯调整,2026-09-23T15:13:41+00:00
 002568,百润股份,2018-03-15,correction,,0,关于会计事项追溯调整的公告,http://static.cninfo.com.cn/finalpage/2018-03-15/1204477708.PDF,cninfo:追溯调整,2026-09-23T15:13:51+00:00
-002683,广东宏大,2025-03-28,correction,,0,关于同一控制下企业合并进行追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-03-28/1222924520.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
-002683,广东宏大,2025-03-28,correction,,0,广东司农会计师事务所（特殊普通合伙）关于广东宏大控股集团股份有限公司2024年度对以前年度报告披露的财务报表数据由于同一控制下企业合并进行追溯调整的专项说明,http://static.cninfo.com.cn/finalpage/2025-03-28/1222924518.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
+002683,广东宏大,2025-03-28,correction,,0,关于同一控制下企业合并进行追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-03-28/1222924520.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
+002683,广东宏大,2025-03-28,correction,,0,广东司农会计师事务所（特殊普通合伙）关于广东宏大控股集团股份有限公司2024年度对以前年度报告披露的财务报表数据由于同一控制下企业合并进行追溯调整的专项说明,http://static.cninfo.com.cn/finalpage/2025-03-28/1222924518.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
 300034,钢研高纳,2011-03-17,correction,,0,董事会关于会计差错更正的意见,http://static.cninfo.com.cn/finalpage/2011-03-17/59131166.PDF,cninfo:会计差错更正,2026-09-23T15:08:07+00:00
 300034,钢研高纳,2011-03-17,correction,,0,监事会关于会计差错更正的核实意见,http://static.cninfo.com.cn/finalpage/2011-03-17/59131163.PDF,cninfo:会计差错更正,2026-09-23T15:08:07+00:00
 300034,钢研高纳,2011-03-17,correction,,0,关于公司会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2011-03-17/59131155.PDF,cninfo:会计差错更正,2026-09-23T15:08:07+00:00
@@ -171,7 +171,7 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 600298,安琪酵母,2024-04-20,correction,,0,安琪酵母股份有限公司关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2024-04-20/1219693963.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
 600298,安琪酵母,2024-08-08,correction,,0,安琪酵母股份有限公司关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2024-08-08/1220814762.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
 600298,安琪酵母,2024-10-31,correction,,0,安琪酵母股份有限公司关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2024-10-31/1221573355.PDF,cninfo:追溯调整,2026-09-23T15:14:28+00:00
-600298,安琪酵母,2025-04-10,correction,,0,安琪酵母股份有限公司关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-10/1223046739.PDF,cninfo:追溯调整,2026-09-23T15:14:34+00:00
+600298,安琪酵母,2025-04-10,correction,,0,安琪酵母股份有限公司关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2025-04-10/1223046739.PDF,cninfo:追溯调整,2026-10-14T12:21:34+00:00
 600315,上海家化,2014-03-13,correction,,0,关于上海家化联合股份有限公司2013年度前期会计差错更正的专项报告,http://static.cninfo.com.cn/finalpage/2014-03-13/63669301.PDF,cninfo:前期差错,2026-09-23T15:11:18+00:00
 600315,上海家化,2014-03-13,correction,,0,关于上海家化联合股份有限公司2013年度前期会计差错更正的专项报告,http://static.cninfo.com.cn/finalpage/2014-03-13/63669293.PDF,cninfo:前期差错,2026-09-23T15:11:18+00:00
 600315,上海家化,2014-03-13,correction,,0,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2014-03-13/63669287.PDF,cninfo:前期差错,2026-09-23T15:11:18+00:00
@@ -198,7 +198,7 @@ security_code,security_name,announcement_date,kind,report_period,paired,title,ur
 600763,通策医疗,2017-04-01,correction,,0,追溯调整后2015年度合并财务报表,http://static.cninfo.com.cn/finalpage/2017-04-01/1203247298.PDF,cninfo:追溯调整,2026-09-23T15:13:47+00:00
 600862,中航高科,2018-06-16,correction,,0,中审众环出具的公司前期会计差错更正事项专项说明的鉴证报告,http://static.cninfo.com.cn/finalpage/2018-06-16/1205064524.PDF,cninfo:前期差错,2026-09-23T15:11:32+00:00
 600862,中航高科,2018-06-16,correction,,0,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2018-06-16/1205064513.PDF,cninfo:前期差错,2026-09-23T15:11:32+00:00
-600897,厦门空港,2026-08-27,correction,,0,厦门空港关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-08-27/1225511709.PDF,cninfo:追溯调整,2026-09-23T15:14:41+00:00
+600897,厦门空港,2026-08-27,correction,,0,厦门空港关于同一控制下企业合并追溯调整财务数据的公告,http://static.cninfo.com.cn/finalpage/2026-08-27/1225511709.PDF,cninfo:追溯调整,2026-10-14T12:21:40+00:00
 600988,赤峰黄金,2019-04-16,correction,,0,关于前期会计差错更正的公告,http://static.cninfo.com.cn/finalpage/2019-04-16/1206022239.PDF,cninfo:前期差错,2026-09-23T15:11:37+00:00
 600988,赤峰黄金,2019-04-16,correction,,0,关于赤峰黄金2018年度会计差错更正专项审核报告,http://static.cninfo.com.cn/finalpage/2019-04-16/1206022238.PDF,cninfo:会计差错更正,2026-09-23T15:09:18+00:00
 600988,赤峰黄金,2019-04-16,correction,,0,监事会关于会计差错更正及会计估计变更的说明,http://static.cninfo.com.cn/finalpage/2019-04-16/1206021173.PDF,cninfo:会计差错更正,2026-09-23T15:09:18+00:00
