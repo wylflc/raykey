@@ -19,6 +19,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from a_share_signal_dates import evidence_iso_for_signal
+from review_holds import recheck_due
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,8 @@ DEFAULT_VALUATION_POOL = ROOT / "data/processed/a_share_core_valuation_pool.csv"
 # 不再读已无生产者的 2026-05 指标快照；传文件路径仍按旧快照 CSV 读（复现用）。
 DEFAULT_FINANCIALS = ROOT / "data/raw/financials"
 DEFAULT_FORECASTS = ROOT / "data/interim/a_share_earnings_forecasts.csv"
+# §6.4 预告补录（OI-288）：预告取数脚本同时写出「业绩预告」栏目中表外且未登记补录表的公告，估值范围内的池成员入队并冻结。
+DEFAULT_FORECAST_UNREGISTERED = ROOT / "data/interim/a_share_forecast_unregistered.csv"
 DEFAULT_DISCLOSURES = ROOT / "data/interim/a_share_report_disclosures.csv"
 DEFAULT_OUTPUT = ROOT / "data/interim/a_share_report_update_queue.csv"
 DEFAULT_DOSSIERS = ROOT / "data/processed/a_share_valuation_dossiers.csv"
@@ -38,7 +41,7 @@ DEFAULT_MODEL_BANDS = ROOT / "data/processed/a_share_pool_model_bands_adopted.cs
 DEFAULT_STRUCTURAL_GROWTH = ROOT / "data/interim/structural_growth_review.csv"
 # §7.3 谷底侧复核（OI-265）：同一脚本当晚产出，锚 ≥ 1.5 倍 TTM 等价 NOPAT 且 λ = 0 或 v > 0 的入队并冻结；登记研究数后转由差距规则管理。
 DEFAULT_TROUGH_REVIEW = ROOT / "data/interim/trough_anchor_review.csv"
-# §7.5 用户裁定的临时冻结（OI-265）：released_at 为空的行冻结新增买入。
+# §7.5 用户裁定的临时冻结（OI-265）：released_at 为空的行冻结新增买入；新定期报告公告后列复看到期（OI-289）。
 DEFAULT_REVIEW_HOLDS = ROOT / "data/reference/review_holds.csv"
 # §7.4 负面事件登记（OI-285）：disposition 为空的待复核行冻结新增买入，处置后解除。
 DEFAULT_EVENT_REVIEWS = ROOT / "data/reference/pool_event_reviews.csv"
@@ -230,6 +233,7 @@ def build_queue(
     trough_rows: list[dict[str, str]] | None = None,
     hold_rows: list[dict[str, str]] | None = None,
     event_rows: list[dict[str, str]] | None = None,
+    unregistered_rows: list[dict[str, str]] | None = None,
 ) -> list[dict[str, object]]:
     from screen_pool_events import pending_rows
     events_by_code = pending_rows(event_rows or [])
@@ -247,6 +251,10 @@ def build_queue(
     as_of_date = parse_date(as_of) or datetime.now(timezone.utc).date()
     forecasts_by_code = load_latest_forecasts(forecast_rows, as_of_date.isoformat())
     disclosures_by_code = load_latest_disclosures(disclosure_rows, as_of_date.isoformat())
+    unregistered_by_code: dict[str, list[dict[str, str]]] = {}
+    for row in unregistered_rows or []:
+        if row.get("security_code") and _visible(row, as_of_date.isoformat()):
+            unregistered_by_code.setdefault(row["security_code"].zfill(6), []).append(row)
     output: list[dict[str, object]] = []
 
     for tier in tier_rows:
@@ -336,12 +344,20 @@ def build_queue(
         trough_flag = trough_by_code.get(code) if in_valuation_scope else None
         trough_trigger = bool(trough_flag and not research_registered)
         hold = holds_by_code.get(code)
+        hold_recheck = recheck_due(hold, periodic_notice_date.isoformat() if periodic_notice_date else "",
+                                   (periodic or {}).get("report_label", "")) if hold else None
         event = events_by_code.get(code)
+        # §6.4（OI-288）：「业绩预告」栏目中表外且未登记补录表的公告，登记（叠加或不叠加）并重取预告前冻结；
+        # 该期正式报告已披露的由正式报告取代，不再列出。
+        unregistered = [row for row in unregistered_by_code.get(code, [])
+                        if not (periodic_period and periodic_period.isoformat() >= (row.get("report_date") or "")[:10])
+                        ] if in_valuation_scope else []
         report_driven_review = (
             report_valuation_trigger
             or forecast_valuation_trigger
             or express_valuation_trigger
             or periodic_valuation_trigger
+            or bool(unregistered)
         )
         valuation_review_needed = report_driven_review or divergence_trigger or growth_trigger or trough_trigger
         buy_blocked = (report_driven_review or bool(divergence and divergence["freeze"]) or trough_trigger or bool(hold)
@@ -356,6 +372,8 @@ def build_queue(
             event_reasons.append("express_report_after_last_valuation_review")
         if forecast_valuation_trigger:
             event_reasons.append("forecast_after_last_valuation_review")
+        if unregistered:
+            event_reasons.append("forecast_unregistered")
         if report_valuation_trigger and not periodic_valuation_trigger:
             event_reasons.append("latest_report_after_last_valuation_review")
         if divergence_trigger:
@@ -425,6 +443,9 @@ def build_queue(
                 "structural_growth_cut": (growth_flag or {}).get("cut", "") if growth_trigger else "",
                 "trough_anchor_multiple": ((trough_flag or {}).get("anchor_ttm_multiple") or "ttm_nonpositive") if trough_trigger else "",
                 "review_hold_basis": (hold or {}).get("basis", "") if hold else "",
+                "review_hold_recheck_due": hold_recheck or "",
+                "forecast_unregistered": "；".join(f"{r.get('notice_date', '')[:10]} {r.get('title', '')}".strip()
+                                                  for r in unregistered),
                 "event_review_headline": (f"{event.get('detected_on', '')} {event.get('headline', '')}".strip()
                                           if event else ""),
                 "as_of": as_of_date.isoformat(),
@@ -452,6 +473,7 @@ def build_queue_for_signal(
     trough_rows: list[dict[str, str]] | None = None,
     hold_rows: list[dict[str, str]] | None = None,
     event_rows: list[dict[str, str]] | None = None,
+    unregistered_rows: list[dict[str, str]] | None = None,
 ) -> list[dict[str, object]]:
     """Production entry: derive the evidence cutoff from one signal date."""
     return build_queue(
@@ -469,6 +491,7 @@ def build_queue_for_signal(
         trough_rows,
         hold_rows,
         event_rows,
+        unregistered_rows,
     )
 
 
@@ -486,6 +509,8 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_FORECASTS,
         help="业绩预告物化文件（§7.1，每日经 §9.1 步骤 0 重抓）；缺失时仅按定期报告触发。",
     )
+    parser.add_argument("--forecast-unregistered", type=Path, default=DEFAULT_FORECAST_UNREGISTERED,
+                        help="§6.4 表外未登记的预告公告（预告取数脚本同批写出）；文件缺失视为无")
     parser.add_argument(
         "--report-disclosures",
         type=Path,
@@ -530,6 +555,7 @@ def main() -> None:
     hold_rows = load_csv(args.review_holds) if args.review_holds.exists() else []
     from screen_pool_events import load_register
     event_rows = load_register(args.event_reviews)
+    unregistered_rows = load_csv(args.forecast_unregistered)
     rows = build_queue_for_signal(
         load_csv(args.attention_triage),
         load_csv(args.tiers),
@@ -545,6 +571,7 @@ def main() -> None:
         load_csv(args.trough_review),
         hold_rows,
         event_rows,
+        unregistered_rows,
     )
     fieldnames = [
         "market_type",
@@ -580,6 +607,8 @@ def main() -> None:
         "structural_growth_cut",
         "trough_anchor_multiple",
         "review_hold_basis",
+        "review_hold_recheck_due",
+        "forecast_unregistered",
         "event_review_headline",
         "as_of",
         "generated_at_utc",
@@ -588,7 +617,8 @@ def main() -> None:
     from daily_execution_guard import stamp
     stamp(args.output, args.signal_date, (args.forecasts, args.report_disclosures, args.attention_triage, args.tiers,
                                          args.valuation_pool, args.dossiers, args.model_bands, args.structural_growth,
-                                         args.trough_review) + tuple(p for p in (args.review_holds, args.event_reviews)
+                                         args.trough_review) + tuple(p for p in (args.review_holds, args.event_reviews,
+                                                                                 args.forecast_unregistered)
                                                                      if p.exists()))
     forecast_hits = sum(1 for row in rows if "forecast_after_last_valuation_review" in str(row["queue_reasons"]))
     express_hits = sum(1 for row in rows if "express_report_after_last_valuation_review" in str(row["queue_reasons"]))
@@ -597,6 +627,8 @@ def main() -> None:
     growth_hits = [str(row["security_name"]) for row in rows if "structural_growth_review" in str(row["queue_reasons"])]
     trough_hits = [str(row["security_name"]) for row in rows if "trough_anchor_review" in str(row["queue_reasons"])]
     hold_hits = [str(row["security_name"]) for row in rows if "user_review_hold" in str(row["queue_reasons"])]
+    recheck_hits = [str(row["security_name"]) for row in rows if row.get("review_hold_recheck_due")]
+    unregistered_hits = [str(row["security_name"]) for row in rows if "forecast_unregistered" in str(row["queue_reasons"])]
     event_hits = [str(row["security_name"]) for row in rows if "event_review" in str(row["queue_reasons"])]
     print(
         f"wrote {len(rows)} rows to {args.output}; "
@@ -604,7 +636,9 @@ def main() -> None:
         f"research-model divergence {len(divergence_hits)}{('（' + '、'.join(divergence_hits) + '）') if divergence_hits else ''}, "
         f"structural growth {len(growth_hits)}{('（' + '、'.join(growth_hits) + '）') if growth_hits else ''}, "
         f"trough anchor {len(trough_hits)}{('（' + '、'.join(trough_hits) + '）') if trough_hits else ''}, "
-        f"user holds {len(hold_hits)}{('（' + '、'.join(hold_hits) + '）') if hold_hits else ''}, "
+        f"user holds {len(hold_hits)}{('（' + '、'.join(hold_hits) + '）') if hold_hits else ''}"
+        f"（recheck due {len(recheck_hits)}{('：' + '、'.join(recheck_hits)) if recheck_hits else ''}）, "
+        f"unregistered forecasts {len(unregistered_hits)}{('（' + '、'.join(unregistered_hits) + '）') if unregistered_hits else ''}, "
         f"event reviews {len(event_hits)}{('（' + '、'.join(event_hits) + '）') if event_hits else ''}"
     )
 

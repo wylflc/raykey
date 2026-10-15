@@ -309,6 +309,7 @@ def finish_evidence(as_of, since):
         raise ValueError('证据起点须早于信号日')
     paths = [ROOT / p for p in ('data/interim/a_share_report_disclosures.csv',
                                 'data/interim/a_share_earnings_forecasts.csv',
+                                'data/interim/a_share_forecast_unregistered.csv',
                                 'data/raw/corporate_actions/a_share_corporate_actions.csv')]
     for p in list(paths):
         verify_stamp(p, as_of)

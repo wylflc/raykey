@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.252
+# A股选股-估值-量价操作流程 v4.253
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -58,7 +58,8 @@
 | 审计日志 | `data/processed/a_share_workflow_decision_log.csv`，只追加不覆盖；核心池重建每次写一行汇总，逐票只在 `pool_layer` 变化时写行；换纪元时把旧纪元行移入 `data/archive/decision_log_<起>_to_<止>.csv`（公司分析索引同读） |
 | 结构性增长复核（§7.3） | `data/interim/structural_growth_review.csv` |
 | 谷底侧复核（§7.3） | `data/interim/trough_anchor_review.csv` |
-| 临时冻结名单（§7.5） | `data/reference/review_holds.csv`（用户裁定，人工登记） |
+| 临时冻结名单（§7.5） | `data/reference/review_holds.csv`（用户裁定，人工登记；复看由 `review_holds.py --recheck` 登记） |
+| 预告补录（§6.4） | `data/reference/forecast_supplements.csv`（人工登记）；表外预告检出 `data/interim/a_share_forecast_unregistered.csv`（预告取数同批写出） |
 | 财报日背离复带登记（§7.5.2） | `data/reference/report_divergence_reviews.csv`（`--register` 登记） |
 | 负面事件登记（§7.4） | `data/reference/pool_event_reviews.csv`（筛查脚本登记待复核行，`--dispose` 处置）；当日命中 `data/interim/pool_event_hits_<日期>.json`；新闻别名 `data/reference/pool_news_aliases.csv`（人工登记） |
 | 业务属性登记（个人投资体系第 5.12 节） | `data/processed/a_share_business_attributes.csv`（人工登记） |
@@ -258,6 +259,12 @@ L4 行须记 `l4_since`（首判日期）；连续一年仍为 L4 的停止复�
 ### 6.4 预告与快报的叠加
 
 预告与快报只有在公告已发生、尚未被正式报告取代且报告期已实质走完时进入锚；快报优先，区间取中值。执行点是 §6.7 第 4 步的 `apply_forecast_band_overlay.py`。叠加只走 `bps` 通道——预告的归母净利经留存收益改变每股净资产，`nopat_ps = ratio0 × BPS_op` 与 `eps0 = roe0 × BPS_op` 随经营账面等比缩放（缩放基数为 `bps_operating`，外生权益 `x` 不动），**归一化锚 `ratio0`／`roe0` 不动**；净负债不调整。正式报告披露后由机械带自然取代。叠加行的估值事件写报告期类型加「预告」或「快报」（如「三季报预告」），正式报告取代后只写报告类型。
+
+**表外预告**：预告与快报读东财预告表与快报表（§7.1）。预告取数同批取东财公告「业绩预告」栏目自报告期末起的公告，标题所指报告期为本期或识别不出、与预告表和补录表都对不上的，写入 `data/interim/a_share_forecast_unregistered.csv`；估值范围内、该期正式报告尚未披露的池成员由队列冻结新增买入（`queue_reasons` 记 `forecast_unregistered`）。当晚读原文登记 `data/reference/forecast_supplements.csv`（`security_code,security_name,report_date,notice_date,art_code,disposition,predict_type,predict_amt_lower,predict_amt_upper,basis,registered_at,note`）：
+- `叠加`：上下限为报告期累计归母净利（元）；只给单季数的按同年前一期累计（逐季面板）加单季折算，`basis` 写明。
+- `不叠加`：报告期未走完、非报告期、业绩说明会一类，`note` 写理由。
+
+登记后重跑 §7.1 预告取数：`叠加` 行并入预告文件（`source` 记 `补录:<公告编号>`），叠加与冻结照常；表内已有该公司同期归母预告且公告日不早于补录的，以表内为准。
 
 ### 6.5 当前估值方法
 
@@ -597,7 +604,7 @@ python3 scripts/build_report_update_queue.py \
   --output data/interim/a_share_report_update_queue.csv
 ```
 
-**四个文件都必须当日重建**；任一文件日期早于扫描日即不可用，结构性增长复核文件另须与当前池带一致（池带重建后重跑）。`garbage` 不进入队列。队列只纳入公告日不晚于信号日自动推导的证据日的预告、快报与定期报告。
+**四个文件都必须当日重建**（预告取数同批写出 §6.4 的表外预告检出文件）；任一文件日期早于扫描日即不可用，结构性增长复核文件另须与当前池带一致（池带重建后重跑）。`garbage` 不进入队列。队列只纳入公告日不晚于信号日自动推导的证据日的预告、快报与定期报告。
 
 `<当前报告期末>` 取最近一个已开始披露的报告期末（`2026-06-30` 一类）；披露窗未关时（法定截止日：一季报 4-30、半年报 8-31、三季报 10-31、年报次年 4-30）每日重取。
 
@@ -676,7 +683,13 @@ python3 scripts/screen_pool_events.py --retro <代码> [--name <简称>]
 
 估值或事件复核触发后（§7.3 生产所用锚较低的差距复核除外），将 `buy_blocked` 设为 `review_pending`，冻结新增买入但继续持仓跟踪。完成复核、更新证据与复核日期并重建队列后自动解除。§7.4 负面事件登记表的待复核行由队列记 `event_review` 并冻结，处置后解除。
 
-**用户裁定的临时冻结**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股，以及用户按 §10.1 第 2 条裁定暂停买入的个股，登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
+**用户裁定的临时冻结**：用户点名、模型偏差在研究数机制之外（增长腿、研发外推、股权桥时点等）的个股，以及用户按 §10.1 第 2 条裁定暂停买入的个股，登记 `data/reference/review_holds.csv`（`security_code,security_name,basis,ruled_at,release_condition,released_at,note,rechecked_at,recheck_note`）。`released_at` 为空的行由队列冻结新增买入（`queue_reasons` 记 `user_review_hold`），持仓照常跟踪与卖出；满足 `release_condition` 后填 `released_at` 解除，行不删除。登记与解除都写决策日志，并按 §7.3 研究数登记同法当晚以同一信号日生效。
+
+**冻结复看**：`released_at` 为空的行，该公司新定期报告公告日晚于 `ruled_at` 与 `rechecked_at` 的较晚者即到期，队列列 `review_hold_recheck_due`。当晚核对解除条件、该报告「涉嫌违法违规、受到处罚及整改情况」一栏与 §7.4 登记的后续进展，在当日报告「需人工处理」提请用户裁定保留、解除或改条件；复看日记当晚扫描的证据日（§9.3.6 第 3 条口径），在当晚重建队列之前登记：
+
+```bash
+python3 scripts/review_holds.py --recheck <代码> --rechecked-at YYYY-MM-DD --note "..."
+```
 
 **预告与快报触发的估值复核由 §6.4 的叠加机械完成**：叠加把带与 `valuation_reviewed_at` 一并推进到公告日，队列重建后冻结自动解除。叠加覆盖不到的行（银行与保险、`zero_growth` 路径输入不全、股本多期倒推不一致；脚本逐行打印跳过原因）走人工复核。
 

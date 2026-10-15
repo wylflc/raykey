@@ -227,6 +227,53 @@ class ReviewHoldTest(unittest.TestCase):
     def test_released_hold_is_ignored(self) -> None:
         self.assertEqual(self.queue(released="2026-10-20"), [])
 
+    def test_recheck_due_after_new_periodic_report(self) -> None:
+        """§7.5（OI-289）：裁定日或上次复看日之后公告的定期报告使复看到期；公告日按证据日隔离。"""
+        report = [{"security_code": "002594", "disclosure_type": "periodic_report", "notice_date": "2026-10-28",
+                   "report_date": "2026-09-30", "report_label": "2026年 三季报"}]
+        hold = {"security_code": "002594", "basis": "OI-286", "ruled_at": "2026-10-13", "released_at": ""}
+
+        def due(row, disclosures, as_of="2026-10-28"):
+            rows = q.build_queue([], [_tier("002594")], [_pool("002594", "2026-10-28")], [], [], disclosures, as_of,
+                                 [], [], None, [], [], [row])
+            return rows[0]["review_hold_recheck_due"]
+
+        self.assertEqual(due(hold, []), "")
+        self.assertEqual(due(hold, report), "2026年 三季报 2026-10-28 晚于上次复看 2026-10-13")
+        self.assertEqual(due(hold, report, "2026-10-27"), "")
+        self.assertEqual(due(dict(hold, rechecked_at="2026-10-28"), report), "")
+
+
+class UnregisteredForecastTest(unittest.TestCase):
+    """§6.4（OI-288）：表外且未登记补录表的「业绩预告」栏目公告冻结新增买入并入估值复核。"""
+
+    def queue(self, as_of="2026-10-14", tier=None, disclosures=()):
+        rows = [{"security_code": "688018", "report_date": "2026-09-30", "notice_date": "2026-10-14",
+                 "title": "乐鑫科技:乐鑫科技关于2026年第三季度业绩预告的自愿性披露公告"}]
+        return q.build_queue([], [tier or _tier("688018")], [_pool("688018", "2026-07-31")], [], [], list(disclosures),
+                             as_of, [], [], None, [], [], [], [], rows)
+
+    def test_unregistered_preview_freezes_and_needs_valuation_review(self) -> None:
+        rows = self.queue()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["queue_reasons"], "forecast_unregistered")
+        self.assertEqual(rows[0]["buy_blocked"], "review_pending")
+        self.assertTrue(rows[0]["valuation_review_needed"])
+        self.assertEqual(rows[0]["forecast_unregistered"],
+                         "2026-10-14 乐鑫科技:乐鑫科技关于2026年第三季度业绩预告的自愿性披露公告")
+
+    def test_future_notice_and_out_of_scope_tier_are_ignored(self) -> None:
+        self.assertEqual(self.queue(as_of="2026-10-13"), [])
+        self.assertEqual(self.queue(tier=dict(_tier("688018"), quality_tier="L4")), [])
+
+    def test_superseded_once_the_formal_report_is_out(self) -> None:
+        report = {"security_code": "688018", "disclosure_type": "periodic_report", "notice_date": "2026-10-24",
+                  "report_date": "2026-09-30", "report_label": "2026年 三季报"}
+        rows = self.queue(as_of="2026-10-24", disclosures=[report])
+        self.assertEqual(len(rows), 1)
+        self.assertNotIn("forecast_unregistered", rows[0]["queue_reasons"])
+        self.assertEqual(rows[0]["forecast_unregistered"], "")
+
 
 class EventReviewTest(unittest.TestCase):
     """§7.4 负面事件登记（OI-285）：待复核行冻结新增买入，处置后不再入队。"""
