@@ -1,6 +1,6 @@
 {
  "signal_date": "2026-10-15",
- "checked_at_utc": "2026-10-15T08:15:17.673038+00:00",
+ "checked_at_utc": "2026-10-15T08:44:29.169270+00:00",
  "status": "passed",
  "checks": [
   "whole_pool_unique_codes",
@@ -27,7 +27,7 @@
   "divergence_review_registry_in_publication_inputs",
   "exright_terms_in_publication_inputs",
   "queue_has_no_report_triggers",
-  "evidence_refresh_scan_jobs_completed",
+  "all_jobs_completed",
   "band_validation_all_pass",
   "panel_audit_no_severe",
   "weixing_forecast_overlay_applied",
@@ -35,9 +35,11 @@
   "two_side_bands_same_members",
   "aima_hold_condition_updated",
   "asml_q3_evidence_registered",
-  "eligible_set_two",
-  "divergence_subset_holdings_plus_eligible",
-  "queue_26_rows_no_event_review"
+  "aotewei_research_adopted",
+  "aotewei_out_of_queue",
+  "queue_25_rows",
+  "buy_line_24_eligible_two",
+  "divergence_subset_holdings_plus_eligible"
  ],
  "problems": [],
  "holdings_market_value_cny": "4962120.00",
