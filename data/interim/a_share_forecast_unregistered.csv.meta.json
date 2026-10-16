@@ -1,0 +1,8 @@
+{
+  "as_of": "2026-10-16",
+  "generated_at_utc": "2026-10-16T08:01:59.618209+00:00",
+  "sha256": "493c78cb231eca52937a35bfb899c3d8dc4f7f5eb4dd2a3dae3f6cda3e7bce03",
+  "inputs": {
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/forecast_supplements.csv": "6ce8a263e1ecc5085cfb3c5dbc33d9bbeb0d319794146dbbed913df8d5f6f3c4"
+  }
+}

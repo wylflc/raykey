@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-15",
-  "generated_at_utc": "2026-10-15T08:40:42.853860+00:00",
-  "sha256": "9290ac483ee14211a689a0275310a3ba7655816e4cc1ef3f695a47b3f2a40bd3",
+  "as_of": "2026-10-16",
+  "generated_at_utc": "2026-10-16T08:27:01.921183+00:00",
+  "sha256": "bf415a34a5a37165ddd03b471c29d0389db62f91fd07c058cbbab3cf5203aa13",
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "fa3ab5ce9f83411f8b09e2793d3b136a270a8c05370320d406128bab661593b8",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "bc2ec6806c02c932bf4f71910ec6097acfd20120a515f58137f5cd2f7cce277f",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_business_attributes.csv": "543f5c2eebabe54538c05fde7e3df5fc329bd4bf739966d3a0c2cf51072fb093"
   }
 }

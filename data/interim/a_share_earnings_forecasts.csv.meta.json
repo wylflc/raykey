@@ -1,6 +1,8 @@
 {
-  "as_of": "2026-10-15",
-  "generated_at_utc": "2026-10-15T07:09:32.324213+00:00",
-  "sha256": "63335cd55368943a449c1c3f475fa28e6fbfb896e8854a283fdff141857ee4fc",
-  "inputs": {}
+  "as_of": "2026-10-16",
+  "generated_at_utc": "2026-10-16T08:01:59.613438+00:00",
+  "sha256": "dffbb470564f6f0295dbbdf75079b6a7423fb05cfa8da9c802e28105d7dd6ef0",
+  "inputs": {
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/forecast_supplements.csv": "6ce8a263e1ecc5085cfb3c5dbc33d9bbeb0d319794146dbbed913df8d5f6f3c4"
+  }
 }
