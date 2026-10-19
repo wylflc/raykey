@@ -1,0 +1,13 @@
+{
+ "security_code": "603338",
+ "security_name": "浙江鼎力",
+ "review_id": "iv20261019_pool_b01:603338",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 18.86,
+  "base": 20.79,
+  "bull": 22.33
+ },
+ "falsifier": "2026Q3 单季营收 < 23.4 亿（同比转负），或扣汇兑后归母 < 4.5 亿（2026-10-30 前）；2027H1 营收同比 < −10%，或 2027H1 扣汇兑扣非归母 < 8.5 亿（美国业务塌陷超出基准）（2027-08-31 前）；2026 年报应收账款 1-2 年账龄 > 6 亿，或全年信用减值 > 2.0 亿（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b01/companies/603338_浙江鼎力.md）"
+}

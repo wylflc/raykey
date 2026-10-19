@@ -1,0 +1,13 @@
+{
+ "security_code": "600066",
+ "security_name": "宇通客车",
+ "review_id": "iv20261019_pool_b01:600066",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 42.25,
+  "base": 49.02,
+  "bull": 53.7
+ },
+ "falsifier": "2026 年报海外销售毛利率低于 26.0%（2025 年 29.62%），或海外收入同比下降（2027-04-30 前）；2027 年中报扣非归母净利低于 15.0 亿（2026 年中报 17.96 亿），熊市路径兑现（2027-08-31 前）；挪威、丹麦、英国或欧盟出台针对中国客车或宇通、有约束力的公共采购限制或强制性网络安全规则（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b01/companies/600066_宇通客车.md）"
+}

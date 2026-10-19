@@ -1,0 +1,13 @@
+{
+ "security_code": "920394",
+ "security_name": "民士达",
+ "review_id": "iv20261019_pool_b01:920394",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 0.7,
+  "base": 0.85,
+  "bull": 1.05
+ },
+ "falsifier": "2026 年扣非归母 < 0.82 亿（即 Q4 < 0.137 亿）或 Q4 合并毛利率 < 32%：利润率重置为结构性，熊市权重升至 55%（2027-04-30 前）；2027 年上半年母公司单体毛利率 < 31%：价格内卷与原料成本叠加，各情景正常化利润再降 0.12 亿且熊市权重 55%（2027-08-31 前）；2027-06-30 其他应收款中的搬迁补偿款仍 ≥ 0.80 亿未回，或追加计提：不再计入非经营资产（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b01/companies/920394_民士达.md）"
+}
