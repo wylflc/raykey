@@ -1502,6 +1502,39 @@ def operating_equity(year, x_cum: dict[str, float], base_year=None) -> float | N
     return value_ if value_ > 0 else None
 
 
+G0_NONE_FILL_BASE = 0.03   # OI-290 研究开关的基准增速（= g_T）
+G0_NONE_FILL_REV_CAP = 0.10
+
+
+def window_revenue_cagr(history: list) -> float | None:
+    """比率窗口内营收总额的年化增速（首尾年报，端点须为正、跨度至少 2 年）。"""
+    ordered = [y for y in sorted(history, key=lambda x: x.period) if y.revenue and y.revenue > 0]
+    if len(ordered) < 2:
+        return None
+    span = int(ordered[-1].period[:4]) - int(ordered[0].period[:4])
+    if span < 2:
+        return None
+    return (ordered[-1].revenue / ordered[0].revenue) ** (1.0 / span) - 1.0
+
+
+def g0_none_fill_value(mode: str, rr: float | None, iroic: float | None, history: list) -> float:
+    """OI-290 研究开关：资本腿失效（g0 = 0、来源 none）行的替代 g0，预登记 `data/experiments/exp_oi290_20261019/`。
+
+    f3／f5：取 3%／5%。fr：再投资率 ≤ 0 或增量回报算不出（投入资本未增加）时，取窗口营收年化增速与 3% 各半、
+    夹 [0, 10%]（营收增速不可算时取 3%）；其余（增量回报 ≤ 0 而再投资率 > 0）取 3%。
+    """
+    if mode == "f3":
+        return G0_NONE_FILL_BASE
+    if mode == "f5":
+        return 0.05
+    if rr is None or rr <= 0 or iroic is None:
+        cagr = window_revenue_cagr(history)
+        if cagr is None:
+            return G0_NONE_FILL_BASE
+        return min(max(0.5 * cagr + 0.5 * G0_NONE_FILL_BASE, 0.0), G0_NONE_FILL_REV_CAP)
+    return G0_NONE_FILL_BASE
+
+
 def trailing_per_share_cagr(code: str, history: list, series: dict[str, dict], actions: list[dict],
                             x_cum: dict, as_of: str, min_years: int = 3) -> float | None:
     """OI-206 研究开关：窗口内**每股** NOPAT 的年化增速（端点各取两年均值，式同 `roic_inputs.trailing_nopat_cagr`）。
@@ -2569,6 +2602,10 @@ def _build_band(code: str, name: str, tier: str, series: dict[str, dict], action
                 band.roic_g_source = ("none" if g0_raw <= 0
                                       else "trailing" if g_trail is not None and (g_capital is None or g_trail >= g_capital)
                                       else "capital")
+                # OI-290 研究开关：资本腿失效行改取基准增速（缺省 off，逐位不变）
+                fill = getattr(args, "g0_none_fill", "off")
+                if fill != "off" and band.roic_g_source == "none":
+                    g0_raw, band.roic_g_source = g0_none_fill_value(fill, rr, iroic, history), f"none_fill_{fill}"
                 ROIC_STATS[f"g 来源·{band.roic_g_source}"] += 1
             else:
                 g0_raw = g_capital if g_capital is not None else 0.0
@@ -3399,6 +3436,9 @@ def main() -> int:
                              "由 build_discount_rate_tiers.py 生成），按带的可得日取 r，终值超额不变；缺省不启用＝统一 r（生产）")
     parser.add_argument("--g0-cap", type=float, default=0.25, help="g0 上限，缺省 25%%")
     parser.add_argument("--g0-floor", type=float, default=0.0)
+    parser.add_argument("--g0-none-fill", choices=("off", "f3", "f5", "fr"), default="off",
+                        help="研究开关（OI-290）：资本腿失效（g0 = 0、来源 none）行的替代 g0；off＝0（生产）、f3／f5＝3%%／5%%、"
+                             "fr＝再投资率 ≤ 0 或投入资本未增加取窗口营收增速与 3%% 各半夹 [0, 10%%]，其余 3%%")
     parser.add_argument("--g0-shrink", type=float, default=1.0,
                         help="g0 乘数，1.0=原行为。用于检验「该资本化多少增长」的响应曲线")
     parser.add_argument("--g-terminal", type=float, default=DEFAULT_G_TERMINAL)
