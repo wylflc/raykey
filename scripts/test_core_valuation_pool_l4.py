@@ -82,5 +82,19 @@ class OffPoolDossierSectionTests(unittest.TestCase):
         self.assertIn("| L4 | documented_not_attention | — | — | 无法估值 |", text)
 
 
+class IndependentColumnTests(unittest.TestCase):
+    review = {"v_base": "33.37", "review_date": "2026-10-19"}
+
+    def test_pv_is_spot_over_independent_value(self):
+        self.assertEqual(pool.independent_cells(33.19, self.review, "2026-07-25"), ("0.995", "2026-10-19"))
+
+    def test_new_periodic_report_after_review_marks_date(self):
+        self.assertEqual(pool.independent_cells(33.19, self.review, "2026-10-28"), ("0.995", "2026-10-19*"))
+
+    def test_missing_review_or_price_renders_dash(self):
+        self.assertEqual(pool.independent_cells(33.19, None, "2026-10-28"), ("—", "—"))
+        self.assertEqual(pool.independent_cells(None, self.review, ""), ("—", "2026-10-19"))
+
+
 if __name__ == "__main__":
     unittest.main()

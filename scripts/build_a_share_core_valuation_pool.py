@@ -38,6 +38,7 @@ DEFAULT_OUTPUT_MD = ROOT / "docs/000_a_share_core_valuation_pool.md"
 DEFAULT_FORECASTS = ROOT / "data/interim/a_share_earnings_forecasts.csv"
 DEFAULT_DISCLOSURES = ROOT / "data/interim/a_share_report_disclosures.csv"
 DEFAULT_OVERSEAS = ROOT / "data/processed/overseas_watchlist_valuation.csv"
+DEFAULT_INDEPENDENT = ROOT / "data/processed/independent_valuations.csv"
 
 # 分层档位集合：池只物化 L1-L3（worth_attention 的分层全集）；阅读版另有池外档案区，
 # 但不进入池。
@@ -336,6 +337,7 @@ def display_cells(row: dict[str, str], quote: dict | None) -> dict[str, object]:
     spot_pb = _to_float(quote.get("pb")) if quote else None
     return {
         "price": f"{spot:.2f}" if spot else "—",
+        "ref_price": ref_price,
         "band": band,
         "upside": upside,
         "fair_value": fair_value,
@@ -519,6 +521,29 @@ def load_valuation_paths() -> dict[str, str]:
     return out
 
 
+def load_independent(path: Path = DEFAULT_INDEPENDENT) -> dict[str, dict[str, str]]:
+    """工作流 §6.9 独立估值登记表的 A 股现行行（每家至多一行，由 build_independent_valuations.py 校验）。"""
+    out: dict[str, dict[str, str]] = {}
+    if not path.exists():
+        return out
+    for row in load_csv(path):
+        if row.get("status") != "current" or row.get("market") != "A" or row.get("currency") != "CNY":
+            continue
+        out[(row.get("security_code") or "").zfill(6)] = row
+    return out
+
+
+def independent_cells(ref_price: float | None, review: dict[str, str] | None, latest_report: str) -> tuple[str, str]:
+    """独立 `P/V` = 现价 ÷ 独立 V（§6.9 第 2 条：独立 V 不变，按当日价重算）；评审日之后有新定期报告的评审日加 *。"""
+    if not review:
+        return "—", "—"
+    v_base = _to_float(review.get("v_base"))
+    review_date = str(review.get("review_date") or "")
+    pv = f"{ref_price / v_base:.3f}" if (v_base and ref_price) else "—"
+    stale = bool(latest_report and review_date and latest_report > review_date)
+    return pv, (review_date + ("*" if stale else "")) or "—"
+
+
 def write_markdown(
     path: Path,
     rows: list[dict[str, str]],
@@ -537,6 +562,7 @@ def write_markdown(
     quotes = quotes or {}
     forecasts = forecasts or {}
     valuation_paths = load_valuation_paths()
+    independent = load_independent()
     # v1.39：阅读版按 **质量档 L1→L3，档内按参考分降序** 排列（§5.7：参考分只作档内排序
     # 展示，不代为定仓位档）。此前按估值表原序，读者无法一眼看出质量梯度。
     _tier_rank = {tier: index for index, tier in enumerate(("L1", "L2", "L3"))}
@@ -584,11 +610,16 @@ def write_markdown(
             if latest and latest[0] > reviewed:
                 forecast_pending.append(f"{code}{row['security_name']}({latest[0]}·{latest[1]})")
 
+        latest_report = max(
+            str(row.get("evidence_available_at") or ""),
+            str(drow.get("notice_date") or "") if drow and drow.get("disclosure_type") == "periodic_report" else "",
+        )
+        ind_pv, ind_date = independent_cells(cells["ref_price"], independent.get(str(code).zfill(6)), latest_report)
         body.append(
             "| {security_code} | {security_name} | {quality_tier_label} | {quality_score} | ".format(**row)
             + f"{valuation_paths.get(str(row.get('security_code', '')).zfill(6), '手工带')} | "
             + f"{cells['price']} | "
-            + f"{cells['fair_value']} | {cells['pv']} | "
+            + f"{cells['fair_value']} | {cells['pv']} | {ind_pv} | {ind_date} | "
             + "{valuation_reviewed_at} | {valuation_evidence_event} |".format(
                 valuation_reviewed_at=row.get("valuation_reviewed_at") or "—",
                 valuation_evidence_event=row.get("valuation_evidence_event") or "—",
@@ -605,6 +636,9 @@ def write_markdown(
         "- 模型价值 V 为模型带中值，是排序锚、不是公允价值；`P/V` = 现价 ÷ V，买入线是全池 `P/V` 分布的分位门槛（工作流 §12.1）。估值路径只显示当前方法名。",
         "- 现价取每日行情快照，缺失时沿用估值时点值；模型价值带随证据复核更新。",
         "- 估值时间为本次估值所依据证据的公开可得日；估值事件为对应报告或重大事件。",
+        "- 独立 `P/V` = 现价 ÷ [独立估值登记](independent_valuations.zh.md)现行行的独立 V，只作对照，不进买卖判定（工作流 §6.9）。"
+        "两者尺度不同：模型 `P/V` 是全池相对位置，独立 `P/V` 是现价相对独立估计的内在价值（≤ 0.75 明显低估，0.75～0.90 温和低估，0.90～1.10 大致合理，> 1.10 偏贵）。"
+        "独立评审日带 * 的，评审之后已有新定期报告，待复核。",
         *(
             ["- 池外档案区仅供查找已建档但未入关注池的公司，不取每日行情、不进入扫描。"]
             if off_pool_count
@@ -616,8 +650,8 @@ def write_markdown(
             else []
         ),
         "",
-        "| 代码 | 名称 | 质量 | 参考分 | 估值路径 | 现价 | 模型价值 | P/V | 估值时间 | 估值事件 |",
-        "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- |",
+        "| 代码 | 名称 | 质量 | 参考分 | 估值路径 | 现价 | 模型价值 | P/V | 独立 P/V | 独立评审 | 估值时间 | 估值事件 |",
+        "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- |",
         *body,
         *(extra_sections or []),
     ]
