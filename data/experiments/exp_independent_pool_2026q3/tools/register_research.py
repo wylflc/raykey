@@ -8,8 +8,10 @@
     研究数 = 归母 ÷ (1 − 生产带 minority_share) + (最新年报模型口径 NOPAT − 合并净利)
 最新年报 NOPAT 按生产口径（非经营现金、notes_wc 受限现金、投入资本下限 0.1、研发资本化）由 `roic_inputs` 现算。
 只写研究数四列，不写差距复核结论（采用与否由用户逐家裁定，§7.3）。
+档案已「采用研究数」的行，新研究数会直接改生产带（§6.5.2.2），所以不覆盖、退出码 2，待用户裁定后加 --replace-adopted。
+档案已有研究数（未采用）的，出处注明被替换的旧数与证据日。
 
-    python3 register_research.py research/002415.json [--dry-run]
+    python3 register_research.py research/002415.json [--dry-run] [--replace-adopted]
 """
 import argparse
 import csv
@@ -66,6 +68,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument('json', type=Path)
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--replace-adopted', action='store_true', help='用户已裁定改用新研究数时才用')
     args = ap.parse_args()
     spec = json.loads(args.json.read_text(encoding='utf-8'))
     code = spec['security_code'].zfill(6)
@@ -83,11 +86,17 @@ def main() -> None:
                  f"（悲观～乐观档换算）之外")
     print(f"{code} {spec['security_name']}：研究数 {conv['base']:.2f} 亿（{conv['bear']:.2f}～{conv['bull']:.2f}），"
           f"模型锚 {model_yi:.2f} 亿，差距 {gap:.1%}{'（超过 30%，§7.3 入队）' if gap > 0.30 + 1e-9 else ''}")
-    if args.dry_run:
-        return
     docs, nl = read_table(DOSSIERS)
     col = {name: i for i, name in enumerate(docs[0])}
     row = next(r for r in docs[1:] if r[col['security_code']].zfill(6) == code)
+    old, old_date = row[col['research_nopat_yi']].strip(), row[col['research_evidence_date']].strip()
+    if row[col['divergence_review_conclusion']].strip() == '采用研究数' and not args.replace_adopted:
+        print(f"{code} {spec['security_name']}：档案已采用研究数 {old} 亿（{old_date}），新研究数 {conv['base']:.2f} 亿未覆盖，待用户裁定")
+        sys.exit(2)
+    if old:
+        source += f"；替换 {old_date} 登记的 {old} 亿"
+    if args.dry_run:
+        return
     for key, value in dict(research_nopat_yi=f"{conv['base']:.2f}", research_evidence_date=spec['evidence_date'],
                            research_falsifier=falsifier, research_source=source).items():
         row[col[key]] = value
