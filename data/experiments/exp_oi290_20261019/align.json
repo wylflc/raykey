@@ -1,0 +1,26 @@
+{
+ "C": {
+  "line": 1.0034,
+  "kept": true,
+  "original_line_share": 16.684,
+  "log": "基准 a_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  买入线 1.0034 → 下侧合格面 16.684%；在册合格面按 --registered-share 取 16.687%\n  对齐容差 ±0.20pp\n\na_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  原线 1.0034 在本侧的下侧合格面 16.684%（与在册差 -0.003pp）\n  容差内 → **保留原线 1.0034**（`--width -0.0034`）；在册合格面不改写\n"
+ },
+ "F3": {
+  "line": 0.9944,
+  "kept": false,
+  "original_line_share": 17.063,
+  "log": "基准 a_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  买入线 1.0034 → 下侧合格面 16.684%；在册合格面按 --registered-share 取 16.687%\n  对齐容差 ±0.20pp\n\na_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  原线 1.0034 在本侧的下侧合格面 17.063%（与在册差 +0.376pp）\n  超出容差 → 买入线 **0.9944**（`--width 0.0056`）→ 下侧合格面 16.692%，重登在册合格面\n"
+ },
+ "F5": {
+  "line": 0.9876,
+  "kept": false,
+  "original_line_share": 17.331,
+  "log": "基准 a_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  买入线 1.0034 → 下侧合格面 16.684%；在册合格面按 --registered-share 取 16.687%\n  对齐容差 ±0.20pp\n\na_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  原线 1.0034 在本侧的下侧合格面 17.331%（与在册差 +0.644pp）\n  超出容差 → 买入线 **0.9876**（`--width 0.0124`）→ 下侧合格面 16.689%，重登在册合格面\n"
+ },
+ "FR": {
+  "line": 0.9876,
+  "kept": false,
+  "original_line_share": 17.33,
+  "log": "基准 a_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  买入线 1.0034 → 下侧合格面 16.684%；在册合格面按 --registered-share 取 16.687%\n  对齐容差 ±0.20pp\n\na_share_daily_states_adopted.csv × panel_moat_bank_v6b.csv：在册观测 507,076\n  原线 1.0034 在本侧的下侧合格面 17.330%（与在册差 +0.643pp）\n  超出容差 → 买入线 **0.9876**（`--width 0.0124`）→ 下侧合格面 16.689%，重登在册合格面\n"
+ }
+}

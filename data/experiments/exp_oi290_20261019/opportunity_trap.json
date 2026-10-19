@@ -1,0 +1,1836 @@
+{
+ "answer_key": "data/backtest/opportunity_trap_labels_v1.csv",
+ "months": 17616,
+ "stocks": 228,
+ "episodes": {
+  "机会": 403,
+  "陷阱": 150
+ },
+ "lines": {
+  "C": 1.0034,
+  "F3": 0.9944,
+  "F5": 0.9876,
+  "FR": 0.9876
+ },
+ "labels": {
+  "C": {
+   "point": {
+    "zone_share": 0.13232288828337874,
+    "opp_capture_m": 0.21187335092348286,
+    "opp_capture_e": 0.27543424317617865,
+    "zone_opp_share": 0.34448734448734447,
+    "zone_trap_share": 0.08837408837408837,
+    "trap_hit_m": 0.1415807560137457,
+    "trap_hit_e": 0.20666666666666667,
+    "opp_nopv": 0.003430079155672823,
+    "trap_nopv": 0.0,
+    "base_opp": 0.21514532243415077,
+    "base_trap": 0.08259536784741145,
+    "lift_opp": 1.6011844486778524,
+    "lift_trap": 1.0699642204796844
+   },
+   "ci": {
+    "zone_share": [
+     0.10817638258079768,
+     0.1591833448606409
+    ],
+    "opp_capture_m": [
+     0.16151562102097064,
+     0.26293599978110227
+    ],
+    "opp_capture_e": [
+     0.223544856235997,
+     0.3326168929110105
+    ],
+    "zone_opp_share": [
+     0.2957544520674363,
+     0.3940703087210387
+    ],
+    "zone_trap_share": [
+     0.057938358270137325,
+     0.12065194605271796
+    ],
+    "trap_hit_m": [
+     0.08999750028642552,
+     0.19905009782310396
+    ],
+    "trap_hit_e": [
+     0.15283162558847965,
+     0.27143330179754016
+    ],
+    "opp_nopv": [
+     0.0008036001723556923,
+     0.00666349233314369
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.19400180377019724,
+     0.2370879221588659
+    ],
+    "base_trap": [
+     0.06844217930381669,
+     0.09844058124965951
+    ],
+    "lift_opp": [
+     1.3740096159375823,
+     1.8416991160840368
+    ],
+    "lift_trap": [
+     0.7396848172782033,
+     1.384523946791272
+    ]
+   },
+   "missing_state": 432,
+   "by_year": {
+    "2007": {
+     "zone_share": 0.014018691588785047,
+     "opp_capture_m": 0.0,
+     "zone_trap_share": 0.0,
+     "n": 214
+    },
+    "2008": {
+     "zone_share": 0.07602339181286549,
+     "opp_capture_m": 0.1388888888888889,
+     "zone_trap_share": 0.0,
+     "n": 342
+    },
+    "2009": {
+     "zone_share": 0.020833333333333332,
+     "opp_capture_m": 0.05,
+     "zone_trap_share": 0.0,
+     "n": 528
+    },
+    "2010": {
+     "zone_share": 0.01661631419939577,
+     "opp_capture_m": 0.11764705882352941,
+     "zone_trap_share": 0.0,
+     "n": 662
+    },
+    "2011": {
+     "zone_share": 0.04945054945054945,
+     "opp_capture_m": 0.05128205128205128,
+     "zone_trap_share": 0.3055555555555556,
+     "n": 728
+    },
+    "2012": {
+     "zone_share": 0.1814720812182741,
+     "opp_capture_m": 0.24083769633507854,
+     "zone_trap_share": 0.1888111888111888,
+     "n": 788
+    },
+    "2013": {
+     "zone_share": 0.22958579881656804,
+     "opp_capture_m": 0.2863636363636364,
+     "zone_trap_share": 0.18041237113402062,
+     "n": 845
+    },
+    "2014": {
+     "zone_share": 0.2319309600862999,
+     "opp_capture_m": 0.3694029850746269,
+     "zone_trap_share": 0.0,
+     "n": 927
+    },
+    "2015": {
+     "zone_share": 0.11882229232386961,
+     "opp_capture_m": 0.24904214559386972,
+     "zone_trap_share": 0.02654867256637168,
+     "n": 951
+    },
+    "2016": {
+     "zone_share": 0.09707822808671066,
+     "opp_capture_m": 0.16120218579234974,
+     "zone_trap_share": 0.06796116504854369,
+     "n": 1061
+    },
+    "2017": {
+     "zone_share": 0.020202020202020204,
+     "opp_capture_m": 0.022277227722772276,
+     "zone_trap_share": 0.25,
+     "n": 1188
+    },
+    "2018": {
+     "zone_share": 0.07331136738056013,
+     "opp_capture_m": 0.05596107055961071,
+     "zone_trap_share": 0.1348314606741573,
+     "n": 1214
+    },
+    "2019": {
+     "zone_share": 0.10669610007358352,
+     "opp_capture_m": 0.09717868338557993,
+     "zone_trap_share": 0.1793103448275862,
+     "n": 1359
+    },
+    "2020": {
+     "zone_share": 0.1654861558274308,
+     "opp_capture_m": 0.1963470319634703,
+     "zone_trap_share": 0.08171206225680934,
+     "n": 1553
+    },
+    "2021": {
+     "zone_share": 0.1455767077267637,
+     "opp_capture_m": 0.6193548387096774,
+     "zone_trap_share": 0.023076923076923078,
+     "n": 1786
+    },
+    "2022": {
+     "zone_share": 0.21027131782945738,
+     "opp_capture_m": 0.43869209809264303,
+     "zone_trap_share": 0.08064516129032258,
+     "n": 2064
+    },
+    "2023": {
+     "zone_share": 0.18990042674253202,
+     "opp_capture_m": 0.2867132867132867,
+     "zone_trap_share": 0.06367041198501873,
+     "n": 1406
+    }
+   },
+   "cases": [
+    {
+     "case_id": "O01",
+     "months": 18,
+     "zone_months": 18,
+     "zone_share": 1.0,
+     "first_zone": "2013-07",
+     "min_pv": 0.505,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O02",
+     "months": 43,
+     "zone_months": 2,
+     "zone_share": 0.046511627906976744,
+     "first_zone": "2016-01",
+     "min_pv": 0.683,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O03",
+     "months": 23,
+     "zone_months": 22,
+     "zone_share": 0.9565217391304348,
+     "first_zone": "2013-09",
+     "min_pv": 0.521,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O04",
+     "months": 14,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0696,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O05",
+     "months": 30,
+     "zone_months": 30,
+     "zone_share": 1.0,
+     "first_zone": "2013-09",
+     "min_pv": 0.2415,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O06",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2104,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O07",
+     "months": 22,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1907,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O08",
+     "months": 32,
+     "zone_months": 21,
+     "zone_share": 0.65625,
+     "first_zone": "2015-07",
+     "min_pv": 0.5881,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O09",
+     "months": 31,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.712,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O10",
+     "months": 36,
+     "zone_months": 30,
+     "zone_share": 0.8333333333333334,
+     "first_zone": "2019-04",
+     "min_pv": 0.6232,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O11",
+     "months": 54,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1481,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O12",
+     "months": 76,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.4475,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O13",
+     "months": 18,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.5604,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T01",
+     "months": 20,
+     "zone_months": 18,
+     "zone_share": 0.9,
+     "first_zone": "2019-10",
+     "min_pv": 0.5801,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T02",
+     "months": 14,
+     "zone_months": 14,
+     "zone_share": 1.0,
+     "first_zone": "2012-05",
+     "min_pv": 0.5617,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T03",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.1385,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T04",
+     "months": 15,
+     "zone_months": 7,
+     "zone_share": 0.4666666666666667,
+     "first_zone": "2011-03",
+     "min_pv": 0.5888,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T05",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.8812,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T06",
+     "months": 11,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0154,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T07",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.091,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T08",
+     "months": 17,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2223,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T09",
+     "months": 26,
+     "zone_months": 4,
+     "zone_share": 0.15384615384615385,
+     "first_zone": "2020-02",
+     "min_pv": 0.7513,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T10",
+     "months": 16,
+     "zone_months": 10,
+     "zone_share": 0.625,
+     "first_zone": "2022-04",
+     "min_pv": 0.68,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T11",
+     "months": 36,
+     "zone_months": 22,
+     "zone_share": 0.6111111111111112,
+     "first_zone": "2015-10",
+     "min_pv": 0.7524,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T12",
+     "months": 28,
+     "zone_months": 11,
+     "zone_share": 0.39285714285714285,
+     "first_zone": "2022-04",
+     "min_pv": 0.7458,
+     "nopv_months": 0
+    }
+   ]
+  },
+  "F3": {
+   "point": {
+    "zone_share": 0.13232288828337874,
+    "opp_capture_m": 0.21160949868073878,
+    "opp_capture_e": 0.2704714640198511,
+    "zone_opp_share": 0.34405834405834407,
+    "zone_trap_share": 0.08451308451308451,
+    "trap_hit_m": 0.13539518900343642,
+    "trap_hit_e": 0.18666666666666668,
+    "opp_nopv": 0.003430079155672823,
+    "trap_nopv": 0.0,
+    "base_opp": 0.21514532243415077,
+    "base_trap": 0.08259536784741145,
+    "lift_opp": 1.5991904456284405,
+    "lift_trap": 1.0232182108470766
+   },
+   "ci": {
+    "zone_share": [
+     0.10759441994772974,
+     0.1594659708412636
+    ],
+    "opp_capture_m": [
+     0.1607977199989648,
+     0.2640362887285418
+    ],
+    "opp_capture_e": [
+     0.2193211488250653,
+     0.3271907379222799
+    ],
+    "zone_opp_share": [
+     0.295623077152021,
+     0.39260512883082177
+    ],
+    "zone_trap_share": [
+     0.055624560686800474,
+     0.11529666696232344
+    ],
+    "trap_hit_m": [
+     0.08596896743074231,
+     0.19014406063087244
+    ],
+    "trap_hit_e": [
+     0.13629392080312325,
+     0.24823171021942977
+    ],
+    "opp_nopv": [
+     0.0008036001723556923,
+     0.00666349233314369
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.19400180377019724,
+     0.2370879221588659
+    ],
+    "base_trap": [
+     0.06844217930381669,
+     0.09844058124965951
+    ],
+    "lift_opp": [
+     1.3781193608403646,
+     1.833950318463886
+    ],
+    "lift_trap": [
+     0.7092230758136284,
+     1.3237803472361223
+    ]
+   },
+   "missing_state": 432,
+   "by_year": {
+    "2007": {
+     "zone_share": 0.014018691588785047,
+     "opp_capture_m": 0.0,
+     "zone_trap_share": 0.0,
+     "n": 214
+    },
+    "2008": {
+     "zone_share": 0.07309941520467836,
+     "opp_capture_m": 0.125,
+     "zone_trap_share": 0.0,
+     "n": 342
+    },
+    "2009": {
+     "zone_share": 0.017045454545454544,
+     "opp_capture_m": 0.0375,
+     "zone_trap_share": 0.0,
+     "n": 528
+    },
+    "2010": {
+     "zone_share": 0.01812688821752266,
+     "opp_capture_m": 0.11764705882352941,
+     "zone_trap_share": 0.0,
+     "n": 662
+    },
+    "2011": {
+     "zone_share": 0.04945054945054945,
+     "opp_capture_m": 0.05128205128205128,
+     "zone_trap_share": 0.3333333333333333,
+     "n": 728
+    },
+    "2012": {
+     "zone_share": 0.17893401015228427,
+     "opp_capture_m": 0.2356020942408377,
+     "zone_trap_share": 0.1773049645390071,
+     "n": 788
+    },
+    "2013": {
+     "zone_share": 0.23550295857988165,
+     "opp_capture_m": 0.2863636363636364,
+     "zone_trap_share": 0.1708542713567839,
+     "n": 845
+    },
+    "2014": {
+     "zone_share": 0.23408845738942827,
+     "opp_capture_m": 0.3694029850746269,
+     "zone_trap_share": 0.0,
+     "n": 927
+    },
+    "2015": {
+     "zone_share": 0.12197686645636173,
+     "opp_capture_m": 0.2567049808429119,
+     "zone_trap_share": 0.02586206896551724,
+     "n": 951
+    },
+    "2016": {
+     "zone_share": 0.09896324222431668,
+     "opp_capture_m": 0.17486338797814208,
+     "zone_trap_share": 0.047619047619047616,
+     "n": 1061
+    },
+    "2017": {
+     "zone_share": 0.021043771043771045,
+     "opp_capture_m": 0.022277227722772276,
+     "zone_trap_share": 0.24,
+     "n": 1188
+    },
+    "2018": {
+     "zone_share": 0.07742998352553541,
+     "opp_capture_m": 0.05596107055961071,
+     "zone_trap_share": 0.1276595744680851,
+     "n": 1214
+    },
+    "2019": {
+     "zone_share": 0.10301692420897719,
+     "opp_capture_m": 0.0877742946708464,
+     "zone_trap_share": 0.18571428571428572,
+     "n": 1359
+    },
+    "2020": {
+     "zone_share": 0.16355441081777206,
+     "opp_capture_m": 0.1917808219178082,
+     "zone_trap_share": 0.07874015748031496,
+     "n": 1553
+    },
+    "2021": {
+     "zone_share": 0.1433370660694289,
+     "opp_capture_m": 0.6129032258064516,
+     "zone_trap_share": 0.0234375,
+     "n": 1786
+    },
+    "2022": {
+     "zone_share": 0.20833333333333334,
+     "opp_capture_m": 0.4359673024523161,
+     "zone_trap_share": 0.07441860465116279,
+     "n": 2064
+    },
+    "2023": {
+     "zone_share": 0.19132290184921763,
+     "opp_capture_m": 0.2902097902097902,
+     "zone_trap_share": 0.05947955390334572,
+     "n": 1406
+    }
+   },
+   "cases": [
+    {
+     "case_id": "O01",
+     "months": 18,
+     "zone_months": 18,
+     "zone_share": 1.0,
+     "first_zone": "2013-07",
+     "min_pv": 0.505,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O02",
+     "months": 43,
+     "zone_months": 2,
+     "zone_share": 0.046511627906976744,
+     "first_zone": "2016-01",
+     "min_pv": 0.683,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O03",
+     "months": 23,
+     "zone_months": 22,
+     "zone_share": 0.9565217391304348,
+     "first_zone": "2013-09",
+     "min_pv": 0.4872,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O04",
+     "months": 14,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0194,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O05",
+     "months": 30,
+     "zone_months": 30,
+     "zone_share": 1.0,
+     "first_zone": "2013-09",
+     "min_pv": 0.2415,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O06",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2104,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O07",
+     "months": 22,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1907,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O08",
+     "months": 32,
+     "zone_months": 21,
+     "zone_share": 0.65625,
+     "first_zone": "2015-07",
+     "min_pv": 0.5881,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O09",
+     "months": 31,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.712,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O10",
+     "months": 36,
+     "zone_months": 29,
+     "zone_share": 0.8055555555555556,
+     "first_zone": "2019-05",
+     "min_pv": 0.5848,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O11",
+     "months": 54,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1481,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O12",
+     "months": 76,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.4475,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O13",
+     "months": 18,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.5604,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T01",
+     "months": 20,
+     "zone_months": 18,
+     "zone_share": 0.9,
+     "first_zone": "2019-10",
+     "min_pv": 0.5801,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T02",
+     "months": 14,
+     "zone_months": 14,
+     "zone_share": 1.0,
+     "first_zone": "2012-05",
+     "min_pv": 0.5617,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T03",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.1385,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T04",
+     "months": 15,
+     "zone_months": 6,
+     "zone_share": 0.4,
+     "first_zone": "2011-04",
+     "min_pv": 0.5888,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T05",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.7873,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T06",
+     "months": 11,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0154,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T07",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.091,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T08",
+     "months": 17,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2223,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T09",
+     "months": 26,
+     "zone_months": 4,
+     "zone_share": 0.15384615384615385,
+     "first_zone": "2020-02",
+     "min_pv": 0.7513,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T10",
+     "months": 16,
+     "zone_months": 9,
+     "zone_share": 0.5625,
+     "first_zone": "2022-04",
+     "min_pv": 0.68,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T11",
+     "months": 36,
+     "zone_months": 20,
+     "zone_share": 0.5555555555555556,
+     "first_zone": "2015-10",
+     "min_pv": 0.7524,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T12",
+     "months": 28,
+     "zone_months": 11,
+     "zone_share": 0.39285714285714285,
+     "first_zone": "2022-04",
+     "min_pv": 0.7458,
+     "nopv_months": 0
+    }
+   ],
+   "delta": {
+    "zone_share": 0.0,
+    "opp_capture_m": -0.0002638522427440837,
+    "opp_capture_e": -0.004962779156327535,
+    "zone_opp_share": -0.00042900042900040347,
+    "zone_trap_share": -0.003861003861003867,
+    "trap_hit_m": -0.006185567010309284,
+    "trap_hit_e": -0.01999999999999999,
+    "opp_nopv": 0.0,
+    "trap_nopv": 0.0,
+    "base_opp": 0.0,
+    "base_trap": 0.0,
+    "lift_opp": -0.0019940030494118854,
+    "lift_trap": -0.04674600963260778
+   },
+   "delta_ci": {
+    "zone_share": [
+     -0.0013101785311814536,
+     0.0013997828205642925
+    ],
+    "opp_capture_m": [
+     -0.002853316203454759,
+     0.0025127735995413153
+    ],
+    "opp_capture_e": [
+     -0.013576199710653474,
+     0.002557544757033239
+    ],
+    "zone_opp_share": [
+     -0.004622173744311636,
+     0.003321075910987647
+    ],
+    "zone_trap_share": [
+     -0.006837895338338095,
+     -0.0009806603031789988
+    ],
+    "trap_hit_m": [
+     -0.01072638809904226,
+     -0.0015985631433042345
+    ],
+    "trap_hit_e": [
+     -0.03980021994134896,
+     -0.005709470304975939
+    ],
+    "opp_nopv": [
+     0.0,
+     0.0
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.0,
+     0.0
+    ],
+    "base_trap": [
+     0.0,
+     0.0
+    ],
+    "lift_opp": [
+     -0.021294380657586386,
+     0.015203717491765786
+    ],
+    "lift_trap": [
+     -0.07871385754625619,
+     -0.011770844834294499
+    ]
+   }
+  },
+  "F5": {
+   "point": {
+    "zone_share": 0.13243642143505904,
+    "opp_capture_m": 0.21187335092348286,
+    "opp_capture_e": 0.2704714640198511,
+    "zone_opp_share": 0.34419202743249033,
+    "zone_trap_share": 0.0818688384054865,
+    "trap_hit_m": 0.13127147766323025,
+    "trap_hit_e": 0.18666666666666668,
+    "opp_nopv": 0.003430079155672823,
+    "trap_nopv": 0.0,
+    "base_opp": 0.21514532243415077,
+    "base_trap": 0.08259536784741145,
+    "lift_opp": 1.5998118087732849,
+    "lift_trap": 0.9912037507567355
+   },
+   "ci": {
+    "zone_share": [
+     0.1076892423757496,
+     0.15948947436346542
+    ],
+    "opp_capture_m": [
+     0.1629347615065031,
+     0.264865234556196
+    ],
+    "opp_capture_e": [
+     0.22050779121717337,
+     0.32593005560433125
+    ],
+    "zone_opp_share": [
+     0.2961414326767564,
+     0.39348862493819925
+    ],
+    "zone_trap_share": [
+     0.05312463371907005,
+     0.11153056203056201
+    ],
+    "trap_hit_m": [
+     0.08259294852578322,
+     0.18657389625865414
+    ],
+    "trap_hit_e": [
+     0.13629392080312325,
+     0.24823171021942977
+    ],
+    "opp_nopv": [
+     0.0008036001723556923,
+     0.00666349233314369
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.19400180377019724,
+     0.2370879221588659
+    ],
+    "base_trap": [
+     0.06844217930381669,
+     0.09844058124965951
+    ],
+    "lift_opp": [
+     1.3788140477624329,
+     1.8366868937037428
+    ],
+    "lift_trap": [
+     0.6811615367124916,
+     1.2933982477606891
+    ]
+   },
+   "missing_state": 432,
+   "by_year": {
+    "2007": {
+     "zone_share": 0.014018691588785047,
+     "opp_capture_m": 0.0,
+     "zone_trap_share": 0.0,
+     "n": 214
+    },
+    "2008": {
+     "zone_share": 0.07309941520467836,
+     "opp_capture_m": 0.1388888888888889,
+     "zone_trap_share": 0.0,
+     "n": 342
+    },
+    "2009": {
+     "zone_share": 0.017045454545454544,
+     "opp_capture_m": 0.0375,
+     "zone_trap_share": 0.0,
+     "n": 528
+    },
+    "2010": {
+     "zone_share": 0.015105740181268883,
+     "opp_capture_m": 0.11764705882352941,
+     "zone_trap_share": 0.0,
+     "n": 662
+    },
+    "2011": {
+     "zone_share": 0.04532967032967033,
+     "opp_capture_m": 0.05128205128205128,
+     "zone_trap_share": 0.36363636363636365,
+     "n": 728
+    },
+    "2012": {
+     "zone_share": 0.17639593908629442,
+     "opp_capture_m": 0.225130890052356,
+     "zone_trap_share": 0.17985611510791366,
+     "n": 788
+    },
+    "2013": {
+     "zone_share": 0.23550295857988165,
+     "opp_capture_m": 0.2863636363636364,
+     "zone_trap_share": 0.1658291457286432,
+     "n": 845
+    },
+    "2014": {
+     "zone_share": 0.23300970873786409,
+     "opp_capture_m": 0.3694029850746269,
+     "zone_trap_share": 0.0,
+     "n": 927
+    },
+    "2015": {
+     "zone_share": 0.13038906414300735,
+     "opp_capture_m": 0.2720306513409962,
+     "zone_trap_share": 0.024193548387096774,
+     "n": 951
+    },
+    "2016": {
+     "zone_share": 0.10367577756833177,
+     "opp_capture_m": 0.1830601092896175,
+     "zone_trap_share": 0.045454545454545456,
+     "n": 1061
+    },
+    "2017": {
+     "zone_share": 0.022727272727272728,
+     "opp_capture_m": 0.022277227722772276,
+     "zone_trap_share": 0.2222222222222222,
+     "n": 1188
+    },
+    "2018": {
+     "zone_share": 0.07742998352553541,
+     "opp_capture_m": 0.05596107055961071,
+     "zone_trap_share": 0.1276595744680851,
+     "n": 1214
+    },
+    "2019": {
+     "zone_share": 0.10007358351729213,
+     "opp_capture_m": 0.07836990595611286,
+     "zone_trap_share": 0.17647058823529413,
+     "n": 1359
+    },
+    "2020": {
+     "zone_share": 0.16355441081777206,
+     "opp_capture_m": 0.1917808219178082,
+     "zone_trap_share": 0.07874015748031496,
+     "n": 1553
+    },
+    "2021": {
+     "zone_share": 0.1444568868980963,
+     "opp_capture_m": 0.6129032258064516,
+     "zone_trap_share": 0.01937984496124031,
+     "n": 1786
+    },
+    "2022": {
+     "zone_share": 0.20736434108527133,
+     "opp_capture_m": 0.4359673024523161,
+     "zone_trap_share": 0.07009345794392523,
+     "n": 2064
+    },
+    "2023": {
+     "zone_share": 0.1906116642958748,
+     "opp_capture_m": 0.28321678321678323,
+     "zone_trap_share": 0.05970149253731343,
+     "n": 1406
+    }
+   },
+   "cases": [
+    {
+     "case_id": "O01",
+     "months": 18,
+     "zone_months": 18,
+     "zone_share": 1.0,
+     "first_zone": "2013-07",
+     "min_pv": 0.505,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O02",
+     "months": 43,
+     "zone_months": 2,
+     "zone_share": 0.046511627906976744,
+     "first_zone": "2016-01",
+     "min_pv": 0.683,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O03",
+     "months": 23,
+     "zone_months": 22,
+     "zone_share": 0.9565217391304348,
+     "first_zone": "2013-09",
+     "min_pv": 0.4656,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O04",
+     "months": 14,
+     "zone_months": 1,
+     "zone_share": 0.07142857142857142,
+     "first_zone": "2008-10",
+     "min_pv": 0.9868,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O05",
+     "months": 30,
+     "zone_months": 30,
+     "zone_share": 1.0,
+     "first_zone": "2013-09",
+     "min_pv": 0.2415,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O06",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2104,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O07",
+     "months": 22,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1907,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O08",
+     "months": 32,
+     "zone_months": 21,
+     "zone_share": 0.65625,
+     "first_zone": "2015-07",
+     "min_pv": 0.5867,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O09",
+     "months": 31,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.712,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O10",
+     "months": 36,
+     "zone_months": 28,
+     "zone_share": 0.7777777777777778,
+     "first_zone": "2019-10",
+     "min_pv": 0.5603,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O11",
+     "months": 54,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1481,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O12",
+     "months": 76,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.4475,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O13",
+     "months": 18,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.5604,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T01",
+     "months": 20,
+     "zone_months": 18,
+     "zone_share": 0.9,
+     "first_zone": "2019-10",
+     "min_pv": 0.5801,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T02",
+     "months": 14,
+     "zone_months": 14,
+     "zone_share": 1.0,
+     "first_zone": "2012-05",
+     "min_pv": 0.5617,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T03",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.1385,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T04",
+     "months": 15,
+     "zone_months": 6,
+     "zone_share": 0.4,
+     "first_zone": "2011-04",
+     "min_pv": 0.5888,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T05",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.7264,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T06",
+     "months": 11,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0154,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T07",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.091,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T08",
+     "months": 17,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2223,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T09",
+     "months": 26,
+     "zone_months": 4,
+     "zone_share": 0.15384615384615385,
+     "first_zone": "2020-02",
+     "min_pv": 0.7513,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T10",
+     "months": 16,
+     "zone_months": 9,
+     "zone_share": 0.5625,
+     "first_zone": "2022-04",
+     "min_pv": 0.68,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T11",
+     "months": 36,
+     "zone_months": 20,
+     "zone_share": 0.5555555555555556,
+     "first_zone": "2015-10",
+     "min_pv": 0.7524,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T12",
+     "months": 28,
+     "zone_months": 10,
+     "zone_share": 0.35714285714285715,
+     "first_zone": "2022-04",
+     "min_pv": 0.7458,
+     "nopv_months": 0
+    }
+   ],
+   "delta": {
+    "zone_share": 0.0001135331516803062,
+    "opp_capture_m": 0.0,
+    "opp_capture_e": -0.004962779156327535,
+    "zone_opp_share": -0.0002953170548541384,
+    "zone_trap_share": -0.00650524996860187,
+    "trap_hit_m": -0.010309278350515455,
+    "trap_hit_e": -0.01999999999999999,
+    "opp_nopv": 0.0,
+    "trap_nopv": 0.0,
+    "base_opp": 0.0,
+    "base_trap": 0.0,
+    "lift_opp": -0.0013726399045674853,
+    "lift_trap": -0.07876046972294892
+   },
+   "delta_ci": {
+    "zone_share": [
+     -0.0019312062077997364,
+     0.002292909501776101
+    ],
+    "opp_capture_m": [
+     -0.004244074872271815,
+     0.00466039520650605
+    ],
+    "opp_capture_e": [
+     -0.01534723588432027,
+     0.005077437066197049
+    ],
+    "zone_opp_share": [
+     -0.006535632162507199,
+     0.005598290471346608
+    ],
+    "zone_trap_share": [
+     -0.01036685496180544,
+     -0.002944199790119572
+    ],
+    "trap_hit_m": [
+     -0.016181884883979928,
+     -0.004665298494161511
+    ],
+    "trap_hit_e": [
+     -0.03980021994134896,
+     -0.005709470304975939
+    ],
+    "opp_nopv": [
+     0.0,
+     0.0
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.0,
+     0.0
+    ],
+    "base_trap": [
+     0.0,
+     0.0
+    ],
+    "lift_opp": [
+     -0.0307771626503472,
+     0.026493863434675535
+    ],
+    "lift_trap": [
+     -0.12038169155374942,
+     -0.03666024298436294
+    ]
+   }
+  },
+  "FR": {
+   "point": {
+    "zone_share": 0.13260672116257946,
+    "opp_capture_m": 0.21029023746701847,
+    "opp_capture_e": 0.2679900744416873,
+    "zone_opp_share": 0.3411815068493151,
+    "zone_trap_share": 0.08261986301369863,
+    "trap_hit_m": 0.13264604810996564,
+    "trap_hit_e": 0.19333333333333333,
+    "opp_nopv": 0.003430079155672823,
+    "trap_nopv": 0.0,
+    "base_opp": 0.21514532243415077,
+    "base_trap": 0.08259536784741145,
+    "lift_opp": 1.5858188455560778,
+    "lift_trap": 1.000296568281316
+   },
+   "ci": {
+    "zone_share": [
+     0.10799980834472579,
+     0.15994145998028686
+    ],
+    "opp_capture_m": [
+     0.16123288273028052,
+     0.2626234627346162
+    ],
+    "opp_capture_e": [
+     0.21831465456093063,
+     0.32331646948941467
+    ],
+    "zone_opp_share": [
+     0.2936452942131174,
+     0.3898726397267459
+    ],
+    "zone_trap_share": [
+     0.053855586102219695,
+     0.11234083747472055
+    ],
+    "trap_hit_m": [
+     0.08431243572064365,
+     0.18777152596477323
+    ],
+    "trap_hit_e": [
+     0.14285714285714285,
+     0.25362859614968636
+    ],
+    "opp_nopv": [
+     0.0008036001723556923,
+     0.00666349233314369
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.19400180377019724,
+     0.2370879221588659
+    ],
+    "base_trap": [
+     0.06844217930381669,
+     0.09844058124965951
+    ],
+    "lift_opp": [
+     1.3644153629809284,
+     1.8205785374058716
+    ],
+    "lift_trap": [
+     0.687637012613632,
+     1.3011139006805965
+    ]
+   },
+   "missing_state": 432,
+   "by_year": {
+    "2007": {
+     "zone_share": 0.014018691588785047,
+     "opp_capture_m": 0.0,
+     "zone_trap_share": 0.0,
+     "n": 214
+    },
+    "2008": {
+     "zone_share": 0.07017543859649122,
+     "opp_capture_m": 0.125,
+     "zone_trap_share": 0.0,
+     "n": 342
+    },
+    "2009": {
+     "zone_share": 0.017045454545454544,
+     "opp_capture_m": 0.0375,
+     "zone_trap_share": 0.0,
+     "n": 528
+    },
+    "2010": {
+     "zone_share": 0.015105740181268883,
+     "opp_capture_m": 0.11764705882352941,
+     "zone_trap_share": 0.0,
+     "n": 662
+    },
+    "2011": {
+     "zone_share": 0.050824175824175824,
+     "opp_capture_m": 0.05128205128205128,
+     "zone_trap_share": 0.35135135135135137,
+     "n": 728
+    },
+    "2012": {
+     "zone_share": 0.17639593908629442,
+     "opp_capture_m": 0.2198952879581152,
+     "zone_trap_share": 0.18705035971223022,
+     "n": 788
+    },
+    "2013": {
+     "zone_share": 0.23550295857988165,
+     "opp_capture_m": 0.2863636363636364,
+     "zone_trap_share": 0.1658291457286432,
+     "n": 845
+    },
+    "2014": {
+     "zone_share": 0.23516720604099245,
+     "opp_capture_m": 0.376865671641791,
+     "zone_trap_share": 0.0,
+     "n": 927
+    },
+    "2015": {
+     "zone_share": 0.12197686645636173,
+     "opp_capture_m": 0.26053639846743293,
+     "zone_trap_share": 0.02586206896551724,
+     "n": 951
+    },
+    "2016": {
+     "zone_share": 0.09802073515551367,
+     "opp_capture_m": 0.17486338797814208,
+     "zone_trap_share": 0.04807692307692308,
+     "n": 1061
+    },
+    "2017": {
+     "zone_share": 0.026094276094276093,
+     "opp_capture_m": 0.022277227722772276,
+     "zone_trap_share": 0.1935483870967742,
+     "n": 1188
+    },
+    "2018": {
+     "zone_share": 0.07907742998352553,
+     "opp_capture_m": 0.05596107055961071,
+     "zone_trap_share": 0.125,
+     "n": 1214
+    },
+    "2019": {
+     "zone_share": 0.10301692420897719,
+     "opp_capture_m": 0.07836990595611286,
+     "zone_trap_share": 0.17142857142857143,
+     "n": 1359
+    },
+    "2020": {
+     "zone_share": 0.16741790083708952,
+     "opp_capture_m": 0.1917808219178082,
+     "zone_trap_share": 0.07692307692307693,
+     "n": 1553
+    },
+    "2021": {
+     "zone_share": 0.1427771556550952,
+     "opp_capture_m": 0.6129032258064516,
+     "zone_trap_share": 0.0196078431372549,
+     "n": 1786
+    },
+    "2022": {
+     "zone_share": 0.20833333333333334,
+     "opp_capture_m": 0.4359673024523161,
+     "zone_trap_share": 0.06976744186046512,
+     "n": 2064
+    },
+    "2023": {
+     "zone_share": 0.18847795163584638,
+     "opp_capture_m": 0.28321678321678323,
+     "zone_trap_share": 0.06037735849056604,
+     "n": 1406
+    }
+   },
+   "cases": [
+    {
+     "case_id": "O01",
+     "months": 18,
+     "zone_months": 18,
+     "zone_share": 1.0,
+     "first_zone": "2013-07",
+     "min_pv": 0.505,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O02",
+     "months": 43,
+     "zone_months": 2,
+     "zone_share": 0.046511627906976744,
+     "first_zone": "2016-01",
+     "min_pv": 0.683,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O03",
+     "months": 23,
+     "zone_months": 22,
+     "zone_share": 0.9565217391304348,
+     "first_zone": "2013-09",
+     "min_pv": 0.4143,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O04",
+     "months": 14,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0194,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O05",
+     "months": 30,
+     "zone_months": 30,
+     "zone_share": 1.0,
+     "first_zone": "2013-09",
+     "min_pv": 0.2415,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O06",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2104,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O07",
+     "months": 22,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1907,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O08",
+     "months": 32,
+     "zone_months": 21,
+     "zone_share": 0.65625,
+     "first_zone": "2015-07",
+     "min_pv": 0.5881,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O09",
+     "months": 31,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.712,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O10",
+     "months": 36,
+     "zone_months": 28,
+     "zone_share": 0.7777777777777778,
+     "first_zone": "2019-10",
+     "min_pv": 0.5028,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O11",
+     "months": 54,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 2.1481,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O12",
+     "months": 76,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.4475,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "O13",
+     "months": 18,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.5604,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T01",
+     "months": 20,
+     "zone_months": 18,
+     "zone_share": 0.9,
+     "first_zone": "2019-10",
+     "min_pv": 0.5801,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T02",
+     "months": 14,
+     "zone_months": 14,
+     "zone_share": 1.0,
+     "first_zone": "2012-05",
+     "min_pv": 0.5617,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T03",
+     "months": 36,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.1385,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T04",
+     "months": 15,
+     "zone_months": 6,
+     "zone_share": 0.4,
+     "first_zone": "2011-04",
+     "min_pv": 0.5888,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T05",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.5797,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T06",
+     "months": 11,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.0154,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T07",
+     "months": 9,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.091,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T08",
+     "months": 17,
+     "zone_months": 0,
+     "zone_share": 0.0,
+     "first_zone": "",
+     "min_pv": 1.2223,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T09",
+     "months": 26,
+     "zone_months": 4,
+     "zone_share": 0.15384615384615385,
+     "first_zone": "2020-02",
+     "min_pv": 0.7513,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T10",
+     "months": 16,
+     "zone_months": 9,
+     "zone_share": 0.5625,
+     "first_zone": "2022-04",
+     "min_pv": 0.68,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T11",
+     "months": 36,
+     "zone_months": 20,
+     "zone_share": 0.5555555555555556,
+     "first_zone": "2015-10",
+     "min_pv": 0.7524,
+     "nopv_months": 0
+    },
+    {
+     "case_id": "T12",
+     "months": 28,
+     "zone_months": 10,
+     "zone_share": 0.35714285714285715,
+     "first_zone": "2022-04",
+     "min_pv": 0.7458,
+     "nopv_months": 0
+    }
+   ],
+   "delta": {
+    "zone_share": 0.00028383287920072386,
+    "opp_capture_m": -0.0015831134564643912,
+    "opp_capture_e": -0.00744416873449133,
+    "zone_opp_share": -0.0033058376380293852,
+    "zone_trap_share": -0.0057542253603897475,
+    "trap_hit_m": -0.008934707903780065,
+    "trap_hit_e": -0.013333333333333336,
+    "opp_nopv": 0.0,
+    "trap_nopv": 0.0,
+    "base_opp": 0.0,
+    "base_trap": 0.0,
+    "lift_opp": -0.015365603121774596,
+    "lift_trap": -0.06966765219836835
+   },
+   "delta_ci": {
+    "zone_share": [
+     -0.0023526630176144937,
+     0.003300041244737747
+    ],
+    "opp_capture_m": [
+     -0.005447165133219347,
+     0.002236678926447496
+    ],
+    "opp_capture_e": [
+     -0.016826923076923073,
+     0.0022028862891540113
+    ],
+    "zone_opp_share": [
+     -0.010452069465713715,
+     0.0035880792208451444
+    ],
+    "zone_trap_share": [
+     -0.009941170730732791,
+     -0.0016476381453987745
+    ],
+    "trap_hit_m": [
+     -0.015283969209322682,
+     -0.002203969738184298
+    ],
+    "trap_hit_e": [
+     -0.03572713257965057,
+     0.006805050787438241
+    ],
+    "opp_nopv": [
+     0.0,
+     0.0
+    ],
+    "trap_nopv": [
+     0.0,
+     0.0
+    ],
+    "base_opp": [
+     0.0,
+     0.0
+    ],
+    "base_trap": [
+     0.0,
+     0.0
+    ],
+    "lift_opp": [
+     -0.04904163105506296,
+     0.01655462603996936
+    ],
+    "lift_trap": [
+     -0.1158218747504722,
+     -0.019787373201334457
+    ]
+   }
+  }
+ }
+}

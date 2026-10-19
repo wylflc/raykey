@@ -1,0 +1,6 @@
+/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/experiments/exp_oi290_20261019/opportunity_trap.md
+C 买入线 1.0034 保留原线 原线合格面 16.684
+F3 买入线 0.9944 重解 原线合格面 17.063
+F5 买入线 0.9876 重解 原线合格面 17.331
+FR 买入线 0.9876 重解 原线合格面 17.33
+写出 /gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/experiments/exp_oi290_20261019/sweep_arms.txt

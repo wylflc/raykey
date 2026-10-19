@@ -13,4 +13,4 @@ cd /home/zwang/project/mm_quant/raykey
 export PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 E=data/experiments/exp_oi290_20261019
 python3 scripts/sweep_backtest_configs.py $E/sweep_arms.txt --out $E/sweep.txt --workers 58 --title "OI-290 g0 = 0 下限四臂"
-python3 scripts/sweep_backtest_configs.py --report $E/sweep.txt > $E/sweep_report.txt
+python3 scripts/sweep_backtest_configs.py --report --out $E/sweep.txt > $E/sweep_report.txt
