@@ -1,0 +1,9 @@
+{
+  "security_code": "002415",
+  "security_name": "海康威视",
+  "review_id": "iv20261019_hik:002415",
+  "evidence_date": "2026-10-19",
+  "parent_yi": {"bear": 138.47, "base": 157.58, "bull": 176.37},
+  "falsifier": "2026Q4 单季毛利率 < 46.0% 或 2027H1 < 46.5% 即偏向悲观档；2027H1 毛利率 ≥ 48.5% 且同期 DRAM 合约价环比持平或下降即偏向乐观档；2026 年末存货 > 340 亿且全年经营现金流 < 150 亿，或欧盟指定中国或中国电科控制的实体为高风险供应方，基准即被证伪",
+  "source": "OI-291 池内独立审计（docs/reports/independent_hikvision_2026-10-19.zh.md，data/experiments/exp_independent_hik_20261019/companies/002415_海康威视.md）"
+}
