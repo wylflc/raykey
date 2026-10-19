@@ -8,6 +8,7 @@
 import bisect
 import csv
 import math
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -21,7 +22,7 @@ from divspread_names import is_divspread_financial  # noqa: E402
 from moat_param_lab import forward_annualized, total_return_index  # noqa: E402
 
 ARMS = ('C', 'F3', 'F5', 'FR')
-SCRATCH = ROOT / 'data/scratch/experiments/exp_oi290_20261019/states'
+SCRATCH = Path(os.environ.get('OI290_DIR', ROOT / 'data/scratch/experiments/exp_oi290_20261019')) / 'states'
 OUT = SCRATCH.parent / 'observations.csv'
 PANEL = ROOT / 'data/processed/pit_attention/panel_moat_bank_v6b.csv'
 START = '2010-01-01'

@@ -7,6 +7,7 @@
     python3 post.py
 """
 import json
+import os
 import re
 import subprocess
 import sys
@@ -14,7 +15,8 @@ from pathlib import Path
 
 EXP = Path(__file__).resolve().parent
 ROOT = EXP.parents[2]
-SCRATCH = ROOT / 'data/scratch/experiments/exp_oi290_20261019/states'
+SCRATCH = Path(os.environ.get('OI290_DIR', ROOT / 'data/scratch/experiments/exp_oi290_20261019')) / 'states'
+OUT = Path(os.environ.get('OI290_OUT', EXP))
 ARMS = ('C', 'F3', 'F5', 'FR')
 LINE, SHARE, TOL = 1.0034, 16.687, 0.2
 
@@ -36,20 +38,20 @@ def align(arm: str) -> dict:
 
 def main() -> None:
     aligned = {arm: align(arm) for arm in ARMS}
-    (EXP / 'align.json').write_text(json.dumps(aligned, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    (OUT / 'align.json').write_text(json.dumps(aligned, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     for arm, a in aligned.items():
         print(arm, '买入线', a['line'], '保留原线' if a['kept'] else '重解', '原线合格面', a['original_line_share'])
     cmd = [sys.executable, str(ROOT / 'scripts/experimental/opportunity_trap_audit.py'),
            '--states', *[f'{arm}={states(arm)}' for arm in ARMS],
            '--buy-line', *[f"{arm}={aligned[arm]['line']:.4f}" for arm in ARMS],
-           '--out', str(EXP / 'opportunity_trap.md')]
+           '--out', str(OUT / 'opportunity_trap.md')]
     subprocess.run(cmd, cwd=ROOT, check=True)
     rows = ['BASE|']
     for arm in ARMS:
         width = 1 - aligned[arm]['line']
         rows.append(f"{arm}|--daily-states {states(arm)} --hold-states {states(arm, 'hold')} --width {width:.4f}")
-    (EXP / 'sweep_arms.txt').write_text('\n'.join(rows) + '\n', encoding='utf-8')
-    print('写出', EXP / 'sweep_arms.txt')
+    (OUT / 'sweep_arms.txt').write_text('\n'.join(rows) + '\n', encoding='utf-8')
+    print('写出', OUT / 'sweep_arms.txt')
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@
 import csv
 import json
 import math
+import os
 from collections import defaultdict
 from pathlib import Path
 
@@ -14,7 +15,7 @@ import pandas as pd
 EXP = Path(__file__).resolve().parent
 ROOT = EXP.parents[2]
 ARMS = ('C', 'F3', 'F5', 'FR')
-SCRATCH = ROOT / 'data/scratch/experiments/exp_oi290_20261019'
+SCRATCH = Path(os.environ.get('OI290_DIR', ROOT / 'data/scratch/experiments/exp_oi290_20261019'))
 PV_RANGE, BOOT, SEED = (0.2, 5.0), 1000, 20261019
 PERIODS = (('2010-01', '2014-12'), ('2015-01', '2018-12'), ('2019-01', '2023-12'))
 HORIZONS = ('f3', 'f5')
