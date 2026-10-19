@@ -79,10 +79,13 @@ def table_row(j: dict, model_v: float | None, path: str, spec: dict | None) -> s
     r = register_research.compute(spec)
     d = register_research.dossier_state(j['security_code'])
     c, gap = r['conv'], r['gap']
+    adopted = d['conclusion'] == '采用研究数'
+    # §7.3：生产所用的锚高于另一数时冻结。采用研究数的行生产用档案现有研究数（新数不覆盖），故按现有数判。
+    in_use = float(d['research']) if adopted and d['research'] else c['base']
     flag = ''
     if gap > 0.30 + 1e-9:
-        flag = '，入队' + ('，冻结新增买入' if c['base'] < r['model_yi'] else '')
-    if d['conclusion'] == '采用研究数':
+        flag = '，入队' + ('，冻结新增买入' if (in_use > r['model_yi'] if adopted else c['base'] < r['model_yi']) else '')
+    if adopted:
         state = f"已采用研究数 {d['research']}（{d['date']}），新数不覆盖，待裁定"
     elif d['research']:
         state = f"替换旧研究数 {d['research']}（{d['date']}）"

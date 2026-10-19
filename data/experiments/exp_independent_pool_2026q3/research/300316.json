@@ -1,0 +1,13 @@
+{
+ "security_code": "300316",
+ "security_name": "晶盛机电",
+ "review_id": "iv20261019_pool_b02:300316",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 4.91,
+  "base": 11.62,
+  "bull": 18.5
+ },
+ "falsifier": "2026 三季报 Q3 单季营收 < 15 亿元，或归母净利 < 0.8 亿元（前三季度 < 3.1 亿元），即下半年半导体验收放量落空（2026-10-30 前）；2026 年报集成电路与化合物半导体设备及材料收入 < 36 亿元，且 2026-12-31 未完成半导体装备合同 < 40 亿元（含税）（2027-04-30 前）；2026 年资产减值 + 信用减值合计 > 6 亿元（H1 已 1.27 亿元），或 1 年以上应收占比 > 55%（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b02/companies/300316_晶盛机电.md）"
+}

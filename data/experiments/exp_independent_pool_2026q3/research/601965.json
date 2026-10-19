@@ -1,0 +1,13 @@
+{
+ "security_code": "601965",
+ "security_name": "中国汽研",
+ "review_id": "iv20261019_pool_b02:601965",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 9.3,
+  "base": 10.3,
+  "bull": 10.9
+ },
+ "falsifier": "2026 三季报（10-27）前三季度扣非归母 < 6.20 亿（Q3 单季 < 2.12 亿，同比 −6%）（2026-10-31 前）；2026 年报扣非归母 < 9.6 亿或技术服务收入同比 < 0（2027-04-30 前）；2026 年末应收（账款+票据+合同资产）/收入 > 65% 或全年信用减值 > 1.5 亿（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b02/companies/601965_中国汽研.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "301589",
+ "security_name": "诺瓦星云",
+ "review_id": "iv20261019_pool_b02:301589",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 5.54,
+  "base": 6.59,
+  "bull": 7.59
+ },
+ "falsifier": "2026Q3 单季营收 ≤ 8.82 亿（同比不增，2026-10-29 核对）或 2026 全年营收 < 37.0 亿（2027-04-30 前）；2026 全年毛利率 < 54.5% 或 2027H1 毛利率 < 54.0%（2027-08-31 前）；2026 扣非归母净利 < 5.6 亿（不高于 2025 年 5.58 亿）（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b02/companies/301589_诺瓦星云.md）"
+}

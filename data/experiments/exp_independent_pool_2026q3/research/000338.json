@@ -1,0 +1,13 @@
+{
+ "security_code": "000338",
+ "security_name": "潍柴动力",
+ "review_id": "iv20261019_pool_b02:000338",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 83.1,
+  "base": 112.7,
+  "bull": 137.2
+ },
+ "falsifier": "2026Q3 扣非归母 < 27 亿（2025Q3 为 28.27 亿），或 2026 年发动机分部利润率 < 13%（2026H1 为 14.6%）（2026-10-30 前）；2026 年数据中心柴发全年销量 < 3,500 台，或 2027H1 数据中心柴发销量同比下滑（2027-08-31 前）；山东重工集团财务公司存款超过 400 亿上限、出现支取限制或集团发生信用事件（存款按 30% 折价）（2027-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b02/companies/000338_潍柴动力.md）"
+}
