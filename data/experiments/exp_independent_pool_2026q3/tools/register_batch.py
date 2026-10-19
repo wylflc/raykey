@@ -4,6 +4,7 @@
 1. 逐家用 check_delivery 复核，有错误的跳过；
 2. §6.9 登记表追加 `current` 行，同公司旧 `current` 行改 `superseded`，模型 V 取最近一次扫描的候选侧 V；
 3. 写 `research/<代码>.json`，调 register_research.py 登记档案研究数（§6.5.2.2 折算）：
+   - 只登记 ROIC 路径的公司（§7.3 差距规则只管 ROIC 路径；银行、保险走股利折现，研究数不进带）；
    - 档案已「采用研究数」的不覆盖，列为待裁定；
    - 档案在发布凭据的输入摘要内：最近一次发布的信号日不早于最近收盘日时（清单已发布、尚未执行完），不改档案，研究数留待下次；
 4. 重出 §6.9 阅读版。
@@ -131,6 +132,7 @@ def main() -> None:
     kit = {s['code']: s for s in json.loads((SCRATCH / args.batch / 'kit_summary.json').read_text(encoding='utf-8'))}
     codes = [c.strip() for c in args.codes.split(',') if c.strip()] or list(kit)
     mv = model_values()
+    paths = {r['security_code']: r['valuation_path'] for r in csv.DictReader((EXP / 'queue.csv').open(encoding='utf-8'))}
     rows, specs = [], []
     for code in codes:
         errors, warns, j = check_delivery.check(code, args.batch, kit.get(code, {}))
@@ -141,12 +143,15 @@ def main() -> None:
         evidence_rel = str(md.relative_to(ROOT))
         rows.append(registry_row(j, args.batch, args.review_date, mv.get(code), evidence_rel))
         npn = j['normalized_parent_np_2026_yi']
-        specs.append(dict(
-            security_code=code, security_name=j['security_name'], review_id=rows[-1]['review_id'],
-            evidence_date=evidence_date(args.batch, code, j['price_date']),
-            parent_yi={k: round(float(npn[k]), 2) for k in ('bear', 'base', 'bull')},
-            falsifier='；'.join(f"{x['condition']}（{x['deadline']} 前）" for x in j['falsifiers'][:3]),
-            source=f"OI-291 池内独立审计（{REPORT}，{evidence_rel}）"))
+        if not paths.get(code, '').startswith('ROIC'):
+            print(f"{code} {j['security_name']}：{paths.get(code)} 路径，不登记档案研究数")
+        else:
+            specs.append(dict(
+                security_code=code, security_name=j['security_name'], review_id=rows[-1]['review_id'],
+                evidence_date=evidence_date(args.batch, code, j['price_date']),
+                parent_yi={k: round(float(npn[k]), 2) for k in ('bear', 'base', 'bull')},
+                falsifier='；'.join(f"{x['condition']}（{x['deadline']} 前）" for x in j['falsifiers'][:3]),
+                source=f"OI-291 池内独立审计（{REPORT}，{evidence_rel}）"))
         print(f"{code} {j['security_name']}：独立 V {j['v_weighted']:.2f}，P/V {j['pv']:.3f}（{j['verdict']}）；"
               f"模型 V {mv.get(code, float('nan')):.2f}" + (f"；提示：{'；'.join(warns)}" if warns else ''))
     if args.dry_run or not rows:
