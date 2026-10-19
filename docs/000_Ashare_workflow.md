@@ -1,4 +1,4 @@
-# A股选股-估值-量价操作流程 v4.254
+# A股选股-估值-量价操作流程 v4.255
 
 > 按任务路由执行。版本号由第 1 行读取；相关缺陷先查 `docs/000_Ashare_workflow_open_issues.md`。
 
@@ -497,7 +497,7 @@ python3 scripts/build_overseas_roic_bands.py --as-of YYYY-MM-DD            # ROI
 python3 scripts/build_a_share_core_valuation_pool.py --md-only --quotes fetch --signal-date YYYY-MM-DD
 ```
 
-阅读版 `000_a_share_core_valuation_pool.md` 两表列：代码／名称／质量／参考分／估值／估值路径／现价／**模型价值 V**／**`P/V`**／估值时间／估值事件（模型价值区间、空间、策略标签、PE、PB 只在 CSV）。A 股池表在 `P/V` 后加**独立 `P/V`**（现价 ÷ §6.9 登记表 A 股现行行的独立 V）与**独立评审**（评审日；评审日之后已有新定期报告的加 *），只作对照，不进 §9.3。表前只保留字段含义与交易边界；估值路径只显示方法名，不带章节号或口径注记。
+阅读版 `000_a_share_core_valuation_pool.md` 各表不列代码。A 股池表与海外附表列：名称／质量 (参考分)／估值路径／现价／**模型价值 V**／**`P/V`**／估值时间／估值事件（质量格如 `L1 (89.1)`，无参考分只写档位；代码、模型价值区间、空间、策略标签、PE、PB 只在 CSV）。A 股池表在 `P/V` 后加**独立 `P/V`**（现价 ÷ §6.9 登记表 A 股现行行的独立 V）与**独立评审**（评审日；评审日之后已有新定期报告的加 *），只作对照，不进 §9.3。表前只保留字段含义与交易边界；估值路径只显示方法名，不带章节号或口径注记。
 
 **回购与分红的处理**：分红与回购同属可分配现金，不另按股数缩减，未来回购计划不进模型。海外引擎的锚按以下口径计算：年报间外生权益按股本口径第 2 条逐年识别（`X_y = ΔE − (归母综合收益 − 已付股息)`，综合收益缺失用归母净利，已付股息取现金流量表；权益缺失的年份不计、不作断点），比率 = 各年 NOPAT ÷ 当年经营账面 `E_op`，季报观察点当期 = 最新年报比率 × (NOPAT TTM ÷ 最新年报 NOPAT)，λ 与三年／五年／十年中位只取年报，周期守卫坡道与谷底守卫同式；每股 NOPAT 锚 = ratio0 × 经营账面 `BPS_op = 当期 BPS − x − X_cum/股`，`x = 当期 BPS − (最新年报母公司权益 + 其后归母净利 − 其后已付股息) ÷ 申报稀释股数`（年报行 `x = 0`；`x` 封顶 95% BPS；其后归母净利或已付股息不可得时 `x = 0`）；净负债与少数股东取季报资产负债表，`x` 不另进股权桥；增速腿权重 0。`overseas_statement_overrides.csv` 维护行的 `net_income`／`tci`（年报行）与 `net_income_ytd`／`dividends_paid_ytd`（TTM 行）留空时，取数脚本按东财 `RPT_USF10_FN_INCOME`／`RPT_USF10_INFO_DIVIDEND` 补入；港股现金流量表缺「已付股息」行时按 `RPT_HKF10_INFO_DIVIDEND` 分红事件补入（除净日落在期内，每股派 × 最新已发行股数，按 `overseas_valuation_inputs.csv` 汇率折报表币）；补缺来源写入 `tags_used`。
 

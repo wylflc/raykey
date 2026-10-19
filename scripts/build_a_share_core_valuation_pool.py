@@ -99,6 +99,15 @@ def normalize_quality_tier(value: str) -> str:
     return value
 
 
+def quality_cell(tier: object, score: object) -> str:
+    """阅读版质量列写 `档位 (参考分)`；无参考分只写档位，无档位写 —。"""
+    tier_text = str(tier or "").strip() or "—"
+    score_text = str(score or "").strip()
+    if tier_text == "—" or score_text in ("", "—"):
+        return tier_text
+    return f"{tier_text} ({score_text})"
+
+
 def build_pool(
     valuation_rows: list[dict[str, str]],
     tier_rows: list[dict[str, str]],
@@ -422,7 +431,7 @@ def build_off_pool_dossier_section(
         tier = (tiers or {}).get(code, {}).get("quality_tier", "")
         tier = tier if attention_class == "documented_not_attention" and tier == "L4" else "—"
         body.append(
-            f"| {code} | [{name}]({dossier_link}) | {tier} | {attention_class} | "
+            f"| [{name}]({dossier_link}) | {tier} | {attention_class} | "
             f"{band} | {fair_value} | {method} | {row.get('reviewed_at') or '—'} |"
         )
 
@@ -435,8 +444,8 @@ def build_off_pool_dossier_section(
         "- 仅维护逐票档案与模型价值；不进入核心池 CSV、生产带、每日行情、`P/V`、每日扫描或 §9.3。",
         "- 模型价值区间与中值 `V` 取逐票估值档案；无法估值显示 —。公司名称可直接打开档案。",
         "",
-        "| 代码 | 名称/档案 | 质量档 | 名单状态 | 模型价值区间 | 模型价值 V | 估值方法 | 估值更新 |",
-        "| --- | --- | --- | --- | ---: | ---: | --- | --- |",
+        "| 名称/档案 | 质量档 | 名单状态 | 模型价值区间 | 模型价值 V | 估值方法 | 估值更新 |",
+        "| --- | --- | --- | ---: | ---: | --- | --- |",
         *body,
     ]
     return lines, len(selected)
@@ -476,13 +485,10 @@ def build_overseas_section(
         pv_cell = f"{ref_price / mid:.3f}" if (mid and ref_price) else "—"
         method = str(row.get("band_method") or row.get("valuation_method") or "")
         path_cell = _display_valuation_path(method)
+        tier = row.get("quality_tier") or row.get("attention_class")
         body.append(
             # 市场与代码保留在 CSV 中，用于匹配行情。
-            "| {name} | {tier} | {score} | ".format(
-                name=row["security_name"],
-                tier=row.get("quality_tier") or row.get("attention_class") or "—",
-                score=row.get("quality_score") or "—",
-            )
+            f"| {row['security_name']} | {quality_cell(tier, row.get('quality_score'))} | "
             + f"{path_cell} | "
             + f"{price_cell} | {fair_cell} | {pv_cell} | "
             + f"{row.get('valuation_reviewed_at') or '—'} | {row.get('valuation_evidence_event') or '—'} |"
@@ -496,8 +502,8 @@ def build_overseas_section(
         "- 现价与模型价值按各自交易货币显示；`P/V` 无量纲。参考分只用于同档排序。",
         "- 模型价值取当前估值档案；无法估值行显示 —。估值时间与事件取最新正式报告的公开可得日和报告类型。",
         "",
-        "| 名称 | 质量 | 参考分 | 估值路径 | 现价 | 模型价值 | P/V | 估值时间 | 估值事件 |",
-        "| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- |",
+        "| 名称 | 质量 (参考分) | 估值路径 | 现价 | 模型价值 | P/V | 估值时间 | 估值事件 |",
+        "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
         *body,
     ]
     return lines
@@ -616,7 +622,7 @@ def write_markdown(
         )
         ind_pv, ind_date = independent_cells(cells["ref_price"], independent.get(str(code).zfill(6)), latest_report)
         body.append(
-            "| {security_code} | {security_name} | {quality_tier_label} | {quality_score} | ".format(**row)
+            f"| {row['security_name']} | {quality_cell(row.get('quality_tier_label'), row.get('quality_score'))} | "
             + f"{valuation_paths.get(str(row.get('security_code', '')).zfill(6), '手工带')} | "
             + f"{cells['price']} | "
             + f"{cells['fair_value']} | {cells['pv']} | {ind_pv} | {ind_date} | "
@@ -650,8 +656,8 @@ def write_markdown(
             else []
         ),
         "",
-        "| 代码 | 名称 | 质量 | 参考分 | 估值路径 | 现价 | 模型价值 | P/V | 独立 P/V | 独立评审 | 估值时间 | 估值事件 |",
-        "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | --- | --- | --- |",
+        "| 名称 | 质量 (参考分) | 估值路径 | 现价 | 模型价值 | P/V | 独立 P/V | 独立评审 | 估值时间 | 估值事件 |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- | --- |",
         *body,
         *(extra_sections or []),
     ]

@@ -187,7 +187,8 @@ class ThinEquityTest(unittest.TestCase):
                 section = pool.build_overseas_section([updated], {})
                 rendered = next(line for line in section if line.startswith("| Test |"))
                 cells = [s.strip() for s in rendered.split("|")][1:-1]
-                self.assertEqual(cells[5:7], ["—", "—"])
+                self.assertEqual(cells[1], "L2 (70)")
+                self.assertEqual(cells[4:6], ["—", "—"])
 
 
 if __name__ == "__main__":
