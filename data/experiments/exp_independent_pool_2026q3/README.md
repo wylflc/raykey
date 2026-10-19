@@ -21,7 +21,7 @@
 | --- | --- |
 | `framework.md` | 统一任务框架、独立性约束与交付字段 |
 | `queue.csv` | 全池队列（三季报日期、状态、批次） |
-| `tools/` | 主会话工具：`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`register_batch.py`、`register_research.py` |
+| `tools/` | 主会话工具：`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`register_batch.py`、`register_research.py`、`apply_rulings.py` |
 | `<批次>/brief.md`、`packs/`、`companies/`、`calc/<代码>/` | 批次快照、数据包、审计全文与 `.json`、估值脚本（入库） |
 | `research/<代码>.json` | 档案研究数登记输入 |
 | `data/scratch/experiments/exp_independent_pool_2026q3/<批次>/raw/`、`work/` | 原始数据、公告 PDF 与文本、代理草稿（不入库，14 天未改动即被清理） |
@@ -37,7 +37,7 @@
    - 写 `research/<代码>.json` 并登记档案研究数（§6.5.2.2 折算）；档案已「采用研究数」的不覆盖，汇总报告列出新旧两数，提请用户裁定；
    - 档案在发布凭据的输入摘要内：研究数在当日执行清单发布之前登记；已发布的，留到下一次扫描之前登记，不在发布后改档案。
 6. 重出池文档（`build_a_share_core_valuation_pool.py --md-only`）与档案 README。下一次扫描按 §7.3 计算差距：超过 30% 的入队，研究数低于模型锚的冻结新增买入。
-7. 汇总报告追加本批：模型与独立 `P/V` 对照、差距超过 30% 与已采用研究数的个案，按批次提请用户裁定「采用研究数／维持模型」。
+7. 汇总报告追加本批：模型与独立 `P/V` 对照、差距超过 30% 与已采用研究数的个案，按批次提请用户裁定「采用研究数／维持模型」。裁定写成 `<批次>/rulings.json`，`python3 tools/apply_rulings.py <批次>/rulings.json --day <裁定日> --review-batch <批次>` 写档案差距复核字段与决策日志（发布时段规则同第 5 步）。
 8. 更新 `queue.csv` 的 `status`／`batch`，提交。
 
 ## 三季报后更新
