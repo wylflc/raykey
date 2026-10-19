@@ -7,7 +7,8 @@
    - 只登记 ROIC 路径的公司（§7.3 差距规则只管 ROIC 路径；银行、保险走股利折现，研究数不进带）；
    - 档案已「采用研究数」的不覆盖，列为待裁定；
    - 档案在发布凭据的输入摘要内：最近一次发布的信号日不早于最近收盘日时（清单已发布、尚未执行完），不改档案，研究数留待下次；
-4. 重出 §6.9 阅读版。
+4. 重出 §6.9 阅读版；
+5. 打印汇总报告用的对照表（模型与独立 P/V、研究数与模型锚的差距、档案现状），预演时也打印。
 
     python3 tools/register_batch.py b01 [--codes 600066,688041] [--review-date 2026-10-20] [--dry-run] [--no-research]
 """
@@ -31,6 +32,7 @@ PUBLICATION = ROOT / 'data/processed/daily_execution_publication.json'
 REPORT = 'docs/reports/independent_pool_2026q3.zh.md'
 sys.path.insert(0, str(TOOLS))
 import check_delivery  # noqa: E402
+import register_research  # noqa: E402
 
 
 def beijing_now() -> datetime:
@@ -56,14 +58,38 @@ def research_window() -> tuple[bool, str]:
                 ('可登记档案研究数（下一次扫描读入）' if ok else '清单已发布、尚未到下一次收盘，不改档案，研究数留待下次登记'))
 
 
-def model_values() -> dict[str, float]:
+def model_values() -> tuple[str, dict[str, float]]:
     rows = list(csv.DictReader(CANDIDATES.open(encoding='utf-8')))
     last = max(r['trade_date'] for r in rows)
     out = {}
     for r in rows:
         if r['trade_date'] == last and (r.get('model_intrinsic_value') or '').strip():
             out[r['security_code'].zfill(6)] = float(r['model_intrinsic_value'])
-    return out
+    return last, out
+
+
+def table_row(j: dict, model_v: float | None, path: str, spec: dict | None) -> str:
+    """汇总报告对照表一行；研究数按 §6.5.2.2 现算，档案现状读档案。"""
+    sc, price = j['scenarios'], j['price']
+    mv = f"{model_v:.2f} | {price / model_v:.3f}" if model_v else '— | —'
+    head = (f"| {j['security_code']} | {j['security_name']} | {price:.2f} | {mv} | {j['v_weighted']:.2f}"
+            f"（{sc['bear']['v']:.2f}～{sc['bull']['v']:.2f}） | {j['pv']:.3f} | {j['verdict']} |")
+    if spec is None:
+        return head + f" —（{path}，研究数不进带） | — | — | — |"
+    r = register_research.compute(spec)
+    d = register_research.dossier_state(j['security_code'])
+    c, gap = r['conv'], r['gap']
+    flag = ''
+    if gap > 0.30 + 1e-9:
+        flag = '，入队' + ('，冻结新增买入' if c['base'] < r['model_yi'] else '')
+    if d['conclusion'] == '采用研究数':
+        state = f"已采用研究数 {d['research']}（{d['date']}），新数不覆盖，待裁定"
+    elif d['research']:
+        state = f"替换旧研究数 {d['research']}（{d['date']}）"
+    else:
+        state = '新登记'
+    return head + (f" {c['base']:.2f}（{c['bear']:.2f}～{c['bull']:.2f}） | {r['model_yi']:.2f} | "
+                   f"{gap:.1%}{flag} | {state} |")
 
 
 def fmt(x: float, nd: int = 2) -> str:
@@ -131,9 +157,9 @@ def main() -> None:
     args = ap.parse_args()
     kit = {s['code']: s for s in json.loads((SCRATCH / args.batch / 'kit_summary.json').read_text(encoding='utf-8'))}
     codes = [c.strip() for c in args.codes.split(',') if c.strip()] or list(kit)
-    mv = model_values()
+    model_date, mv = model_values()
     paths = {r['security_code']: r['valuation_path'] for r in csv.DictReader((EXP / 'queue.csv').open(encoding='utf-8'))}
-    rows, specs = [], []
+    rows, specs, table = [], [], []
     for code in codes:
         errors, warns, j = check_delivery.check(code, args.batch, kit.get(code, {}))
         if errors:
@@ -154,6 +180,13 @@ def main() -> None:
                 source=f"OI-291 池内独立审计（{REPORT}，{evidence_rel}）"))
         print(f"{code} {j['security_name']}：独立 V {j['v_weighted']:.2f}，P/V {j['pv']:.3f}（{j['verdict']}）；"
               f"模型 V {mv.get(code, float('nan')):.2f}" + (f"；提示：{'；'.join(warns)}" if warns else ''))
+        spec = specs[-1] if specs and specs[-1]['security_code'] == code else None
+        table.append(table_row(j, mv.get(code), paths.get(code, ''), spec))
+    if table:
+        print(f"\n模型 V 取 {model_date} 扫描；研究数按 §6.5.2.2 折算（亿元），差距 = 研究数与模型锚的较大者 ÷ 较小者 − 1。\n")
+        print('| 代码 | 名称 | 现价 | 模型 V | 模型 P/V | 独立 V（熊～牛） | 独立 P/V | 独立分档 | 研究数（熊～牛） | 模型锚 | 差距 | 档案 |')
+        print('| --- | --- | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | --- |')
+        print('\n'.join(table))
     if args.dry_run or not rows:
         return
     append_registry(rows)

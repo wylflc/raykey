@@ -64,13 +64,8 @@ def latest_annual(code: str, before: str) -> tuple[str, float, float]:
     return period, y.nopat / 1e8, y.net_profit / 1e8
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument('json', type=Path)
-    ap.add_argument('--dry-run', action='store_true')
-    ap.add_argument('--replace-adopted', action='store_true', help='用户已裁定改用新研究数时才用')
-    args = ap.parse_args()
-    spec = json.loads(args.json.read_text(encoding='utf-8'))
+def compute(spec: dict) -> dict:
+    """研究数三档、模型锚与差距（亿元）；register_batch.py 预演出对照表也用它。"""
     code = spec['security_code'].zfill(6)
     band = next(r for r in csv.DictReader(BANDS.open(encoding='utf-8')) if r['security_code'].zfill(6) == code)
     minority = float(band['minority_share'] or 0.0)
@@ -79,6 +74,29 @@ def main() -> None:
     period, nopat_yi, net_yi = latest_annual(code, spec['evidence_date'])
     conv = {k: research_nopat_from_parent(float(v), minority, nopat_yi, net_yi) for k, v in spec['parent_yi'].items()}
     gap = max(conv['base'], model_yi) / min(conv['base'], model_yi) - 1
+    return dict(minority=minority, model_yi=model_yi, period=period, nopat_yi=nopat_yi, net_yi=net_yi, conv=conv, gap=gap)
+
+
+def dossier_state(code: str) -> dict:
+    """档案现有研究数与差距复核结论。"""
+    docs, _ = read_table(DOSSIERS)
+    col = {name: i for i, name in enumerate(docs[0])}
+    row = next(r for r in docs[1:] if r[col['security_code']].zfill(6) == code.zfill(6))
+    return dict(research=row[col['research_nopat_yi']].strip(), date=row[col['research_evidence_date']].strip(),
+                conclusion=row[col['divergence_review_conclusion']].strip())
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument('json', type=Path)
+    ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--replace-adopted', action='store_true', help='用户已裁定改用新研究数时才用')
+    args = ap.parse_args()
+    spec = json.loads(args.json.read_text(encoding='utf-8'))
+    code = spec['security_code'].zfill(6)
+    res = compute(spec)
+    minority, model_yi, period, nopat_yi, net_yi, conv, gap = (res[k] for k in
+                                                               ('minority', 'model_yi', 'period', 'nopat_yi', 'net_yi', 'conv', 'gap'))
     source = (f"{spec['source']}：基准情景正常化归母净利 {spec['parent_yi']['base']:.2f} 亿 ÷ (1 − 生产带 minority_share {minority:.4f})"
               f" + ({period[:4]} 年报模型口径 NOPAT {nopat_yi:.2f} − 合并净利 {net_yi:.2f}) = {conv['base']:.2f} 亿"
               f"（§6.5.2.2 模型同口径；悲观／乐观 {conv['bear']:.2f}／{conv['bull']:.2f} 亿；用户 2026-10-19 裁定登记，OI-291）")
