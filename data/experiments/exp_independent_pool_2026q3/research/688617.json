@@ -1,0 +1,13 @@
+{
+ "security_code": "688617",
+ "security_name": "惠泰医疗",
+ "review_id": "iv20261020_pool_b09:688617",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.82,
+  "base": 10.24,
+  "bull": 10.52
+ },
+ "falsifier": "福建牵头电生理联盟续标：PFA 纳入且惠泰 PFA 导管中选价较现行挂网价降幅 ≥ 50%，或惠泰三维/PFA 主力品类未中选（2027-03-31 前）；2026 年营收 < 31.0 亿元（低于激励 B 类 +20% 门槛），或 2026Q3 单季营收 < 7.52 亿元（同比 < 15%）（2027-04-30 前）；2027 年中报毛利率 < 68%（2026H1 为 73.0%）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b09/companies/688617_惠泰医疗.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "002352",
+ "security_name": "顺丰控股",
+ "review_id": "iv20261020_pool_b09:002352",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 95.7,
+  "base": 104.0,
+  "bull": 108.7
+ },
+ "falsifier": "2026 年扣非归母净利 < 94 亿（三季报 Q3 扣非 < 21.5 亿为预警）（2027-03-31 前）；2027 年 1–6 月速运物流收入累计同比 ≤ 0，且单票收入同比转负（2027-07-31 前）；2026、2027 年资产类资本开支均 > 营收 4.5%，且扣非净利率未升至 3.3%（2028-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b09/companies/002352_顺丰控股.md）"
+}

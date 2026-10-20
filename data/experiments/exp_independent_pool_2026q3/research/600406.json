@@ -1,0 +1,13 @@
+{
+ "security_code": "600406",
+ "security_name": "国电南瑞",
+ "review_id": "iv20261020_pool_b09:600406",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 80.42,
+  "base": 86.41,
+  "bull": 90.63
+ },
+ "falsifier": "2026 年三季度单季归母净利 < 18.5 亿元（2025 年同期 19.03 亿元），或 1～9 月经营现金流累计 < 0（2025 年同期 47.14 亿元）（2026-10-31 前）；2026 年归母净利 < 81 亿元，或经营 EBIT 利润率（剔除财务收益）< 12.5%（2027-04-30 前）；2026 年信用减值损失 > 6 亿元（2025 年 3.35 亿元），或经营现金流／归母净利 < 0.9（2025 年 1.54）（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b09/companies/600406_国电南瑞.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "600031",
+ "security_name": "三一重工",
+ "review_id": "iv20261020_pool_b09:600031",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 64.0,
+  "base": 111.0,
+  "bull": 144.5
+ },
+ "falsifier": "2026 年三季度营业总收入同比低于 +8%（低于 230 亿），且单季归母低于 19.2 亿（2025Q3）（2026-10-30 前）；2026 年报海外主营毛利率低于 30.0%（2026H1 为 32.5%），或 2027 年中报低于 29.5%（2027-04-30 前）；CCMA 国内挖掘机销量 2027 年上半年同比 −10% 或更差，且公司国内主营收入同比下降（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b09/companies/600031_三一重工.md）"
+}

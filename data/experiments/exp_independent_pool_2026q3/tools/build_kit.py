@@ -342,6 +342,9 @@ OTHER_FIN = ['OTHER_CURRENT_ASSET', 'NONCURRENT_ASSET_1YEAR', 'CREDITOR_INVEST',
              'OTHER_EQUITY_INVEST', 'AVAILABLE_SALE_FINASSET', 'HOLD_MATURITY_INVEST', 'BUY_RESALE_FINASSET', 'LOAN_ADVANCE', 'LONG_EQUITY_INVEST']
 DEBT = ['SHORT_LOAN', 'LONG_LOAN', 'BOND_PAYABLE', 'NONCURRENT_LIAB_1YEAR', 'LEASE_LIAB', 'TRADE_FINLIAB_NOTFVTPL', 'TRADE_FINLIAB',
         'DERIVE_FINLIAB', 'ACCEPT_DEPOSIT_INTERBANK', 'BORROW_FUND', 'SELL_REPO_FINASSET', 'LOAN_PBC', 'SHORT_BOND_PAYABLE']
+# 未计入 DEBT、但可能含借款或类债务的科目（如长期应付款里的关联方借款、融资租赁款），列出供代理结合附注判断
+OTHER_DEBT = ['LONG_PAYABLE', 'SPECIAL_PAYABLE', 'LONG_STAFFSALARY_PAYABLE', 'OTHER_NONCURRENT_LIAB', 'SHORT_FIN_PAYABLE',
+              'PERPETUAL_BOND_PAYBALE', 'PREFERRED_SHARES_PAYBALE', 'INTEREST_PAYABLE', 'DIVIDEND_PAYABLE']
 OP_LIAB = ['NOTE_PAYABLE', 'ACCOUNTS_PAYABLE', 'NOTE_ACCOUNTS_PAYABLE', 'ADVANCE_RECEIVABLES', 'CONTRACT_LIAB', 'OTHER_CURRENT_LIAB',
            'TOTAL_OTHER_PAYABLE', 'STAFF_SALARY_PAYABLE', 'TAX_PAYABLE', 'PREDICT_LIAB', 'DEFER_INCOME']
 OP_ASSETS = ['NOTE_RECE', 'ACCOUNTS_RECE', 'NOTE_ACCOUNTS_RECE', 'FINANCE_RECE', 'PREPAYMENT', 'TOTAL_OTHER_RECE', 'INVENTORY',
@@ -451,6 +454,7 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
              f"衍生金融资产 {yi(f(bL.get('DERIVE_FINASSET')))} → 现金类合计 **{yi(cl)}**")
     L.append("- 其他可能含金融资产的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_FIN).items()) or "无"))
     L.append("- 有息及类金融负债：" + ("；".join(f"{k} {yi(v)}" for k, v in dbt.items()) or "无") + f" → 合计 **{yi(sum(dbt.values()))}**")
+    L.append("- 其他可能含有息负债或类债务的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_DEBT).items()) or "无"))
     L.append(f"- 现金类 − 有息负债 = **{yi(cl - sum(dbt.values()))}**（未计其他金融资产；受限资金、客户存款等须看附注）")
     L.append("- 经营性负债：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_LIAB).items()))
     L.append("- 经营性资产：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_ASSETS).items()))
