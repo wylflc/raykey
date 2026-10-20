@@ -1,0 +1,13 @@
+{
+ "security_code": "300628",
+ "security_name": "亿联网络",
+ "review_id": "iv20261019_pool_b04:300628",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 26.93,
+  "base": 29.83,
+  "bull": 30.78
+ },
+ "falsifier": "三季报单季毛利率 < 61%（2025Q3 62.0%、2026Q2 64.6%），或 9 月末存货 > 21 亿元（2026-10-27 前）；2026 年扣非归母 < 27.5 亿元（四季度扣非约零增长或下降），或会议产品全年收入增速 < 10%（2027-04-30 前）；FCC 把企业通信终端或会议设备（境外生产或中国企业产品）列入 Covered List，或亿联被点名（Covered List、实体清单、ICTS 禁令）（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b04/companies/300628_亿联网络.md）"
+}

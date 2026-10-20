@@ -1,0 +1,13 @@
+{
+ "security_code": "688190",
+ "security_name": "云路股份",
+ "review_id": "iv20261019_pool_b04:688190",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 2.06,
+  "base": 2.25,
+  "bull": 2.4
+ },
+ "falsifier": "印度 DGTR 终裁建议对中国非晶金属征收反倾销税（≥ 每吨 200 美元或约 10% 从价）且财政部实施（2027-12-31 前）；2026Q3 或 Q4 单季毛利率 < 21%；或 2026 年报非晶合金薄带及其制品单价 < 12,300 元/吨，且分部毛利率 < 30%（2027-04-30 前）；2026 年经营活动现金流净额 < 1.0 亿元，或 2026-12-31 应收票据、应收账款与应收款项融资合计 > 11.5 亿元（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b04/companies/688190_云路股份.md）"
+}

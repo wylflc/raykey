@@ -1,0 +1,13 @@
+{
+ "security_code": "002179",
+ "security_name": "中航光电",
+ "review_id": "iv20261019_pool_b04:002179",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 18.0,
+  "base": 20.0,
+  "bull": 22.0
+ },
+ "falsifier": "2026 三季度单季归母净利 < 3.0 亿，或单季毛利率 < 27%（概率改 40/50/10）（2026-10-29 前）；2026 年正常化归母净利 < 18 亿，且全年经营现金流 < 12 亿（概率改 60/35/5）（2027-04-30 前）；上行：2027 上半年营收同比 ≥ 12% 且毛利率 ≥ 31%（防务恢复与算力放量，概率改 10/45/45）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b04/companies/002179_中航光电.md）"
+}

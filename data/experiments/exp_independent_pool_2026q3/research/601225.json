@@ -1,0 +1,13 @@
+{
+ "security_code": "601225",
+ "security_name": "陕西煤业",
+ "review_id": "iv20261019_pool_b04:601225",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 130.9,
+  "base": 178.4,
+  "bull": 225.9
+ },
+ "falsifier": "2027年秦港5500现货年均<700元/吨，且年报自产煤售价<450元/吨（2028-04-30 前）；2027年秦港5500现货年均≥880元/吨，且自产煤售价≥540元/吨（证伪偏贵结论）（2028-04-30 前）；2026或2027年报原选煤单位完全成本>305元/吨（2025年288.58）（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b04/companies/601225_陕西煤业.md）"
+}

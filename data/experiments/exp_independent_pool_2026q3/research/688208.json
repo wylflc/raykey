@@ -1,0 +1,13 @@
+{
+ "security_code": "688208",
+ "security_name": "道通科技",
+ "review_id": "iv20261019_pool_b04:688208",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 8.32,
+  "base": 9.02,
+  "bull": 9.52
+ },
+ "falsifier": "2026 年报剔除汇兑后扣非归母 < 8.5 亿（基准预期 9.37，含关税退税）（2027-04-30 前）；美国对公司诊断、TPMS 或充电产品实施禁售、实体清单或进口限制，或任一半年北美收入同比降幅 > 25%（2027-12-31 前）；软件云服务预收（一年内 + 一年以上）2026 年末 < 7.98 亿或 2027 年中 < 8.67 亿，或 AI 及软件收入同比增速 < 8%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b04/companies/688208_道通科技.md）"
+}
