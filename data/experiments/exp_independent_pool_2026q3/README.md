@@ -36,6 +36,7 @@
    - §6.9 登记表追加 `current` 行（旧行改 `superseded`），重出阅读版；
    - 写 `research/<代码>.json` 并登记档案研究数（§6.5.2.2 折算）；档案已「采用研究数」的不覆盖，汇总报告列出新旧两数，提请用户裁定；
    - 档案在发布凭据的输入摘要内：研究数在当日执行清单发布之前登记；已发布的，留到下一次扫描之前登记，不在发布后改档案。
+   - 框架口径修订后重算的公司用 `--revision r1 --no-research` 重登：新评审编号带后缀，旧行改 `superseded`，研究数不变。
 6. 重出池文档（`build_a_share_core_valuation_pool.py --md-only`）与档案 README。下一次扫描按 §7.3 计算差距：超过 30% 的入队，研究数低于模型锚的冻结新增买入。
 7. 汇总报告追加本批：模型与独立 `P/V` 对照、差距超过 30% 与已采用研究数的个案，按批次提请用户裁定「采用研究数／维持模型」。裁定写成 `<批次>/rulings.json`，`python3 tools/apply_rulings.py <批次>/rulings.json --day <裁定日> --review-batch <批次>` 写档案差距复核字段与决策日志（发布时段规则同第 5 步）。
 8. 更新 `queue.csv` 的 `status`／`batch`，提交。

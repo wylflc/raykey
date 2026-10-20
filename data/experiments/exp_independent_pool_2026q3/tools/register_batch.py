@@ -10,7 +10,9 @@
 4. 重出 §6.9 阅读版；
 5. 打印汇总报告用的对照表（模型与独立 P/V、研究数与模型锚的差距、档案现状），预演时也打印。
 
-    python3 tools/register_batch.py b01 [--codes 600066,688041] [--review-date 2026-10-20] [--dry-run] [--no-research]
+    python3 tools/register_batch.py b01 [--codes 600066,688041] [--review-date 2026-10-20] [--dry-run] [--no-research] [--revision r1]
+
+口径修订后重登（研究数不变）：`--revision r1 --no-research`，评审编号为 `iv<价格日>_pool_<批次>r1:<代码>`，旧行改 `superseded`。
 """
 import argparse
 import csv
@@ -99,10 +101,10 @@ def fmt(x: float, nd: int = 2) -> str:
     return f"{x:.{nd}f}"
 
 
-def registry_row(j: dict, batch: str, review_date: str, model_v: float | None, evidence_rel: str) -> dict:
+def registry_row(j: dict, batch: str, review_date: str, model_v: float | None, evidence_rel: str, revision: str = '') -> dict:
     sc = j['scenarios']
     price, v = j['price'], j['v_weighted']
-    batch_id = f"iv{j['price_date'].replace('-', '')}_pool_{batch}"
+    batch_id = f"iv{j['price_date'].replace('-', '')}_pool_{batch}{revision}"
     fals = '；'.join(f"{'①②③④⑤⑥'[i]} {x['condition']}（{x['deadline']} 前）" +
                     (f"：独立 V 约 {x['v_if_triggered']:.2f}" if isinstance(x.get('v_if_triggered'), (int, float)) else '')
                     for i, x in enumerate(j['falsifiers'][:6]))
@@ -157,6 +159,7 @@ def main() -> None:
     ap.add_argument('--review-date', default=beijing_now().date().isoformat())
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--no-research', action='store_true', help='只登记 §6.9 登记表，不动档案')
+    ap.add_argument('--revision', default='', help='口径修订后重登的编号后缀，如 r1')
     args = ap.parse_args()
     kit = {s['code']: s for s in json.loads((SCRATCH / args.batch / 'kit_summary.json').read_text(encoding='utf-8'))}
     codes = [c.strip() for c in args.codes.split(',') if c.strip()] or list(kit)
@@ -170,7 +173,7 @@ def main() -> None:
             continue
         md = next(m for m in (EXP / args.batch / 'companies').glob(f'{code}_*.md') if not m.name.endswith('_q3.md'))
         evidence_rel = str(md.relative_to(ROOT))
-        rows.append(registry_row(j, args.batch, args.review_date, mv.get(code), evidence_rel))
+        rows.append(registry_row(j, args.batch, args.review_date, mv.get(code), evidence_rel, args.revision))
         npn = j['normalized_parent_np_2026_yi']
         if not paths.get(code, '').startswith('ROIC'):
             print(f"{code} {j['security_name']}：{paths.get(code)} 路径，不登记档案研究数")

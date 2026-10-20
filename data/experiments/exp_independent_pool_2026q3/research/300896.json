@@ -1,0 +1,13 @@
+{
+ "security_code": "300896",
+ "security_name": "爱美客",
+ "review_id": "iv20261019_pool_b03:300896",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 8.88,
+  "base": 9.6,
+  "bull": 10.21
+ },
+ "falsifier": "2026Q3 营收 < 5.4 亿或扣非归母 < 2.0 亿（三季报），或 2026 年营收 < 23.0 亿（年报）；概率改为熊 45%／基 45%／牛 10%（2027-04-30 前）；仲裁裁决 REGEN 赔偿 ≥ 8 亿元（归母按 70% 承担 5.6 亿）（2027-12-31 前）；2027 年存量产品（溶液+凝胶+其他）营收同比降幅 ≥ 10%；概率改为熊 50%／基 40%／牛 10%（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b03/companies/300896_爱美客.md）"
+}

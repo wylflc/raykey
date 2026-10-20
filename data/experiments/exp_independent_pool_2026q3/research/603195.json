@@ -1,0 +1,13 @@
+{
+ "security_code": "603195",
+ "security_name": "公牛集团",
+ "review_id": "iv20261019_pool_b03:603195",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 34.15,
+  "base": 38.58,
+  "bull": 40.88
+ },
+ "falsifier": "2026Q3 单季毛利率 < 38.5% 且营收同比 < 0%（基准约 39% 与 +2.5%）（2026-10-30 前）；2026 年扣非归母 < 34.5 亿元（基准 35.98），或 2026Q4 毛利率 < 42%（2025Q4 46.4%）（2027-04-30 前）；2027H1 营收同比 < 0%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b03/companies/603195_公牛集团.md）"
+}
