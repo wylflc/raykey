@@ -1,0 +1,13 @@
+{
+ "security_code": "000933",
+ "security_name": "神火股份",
+ "review_id": "iv20261020_pool_b06:000933",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 32.97,
+  "base": 72.77,
+  "bull": 106.73
+ },
+ "falsifier": "2027 年任意连续两季沪铝季均价 < 20,500 元/吨（或 2027 全年均价 < 20,500），情景权重改为 0.6/0.4/0（2027-12-31 前）；氧化铝季度均价 > 3,500 元/吨，连续两个季度（2027-12-31 前）；云南 2027 年 1-5 月枯水期产量较满产低 10% 以上，或云南平均电价同比上调 ≥ 0.03 元/千瓦时（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b06/companies/000933_神火股份.md）"
+}

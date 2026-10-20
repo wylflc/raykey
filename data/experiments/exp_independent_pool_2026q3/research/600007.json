@@ -1,0 +1,13 @@
+{
+ "security_code": "600007",
+ "security_name": "中国国贸",
+ "review_id": "iv20261020_pool_b06:600007",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.72,
+  "base": 11.33,
+  "bull": 12.12
+ },
+ "falsifier": "2026 年报写字楼全年平均租金 < 560 元/㎡/月或平均出租率 < 88%（2027-04-30 前）；2026 年报商城全年平均租金 < 1,250 元/㎡/月或出租率 < 94%（2027-04-30 前）；2027 年购建长期资产现金 > 2.5 亿元，或公告国贸一期等改造计划总额 > 10 亿元（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b06/companies/600007_中国国贸.md）"
+}

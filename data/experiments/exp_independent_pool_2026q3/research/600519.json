@@ -1,0 +1,13 @@
+{
+ "security_code": "600519",
+ "security_name": "贵州茅台",
+ "review_id": "iv20261020_pool_b06:600519",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 730.0,
+  "base": 830.0,
+  "bull": 870.0
+ },
+ "falsifier": "三季报单季归母 < 180 亿（同比 −6.4%，基准约 193 亿）→ 概率改为 40／50／10（2026-10-31 前）；飞天原箱批价连续 4 周 < 1,500 元，或公司把 i茅台价降到 1,539 以下、合同价降到 1,269 以下 → 熊市情景（2027-06-30 前）；2026 年报归母 < 800 亿 → 正常化下调为 700／790／840（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b06/companies/600519_贵州茅台.md）"
+}

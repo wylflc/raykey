@@ -1,0 +1,13 @@
+{
+ "security_code": "002690",
+ "security_name": "美亚光电",
+ "review_id": "iv20261020_pool_b06:002690",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 6.21,
+  "base": 7.21,
+  "bull": 7.7
+ },
+ "falsifier": "色选机毛利率 2026 年报 < 52.0% 或 2027 中报 < 51.0%（周期性红利消退快于基准）（2027-08-31 前）；2026 年营收 < 24.3 亿（同比 < +1%）且 2027 中报营收同比 ≤ 0（2027-08-31 前）；2026 年报显示高新技术企业复审未通过（母公司税率不再为 15%）（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b06/companies/002690_美亚光电.md）"
+}

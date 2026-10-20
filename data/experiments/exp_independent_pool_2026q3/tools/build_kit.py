@@ -336,7 +336,8 @@ def by_date(rows: list) -> dict:
     return out
 
 
-CASH_KEYS = ['MONETARYFUNDS', 'TRADE_FINASSET_NOTFVTPL', 'TRADE_FINASSET', 'DERIVE_FINASSET']
+# 拆出资金计入现金类：财务公司把吸收的存款拆给同业，负债端的吸收存款及同业存放已计入 DEBT
+CASH_KEYS = ['MONETARYFUNDS', 'LEND_FUND', 'TRADE_FINASSET_NOTFVTPL', 'TRADE_FINASSET', 'DERIVE_FINASSET']
 OTHER_FIN = ['OTHER_CURRENT_ASSET', 'NONCURRENT_ASSET_1YEAR', 'CREDITOR_INVEST', 'OTHER_CREDITOR_INVEST', 'OTHER_NONCURRENT_FINASSET',
              'OTHER_EQUITY_INVEST', 'AVAILABLE_SALE_FINASSET', 'HOLD_MATURITY_INVEST', 'BUY_RESALE_FINASSET', 'LOAN_ADVANCE', 'LONG_EQUITY_INVEST']
 DEBT = ['SHORT_LOAN', 'LONG_LOAN', 'BOND_PAYABLE', 'NONCURRENT_LIAB_1YEAR', 'LEASE_LIAB', 'TRADE_FINLIAB_NOTFVTPL', 'TRADE_FINLIAB',
@@ -445,7 +446,8 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
                  f"市值/最新归母权益 = **{mcap / peq:.2f}×**（归母权益 {yi(peq)}）")
     L.append(f"\n## 二、最新资产负债表结构（{latest}）\n")
     cl, dbt = sum(f(bL.get(k)) for k in CASH_KEYS), pick(bL, DEBT)
-    L.append(f"- 货币资金 {yi(f(bL.get('MONETARYFUNDS')))}；交易性金融资产 {yi(f(bL.get('TRADE_FINASSET_NOTFVTPL')) + f(bL.get('TRADE_FINASSET')))}；"
+    L.append(f"- 货币资金 {yi(f(bL.get('MONETARYFUNDS')))}；拆出资金 {yi(f(bL.get('LEND_FUND')))}；"
+             f"交易性金融资产 {yi(f(bL.get('TRADE_FINASSET_NOTFVTPL')) + f(bL.get('TRADE_FINASSET')))}；"
              f"衍生金融资产 {yi(f(bL.get('DERIVE_FINASSET')))} → 现金类合计 **{yi(cl)}**")
     L.append("- 其他可能含金融资产的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_FIN).items()) or "无"))
     L.append("- 有息及类金融负债：" + ("；".join(f"{k} {yi(v)}" for k, v in dbt.items()) or "无") + f" → 合计 **{yi(sum(dbt.values()))}**")

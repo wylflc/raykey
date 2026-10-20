@@ -1,0 +1,13 @@
+{
+ "security_code": "300760",
+ "security_name": "迈瑞医疗",
+ "review_id": "iv20261020_pool_b06:300760",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 78.3,
+  "base": 87.84,
+  "bull": 94.37
+ },
+ "falsifier": "2026 年报国内收入 < 152 亿元（同比 < −2.8%，公司指引正增长），或 2027 年中报国内收入同比 < +3%（2027-08-31 前）；2027 年中报国际收入美元口径同比 < 8%（2026H1 为 +18.4%）（2027-08-31 前）；2026 年报或 2027 年中报综合毛利率 < 58.5%（2025 年 60.3%，2026H1 60.8%）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b06/companies/300760_迈瑞医疗.md）"
+}
