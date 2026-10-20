@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""601965 中国汽研 独立估值（OI-291 b02，价格日 2026-10-19）。
+"""601965 中国汽研 独立估值（OI-291 b02，价格日 2026-10-19；2026-10-20 按框架补有杠杆口径）。
 
 运行：python3 valuation.py
 口径：金额亿元，每股元；归母口径；股权成本基准 9%（敏感性 8%／10%）。
@@ -7,11 +7,17 @@
       + 归母经调整净现金（核心，剔除南方试验场）
       + 南方试验场 35.15% 权益按账面倍数单列
       + 非经营投资。
+两种口径：
+  无杠杆：有息负债按本金全额扣除（核心经调整净现金 −5.05 亿）。
+  有杠杆（framework「三法互校」第 2 条，经调整净现金为负时适用，登记取此口径）：
+      有息负债按现规模滚动、不偿还本金，改扣“有息负债税后利息的现值”
+      （利率取实际平均利率，折现率取股权成本：基准 9%，敏感性随 8%／10% 同步），
+      现金与其他调整项同无杠杆口径。
 所有输入写在本脚本内，出处见 b02/companies/601965_中国汽研.md。
 """
 
 PRICE = 14.00            # 2026-10-19 收盘，腾讯行情
-SHARES = 10.0265         # 亿股，总股本（= 2026H1 资产负债表 1,002,648,387 股）
+SHARES = 10.0265         # 亿股，总股本（= 2026H1 资产负债表 1,002,648,387 股；无回购专户，库存股为限制性股票回购义务）
 COE = 0.09
 VAL_T = 2026 + 292 / 365  # 估值日 2026-10-19 折成年份
 WEIGHTS = {"bear": 0.25, "base": 0.50, "bull": 0.25}
@@ -27,16 +33,40 @@ BS = dict(
     grant_advance=1.00,      # 与收益相关递延收益 1.121 × 归母比例约 0.9（课题经费已收、待支出）
     minority_cash=2.0,       # 广东、天平、河南、湖南等非全资子公司现金中少数股东份额（估计）
     bank_debt=13.150 + 0.917 + 0.012,   # 长期借款 + 一年内到期长期借款 + 应计利息
-    other_lt_payable=0.173 + 0.029,     # 长期应付款（含一年内到期）
+    other_lt_payable=0.173 + 0.029,     # 长期应付款（含一年内到期；2025 年报称非金融机构长期借款）
 )
-# 租赁负债 5.159 不扣：其成本（使用权资产折旧约 0.83 + 租赁利息约 0.19 亿/年）已在归母净利内。
+# 租赁负债 5.159 两种口径都不扣：其成本（使用权资产折旧约 0.83 + 租赁利息约 0.19 亿/年）已在归母净利内。
 
 
 def core_net_cash(bs=BS):
+    """无杠杆口径的核心归母经调整净现金（json 的 net_cash_adj_yi）。"""
     c = bs["cash"] - bs["restricted"] + bs["struct_dep"] - bs["nanfang_cash"]
     c -= bs["div_payable"] + bs["op_reserve"] + bs["grant_advance"] + bs["minority_cash"]
     c -= bs["bank_debt"] + bs["other_lt_payable"]
     return c
+
+
+# ---------------- 有杠杆口径：有息负债按现规模滚动 ----------------
+# 滚动本金 = 长期借款 13.150 + 一年内到期长期借款 0.917 + 长期应付款 0.202（应计利息 0.012 仍按面值扣除）
+DEBT_ROLLED = 13.150 + 0.917 + 0.173 + 0.029
+# 实际平均利率 = 2026H1 借款利息（费用化 利息费用 0.23369 − 租赁利息 0.09397，加资本化 0.03310）× 2
+#                ÷ 平均有息负债（2025 年末 11.221+0.607+0.173+0.029 = 12.030；2026-06-30 14.269）
+#   （2026H1_report 第 155 页财务费用、第 131-133 页在建工程利息资本化；资本化率 2.24%／2.44% 作旁证）
+H1_INT_EXPENSED = 0.233689 - 0.093971
+H1_INT_CAPITALIZED = 0.033103
+DEBT_BEGIN, DEBT_END = 11.221 + 0.607 + 0.173 + 0.029, DEBT_ROLLED
+DEBT_RATE = (H1_INT_EXPENSED + H1_INT_CAPITALIZED) * 2 / ((DEBT_BEGIN + DEBT_END) / 2)
+TAX_SHIELD = 0.15        # 高新技术企业 15%
+AT_INTEREST = DEBT_ROLLED * DEBT_RATE * (1 - TAX_SHIELD)   # 年税后利息
+
+
+def pv_after_tax_interest(r=COE):
+    return AT_INTEREST / r
+
+
+def leverage_uplift(r=COE):
+    """有杠杆口径相对无杠杆口径的股权价值差：加回滚动本金，改扣税后利息现值。"""
+    return DEBT_ROLLED - pv_after_tax_interest(r)
 
 
 # 南方试验场（35.15% 持股并表，少数股东 64.85%；2026H1_report 第 169-175 页）
@@ -68,7 +98,7 @@ H2_DA, H2_CAPEX, H2_MINORITY = 3.0, 3.5, 0.95
 YEARS = [2027, 2028, 2029, 2030, 2031]
 
 
-def scenario_value(name, r=COE):
+def scenario_value(name, r=COE, levered=True):
     s = SCEN[name]
     np_op = NORM_NP_2026[name] + AT_NET_INTEREST          # 经营口径（剔除税后净利息）
     oe_h2 = (0.5 * np_op + H2_DA - H2_CAPEX + s["h2_wc"]) * H2_MINORITY   # 2026 下半年，t≈0
@@ -87,15 +117,15 @@ def scenario_value(name, r=COE):
     pv_tv = tv * rows[-1][5]
     op_value = pv + pv_tv
     nf = PARENT_PCT * NANFANG_EQUITY * s["nanfang_pb"]
-    eq = op_value + core_net_cash() + nf + NON_OP + s["manuf_option"]
-    out = dict(v=eq / SHARES, equity=eq, op_value=op_value, pv_explicit=pv - oe_h2, oe_h2=oe_h2,
-               pv_tv=pv_tv, tv_share=pv_tv / eq, nanfang=nf, rows=rows, rr_t=rr_t,
-               tv_pe=(1 - rr_t) / (r - s["g_t"]))
-    return out
+    adj = core_net_cash() + (leverage_uplift(r) if levered else 0.0)
+    eq = op_value + adj + nf + NON_OP + s["manuf_option"]
+    return dict(v=eq / SHARES, equity=eq, op_value=op_value, pv_explicit=pv - oe_h2, oe_h2=oe_h2,
+                pv_tv=pv_tv, tv_share=pv_tv / eq, nanfang=nf, adj=adj, rows=rows, rr_t=rr_t,
+                tv_pe=(1 - rr_t) / (r - s["g_t"]))
 
 
-def weighted_v(r=COE, w=WEIGHTS):
-    return sum(w[k] * scenario_value(k, r)["v"] for k in w)
+def weighted_v(r=COE, w=WEIGHTS, levered=True):
+    return sum(w[k] * scenario_value(k, r, levered)["v"] for k in w)
 
 
 def bisect(f, lo, hi, n=200):
@@ -110,16 +140,17 @@ def bisect(f, lo, hi, n=200):
     return (lo + hi) / 2
 
 
-def implied_irr():
-    """基准情景所有者收益流（含终值、净现金、南方与非经营资产）现值等于现价的折现率。"""
-    return bisect(lambda r: scenario_value("base", r)["v"] - PRICE, 0.04, 0.20)
+def implied_irr(levered=True):
+    """基准情景所有者收益流（含终值、净现金或税后利息现值、南方与非经营资产）现值等于现价的折现率。"""
+    return bisect(lambda r: scenario_value("base", r, levered)["v"] - PRICE, 0.04, 0.20)
 
 
-def reverse_dcf():
+def reverse_dcf(levered=True):
     """现价隐含：(a) 10 年归母经营利润年增速 g（再投资率 = g/14%，下限 25%），之后 2.5% 永续（增量回报 12%）；
     (b) 单阶段永续增速（增量回报 14%）。"""
     s = SCEN["base"]
-    other = core_net_cash() + PARENT_PCT * NANFANG_EQUITY * s["nanfang_pb"] + NON_OP
+    adj = core_net_cash() + (leverage_uplift(COE) if levered else 0.0)
+    other = adj + PARENT_PCT * NANFANG_EQUITY * s["nanfang_pb"] + NON_OP
     target = PRICE * SHARES - other
     np0 = NORM_NP_2026["base"] + AT_NET_INTEREST
 
@@ -141,7 +172,7 @@ def reverse_dcf():
         return np0 * (1 + g) * (1 - g / s["ronic"]) / (COE - g)
 
     gp = bisect(lambda g: op_value_perp(g) - target, -0.05, 0.085)
-    return g10, gp, target
+    return g10, gp, target, adj
 
 
 def verdict(pv):
@@ -168,14 +199,40 @@ FALSIFIERS = [
 ]
 
 
+def explicit_capex_check(levered=True, verbose=False):
+    """再投资率交叉核对（基准）：若资本开支回落到折旧约 1.25 倍、营运资金按增量收入 40%。"""
+    da = [5.9, 6.1, 6.3, 6.5, 6.7]
+    capex = [7.5, 7.5, 7.8, 8.0, 8.2]
+    nwc_ratio, rev = 0.40, 53.0
+    o = scenario_value("base", COE, levered)
+    alt_pv = 0.0
+    for (y, g, npt, rr, oe, df), d, c in zip(o["rows"], da, capex):
+        drev = rev * g
+        rev += drev
+        reinv = c - d + nwc_ratio * drev
+        if verbose:
+            print("  %d 资本开支 %.1f − 折旧摊销 %.1f + 营运资金 %.2f = 净再投资 %.2f → 再投资率 %.0f%%（模型 %.0f%%）" %
+                  (y, c, d, nwc_ratio * drev, reinv, reinv / npt * 100, rr * 100))
+        alt_pv += (npt - reinv) * df
+    alt_eq = o["oe_h2"] + alt_pv + o["pv_tv"] + o["adj"] + o["nanfang"] + NON_OP
+    return alt_eq / SHARES
+
+
 def main():
     print("=== 601965 中国汽研 独立估值（价格日 2026-10-19，现价 %.2f，总股本 %.4f 亿股）===" % (PRICE, SHARES))
     ncc = core_net_cash()
-    print("核心归母经调整净现金（剔除南方）: %.2f 亿（%.2f 元/股）" % (ncc, ncc / SHARES))
+    print("无杠杆口径：核心归母经调整净现金（剔除南方）%.2f 亿（%.2f 元/股）" % (ncc, ncc / SHARES))
+    print("有杠杆口径：滚动有息负债 %.3f 亿，实际平均利率 %.2f%%（2026H1 借款利息 %.4f + 资本化 %.4f，年化 ÷ 平均负债 %.3f），"
+          "税率 %.0f%%，年税后利息 %.3f 亿，9%% 折现现值 %.2f 亿" %
+          (DEBT_ROLLED, DEBT_RATE * 100, H1_INT_EXPENSED, H1_INT_CAPITALIZED, (DEBT_BEGIN + DEBT_END) / 2,
+           TAX_SHIELD * 100, AT_INTEREST, pv_after_tax_interest()))
+    print("  → 有杠杆核心调整项 = %.2f + %.3f − %.2f = %.2f 亿（较无杠杆多 %.2f 元/股）" %
+          (ncc, DEBT_ROLLED, pv_after_tax_interest(), ncc + leverage_uplift(), leverage_uplift() / SHARES))
     print("南方试验场账面净资产 %.3f 亿 × 35.15%% = %.2f 亿；非经营投资 %.2f 亿" %
           (NANFANG_EQUITY, PARENT_PCT * NANFANG_EQUITY, NON_OP))
     for k in ("bear", "base", "bull"):
         o = scenario_value(k)
+        ou = scenario_value(k, levered=False)
         print("\n[%s] p=%.2f  2026 正常化归母 %.2f（经营口径 %.2f）  %s" %
               (k, WEIGHTS[k], NORM_NP_2026[k], NORM_NP_2026[k] + AT_NET_INTEREST, SCEN[k]["note"]))
         for (y, g, npt, rr, oe, df) in o["rows"]:
@@ -185,48 +242,36 @@ def main():
               (SCEN[k]["g_t"] * 100, o["rr_t"] * 100, o["tv_pe"]))
         print("  2026H2 所有者收益 %.2f + 显性期现值 %.2f + 终值现值 %.2f = 经营价值 %.2f" %
               (o["oe_h2"], o["pv_explicit"], o["pv_tv"], o["op_value"]))
-        print("  + 核心净现金 %.2f + 南方 %.2f + 非经营 %.2f + 制造处置期权 %.2f = 股权 %.2f 亿；终值占比 %.0f%%" %
-              (ncc, o["nanfang"], NON_OP, SCEN[k]["manuf_option"], o["equity"], o["tv_share"] * 100))
-        print("  V = %.2f 元/股" % o["v"])
-    vw = weighted_v()
-    pv = PRICE / vw
-    print("\n加权 V = %.2f 元/股；P/V = %.3f → %s" % (vw, pv, verdict(pv)))
-    print("股权成本 8%%: 加权 V = %.2f；10%%: 加权 V = %.2f" % (weighted_v(0.08), weighted_v(0.10)))
-    for r in (0.08, 0.10):
-        print("  r=%.0f%%  熊/基/牛 = %.2f / %.2f / %.2f" % (r * 100, *(scenario_value(k, r)["v"] for k in ("bear", "base", "bull"))))
-    irr = implied_irr()
-    print("现价隐含回报（基准情景）: %.2f%%" % (irr * 100))
-    g10, gp, target = reverse_dcf()
-    print("反向 DCF: 现价隐含经营价值 %.1f 亿；10 年经营归母增速 %.2f%%（再投资率=g/14%%，下限25%%）；单阶段永续增速 %.2f%%（增量回报 14%%）" %
-          (target, g10 * 100, gp * 100))
-    print("V 不变时各档价格：≤%.2f 明显低估；%.2f～%.2f 温和低估；%.2f～%.2f 大致合理；>%.2f 偏贵" %
-          (0.75 * vw, 0.75 * vw, 0.90 * vw, 0.90 * vw, 1.10 * vw, 1.10 * vw))
-    print("\n证伪条件触发后的独立 V：")
-    for cond, ddl, w in FALSIFIERS:
-        print("  [%s] %s → V = %.2f" % (ddl, cond, weighted_v(COE, w)))
-    # 基准情景增量回报敏感性（显性期与终值同时变动）
-    keep = dict(SCEN["base"])
-    for ro, rot in ((0.10, 0.09), (0.12, 0.11), (0.18, 0.15)):
-        SCEN["base"]["ronic"], SCEN["base"]["ronic_t"] = ro, rot
-        print("基准增量回报 %.0f%%/终值 %.0f%%: 基准 V = %.2f" % (ro * 100, rot * 100, scenario_value("base")["v"]))
-    SCEN["base"].update(keep)
-    # 再投资率交叉核对（基准）：显式资本开支与营运资金
-    print("基准再投资交叉核对（核心，亿元）：")
-    da = [5.9, 6.1, 6.3, 6.5, 6.7]
-    capex = [7.5, 7.5, 7.8, 8.0, 8.2]
-    nwc_ratio = 0.40
-    rev = 53.0
-    o = scenario_value("base")
-    alt_pv = 0.0
-    for (y, g, npt, rr, oe, df), d, c in zip(o["rows"], da, capex):
-        drev = rev * g
-        rev += drev
-        reinv = c - d + nwc_ratio * drev
-        print("  %d 资本开支 %.1f − 折旧摊销 %.1f + 营运资金 %.2f = 净再投资 %.2f → 再投资率 %.0f%%（模型 %.0f%%）" %
-              (y, c, d, nwc_ratio * drev, reinv, reinv / npt * 100, rr * 100))
-        alt_pv += (npt - reinv) * df
-    alt_eq = o["oe_h2"] + alt_pv + o["pv_tv"] + core_net_cash() + o["nanfang"] + NON_OP
-    print("  若资本开支按上表回落（再投资率约 19%%～27%%），基准 V = %.2f（模型取更保守的 g/增量回报）" % (alt_eq / SHARES))
+        print("  有杠杆：+ 核心调整 %.2f + 南方 %.2f + 非经营 %.2f + 制造处置期权 %.2f = 股权 %.2f 亿；终值占比 %.0f%%  V = %.2f 元/股" %
+              (o["adj"], o["nanfang"], NON_OP, SCEN[k]["manuf_option"], o["equity"], o["tv_share"] * 100, o["v"]))
+        print("  无杠杆：+ 核心净现金 %.2f → 股权 %.2f 亿；终值占比 %.0f%%  V = %.2f 元/股" %
+              (ou["adj"], ou["equity"], ou["tv_share"] * 100, ou["v"]))
+    for lev, label in ((True, "有杠杆口径（登记）"), (False, "无杠杆口径（对照）")):
+        vw = weighted_v(levered=lev)
+        pv = PRICE / vw
+        print("\n== %s ==" % label)
+        print("三情景 V 熊/基/牛 = %.2f / %.2f / %.2f；加权 V = %.2f 元/股；P/V = %.3f → %s" %
+              (*(scenario_value(k, COE, lev)["v"] for k in ("bear", "base", "bull")), vw, pv, verdict(pv)))
+        print("股权成本 8%%: 加权 V = %.2f；10%%: 加权 V = %.2f" % (weighted_v(0.08, levered=lev), weighted_v(0.10, levered=lev)))
+        for r in (0.08, 0.10):
+            print("  r=%.0f%%  熊/基/牛 = %.2f / %.2f / %.2f" % (r * 100, *(scenario_value(k, r, lev)["v"] for k in ("bear", "base", "bull"))))
+        print("现价隐含回报（基准情景）: %.2f%%" % (implied_irr(lev) * 100))
+        g10, gp, target, adj = reverse_dcf(lev)
+        print("反向 DCF: 现价隐含经营价值 %.1f 亿（核心调整项 %.2f）；10 年经营归母增速 %.2f%%（再投资率=g/14%%，下限25%%）；单阶段永续增速 %.2f%%（增量回报 14%%）" %
+              (target, adj, g10 * 100, gp * 100))
+        print("V 不变时各档价格：≤%.2f 明显低估；%.2f～%.2f 温和低估；%.2f～%.2f 大致合理；>%.2f 偏贵" %
+              (0.75 * vw, 0.75 * vw, 0.90 * vw, 0.90 * vw, 1.10 * vw, 1.10 * vw))
+        print("证伪条件触发后的独立 V：")
+        for cond, ddl, w in FALSIFIERS:
+            print("  [%s] %s → V = %.2f" % (ddl, cond, weighted_v(COE, w, lev)))
+        keep = dict(SCEN["base"])
+        for ro, rot in ((0.10, 0.09), (0.12, 0.11), (0.18, 0.15)):
+            SCEN["base"]["ronic"], SCEN["base"]["ronic_t"] = ro, rot
+            print("基准增量回报 %.0f%%/终值 %.0f%%: 基准 V = %.2f" % (ro * 100, rot * 100, scenario_value("base", COE, lev)["v"]))
+        SCEN["base"].update(keep)
+        print("若资本开支 2027 年后回落到折旧约 1.25 倍（再投资率约 19%%～27%%），基准 V = %.2f" % explicit_capex_check(lev))
+    print("\n基准再投资交叉核对（核心，亿元）：")
+    explicit_capex_check(True, verbose=True)
     # 交叉验证
     mcap = PRICE * SHARES
     print("\n交叉验证：市值 %.2f 亿；TTM 归母 10.76 → PE %.1fx；2026 基准正常化 → PE %.1fx；PB(80.27) %.2fx；"
