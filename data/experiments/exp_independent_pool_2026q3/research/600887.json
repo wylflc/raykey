@@ -1,0 +1,13 @@
+{
+ "security_code": "600887",
+ "security_name": "伊利股份",
+ "review_id": "iv20261020_pool_b08:600887",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 89.7,
+  "base": 112.7,
+  "bull": 133.4
+ },
+ "falsifier": "2027H1 核心经营利润率（营业收入减营业成本、税金及附加、销售、管理、研发费用，再除以营业收入）< 12.0%（2026H1 13.48%）（2027-08-31 前）；2026 年营业总收入 < 1,180 亿元，或 2027H1 营业收入同比 < 0（2027-08-31 前）；十个主产省份生鲜乳均价连续一个季度 ≥ 3.60 元/公斤，且同季公司毛利率同比下降 ≥ 1.5 个百分点（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b08/companies/600887_伊利股份.md）"
+}

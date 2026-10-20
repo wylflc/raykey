@@ -1,0 +1,13 @@
+{
+ "security_code": "600803",
+ "security_name": "新奥股份",
+ "review_id": "iv20261020_pool_b08:600803",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 36.5,
+  "base": 44.0,
+  "bull": 50.5
+ },
+ "falsifier": "2027 年 JKM 年均 <9 美元/百万英热且 Henry Hub ≥3.5 美元；或 2027 年报「平台交易气对外毛利 + 衍生金融工具已实现结算损益」<15 亿元（2025 年 24.4，2026H1 20.3）（2028-03-31 前）；2026 年归母经营利润 <48 亿元（2025 年 51.91，激励目标 54.45）（2027-03-31 前）；新奥能源 2026 年核心利润 <63 亿元（2025 年 67.41），或 2026 年全年股息 <3.00 港元（2027-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b08/companies/600803_新奥股份.md）"
+}

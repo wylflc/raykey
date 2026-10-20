@@ -1,0 +1,13 @@
+{
+ "security_code": "600085",
+ "security_name": "同仁堂",
+ "review_id": "iv20261020_pool_b08:600085",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 8.5,
+  "base": 10.3,
+  "bull": 12.0
+ },
+ "falsifier": "前三季度归母净利 < 8.8 亿（即三季度 < 1.55 亿）（2026-10-31 前）；2026 年扣非归母净利 < 8.5 亿（2027-04-30 前）；同仁堂双天然安宫牛黄丸建议零售价（现 860 元/粒）下调 ≥ 20%，或 2027 年上半年心脑血管类收入再降 > 10%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b08/companies/600085_同仁堂.md）"
+}

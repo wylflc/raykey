@@ -1,0 +1,13 @@
+{
+ "security_code": "603129",
+ "security_name": "春风动力",
+ "review_id": "iv20261020_pool_b08:603129",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 19.11,
+  "base": 21.6,
+  "bull": 23.21
+ },
+ "falsifier": "ITC 337-TA-1490 终局初裁或委员会终裁认定 UFORCE/ZFORCE 侵权，且公司 3 个月内未公告规避设计、和解或许可（2027-12-31 前）；2027 年中报营收同比增速 < 5%（2026H1 为 +35.8%）（2027-08-31 前）；2027 年中报可比 EBIT 率（剔除汇兑、非经常与利息）< 9.0%（2026H1 为 10.55%），对应全年约 7%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b08/companies/603129_春风动力.md）"
+}

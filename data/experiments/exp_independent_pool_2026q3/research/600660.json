@@ -1,0 +1,13 @@
+{
+ "security_code": "600660",
+ "security_name": "福耀玻璃",
+ "review_id": "iv20261020_pool_b08:600660",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 83.52,
+  "base": 88.59,
+  "bull": 90.86
+ },
+ "falsifier": "2026 年报经调整归母（扣非 + 汇兑损失税后 − IEEPA 退回）< 84 亿元（2027-03-31 前）；2027 年中报毛利率 < 36%（2026 上半年剔除 IEEPA 约 38.2%）（2027-08-31 前）；2027 年营收增速 < 4% 且资本开支 ≥ 70 亿元（2028-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b08/companies/600660_福耀玻璃.md）"
+}
