@@ -1,0 +1,13 @@
+{
+ "security_code": "605499",
+ "security_name": "东鹏饮料",
+ "review_id": "iv20261019_pool_b05:605499",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 37.83,
+  "base": 45.44,
+  "bull": 49.34
+ },
+ "falsifier": "2026Q3 单季营收同比 < +2%（< 62.3 亿），且单季扣非归母同比 < 0（< 12.69 亿）（2026-10-30 前）；2026 年能量饮料收入 < 158 亿（同比 < +1.3%），或扣非归母 < 44 亿（2027-04-30 前）；2027H1 毛利率 < 45% 且销售费用率 ≥ 17%（核心经营利润率 < 23%）；或华东 PET 瓶片现货连续两个月 > 8,000 元/吨，而公司既未提价也未收缩促销（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/605499_东鹏饮料.md）"
+}
