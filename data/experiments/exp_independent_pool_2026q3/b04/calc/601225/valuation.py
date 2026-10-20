@@ -11,7 +11,7 @@
 PRICE = 28.19                 # 2026-10-19 收盘（brief.md）
 SHARES = 96.95                # 亿股；无回购专户，无拟注销股份（2026H1_report 第 41-42 页）
 COE = 0.09
-INT_DISC = 0.09               # 有杠杆口径：有息负债税后利息按 9% 折现（framework 三法互校第 2 条）
+INT_DISC = 0.09               # 有杠杆口径：经调整净负债税后利息按 9% 折现（framework 三法互校第 2 条；2026-10-20 改为 r2）
 P_W = {"bear": 0.25, "base": 0.50, "bull": 0.25}
 
 # ============ 一、煤价映射：秦港 5500 现货（含税）→ 公司自产煤售价 ============
@@ -78,10 +78,13 @@ CASH_P = CASH - MI_CASH_CLAIM
 DEBT_P = DEBT - MI_DEBT_SHARE
 DEBTLIKE_P = DEBT_LIKE - MI_DEBTLIKE_SHARE
 NET_CASH_ADJ = CASH_P - DEBT_P - DEBTLIKE_P - DIV_DECL - BUFFER   # 无杠杆口径经调整净现金（json 填此数）
-OTHER_ADJ_LEV = CASH_P - DEBTLIKE_P - DIV_DECL - BUFFER            # 有杠杆口径的“现金与其他调整项”
+OTHER_ADJ_LEV = CASH_P - DEBTLIKE_P - DIV_DECL - BUFFER            # 现金与其他调整项（不含有息负债）
+# r2：只滚动经调整净负债；被现金抵减的那部分有息负债按本金扣除，所以有杠杆口径的现金调整项为 0
+NET_DEBT_ROLLED = max(0.0, -NET_CASH_ADJ)
+LEVERED_OTHER_ADJ = OTHER_ADJ_LEV - DEBT_P + NET_DEBT_ROLLED
 RATE = 0.029                  # 实际平均利率：2026H1 费用化利息 2.61 + 资本化 1.39 亿，对平均有息负债约 263 亿
 TAX_INT = 0.22                # 电力子公司多为 25%，陕西电厂 15%
-PV_INT = DEBT_P * RATE * (1 - TAX_INT) / INT_DISC
+PV_INT = NET_DEBT_ROLLED * RATE * (1 - TAX_INT) / INT_DISC
 # 模型净利含净利息；经营所有者收益加回归母税后净利息（2026H1 利息费用 2.6117、利息收入 1.6837，第 50 页）
 INT_EXP_P = 2 * 2.6117 * (DEBT_P / DEBT) * (1 - TAX_INT)
 INT_INC_P = 2 * 1.6837 * (CASH_P / CASH) * (1 - 0.18)
@@ -169,7 +172,7 @@ def value(s, k=COE, levered=True, qhd=None, c0_shift=0.0, vol_shift=0.0, reinv_a
     ev_op = pv_rows + pv_tv + pv_h2
     nonop = NONOP_TOTAL * sc["nonop_mult"]
     hair = sc["rp_haircut"] * RP_DEPOSIT * CASH_P / CASH
-    fin = (OTHER_ADJ_LEV - PV_INT) if levered else NET_CASH_ADJ
+    fin = (LEVERED_OTHER_ADJ - PV_INT) if levered else NET_CASH_ADJ
     eq = ev_op + fin + nonop - hair
     return dict(v=eq / SHARES, eq=eq, ev_op=ev_op, pv_tv=pv_tv, tv_share=pv_tv / ev_op, np26=np26,
                 P_norm=P_norm, rows=rows, h2_excess=h2_excess, pv_h2=pv_h2, fin=fin, nonop=nonop)
@@ -199,7 +202,7 @@ def implied_10y_growth(k=COE, reinv=0.10, g_t=0.0):
             pv += x * (1 - reinv) / (1 + k) ** (0.70 + i)
         tv = x * (1 + g_t) / (k - g_t) / (1 + k) ** 9.70
         h2 = h2_2026(P_H2_26) + NET_INT_ADDBACK / 2
-        eq = pv + tv + h2 + OTHER_ADJ_LEV - PV_INT + NONOP_TOTAL
+        eq = pv + tv + h2 + LEVERED_OTHER_ADJ - PV_INT + NONOP_TOTAL
         return eq / SHARES
     return solve(v_of, -0.05, 0.15, PRICE)
 
@@ -236,7 +239,7 @@ if __name__ == "__main__":
     print("== 资产负债（归母） ==")
     print(f"现金 {CASH:.2f}；有息负债 {DEBT:.2f}；类债务 {DEBT_LIKE:.2f}；少数股东要求权：现金 {MI_CASH_CLAIM:.1f}、有息 {MI_DEBT_SHARE:.1f}、类债务 {MI_DEBTLIKE_SHARE:.1f}")
     print(f"归母现金 {CASH_P:.1f}、有息 {DEBT_P:.1f}、类债务 {DEBTLIKE_P:.1f}；无杠杆经调整净现金 {NET_CASH_ADJ:.1f}")
-    print(f"有杠杆：现金与其他调整 {OTHER_ADJ_LEV:.1f}；税后利息现值 {PV_INT:.1f}（{DEBT_P:.1f}×{RATE:.3f}×{1-TAX_INT:.2f}/{INT_DISC}）；净利息加回 {NET_INT_ADDBACK:.2f}")
+    print(f"有杠杆（r2）：滚动经调整净负债 {NET_DEBT_ROLLED:.1f}；税后利息现值 {PV_INT:.1f}（{NET_DEBT_ROLLED:.1f}×{RATE:.3f}×{1-TAX_INT:.2f}/{INT_DISC}）；现金与其他调整 {OTHER_ADJ_LEV:.1f} 已抵减有息负债；净利息加回 {NET_INT_ADDBACK:.2f}")
     print(f"非经营资产合计 {NONOP_TOTAL:.1f}：" + "；".join(f"{k} {v:.1f}" for k, v in NONOP.items()))
     print("== 情景（V 为有杠杆口径，括号内为无杠杆） ==")
     for s in ("bear", "base", "bull"):

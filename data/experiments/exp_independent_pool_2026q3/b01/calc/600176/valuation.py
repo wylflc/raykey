@@ -12,9 +12,10 @@
 方法：所有者收益 DCF（归母口径）。经营所有者收益 = 归母净利 + 税后净利息 + 折旧摊销
       − 资本开支（维护 + 已公告扩产）− 营运资本增量；显式期 2026Q4–2031，
       终值 = 2032 年正常化所有者收益 /(k − g)，其中再投资率 = g / 增量回报。
-      有杠杆口径（主口径，经调整净现金为负，用户 2026-10-20 裁定，framework「三法互校」第 2 条）：
-        有息负债按现规模滚动、不偿还本金；权益价值 = 经营所有者收益现值 − 有息负债税后利息现值
-        （利率取实际平均利率，与所有者收益同一折现率，基准 9%）+ 现金与其他调整项。
+      有杠杆口径（主口径，经调整净现金为负，用户 2026-10-20 裁定，framework「三法互校」第 2 条；同日改为 r2）：
+        经调整净负债按现规模滚动、不偿还本金；权益价值 = 经营所有者收益现值 − 净负债税后利息现值
+        （利率取有息负债实际平均利率，与所有者收益同一折现率，基准 9%）；现金已在净负债里抵减，不另加
+        （r1 曾滚动全部有息负债 146.68 亿元、现金与其他调整项 11.73 亿元另加）。
       无杠杆口径（对照）：权益价值 = 经营所有者收益现值 + 经调整净现金（全额扣有息负债）。
 利润引擎：粗纱及制品「吨净利」× 销量 + 电子布「单米净利」×（电子布销量 + 0.15 × 外售电子纱万吨）+ 其他。
       单米净利 = (实现价/1.13 − 单米全成本 2.40) × (1 − 15%)，实现价为 7628 当量含税价。
@@ -53,6 +54,9 @@ INT_AT = 1.9              # 税后净利息/年：2026 前三季度利息支出 
 DERIV = DEBT["衍生金融负债（贵金属期权）"]    # 非计息，作其他调整项全额扣除
 DEBT_IB = sum(DEBT.values()) - DERIV          # 9 月末有息负债 146.68 亿元，按现规模滚动
 OTHER_ADJ = CASH - OP_RESERVE - DIV_PAID_OCT - PROVISION - DERIV   # 现金与其他调整项（同无杠杆口径），11.73
+# r2：只滚动经调整净负债；被现金抵减的那部分有息负债按本金扣除，所以有杠杆口径的现金调整项为 0
+NET_DEBT_ROLLED = max(0.0, -NET_CASH_ADJ)
+LEVERED_OTHER_ADJ = OTHER_ADJ - DEBT_IB + NET_DEBT_ROLLED
 INT_EXP_9M = 1.968        # 2026 前三季度利息费用 196,776,149.98 元（2026Q3_report 第8页）
 INT_CAP_H1 = 0.103        # 2026 上半年利息资本化 10,265,038.39 元（2026H1_report 第103页）；三季度未披露，按 0
 DEBT_YE2025 = 146.25      # 2025 年末：短借 44.27 + 长借 54.27 + 债券 20.27 + 超短融 24.14 + 集团拆借 3.04 + 租赁 0.25（年报第174页）
@@ -195,19 +199,19 @@ def project(s):
 
 
 def int_debt_at(rate=None):
-    """有息负债税后利息/年（按现规模滚动）。"""
-    return DEBT_IB * (AVG_RATE if rate is None else rate) * (1 - TAX)
+    """经调整净负债税后利息/年（r2，按现规模滚动；利率取有息负债实际平均利率）。"""
+    return NET_DEBT_ROLLED * (AVG_RATE if rate is None else rate) * (1 - TAX)
 
 
 def pv_interest(k=COE, rate=None):
-    """有息负债税后利息现值：与所有者收益同一时间网格（2026Q4、2027–2031 年中、2031 年末起永续）。"""
+    """经调整净负债税后利息现值：与所有者收益同一时间网格（2026Q4、2027–2031 年中、2031 年末起永续）。"""
     i = int_debt_at(rate)
     return i / 4 / (1 + k) ** T_Q4 + sum(i / (1 + k) ** T[y] for y in YEARS) + i / k / (1 + k) ** T_TV
 
 
 def equity_adjustment(k=COE, levered=True, rate=None):
-    """现值之外的权益调整：有杠杆 = 现金与其他调整项 − 利息现值；无杠杆 = 经调整净现金。"""
-    return OTHER_ADJ - pv_interest(k, rate) if levered else NET_CASH_ADJ
+    """现值之外的权益调整：有杠杆（r2）= 0 − 净负债利息现值；无杠杆 = 经调整净现金。"""
+    return LEVERED_OTHER_ADJ - pv_interest(k, rate) if levered else NET_CASH_ADJ
 
 
 def value(s, k=COE, levered=True, rate=None, oe_override=None):
@@ -400,12 +404,12 @@ def main():
           % (PRICE, SHARES_TOTAL, MKT_CAP, SHARES))
     print("\n[1] 经调整净现金（无杠杆口径，登记 net_cash_adj_yi）：现金 %.2f − 经营备付 %.1f − 10月已付中期分红 %.2f − 有息负债及衍生负债 %.2f − 预计负债 %.2f = %.2f 亿元（%.2f 元/股）"
           % (CASH, OP_RESERVE, DIV_PAID_OCT, r["debt"], PROVISION, NET_CASH_ADJ, NET_CASH_ADJ / SHARES))
-    print("    有杠杆口径（主口径）：有息负债 %.2f 亿元按现规模滚动；实际平均利率 %.2f%%（2026 前三季度利息费用 %.3f + 上半年资本化 %.3f，年化 ÷ 平均有息负债 %.2f）；"
-          "税后利息 %.2f 亿元/年，现值 %.1f 亿元（9%%；8%% 为 %.1f、10%% 为 %.1f）；现金与其他调整项 %.2f 亿元（现金 − 备付 − 已付分红 − 预计负债 − 衍生负债 %.2f）"
-          % (DEBT_IB, AVG_RATE * 100, INT_EXP_9M, INT_CAP_H1, (DEBT_YE2025 + DEBT_H1 + DEBT_IB) / 3, lv["int_at"],
+    print("    有杠杆口径（主口径，r2）：经调整净负债 %.2f 亿元按现规模滚动；有息负债实际平均利率 %.2f%%（2026 前三季度利息费用 %.3f + 上半年资本化 %.3f，年化 ÷ 平均有息负债 %.2f）；"
+          "税后利息 %.2f 亿元/年，现值 %.1f 亿元（9%%；8%% 为 %.1f、10%% 为 %.1f）；现金与其他调整项 %.2f 亿元（现金 − 备付 − 已付分红 − 预计负债 − 衍生负债 %.2f）已抵减有息负债"
+          % (NET_DEBT_ROLLED, AVG_RATE * 100, INT_EXP_9M, INT_CAP_H1, (DEBT_YE2025 + DEBT_H1 + DEBT_IB) / 3, lv["int_at"],
              lv["pv_int"], lv["pv_int8"], lv["pv_int10"], OTHER_ADJ, DERIV))
-    print("    两口径权益差 = 有息负债 %.2f − 利息现值 %.1f = %.1f 亿元（%.2f 元/股）"
-          % (DEBT_IB, lv["pv_int"], DEBT_IB - lv["pv_int"], (DEBT_IB - lv["pv_int"]) / SHARES))
+    print("    两口径权益差 = 经调整净负债 %.2f − 利息现值 %.1f = %.1f 亿元（%.2f 元/股）"
+          % (NET_DEBT_ROLLED, lv["pv_int"], NET_DEBT_ROLLED - lv["pv_int"], (NET_DEBT_ROLLED - lv["pv_int"]) / SHARES))
     print("\n[2] 校准（电子布单米全成本 %.2f 元/米）：" % C_E)
     for q, np_, rov, e_np, pe, rr, lam in calibration():
         print("  %s 扣非 %.2f = 粗纱 %.2f + 电子布/纱 %.2f；隐含单米净利 %.2f 元，隐含实现价 %.2f 元/米（为市场均价的 %.0f%%）"

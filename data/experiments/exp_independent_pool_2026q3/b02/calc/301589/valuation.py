@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""诺瓦星云（301589）独立估值（OI-291 b02，价格日 2026-10-19；2026-10-20 按有杠杆口径重算）。
+"""诺瓦星云（301589）独立估值（OI-291 b02，价格日 2026-10-19；2026-10-20 按有杠杆口径重算，同日按用户裁定改为只滚动净负债，r2）。
 
 方法：归母所有者收益 DCF（股权成本 9%，敏感性 8%／10%）+ 反向 DCF + 交叉验证。
 金额单位亿元，每股单位元。运行：python3 valuation.py
@@ -12,8 +12,9 @@
   − 深圳科技园剩余投资；维护性资本开支≈折旧摊销（2025 年折旧摊销 0.91 亿，购建长期资产 0.97 亿）。
   科技园建成前后（2027–2032）k 中的固定资产部分（0.17）由科技园替代，不重复计提。
 - 两种口径（framework.md「三法互校」第 2 条；经调整净现金 −0.96 亿 < 0，登记取有杠杆口径）：
-  有杠杆：有息负债 8.113 亿（含租赁）按现规模滚动、不还本，股权价值 = 经营 OE 现值
-          − 税后利息现值（利率取近 12 个月实际平均利率，税率 15%，与经营 OE 同率折现）+ 现金与其他调整项；
+  有杠杆（r2）：经调整净负债 0.96 亿按现规模滚动、不还本，股权价值 = 经营 OE 现值
+          − 净负债税后利息现值（利率取近 12 个月有息负债实际平均利率，税率 15%，与经营 OE 同率折现）；
+          现金在净负债里抵减，不另加（r1 曾滚动全部有息负债 8.113 亿、现金另加）；
   无杠杆：股权价值 = 经营 OE 现值 + 现金与其他调整项 − 有息负债本金。
   两种口径的经营 OE 都不含利息收支，现金按面值计入，避免利息与本金重复扣减。
 - 金融投资（其他权益工具投资、交易性金融资产、基金）不进经营利润，按情景折价单列。
@@ -114,8 +115,13 @@ def adj_net_cash():
     return cash_ex_debt() - DEBT_IB
 
 
+def rolled_debt():
+    """r2：滚动的是经调整净负债；被现金抵减的那部分有息负债按本金扣除。"""
+    return max(0.0, -adj_net_cash())
+
+
 def interest_after_tax():
-    return DEBT_IB * R_D * (1 - TAX_INT)
+    return rolled_debt() * R_D * (1 - TAX_INT)
 
 
 def non_operating(s, detail=False):
@@ -165,7 +171,7 @@ def debt_charge(r, caliber):
     """2026-12-31 时点的债务扣减：有杠杆 = H2 税后利息 + 2027 年起永续税后利息现值（年中）；无杠杆 = 本金。"""
     if caliber == 'levered':
         ia = interest_after_tax()
-        return ia / 2 + ia / r * (1 + r) ** 0.5
+        return ia / 2 + ia / r * (1 + r) ** 0.5 + (DEBT_IB - rolled_debt())
     return DEBT_IB
 
 
@@ -229,8 +235,8 @@ def main():
           % (PRICE, SHARES, PRICE * SHARES))
     print('经调整净现金（无杠杆口径）%.2f 亿 = 现金与其他调整项 %.2f − 有息负债 %.3f（含租赁 %.3f）'
           % (adj_net_cash(), cash_ex_debt(), DEBT_IB, LEASE))
-    print('有息负债实际平均利率 %.2f%%（近 12 个月利息支出 %.4f ÷ 季均有息负债 %.3f）；税后年利息 %.3f 亿；'
-          '9%% 永续现值 %.2f 亿' % (R_D * 100, INT_TTM, DEBT_AVG, interest_after_tax(), interest_after_tax() / r))
+    print('有杠杆（r2）滚动经调整净负债 %.3f 亿；有息负债实际平均利率 %.2f%%（近 12 个月利息支出 %.4f ÷ 季均有息负债 %.3f）；'
+          '税后年利息 %.3f 亿；9%% 永续现值 %.2f 亿' % (rolled_debt(), R_D * 100, INT_TTM, DEBT_AVG, interest_after_tax(), interest_after_tax() / r))
     print('2026H1 正常化归母净利 %.2f 亿（报表归母 3.32、扣非 2.75）' % h1_normalized())
 
     res = {}

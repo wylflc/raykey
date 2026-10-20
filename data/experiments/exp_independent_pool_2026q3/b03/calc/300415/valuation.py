@@ -6,9 +6,10 @@
 - 共同部分：经营所有者收益 = 无杠杆经营 NOPAT ×（1 − 再投资率），再投资率 = 增速 ÷ 增量回报；
   不含利息、汇兑、联营投资收益与非经常性补助；以 9% 股权成本折现（8%／10% 敏感性），年中折现。
 - 无杠杆口径：股权价值 = 经营价值 + 经调整净现金（−21.39 亿，已扣受限资金、经营备付与全部有息负债）+ 非经营资产。
-- 有杠杆口径（framework.md「三法互校」第 2 条，经调整净现金为负时为主口径）：有息负债 26.65 亿按现规模滚动、
-  不偿还本金；股权价值 = 经营价值 − 有息负债税后利息的现值（利率取实际平均利率，同一折现率）
-  + 现金与其他调整项（现金类 − 受限资金 − 经营备付 − 已宣派股利，同无杠杆口径）+ 非经营资产。
+- 有杠杆口径（framework.md「三法互校」第 2 条，经调整净现金为负时为主口径；2026-10-20 按用户裁定改为 r2）：
+  经调整净负债 21.39 亿按现规模滚动、不偿还本金；股权价值 = 经营价值 − 净负债税后利息的现值
+  （利率取有息负债实际平均利率，同一折现率）+ 非经营资产；现金已在净负债里抵减，不另加
+  （r1 曾滚动全部有息负债 26.65 亿、现金与其他调整项按面值另加）。
 - 每股价值用总股本 4.6856 亿股（含回购专户 807.30 万股，用途为股权激励／员工持股，未公告注销）；
   另报剔除回购专户后的对照。
 """
@@ -41,6 +42,9 @@ NET_CASH_ADJ = CASH + STRUCT_DEPOSIT - RESTRICTED - OPER_RESERVE - sum(DEBT.valu
 DEBT_TOTAL = sum(DEBT.values())   # 26.65 亿（2026-06-30）
 # 现金与其他调整项（同无杠杆口径，不含有息负债）
 FREE_CASH = CASH + STRUCT_DEPOSIT - RESTRICTED - OPER_RESERVE - DIVIDEND_DECLARED_UNPAID
+# r2：只滚动经调整净负债；被现金抵减的那部分有息负债按本金扣除，所以有杠杆口径的现金调整项为 0
+NET_DEBT_ROLLED = max(0.0, -NET_CASH_ADJ)
+LEVERED_CASH_ADJ = FREE_CASH - DEBT_TOTAL + NET_DEBT_ROLLED
 
 # 有息负债实际平均利率：2026H1 利息支出 32,288,390.19 元（2026H1 报告第 120 页，无资本化利息，第 104 页）
 # ÷ 期初期末平均有息负债（2025-12-31 为 20.1972 亿：短借 1.7492 + 长借 15.3314 + 一年内到期 2.9574 + 租赁 0.1592），年化
@@ -49,7 +53,7 @@ DEBT_2025YE = 1.7492453398 + 15.3313547581 + 2.9574070205 + 0.1591829329
 DEBT_RATE = INTEREST_H1_2026 * 2 / ((DEBT_TOTAL + DEBT_2025YE) / 2)
 DEBT_RATE_FY2025 = 0.4903693132 / ((14.62 + DEBT_2025YE) / 2)   # 2025 年利息支出 ÷ 平均有息负债，对照
 TAX_INTEREST = 0.15               # 主要借款主体为高新技术企业，利息按 15% 抵税
-INTEREST_AFTER_TAX = DEBT_TOTAL * DEBT_RATE * (1 - TAX_INTEREST)
+INTEREST_AFTER_TAX = NET_DEBT_ROLLED * DEBT_RATE * (1 - TAX_INTEREST)
 USE_LEVERED = NET_CASH_ADJ < 0    # 规则：经调整净现金为负 → 有杠杆口径为主口径
 
 # 非经营资产（2026H1 报告第 100–101 页长期股权投资；第 101 页其他非流动金融资产）
@@ -154,13 +158,13 @@ def weighted_v(r: float, shares: float = SHARES_TOTAL) -> float:
 
 
 def pv_interest(r: float) -> float:
-    """有息负债按现规模滚动的税后利息现值：2026H2 存根（t = 0，与经营存根一致）+ 2027 年起按年中永续。"""
+    """经调整净负债按现规模滚动的税后利息现值（r2）：2026H2 存根（t = 0，与经营存根一致）+ 2027 年起按年中永续。"""
     t0 = mid_year_t(YEARS[0])
     return 0.5 * INTEREST_AFTER_TAX + INTEREST_AFTER_TAX * (1 + r) / r / (1 + r) ** t0
 
 
 def equity_value_levered(s: dict, r: float) -> float:
-    return operating_value(s, r) - pv_interest(r) + FREE_CASH + non_operating(s['haisheng_pb'])
+    return operating_value(s, r) - pv_interest(r) + LEVERED_CASH_ADJ + non_operating(s['haisheng_pb'])
 
 
 def per_share_levered(s: dict, r: float, shares: float = SHARES_TOTAL) -> float:
@@ -209,7 +213,7 @@ def _operating_target(s: dict, levered: bool) -> float:
     """现价对应的经营价值：无杠杆加回经调整净负债；有杠杆加回税后利息现值、扣现金与其他调整项。"""
     cap = PRICE * SHARES_TOTAL - non_operating(s['haisheng_pb'])
     if levered:
-        return cap - FREE_CASH + pv_interest(COE)
+        return cap - LEVERED_CASH_ADJ + pv_interest(COE)
     return cap - NET_CASH_ADJ
 
 
@@ -301,9 +305,9 @@ def main():
     print(f'现价 {PRICE:.2f} 元；总股本 {SHARES_TOTAL:.4f} 亿股（含回购专户 {TREASURY:.4f}）；市值 {PRICE*SHARES_TOTAL:.2f} 亿')
     print(f'经调整净现金（无杠杆口径）= {CASH:.2f}+{STRUCT_DEPOSIT:.2f}−{RESTRICTED:.2f}−{OPER_RESERVE:.2f}−{DEBT_TOTAL:.2f} = {NET_CASH_ADJ:.2f} 亿')
     print(f'主口径：{"有杠杆" if USE_LEVERED else "无杠杆"}（经调整净现金 {"< 0" if USE_LEVERED else "≥ 0"}）')
-    print(f'有杠杆口径：有息负债 {DEBT_TOTAL:.2f} 亿，实际平均利率 {DEBT_RATE*100:.2f}%'
+    print(f'有杠杆口径（r2）：滚动经调整净负债 {NET_DEBT_ROLLED:.2f} 亿（有息负债 {DEBT_TOTAL:.2f} 亿），实际平均利率 {DEBT_RATE*100:.2f}%'
           f'（2026H1 利息 {INTEREST_H1_2026:.4f} 亿×2 ÷ 平均有息负债 {(DEBT_TOTAL+DEBT_2025YE)/2:.2f} 亿；2025 年对照 {DEBT_RATE_FY2025*100:.2f}%），'
-          f'税后利息 {INTEREST_AFTER_TAX:.4f} 亿/年，现值（9%）{pv_interest(COE):.2f} 亿；现金与其他调整项 {FREE_CASH:.2f} 亿')
+          f'税后利息 {INTEREST_AFTER_TAX:.4f} 亿/年，现值（9%）{pv_interest(COE):.2f} 亿；有杠杆现金调整项 {LEVERED_CASH_ADJ:.2f} 亿（现金与其他调整项 {FREE_CASH:.2f} 已抵减有息负债）')
     for k, sc in SCENARIOS.items():
         print(f'非经营资产（{k}，海晟 {sc["haisheng_pb"]:.2f}×账面）= {non_operating(sc["haisheng_pb"]):.2f} 亿')
     print()
@@ -318,7 +322,7 @@ def main():
         print(f'  终值：OE_2032 {det["oe_T"]:.2f}，TV {det["tv"]:.2f}，PV(TV) {det["pv_tv"]:.2f}，显性期 PV {det["pv_explicit"]:.2f}，终值占比 {det["tv_share"]*100:.1f}%')
         print(f'  经营价值 {det["total"]:.2f}')
         print(f'  [有杠杆] 股权价值 {equity_value_levered(sc, COE):.2f} 亿 = {det["total"]:.2f} − 利息现值 {pv_interest(COE):.2f}'
-              f' + 现金调整 {FREE_CASH:.2f} + 非经营 {non_operating(sc["haisheng_pb"]):.2f}；每股 V {per_share_levered(sc, COE):.2f} 元'
+              f' + 现金调整 {LEVERED_CASH_ADJ:.2f} + 非经营 {non_operating(sc["haisheng_pb"]):.2f}；每股 V {per_share_levered(sc, COE):.2f} 元'
               f'（剔除回购专户 {per_share_levered(sc, COE, SHARES_EX_TREASURY):.2f}）；8% {per_share_levered(sc, 0.08):.2f}；'
               f'10% {per_share_levered(sc, 0.10):.2f}；隐含回报 {implied_irr_levered(sc)*100:.2f}%')
         print(f'  [无杠杆] 股权价值 {equity_value(sc, COE):.2f} 亿；每股 V {per_share(sc, COE):.2f} 元'

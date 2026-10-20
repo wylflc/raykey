@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""601965 中国汽研 独立估值（OI-291 b02，价格日 2026-10-19；2026-10-20 按框架补有杠杆口径）。
+"""601965 中国汽研 独立估值（OI-291 b02，价格日 2026-10-19；2026-10-20 按框架补有杠杆口径，同日按用户裁定改为只滚动净负债，r2）。
 
 运行：python3 valuation.py
 口径：金额亿元，每股元；归母口径；股权成本基准 9%（敏感性 8%／10%）。
@@ -10,9 +10,9 @@
 两种口径：
   无杠杆：有息负债按本金全额扣除（核心经调整净现金 −5.05 亿）。
   有杠杆（framework「三法互校」第 2 条，经调整净现金为负时适用，登记取此口径）：
-      有息负债按现规模滚动、不偿还本金，改扣“有息负债税后利息的现值”
-      （利率取实际平均利率，折现率取股权成本：基准 9%，敏感性随 8%／10% 同步），
-      现金与其他调整项同无杠杆口径。
+      经调整净负债（−核心经调整净现金）按现规模滚动、不偿还本金，改扣其税后利息的现值
+      （利率取有息负债实际平均利率，折现率取股权成本：基准 9%，敏感性随 8%／10% 同步），
+      现金已在净负债里抵减、不另加（r2；r1 曾滚动全部有息负债 14.27 亿、现金按面值另加）。
 所有输入写在本脚本内，出处见 b02/companies/601965_中国汽研.md。
 """
 
@@ -57,7 +57,9 @@ H1_INT_CAPITALIZED = 0.033103
 DEBT_BEGIN, DEBT_END = 11.221 + 0.607 + 0.173 + 0.029, DEBT_ROLLED
 DEBT_RATE = (H1_INT_EXPENSED + H1_INT_CAPITALIZED) * 2 / ((DEBT_BEGIN + DEBT_END) / 2)
 TAX_SHIELD = 0.15        # 高新技术企业 15%
-AT_INTEREST = DEBT_ROLLED * DEBT_RATE * (1 - TAX_SHIELD)   # 年税后利息
+# r2：只滚动经调整净负债，现金已在净负债里抵减；有息负债本金只用于测算实际平均利率
+NET_DEBT_ROLLED = max(0.0, -core_net_cash())
+AT_INTEREST = NET_DEBT_ROLLED * DEBT_RATE * (1 - TAX_SHIELD)   # 年税后利息
 
 
 def pv_after_tax_interest(r=COE):
@@ -66,7 +68,7 @@ def pv_after_tax_interest(r=COE):
 
 def leverage_uplift(r=COE):
     """有杠杆口径相对无杠杆口径的股权价值差：加回滚动本金，改扣税后利息现值。"""
-    return DEBT_ROLLED - pv_after_tax_interest(r)
+    return NET_DEBT_ROLLED - pv_after_tax_interest(r)
 
 
 # 南方试验场（35.15% 持股并表，少数股东 64.85%；2026H1_report 第 169-175 页）
@@ -222,12 +224,12 @@ def main():
     print("=== 601965 中国汽研 独立估值（价格日 2026-10-19，现价 %.2f，总股本 %.4f 亿股）===" % (PRICE, SHARES))
     ncc = core_net_cash()
     print("无杠杆口径：核心归母经调整净现金（剔除南方）%.2f 亿（%.2f 元/股）" % (ncc, ncc / SHARES))
-    print("有杠杆口径：滚动有息负债 %.3f 亿，实际平均利率 %.2f%%（2026H1 借款利息 %.4f + 资本化 %.4f，年化 ÷ 平均负债 %.3f），"
+    print("有杠杆口径（r2）：滚动经调整净负债 %.3f 亿，实际平均利率 %.2f%%（2026H1 借款利息 %.4f + 资本化 %.4f，年化 ÷ 平均负债 %.3f），"
           "税率 %.0f%%，年税后利息 %.3f 亿，9%% 折现现值 %.2f 亿" %
-          (DEBT_ROLLED, DEBT_RATE * 100, H1_INT_EXPENSED, H1_INT_CAPITALIZED, (DEBT_BEGIN + DEBT_END) / 2,
+          (NET_DEBT_ROLLED, DEBT_RATE * 100, H1_INT_EXPENSED, H1_INT_CAPITALIZED, (DEBT_BEGIN + DEBT_END) / 2,
            TAX_SHIELD * 100, AT_INTEREST, pv_after_tax_interest()))
     print("  → 有杠杆核心调整项 = %.2f + %.3f − %.2f = %.2f 亿（较无杠杆多 %.2f 元/股）" %
-          (ncc, DEBT_ROLLED, pv_after_tax_interest(), ncc + leverage_uplift(), leverage_uplift() / SHARES))
+          (ncc, NET_DEBT_ROLLED, pv_after_tax_interest(), ncc + leverage_uplift(), leverage_uplift() / SHARES))
     print("南方试验场账面净资产 %.3f 亿 × 35.15%% = %.2f 亿；非经营投资 %.2f 亿" %
           (NANFANG_EQUITY, PARENT_PCT * NANFANG_EQUITY, NON_OP))
     for k in ("bear", "base", "bull"):

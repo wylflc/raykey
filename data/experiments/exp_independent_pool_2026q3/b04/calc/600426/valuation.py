@@ -3,7 +3,8 @@
 运行：python3 valuation.py
 口径：金额亿元，每股元。最新定期报告 2026 中报（2026-06-30 资产负债表）；三季报预约 2026-10-30。
 方法：合并口径无杠杆所有者收益（经营）DCF。经调整净现金为负，按框架「三法互校」第 2 条取有杠杆口径：
-      股权 = 经营所有者收益现值 − 有息负债税后利息现值（规模不变滚动）+ 现金调整项；
+      股权 = 经营所有者收益现值 − 经调整净负债税后利息现值（规模不变滚动）；现金已在净负债里抵减，不另加
+      （r2，2026-10-20 用户裁定；r1 曾滚动全部有息负债 110.72 亿、现金调整项 17.15 亿另加）；
       另列无杠杆口径（全额扣有息负债）作对照。合并股权按少数股东净利占比折归母。
 """
 
@@ -23,11 +24,14 @@ cash_adj = cash + struct_dep - restricted - op_reserve - div_payable
 # 2026 中期股息 0.26 元/股（7.15 亿，10-22 登记、10-23 除息）归现价持有人，现价含权，不扣
 debt = 5.670 + 80.171 + 24.310 + 0.060 + 0.419 + 0.088  # 短借+长借+一年内到期长借+其应付利息+租赁负债
 net_cash_adj_unlev = cash_adj - debt
+# r2：只滚动经调整净负债；被现金抵减的那部分有息负债按本金扣除，所以有杠杆口径的现金调整项为 0
+net_debt_rolled = max(0.0, -net_cash_adj_unlev)
+levered_cash_adj = cash_adj - debt + net_debt_rolled
 
 # 实际平均利率：2026H1 费用化利息 1.488 + 资本化 0.087 = 1.575 亿，年化 3.15 ÷ 平均有息负债 ≈2.87%；
 # 另加控股股东担保费（年化 0.3%，2026 年上限 0.36 亿，担保借款约 91.6 亿）折合约 0.25 个百分点
 RATE = 0.0287 + 0.0025
-interest_after_tax = debt * RATE * (1 - TAX)
+interest_after_tax = net_debt_rolled * RATE * (1 - TAX)
 
 # ---------- 正常化（2026 年产能，长期价差）----------
 # AGP = 毛利 − 研发费用（研发材料费与生产成本存在归类迁移，合并看更可比）
@@ -89,7 +93,7 @@ def value(s, r=R, levered=True, detail=False):
     v_ops = pv + pv_tv
     if levered:
         pv_int = interest_after_tax / 2 + interest_after_tax / (1 + r) ** (1 - VAL_DATE_OFFSET) * (1 + r) / r
-        eq = v_ops - pv_int + cash_adj
+        eq = v_ops - pv_int + levered_cash_adj
     else:
         pv_int = debt
         eq = v_ops - debt + cash_adj
@@ -129,7 +133,7 @@ def band(pv):
 
 if __name__ == "__main__":
     print(f"经调整现金项 {cash_adj:.2f}；有息负债 {debt:.2f}；无杠杆经调整净现金 {net_cash_adj_unlev:.2f} 亿")
-    print(f"有息负债实际利率（含担保费）{RATE:.2%}；税后利息 {interest_after_tax:.2f} 亿/年；"
+    print(f"有杠杆（r2）滚动经调整净负债 {net_debt_rolled:.2f} 亿；有息负债实际利率（含担保费）{RATE:.2%}；税后利息 {interest_after_tax:.2f} 亿/年；"
           f"2026H2 无杠杆所有者收益估计 {h2_2026_oe():.2f} 亿")
     print()
     print("情景   概率  AGP   EBIT   合并净利 归母净利 OE(再投资前) g前5年  终值g  终值占比  V有杠杆  V无杠杆")
@@ -154,7 +158,7 @@ if __name__ == "__main__":
     base = SCEN["base"]
     _, _, _, oe0 = normalized(base)
     pv_int = interest_after_tax / 2 + interest_after_tax / (1 + R) ** (1 - VAL_DATE_OFFSET) * (1 + R) / R
-    target_eq = PRICE * SHARES / (1 - base["m"]) - cash_adj + pv_int - h2_2026_oe()
+    target_eq = PRICE * SHARES / (1 - base["m"]) - levered_cash_adj + pv_int - h2_2026_oe()
     g_imp = solve(lambda g: oe0 * (1 + g) / (1 + R) ** (1 - VAL_DATE_OFFSET) * (1 + R) / (R - g), -0.10, 0.085, target_eq)
     print(f"反向 DCF①：基准 OE {oe0:.1f} 亿全部可分配，现价隐含永续增速 {g_imp:.2%}")
     # 反向 DCF ②：保持基准增长与回报假设，现价对应的正常化 AGP 与归母净利
@@ -172,7 +176,7 @@ if __name__ == "__main__":
             cf *= 1 + g10
             pv += cf / (1 + R) ** (i + 1 - VAL_DATE_OFFSET)
         tv = cf * (1 + 0.02) / (R - 0.02) / (1 + R) ** (10 - VAL_DATE_OFFSET)
-        return ((pv + tv - pv_int + cash_adj) * (1 - base["m"])) / SHARES
+        return ((pv + tv - pv_int + levered_cash_adj) * (1 - base["m"])) / SHARES
     g10 = solve(v_g10, -0.10, 0.20, PRICE)
     print(f"反向 DCF③：以基准可分配 OE {oe0 * (1 - base['b']):.1f} 亿起步、之后 2% 永续，现价隐含 10 年增速 {g10:.2%}")
 

@@ -5,7 +5,8 @@
 模型锚按 §6.5.2.2 现算，研究口径 V 用生产叠加的同一实现 `apply_forecast_band_overlay.apply_research_overlay`。
 档案在发布凭据的输入摘要内：当日清单已发布、尚未到下一次收盘时拒绝写入（§7.3 发布后改动须当晚重跑，见 README）。
 
-    python3 tools/apply_rulings.py rulings.json --day 2026-10-20 --review-batch b01 [--dry-run]
+    python3 tools/apply_rulings.py rulings.json --day 2026-10-20 --review-batch b01 [--codes 600570,...] [--dry-run]
+`--codes` 只处理列出的代码，同一批次补裁时用，避免已落地的裁定重复写日志。
 """
 import argparse
 import csv
@@ -33,8 +34,10 @@ def main() -> None:
     ap.add_argument('rulings', type=Path)
     ap.add_argument('--day', required=True, help='裁定日（北京时间）')
     ap.add_argument('--review-batch', required=True)
+    ap.add_argument('--codes', default='', help='只处理这些代码（逗号分隔），默认全部')
     ap.add_argument('--dry-run', action='store_true')
     args = ap.parse_args()
+    only = {c.strip().zfill(6) for c in args.codes.split(',') if c.strip()}
     ok, msg = register_batch.research_window()
     print(msg)
     if not ok and not args.dry_run:
@@ -49,6 +52,8 @@ def main() -> None:
     log_rows = []
     for item in json.loads(args.rulings.read_text(encoding='utf-8')):
         code, conclusion = item['security_code'].zfill(6), item['conclusion']
+        if only and code not in only:
+            continue
         if conclusion not in ('采用研究数', '维持模型'):
             raise SystemExit(f'{code} 结论只能是采用研究数或维持模型：{conclusion}')
         row = next(r for r in docs[1:] if r[col['security_code']].zfill(6) == code)
