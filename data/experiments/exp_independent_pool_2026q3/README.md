@@ -9,10 +9,11 @@
   - `done`：已用三季报完成深度审计；
   - `done_pre_q3`：已用中报完成深度审计，三季报后更新；
   - `recheck_after_q3`：已有现行评审、但早于三季报的公司（初始 30 家），各自三季报后复核。
-- 每批约 8 家，按以下顺序取：
-  1. 三季报已披露、尚未审计的公司；
-  2. 三季报预约日在 10-27 及以后的公司，按最近一次扫描的模型 `P/V` 升序（主会话排序用，代理不读）；预约日更早的等披露后归入第 1 条；
+- 每批约 8 家，按以下顺序取（`python3 tools/next_batch.py --refresh` 刷新三季报日期后列出）：
+  1. 三季报已披露、尚未审计或待复核的公司；
+  2. 三季报预约日在 10-27 及以后、尚未审计的公司，按最近一次扫描的模型 `P/V` 升序（主会话排序用，代理不读）；预约日更早的等披露后归入第 1 条；
   3. 银行与保险单独成批（股利折现框架）。
+- 一次一批：本批登记、裁定、提交后再派下一批。是否开始下一批，在本批的裁定提问里一并问用户。
 - 量级：海康单家约 1 小时 40 分、193 轮、读入约 4,600 万 token（多为缓存读取）。
 
 ## 目录
@@ -20,8 +21,9 @@
 | 位置 | 内容 |
 | --- | --- |
 | `framework.md` | 统一任务框架、独立性约束与交付字段 |
+| `agent_prompt.md` | 代理任务说明模板 |
 | `queue.csv` | 全池队列（三季报日期、状态、批次） |
-| `tools/` | 主会话工具：`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`register_batch.py`、`register_research.py`、`apply_rulings.py` |
+| `tools/` | 主会话工具：`next_batch.py`（下一批候选）、`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`page_grep.py`（按页抽查原文）、`register_batch.py`、`register_research.py`、`apply_rulings.py` |
 | `<批次>/brief.md`、`packs/`、`companies/`、`calc/<代码>/` | 批次快照、数据包、审计全文与 `.json`、估值脚本（入库） |
 | `research/<代码>.json` | 档案研究数登记输入 |
 | `data/scratch/experiments/exp_independent_pool_2026q3/<批次>/raw/`、`work/` | 原始数据、公告 PDF 与文本、代理草稿（不入库，14 天未改动即被清理） |
@@ -30,16 +32,26 @@
 
 1. 材料：`sbatch --account=tes21035 --export=ALL,BATCH=<批次>,PRICE_DATE=<收盘日>,CODES=<代码+代码> scripts/slurm/oi291_kit.sbatch`（8 家约 10～20 分钟）。
 2. 快照：`python3 tools/write_brief.py <批次> --price-date <收盘日>` 写 `<批次>/brief.md`。
-3. 派代理：每家一个，任务说明引用 `framework.md` 与 `brief.md`，写明不读仓库模型、联网不超过 15 次、不提交、只写本公司三个交付文件。
-4. 核对：`python3 tools/check_delivery.py <批次>` 校验字段、分档、加权、脚本复现与报表数；主会话再抽查 `spot_checks` 与 `web_facts` 的一手来源，更正写回全文并注明。
+3. 派代理：每家一个，任务说明按 [`agent_prompt.md`](agent_prompt.md) 填写，同批同时派出。
+4. 核对：`python3 tools/check_delivery.py <批次>` 校验字段、分档、加权、脚本复现与报表数。主会话再抽查 `spot_checks` 与 `web_facts` 的一手来源；公告原文用 `python3 -I tools/page_grep.py <批次> <代码> <文件名> <正则>` 按页查。核对结果与更正写在审计全文末尾「## 主会话核对（日期）」一节。
 5. 登记：`python3 tools/register_batch.py <批次>`：
    - §6.9 登记表追加 `current` 行（旧行改 `superseded`），重出阅读版；
    - 写 `research/<代码>.json` 并登记档案研究数（§6.5.2.2 折算）；档案已「采用研究数」的不覆盖，汇总报告列出新旧两数，提请用户裁定；
    - 档案在发布凭据的输入摘要内：研究数在当日执行清单发布之前登记；已发布的，留到下一次扫描之前登记，不在发布后改档案。
    - 框架口径修订后重算的公司用 `--revision r1 --no-research` 重登：新评审编号带后缀，旧行改 `superseded`，研究数不变。
-6. 重出池文档（`build_a_share_core_valuation_pool.py --md-only`）与档案 README。下一次扫描按 §7.3 计算差距：超过 30% 的入队，研究数低于模型锚的冻结新增买入。
-7. 汇总报告追加本批：模型与独立 `P/V` 对照、差距超过 30% 与已采用研究数的个案，按批次提请用户裁定「采用研究数／维持模型」。裁定写成 `<批次>/rulings.json`，`python3 tools/apply_rulings.py <批次>/rulings.json --day <裁定日> --review-batch <批次>` 写档案差距复核字段与决策日志（发布时段规则同第 5 步）。
+6. 重出档案 README（`python3 scripts/build_company_dossier_readmes.py`）与池文档（工作流程里的 `--md-only --quotes fetch` 命令，`--signal-date` 沿用池文档首行的生成日期）。下一次扫描按 §7.3 计算差距：超过 30% 的入队，研究数低于模型锚的冻结新增买入。
+7. 汇总报告追加本批：模型与独立 `P/V` 对照、差距超过 30% 与已采用研究数的个案，按批次提请用户裁定「采用研究数／维持模型」。
+   - 提问用提问工具，逐家一问，推荐项放首位并标「（推荐）」。
+   - 提问写明生产带 V、独立 V 与研究口径 V。研究口径 V 的取法：先写草稿裁定，加 `--dry-run` 跑下面的命令读出。
+   - 裁定写成 `<批次>/rulings.json`，`python3 tools/apply_rulings.py <批次>/rulings.json --day <裁定日> --review-batch <批次>` 写档案差距复核字段与决策日志（发布时段规则同第 5 步）。
 8. 更新 `queue.csv` 的 `status`／`batch`，提交。
+
+## 中断与接手
+
+- 进度：看汇总报告的进度表与 `queue.csv`。`tools/next_batch.py` 会把已派出、未登记的公司单独列出。
+- 代理不能跨会话续跑。接手已派出的批次时，先跑 `check_delivery.py <批次>`：
+  - 通过的公司，从第 4 步接着做；
+  - 报缺文件或不通过的，按第 3 步重新派出。
 
 ## 三季报后更新
 

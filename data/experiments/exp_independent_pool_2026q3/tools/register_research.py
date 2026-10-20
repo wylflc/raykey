@@ -34,6 +34,14 @@ BANDS = ROOT / 'data/processed/a_share_pool_model_bands_adopted.csv'
 LOG = ROOT / 'data/processed/a_share_workflow_decision_log.csv'
 
 
+def rel(path: Path) -> str:
+    """决策日志里的输入文件：仓库内写相对仓库根的路径（经链接路径传入也一样），仓库外原样写。"""
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def read_table(path: Path) -> tuple[list[list[str]], str]:
     raw = path.read_bytes()
     text = raw.decode('utf-8')
@@ -129,7 +137,7 @@ def main() -> None:
             decision_type='research_normalized_earnings', decision_result='registered',
             summary_reason=(f"OI-291 池内独立审计登记研究数（§6.5.2.2）：{conv['base']:.2f} 亿（{conv['bear']:.2f}～{conv['bull']:.2f}），"
                             f"模型锚 {model_yi:.2f} 亿，差距 {gap:.1%}；独立评审 {spec['review_id']}。"),
-            input_files=f"user_confirmation;{args.json.relative_to(ROOT) if args.json.is_absolute() else args.json}",
+            input_files=f"user_confirmation;{rel(args.json)}",
             source_urls='', output_file='data/processed/a_share_valuation_dossiers.csv',
             operator_or_script='exp_independent_pool_2026q3/tools/register_research.py', workflow_version=WORKFLOW_VERSION,
             decision_id=decision_id, supersedes_decision_id='')])

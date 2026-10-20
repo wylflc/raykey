@@ -89,7 +89,7 @@ def main() -> None:
                 logged_at_utc=datetime.now(timezone.utc).isoformat(), workflow_stage='valuation_review', run_id=f'oi291:{args.day}',
                 as_of=args.day, security_code=code, security_name=name, decision_type='research_model_divergence_review',
                 decision_result=conclusion, summary_reason=note,
-                input_files=f"user_confirmation;{args.rulings.relative_to(ROOT) if args.rulings.is_absolute() else args.rulings}",
+                input_files=f"user_confirmation;{rr.rel(args.rulings)}",
                 source_urls='', output_file='data/processed/a_share_valuation_dossiers.csv',
                 operator_or_script='exp_independent_pool_2026q3/tools/apply_rulings.py', workflow_version=WORKFLOW_VERSION,
                 decision_id=decision_id, supersedes_decision_id=registered if registered in seen else ''))
