@@ -1,0 +1,13 @@
+{
+ "security_code": "300832",
+ "security_name": "新产业",
+ "review_id": "iv20261019_pool_b05:300832",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 17.81,
+  "base": 19.06,
+  "bull": 19.79
+ },
+ "falsifier": "2026 年营收 < 50.35 亿（+10%，激励触发值；2027-04-30 前核对 2026 年报），或 2027 年中报营收同比 < 6%（2027-08-31 前）；2026 年经营 EBIT 率（剔除汇兑与金融收益）< 39%，或 2027 年中报 < 38%（收费立项指南试点落地后的价格传导）（2027-08-31 前）；海外主营收入 2026 年全年增速 < 12%，或 2027 年中报同比 < 10%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/300832_新产业.md）"
+}

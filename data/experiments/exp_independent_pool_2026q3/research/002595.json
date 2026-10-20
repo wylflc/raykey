@@ -1,0 +1,13 @@
+{
+ "security_code": "002595",
+ "security_name": "豪迈科技",
+ "review_id": "iv20261019_pool_b05:002595",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 18.8,
+  "base": 23.4,
+  "bull": 25.8
+ },
+ "falsifier": "2026Q3 扣非归母 < 5.0 亿元（2025Q3 为 5.62 亿元，本文估约 5.4 亿元）且单季毛利率 < 30.5%（2026-10-29 前）；2026 年扣非归母 < 21.5 亿元（本文估约 22.3 亿元），或全年模具毛利率 < 35.5%（2027-04-30 前）；2027 年上半年汽车轮胎装备收入 ≤ 34.89 亿元（同比不增），视为轮胎厂扩产周期转向（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/002595_豪迈科技.md）"
+}

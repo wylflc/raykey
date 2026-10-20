@@ -1,0 +1,13 @@
+{
+ "security_code": "600570",
+ "security_name": "恒生电子",
+ "review_id": "iv20261019_pool_b05:600570",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 6.47,
+  "base": 11.23,
+  "bull": 14.78
+ },
+ "falsifier": "2027 年报营收 ≥ 62 亿，且核心 EBIT 利润率（营业利润扣投资收益、公允价值变动、非经常补助）≥ 17%：牛市路径成立（2028-04-30 前）；2026 年报营收 < 52 亿，或 2027 年中报营收同比仍为负：熊市路径（2027-08-31 前）；蚂蚁基金 2026 年净利 ≥ 20 亿且 2027 年上半年 ≥ 10 亿，或开始向股东分红、启动上市：正常化净利上调到 20 亿，折价降到 20%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/600570_恒生电子.md）"
+}

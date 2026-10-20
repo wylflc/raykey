@@ -1,0 +1,13 @@
+{
+ "security_code": "002475",
+ "security_name": "立讯精密",
+ "review_id": "iv20261019_pool_b05:002475",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 134.11,
+  "base": 176.27,
+  "bull": 212.81
+ },
+ "falsifier": "上行：2026 年报自营核心营业利润率（本文口径）≥4.3%，且 2027 半年报通讯及数据中心收入同比 ≥40%（2027-08-31 前）；2027 半年报权益法投资收益 <20 亿元（2026H1 为 27.47 亿）（2027-08-31 前）；2027 半年报自营核心营业利润率 <3.4%（2026H1 为 3.69%）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/002475_立讯精密.md）"
+}

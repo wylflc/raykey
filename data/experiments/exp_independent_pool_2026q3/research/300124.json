@@ -1,0 +1,13 @@
+{
+ "security_code": "300124",
+ "security_name": "汇川技术",
+ "review_id": "iv20261019_pool_b05:300124",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 42.44,
+  "base": 53.12,
+  "bull": 61.37
+ },
+ "falsifier": "分部 A（剔除联合动力）2026 年扣非归母 < 44.1 亿，即第八期激励第一期目标 49 亿的 90%（2027-04-30 前）；上行：分部 A 2026 年扣非归母 ≥ 52 亿，且 2027H1 分部 A 扣非同比 ≥ 18%（2027-08-31 前）；联合动力 2026 年归母净利 < 0，或 2027H1 净利率 < 1%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b05/companies/300124_汇川技术.md）"
+}
