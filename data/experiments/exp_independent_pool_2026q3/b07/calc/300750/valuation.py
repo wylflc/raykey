@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""300750 宁德时代 独立估值（OI-291 b07，价格日 2026-10-20）
+"""300750 宁德时代 独立估值（OI-291 b07，价格日 2026-10-20；2026-10-21 修订：计入出口退税取消）
 
 运行：python3 valuation.py
 金额单位：亿元；每股：元。输入全部写在本脚本内，出处见注释与正文
@@ -10,6 +10,8 @@
 经调整净现金为正，按无杠杆口径全额扣除有息负债；无可转债。
 核心 EBIT = 营业收入 − 营业成本 − 税金及附加 − 销售/管理/研发费用 − 资产与信用减值
 （减值每年都有，按经常性成本保留）。单位核心 EBIT = 核心 EBIT ÷ 锂电池销量（元/Wh）。
+两项税负单列、按情景自担比例从单位核心 EBIT 中扣除：锂电池消费税（只对境内销量）与
+电池出口退税下调及取消（只对从中国出口的销量，按相对标定期的增量计）。
 """
 import copy
 
@@ -58,6 +60,7 @@ TAX = 0.16                  # 核心应税利润有效税率（TTM 所得税 158
 MINO_CORE = 0.063           # 少数股东在核心经营利润中的份额（TTM 少数股东损益 62.9 扣洛钼对应约 15 后 ÷ 经营与利息利润）
 MINO_CASH = MINORITY_EQUITY / EQUITY_TOTAL   # 少数股东应占现金与其他投资的近似比例（8.6%）
 VOL_2026 = 960.0            # GWh：Q1 约 208 + Q2 约 232（媒体与券商口径）+ Q3 约 260（高盛估计）+ Q4 估 260
+REV_2026_EST = 6000.0       # 2026 年营业收入估计（只用于出口额核对）
 DOMESTIC_SHARE = 0.65       # 境内销量占比（2026H1 境内收入占 68.5%，2026H1_report 第 16 页）
 ASP_2026 = 0.58             # 元/Wh，电池系统平均售价近似（2025 动力 0.585、储能 0.516）
 ASP_FADE = 0.03
@@ -65,17 +68,63 @@ CTAX_RATE = {2026: 0.0224 * 4 / 12, 2027: 0.0224 * 8 / 12 + 0.0448 * 4 / 12}   #
 CTAX_FULL = 0.0448
 COE = 0.09
 
+# ---------------------------------------------------------------- 出口退税（2026-10-21 修订新增）
+# 财政部 税务总局公告 2026 年第 2 号（2026-01-09 公布，主会话核对原文）：2026-04-01～12-31 电池产品增值税出口退税率
+# 9%→6%；2027-01-01 起取消；征收消费税的产品出口消费税政策不变（继续退免，故消费税只计境内销量）。
+# 免抵退税下不得免征和抵扣税额 = 离岸价 ×（征税率 13% − 退税率），计入成本：退税率 13%/9%/6% 时为离岸价 0/4%/7%
+# （背景知识）。取消后按财税〔2012〕39 号第七条视同内销（背景知识）：销项 = 离岸价 ÷ 1.13 × 13% ≈ 11.5%，进项可抵扣；
+# 进料加工保税进口料件的扣减忽略不计（简化，略高估税负）。
+XTAX_RATE = {2026: 0.13 - 0.06}     # 2026 年单位利润同时决定 2026Q4 现金流与 2026 正常化，全年按 6% 退税率（7%）计
+XTAX_FULL = 0.13 / 1.13             # 2027 年起取消退税（约 11.5%）
+# 境外工厂电芯产出（GWh，三情景相同；不经中国出口）。德国图林根规划约 14 GWh（背景知识，未核对）按 10→12；
+# 匈牙利一期超过 30 GWh（IR_20251021_372304 第 4 页）、2025 年底完成安装（IR_20260310_437622 第 5 页）、
+# 2026 年爬坡（IR_20260416_252967 第 4 页）、9-22 电芯试生产（网络），规划 100 GWh；西班牙合资 50 GWh，2025-11 开工、
+# 完工说法 2026 年末至 2028-03（网络）；印尼工厂在建（2026H1_report 第 15 页），一期规模按约 7 GWh（背景知识）。
+OVERSEAS_PLANTS = {   # 年份: (德国, 匈牙利, 西班牙, 印尼)
+    2026: (10, 3, 0, 0), 2027: (12, 15, 2, 3), 2028: (12, 30, 10, 7),
+    2029: (12, 40, 25, 7), 2030: (12, 50, 35, 7), 2031: (12, 60, 45, 7),
+}
+OVERSEAS_PROD = {y: float(sum(v)) for y, v in OVERSEAS_PLANTS.items()}
+# 标定期（2024-01～2026-09）从中国出口额与不得免抵税率：基准、牛的单位核心 EBIT 按该区间周期均值标定，
+# 起点 = 出口额加权税率。出口额 = 境外收入 − 德国工厂产出（约 10 GWh/年 × 0.6 元/Wh ≈ 60 亿/年，背景知识）。
+# 境外收入：2024 年 1,103.36（30.48%）、2025 年 1,296.41（2025_annual_report 第 25 页）；2026H1 871.29（2026H1_report
+# 第 16 页，按单季收入 1,291.31/1,477.86 拆成 Q1/Q2）；2026Q3 未披露，按 H1 占比 31.46% × 1,652.21 估；
+# 2024-12 按 2024Q4 收入 1,029.68 × 30.48% 的三分之一估。
+XTAX_HIST = [  # (期间, 境外收入, 德国工厂产出, 不得免抵税率)
+    ("2024-01～11", 1103.36 - 1029.68 * 0.3048 / 3, 55.0, 0.00),
+    ("2024-12", 1029.68 * 0.3048 / 3, 5.0, 0.04),
+    ("2025", 1296.41, 60.0, 0.04),
+    ("2026Q1", 871.29 * 1291.31 / 2769.17, 15.0, 0.04),
+    ("2026Q2", 871.29 * 1477.86 / 2769.17, 15.0, 0.07),
+    ("2026Q3", 1652.21 * 0.3146, 15.0, 0.07),
+]
+HIST_VOLUME = 475 + 661 + 208 + 232 + 260   # GWh，2024-01～2026-09（2024、2025 年报数；2026 各季为估计）
+
+
+def xtax_start_cycle():
+    """标定期按从中国出口额加权的不得免抵税率。"""
+    w = [(ov - de, r) for _, ov, de, r in XTAX_HIST]
+    return sum(x * r for x, r in w) / sum(x for x, _ in w)
+
+
+X_START_CYCLE = xtax_start_cycle()  # 约 3.75%
+X_START_Q3 = 0.13 - 0.06            # 2026Q3 水平（6% 退税率）
+
 SCENARIOS = {
-    # unit：2026-27 年单位核心 EBIT（扣消费税前，元/Wh）；fade：2028 起年降幅；absorb：消费税自担比例
+    # unit：2026-27 年单位核心 EBIT（扣消费税与出口退税增量前，元/Wh）；fade：2028 起年降幅；absorb：消费税自担比例
+    # absorb_x：出口退税增量自担比例；x_start：单位核心 EBIT 已含的不得免抵税率（只计相对它的增量）
     # k：每新增 1 GWh 年销量所需净投入（亿元，含配套材料与海外工厂，维持性开支 ≈ 折旧，已在利润中扣除）
     # ronic_t：终值期增量回报；g_t：终值增速
-    "bear": dict(p=0.25, unit=0.072, fade=0.03, absorb=0.75, vol_g=[0.08, 0.06, 0.05, 0.04, 0.03],
+    "bear": dict(p=0.25, unit=0.072, fade=0.03, absorb=0.75, absorb_x=0.80, x_start=X_START_Q3,
+                 vol_g=[0.08, 0.06, 0.05, 0.04, 0.03],
                  k=1.8, ronic_t=0.12, g_t=0.020, float_reversal=454.0, cmoc_haircut=0.25,
                  interest_at=45.0, assoc_norm=55.0),
-    "base": dict(p=0.50, unit=0.087, fade=0.02, absorb=0.40, vol_g=[0.18, 0.13, 0.10, 0.08, 0.06],
+    "base": dict(p=0.50, unit=0.087, fade=0.02, absorb=0.40, absorb_x=0.50, x_start=X_START_CYCLE,
+                 vol_g=[0.18, 0.13, 0.10, 0.08, 0.06],
                  k=1.6, ronic_t=0.20, g_t=0.025, float_reversal=0.0, cmoc_haircut=0.0,
                  interest_at=50.0, assoc_norm=74.0),
-    "bull": dict(p=0.25, unit=0.094, fade=0.01, absorb=0.15, vol_g=[0.25, 0.18, 0.14, 0.10, 0.08],
+    "bull": dict(p=0.25, unit=0.094, fade=0.01, absorb=0.15, absorb_x=0.25, x_start=X_START_CYCLE,
+                 vol_g=[0.25, 0.18, 0.14, 0.10, 0.08],
                  k=1.4, ronic_t=0.25, g_t=0.025, float_reversal=0.0, cmoc_haircut=0.0,
                  interest_at=55.0, assoc_norm=90.0),
 }
@@ -109,20 +158,43 @@ def non_op_block(cmoc_haircut=0.0):
                 group=group, parent=parent)
 
 
+def asp(year):
+    return ASP_2026 * (1 - ASP_FADE) ** (year - 2026)
+
+
 def ctax_absorbed(year, s):
     rate = CTAX_RATE.get(year, CTAX_FULL)
-    asp = ASP_2026 * (1 - ASP_FADE) ** (year - 2026)
-    return s["absorb"] * rate * DOMESTIC_SHARE * asp      # 元/Wh，摊到全部销量
+    return s["absorb"] * rate * DOMESTIC_SHARE * asp(year)      # 元/Wh，摊到全部销量
+
+
+def export_share(year, vol):
+    """从中国出口的销量占比 = 1 − 境内占比（与消费税同一口径）− 境外工厂产出占比。"""
+    return 1 - DOMESTIC_SHARE - OVERSEAS_PROD[year] / vol
+
+
+def xtax_detail(year, s, vol):
+    rate = XTAX_RATE.get(year, XTAX_FULL)
+    share = export_share(year, vol)
+    inc = rate - s["x_start"]
+    per_wh = s["absorb_x"] * inc * share * asp(year)          # 元/Wh，摊到全部销量
+    return dict(rate=rate, share=share, export_rev=share * asp(year) * vol * 10.0, inc=inc,
+                per_wh=per_wh, pretax=per_wh * vol * 10.0)
+
+
+def xtax_absorbed(year, s, vol):
+    return xtax_detail(year, s, vol)["per_wh"]
 
 
 def paths(s):
-    vol, unit_pre, unit, ebit, nopat = {}, {}, {}, {}, {}
+    vol, unit_pre, unit, ebit, nopat, ctax, xtax = {}, {}, {}, {}, {}, {}, {}
     vol[2026] = VOL_2026
     for i, y in enumerate(YEARS[1:]):
         vol[y] = vol[y - 1] * (1 + s["vol_g"][i])
     for y in YEARS:
         unit_pre[y] = s["unit"] * (1 - s["fade"]) ** max(0, y - 2027)
-        unit[y] = unit_pre[y] - ctax_absorbed(y, s)
+        ctax[y] = ctax_absorbed(y, s)
+        xtax[y] = xtax_absorbed(y, s, vol[y])
+        unit[y] = unit_pre[y] - ctax[y] - xtax[y]
         ebit[y] = vol[y] * unit[y] * 10.0               # 亿元（1 GWh × 1 元/Wh = 10 亿元）
         nopat[y] = ebit[y] * (1 - TAX) * (1 - MINO_CORE)
     nopat_next = nopat[2031] * (1 + s["g_t"])
@@ -135,8 +207,8 @@ def paths(s):
         oe[y] = nopat[y] - reinv[y]
     oe_next = nopat_next * (1 - s["g_t"] / s["ronic_t"])
     inc_ret = (nopat[2031] - nopat[2026]) / sum(reinv[y] for y in YEARS[:-1])
-    return dict(vol=vol, unit_pre=unit_pre, unit=unit, ebit=ebit, nopat=nopat, reinv=reinv, oe=oe,
-                nopat_next=nopat_next, oe_next=oe_next, inc_ret=inc_ret)
+    return dict(vol=vol, unit_pre=unit_pre, unit=unit, ctax=ctax, xtax=xtax, ebit=ebit, nopat=nopat,
+                reinv=reinv, oe=oe, nopat_next=nopat_next, oe_next=oe_next, inc_ret=inc_ret)
 
 
 def ops_value(s, r):
@@ -208,28 +280,51 @@ def normalized_parent_np_2026():
 
 
 def variant(changes):
-    """证伪触发：把触发假设代入三情景（熊情景取两者中较差者），牛情景权重并入基准。"""
+    """证伪触发：触发假设代入基准与牛情景；熊情景逐项取原值与触发值中较差者
+    （unit、x_start 成对替换：触发的单位核心 EBIT 更低时，连同其标定的出口退税起点一起替换）；
+    权重改为熊 25%、基准 60%、牛 15%。"""
     sc = copy.deepcopy(SCENARIOS)
     for k in ("base", "bull"):
         sc[k].update(changes)
+    bear = sc["bear"]
     for key, val in changes.items():
-        if key in ("unit", "k", "absorb", "fade", "float_reversal"):
-            worse = max if key in ("k", "absorb", "fade", "float_reversal") else min
-            sc["bear"][key] = worse(sc["bear"][key], val)
+        if key in ("k", "absorb", "absorb_x", "fade", "float_reversal"):
+            bear[key] = max(bear[key], val)
+        elif key == "unit" and val < bear["unit"]:
+            bear["unit"] = val
+            bear["x_start"] = changes.get("x_start", bear["x_start"])
         elif key == "vol_g":
-            sc["bear"][key] = [min(a, b) for a, b in zip(sc["bear"][key], val)]
+            bear[key] = [min(a, b) for a, b in zip(bear[key], val)]
     sc["base"]["p"], sc["bull"]["p"] = 0.60, 0.15
     return weighted(scen=sc)
 
 
 FALSIFIERS = {
-    "单位核心 EBIT 2026Q4 与 2027Q1 均 < 0.065 元/Wh": dict(unit=0.068, fade=0.03),
+    # 0.068 是按 2026Q4（6% 退税率）观察值 0.065 加回消费税后的水平，出口退税起点随之取 7%
+    "单位核心 EBIT 2026Q4 与 2027Q1 均 < 0.065 元/Wh": dict(unit=0.068, fade=0.03, x_start=X_START_Q3),
     "2027 年锂电池销量 < 1,040 GWh（较 2026 增 < 8%）": dict(vol_g=[0.08, 0.08, 0.07, 0.06, 0.05]),
-    "2027Q4 起（4% 消费税首个完整季）税金及附加/收入 ≥ 2.5% 且毛利率较 2027Q2 降 ≥ 1.5pct（锂价不升）": dict(absorb=0.75),
+    "税负自担：2027 年中报境外毛利率 ≤ 28.2%，或 2027Q4 起税金及附加/收入 ≥ 2.5% 且毛利率较 2027Q2 降 ≥ 1.5pct（锂价不升）":
+        dict(absorb=0.75, absorb_x=0.80),
     "经营性浮存（负营运资金，口径同 OP_LIABS − OP_ASSETS）在 2027 年任一季末 < 1,600 亿": dict(float_reversal=450.0),
     "匈牙利工厂 2027-06-30 前未量产，或美国 UFLPA/欧盟强制合资等限制落地，海外放量受阻": dict(
         vol_g=[0.15, 0.10, 0.08, 0.06, 0.05], unit=0.084),
 }
+
+# 证伪条件 3 的出口退税门槛：2027H1 境外毛利率相对 2026H1 的变化（其他因素不变）。
+# 视同内销下收入按离岸价 ÷ 1.13 确认、不再有进项转出，所以报表毛利率降幅小于税负占离岸价的比例。
+GM_OVS_H1_2026 = 0.2997             # 2026H1 境外毛利率（2026H1_report 第 16 页）
+OVS_LOCAL_H1 = 0.04                 # 境外收入中境外工厂产出的占比（2026H1 约 30/871，2027H1 匈牙利爬坡后略高，按 4%）
+
+
+def overseas_gm_2027h1(a):
+    """自担比例 a 时 2027H1 境外毛利率：出口部分收入 = E ×（1 − r0 − a(r1 − r0)），毛利减少 a(r1 − r0)E。"""
+    q1, q2 = XTAX_HIST[3][1], XTAX_HIST[4][1]
+    r0 = (q1 * 0.04 + q2 * 0.07) / (q1 + q2)        # 2026H1 出口额加权不得免抵税率（约 5.6%）
+    e = 1 - OVS_LOCAL_H1
+    gp = GM_OVS_H1_2026 - a * (XTAX_FULL - r0) * e
+    rev = 1 - e * (r0 + a * (XTAX_FULL - r0))
+    return gp / rev, r0
+
 
 # TTM（2025Q4～2026Q3）利润构成，税前，合并口径（由 2025 年报、2025/2026 三季报、2026 中报推算）
 TTM = dict(core_ebit=836.8, net_interest=68.7, fx_fee=-45.0, other_income=92.9, equity_income=108.45,
@@ -245,9 +340,12 @@ def bridge():
     assoc = TTM["cmoc_equity_income"] * CMOC_PARENT_SHARE + (TTM["equity_income"] - TTM["cmoc_equity_income"]) * (1 - MINO_CASH)
     resid = TTM["parent_np"] - (core + interest + fx + TTM["nonrec_after"] + assoc)
     b = SCENARIOS["base"]
-    n26 = paths(b)["nopat"][2026]
+    p = paths(b)
+    n26 = p["nopat"][2026]
+    d_xtax = -p["xtax"][2026] * p["vol"][2026] * 10.0 * (1 - TAX) * (1 - MINO_CORE)
     return dict(core=core, interest=interest, fx=fx, assoc=assoc, nonrec=TTM["nonrec_after"], resid=resid,
-                d_assoc=b["assoc_norm"] - assoc, d_interest=b["interest_at"] - interest, d_core=n26 - core,
+                d_assoc=b["assoc_norm"] - assoc, d_interest=b["interest_at"] - interest,
+                d_core=n26 - d_xtax - core, d_xtax=d_xtax,
                 unit_ttm=TTM["core_ebit"] / TTM["volume"] / 10.0)
 
 
@@ -255,6 +353,7 @@ def sensitivity():
     """基准情景单项敏感性（其余假设不变）。"""
     out = []
     for key, vals in [("unit", [0.084, 0.090]), ("fade", [0.01, 0.03]), ("absorb", [0.20, 0.60]),
+                      ("absorb_x", [0.25, 0.75]), ("x_start", [X_START_Q3]),
                       ("k", [1.3, 2.0]), ("ronic_t", [0.15, 0.25]), ("g_t", [0.020])]:
         for v in vals:
             s = copy.deepcopy(SCENARIOS["base"])
@@ -265,6 +364,49 @@ def sensitivity():
         s["vol_g"] = vg
         out.append((label, vg[0], scenario_value(s)["v"]))
     return out
+
+
+def overseas_prod_sensitivity(scale):
+    """境外工厂产出整体乘以 scale（三情景同时变化）时的加权 V。"""
+    global OVERSEAS_PROD
+    saved = OVERSEAS_PROD
+    OVERSEAS_PROD = {y: v * scale for y, v in saved.items()}
+    try:
+        return weighted()
+    finally:
+        OVERSEAS_PROD = saved
+
+
+def weighted_with(**changes):
+    """按情景改参数后的加权 V，例如 weighted_with(base=dict(absorb_x=0.6))。"""
+    sc = copy.deepcopy(SCENARIOS)
+    for k, d in changes.items():
+        sc[k].update(d)
+    return weighted(scen=sc)
+
+
+def xtax_robustness():
+    """出口退税新假设的稳健性：起点口径、基准起点取 7%、境外工厂产出、P/V = 0.90 时的基准自担比例。"""
+    hist_cost = sum((ov - de) * r for _, ov, de, r in XTAX_HIST)
+    p = paths(SCENARIOS["base"])
+    ei_2027 = export_share(2027, p["vol"][2027]) * asp(2027)              # 基准 2027 年每 Wh 出口额（元）
+    start_per_wh = hist_cost / HIST_VOLUME / 10.0 / ei_2027               # 按每 Wh 口径折算的起点
+    lo, hi = 0.0, 1.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if PRICE / weighted_with(base=dict(absorb_x=mid)) < 0.90:
+            lo = mid
+        else:
+            hi = mid
+    # 2026 年出口额核对：H1 境外收入 + 下半年收入（全年约 6,000 − H1 2,769.17）× 31.46% − 境外工厂产出
+    export_2026_check = 871.29 + (REV_2026_EST - 2769.17) * 0.3146 - OVERSEAS_PROD[2026] * ASP_2026 * 10.0
+    no_x = {k: dict(absorb_x=0.0) for k in SCENARIOS}
+    return dict(ei_2027=ei_2027, start_per_wh=start_per_wh,
+                v_start_per_wh=weighted_with(base=dict(x_start=start_per_wh), bull=dict(x_start=start_per_wh)),
+                v_base_start7=weighted_with(base=dict(x_start=X_START_Q3)),
+                v_prod0=overseas_prod_sensitivity(0.0), v_prod05=overseas_prod_sensitivity(0.5),
+                v_prod15=overseas_prod_sensitivity(1.5), absorb_x_pv090=lo,
+                export_2026_check=export_2026_check, v_no_xtax=weighted_with(**no_x))
 
 
 def main():
@@ -289,6 +431,43 @@ def main():
           f"（归母 {no['other_ltei'] * (1 - MINO_CASH):,.1f}）；其他权益工具 {OTHER_EQUITY_INST}（归母 {OTHER_EQUITY_INST * (1 - MINO_CASH):,.1f}）；"
           f"其他非流动金融资产 {OTHER_NC_FIN}（归母 {OTHER_NC_FIN * (1 - MINO_CASH):,.1f}）；合并 {no['group']:,.1f}；归母 {no['parent']:,.1f}")
     print(f"归母净现金与非经营资产合计每股 {(nc['adj'] * (1 - MINO_CASH) + no['parent']) / SHARES_MAIN:.1f} 元")
+    print("== 出口退税（财政部 税务总局公告 2026 年第 2 号）==")
+    hist_cost = sum((ov - de) * r for _, ov, de, r in XTAX_HIST)
+    print("标定期从中国出口额（境外收入 − 德国产出）与不得免抵税率：" + "；".join(
+        f"{n} {ov - de:,.1f}×{r:.0%}" for n, ov, de, r in XTAX_HIST))
+    print(f"起点（基准、牛）= 出口额加权 {X_START_CYCLE:.2%}；标定期合计出口 {sum(ov - de for _, ov, de, _ in XTAX_HIST):,.1f}、"
+          f"不得免抵税额 {hist_cost:.1f}，摊到 {HIST_VOLUME} GWh 为 {hist_cost / HIST_VOLUME / 10:.4f} 元/Wh；起点（熊）= {X_START_Q3:.0%}")
+    print("境外工厂产出 GWh（德国/匈牙利/西班牙/印尼=合计）：" + "；".join(
+        f"{y} {'/'.join(str(x) for x in v)}={OVERSEAS_PROD[y]:.0f}" for y, v in OVERSEAS_PLANTS.items()))
+    for k in ["bear", "base", "bull"]:
+        s = SCENARIOS[k]
+        p = paths(s)
+        print(f"[{k}] 起点 {s['x_start']:.2%}，自担 {s['absorb_x']:.0%}")
+        for y in YEARS:
+            d = xtax_detail(y, s, p["vol"][y])
+            print(f"   {y}: 出口占比 {d['share']:.1%} 出口收入 {d['export_rev']:,.0f} 税率 {d['rate']:.2%} 增量 {d['inc']:+.2%}"
+                  f" 每 Wh 自担 {d['per_wh']:.4f} 税前 {d['pretax']:,.1f}（消费税每 Wh {p['ctax'][y]:.4f}）")
+    bp0 = paths(SCENARIOS["base"])
+    d27 = xtax_detail(2027, SCENARIOS["base"], bp0["vol"][2027])
+    print(f"基准 2027 年全额自担：较 6% 退税率多税前 {d27['export_rev'] * (XTAX_FULL - XTAX_RATE[2026]):.1f} 亿，"
+          f"较标定期起点多 {d27['export_rev'] * d27['inc']:.1f} 亿；自担 {SCENARIOS['base']['absorb_x']:.0%} 后 {d27['pretax']:.1f} 亿")
+    y = 2028
+    both = bp0["ctax"][y] + bp0["xtax"][y]
+    print(f"两税满额（{y} 年，基准）：消费税 {bp0['ctax'][y]:.4f} + 出口退税 {bp0['xtax'][y]:.4f} = {both:.4f} 元/Wh，"
+          f"占扣税前单位核心 EBIT {both / bp0['unit_pre'][y]:.1%}；归母 NOPAT 减少 {both * bp0['vol'][y] * 10 * (1 - TAX) * (1 - MINO_CORE):,.0f} 亿"
+          f"（其中出口退税 {bp0['xtax'][y] * bp0['vol'][y] * 10 * (1 - TAX) * (1 - MINO_CORE):,.0f}）")
+    for a in (0.25, 0.50, 0.80, 1.00):
+        gm, r0 = overseas_gm_2027h1(a)
+        print(f"出口退税自担 {a:.0%} 时 2027H1 境外毛利率 {gm:.2%}（较 2026H1 {gm - GM_OVS_H1_2026:+.2%}；2026H1 出口加权税率 {r0:.2%}）")
+    rb = xtax_robustness()
+    print(f"稳健性：按每 Wh 口径的起点 {rb['start_per_wh']:.2%}（÷ 基准 2027 年每 Wh 出口额 {rb['ei_2027']:.3f} 元）→ 加权 V {rb['v_start_per_wh']:.2f}；"
+          f"基准起点取 7% → 加权 V {rb['v_base_start7']:.2f}（P/V {PRICE / rb['v_base_start7']:.3f}）；"
+          f"境外工厂产出 ×0 / ×0.5 / ×1.5 → 加权 V {rb['v_prod0']:.2f} / {rb['v_prod05']:.2f} / {rb['v_prod15']:.2f}；"
+          f"基准出口退税自担 {rb['absorb_x_pv090']:.1%} 时 P/V = 0.90")
+    bx = paths(SCENARIOS["base"])
+    print(f"核对：2026 年从中国出口额按报表估 {rb['export_2026_check']:,.0f}，模型 {xtax_detail(2026, SCENARIOS['base'], VOL_2026)['export_rev']:,.0f}；"
+          f"不计出口退税的加权 V {rb['v_no_xtax']:.2f}（出口退税一项 {weighted() - rb['v_no_xtax']:+.2f}）；"
+          f"基准每 Wh 两税扣减 2026 {bx['ctax'][2026] + bx['xtax'][2026]:.4f}、2027 {bx['ctax'][2027] + bx['xtax'][2027]:.4f}")
     print("== 三情景（股权成本 9%）==")
     for k in ["bear", "base", "bull"]:
         s = SCENARIOS[k]
@@ -313,7 +492,7 @@ def main():
     g10, gp, tgt, bn = reverse_dcf()
     print(f"反向 DCF：现价对应归母经营价值 {tgt:,.0f}；以 2026 归母核心 NOPAT {bn:,.0f} 起算，"
           f"隐含 2027-2036 年 NOPAT 年增 {g10:.2%}（之后 2.5%）；或永续增速 {gp:.2%}")
-    print("基准单项敏感性：" + "；".join(f"{k}={v} → {vv:.1f}" for k, v, vv in sensitivity()))
+    print("基准单项敏感性：" + "；".join(f"{k}={v:.4g} → {vv:.1f}" for k, v, vv in sensitivity()))
     print(f"H 股价折人民币 {H_PRICE_HKD * HKD_CNY:.1f} 元对应 P/V {H_PRICE_HKD * HKD_CNY / vw:.3f}（仅参考）")
     bp = paths(SCENARIOS["base"])
     oe_g = [bp["oe"][y] / bp["oe"][y - 1] - 1 for y in YEARS[1:]]
@@ -325,19 +504,23 @@ def main():
           f" + 一次性（公司口径非经常）{br['nonrec']:.1f} + 联营 {br['assoc']:.1f} + 口径差 {br['resid']:.1f} = {TTM['parent_np']:.1f}；"
           f"TTM 单位核心 EBIT {br['unit_ttm']:.4f} 元/Wh")
     print(f"桥：TTM {TTM['parent_np']:.1f} − 一次性 {br['nonrec']:.1f} + 加回汇兑 {-br['fx']:.1f} + 联营正常化 {br['d_assoc']:.1f}"
-          f" + 利息正常化 {br['d_interest']:.1f} + 核心正常化 {br['d_core']:.1f} − 口径差 {br['resid']:.1f}"
-          f" = {TTM['parent_np'] - br['nonrec'] - br['fx'] + br['d_assoc'] + br['d_interest'] + br['d_core'] - br['resid']:.1f}")
+          f" + 利息正常化 {br['d_interest']:.1f} + 核心正常化（单位与消费税）{br['d_core']:.1f} + 出口退税增量 {br['d_xtax']:.1f}"
+          f" − 口径差 {br['resid']:.1f} = {TTM['parent_np'] - br['nonrec'] - br['fx'] + br['d_assoc'] + br['d_interest'] + br['d_core'] + br['d_xtax'] - br['resid']:.1f}")
     nn = normalized_parent_np_2026()
     print("2026 正常化归母净利（核心 NOPAT + 税后净利息 + 正常化联营）：" +
           "，".join(f"{k} {v:,.1f}" for k, v in nn.items()))
     for name, ch in FALSIFIERS.items():
         print(f"证伪：{name} → 触发后加权 V {variant(ch):.2f}")
+    print(f"   税负自担拆开：仅出口退税自担 80% → {variant(dict(absorb_x=0.80)):.2f}；仅消费税自担 75% → {variant(dict(absorb=0.75)):.2f}")
     print("分档价格（V 不变）：≤{:.1f} 明显低估；{:.1f}～{:.1f} 温和低估；{:.1f}～{:.1f} 大致合理；>{:.1f} 偏贵"
           .format(0.75 * vw, 0.75 * vw, 0.90 * vw, 0.90 * vw, 1.10 * vw, 1.10 * vw))
     mcap = PRICE * SHARES_TOTAL
     ev = mcap - nc["pre_reserve"] - no["group"] + MINORITY_EQUITY
     print(f"EV（A 价市值 − 未扣备付净现金 − 非经营资产 + 少数股东权益）{ev:,.0f}；EV/TTM 核心 EBIT 836.8 = {ev / 836.8:.1f}×；"
           f"EV/基准 2026 正常化核心 EBIT {bp['ebit'][2026]:,.0f} = {ev / bp['ebit'][2026]:.1f}×")
+    sb = scenario_value(SCENARIOS["base"])
+    print(f"分部加总（基准）：核心电池 {sb['ops']['total']:,.0f} + 洛钼归母 {no['cmoc_parent']:,.1f} + 其他投资归母 "
+          f"{no['parent'] - no['cmoc_parent']:,.1f} + 归母净现金 {nc['adj'] * (1 - MINO_CASH):,.1f} = {sb['equity']:,.1f} → 每股 {sb['v']:.1f}")
     print(f"股息率（TTM 每股 8.368）{8.368 / PRICE:.2%}；回购 200～400 亿占 A 价市值 {200 / mcap:.2%}～{400 / mcap:.2%}")
 
 
