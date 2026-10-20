@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """中国巨石（600176）独立估值：OI-291 池内独立审计 b01（深度版）。
 
-运行：python3 valuation.py        打印三情景 V、加权 V、P/V、8%/10% 敏感性、隐含回报与反向 DCF
+运行：python3 valuation.py        同时打印有杠杆口径（主口径）与无杠杆口径的三情景 V、加权 V、P/V、
+                                  8%/10% 敏感性、隐含回报、反向 DCF 与证伪触发后的 V
       python3 valuation.py --json 额外打印 JSON 摘要（供登记文件核对）
 
 金额单位亿元，每股元。价格日 2026-10-19，现价 33.72 元，总股本 40.0314 亿股（全部为 A 股）。
+每股价值股本 = 总股本 − 公告拟注销的回购专户股份 297.85 万股 = 40.0016 亿股（framework 第 6 条）。
 所有输入写在本脚本内，出处见同批 companies/600176_中国巨石.md 的「来源」。
 
-方法：所有者收益 DCF（归母口径）。所有者收益 = 归母净利 + 税后净利息 + 折旧摊销
+方法：所有者收益 DCF（归母口径）。经营所有者收益 = 归母净利 + 税后净利息 + 折旧摊销
       − 资本开支（维护 + 已公告扩产）− 营运资本增量；显式期 2026Q4–2031，
       终值 = 2032 年正常化所有者收益 /(k − g)，其中再投资率 = g / 增量回报。
-      权益价值 = 现值 + 调整后净现金（净负债为负）。
+      有杠杆口径（主口径，经调整净现金为负，用户 2026-10-20 裁定，framework「三法互校」第 2 条）：
+        有息负债按现规模滚动、不偿还本金；权益价值 = 经营所有者收益现值 − 有息负债税后利息现值
+        （利率取实际平均利率，与所有者收益同一折现率，基准 9%）+ 现金与其他调整项。
+      无杠杆口径（对照）：权益价值 = 经营所有者收益现值 + 经调整净现金（全额扣有息负债）。
 利润引擎：粗纱及制品「吨净利」× 销量 + 电子布「单米净利」×（电子布销量 + 0.15 × 外售电子纱万吨）+ 其他。
       单米净利 = (实现价/1.13 − 单米全成本 2.40) × (1 − 15%)，实现价为 7628 当量含税价。
 """
@@ -18,8 +23,11 @@ import json
 import sys
 
 PRICE = 33.72
-SHARES = 40.0314
-MKT_CAP = PRICE * SHARES
+SHARES_TOTAL = 40.0314          # brief 总股本（含回购专户股份）
+TREASURY_CANCEL = 0.02978523    # 回购专户 2,978,523 股（dividend_20261010_263669 第2页），未授予部分公告拟注销（W11）
+SHARES = SHARES_TOTAL - TREASURY_CANCEL   # 每股价值股本 40.0016 亿股
+MKT_CAP = PRICE * SHARES_TOTAL  # 总股本市值 1,349.9 亿元（倍数与 EV 用）
+MKT_CAP_V = PRICE * SHARES      # 与每股价值同口径的市值（隐含回报与反向 DCF 用）
 COE = 0.09
 
 # ---------------------------------------------------------------- 1. 调整后净现金（2026-09-30）
@@ -37,9 +45,20 @@ DEBT = {
     "衍生金融负债（贵金属期权）": 0.26,
 }
 PROVISION = 0.61          # 预计负债：中复连众风险保障补偿（2026H1_report 第114-115页）
-NET_CASH_ADJ = CASH - OP_RESERVE - DIV_PAID_OCT - sum(DEBT.values()) - PROVISION
+NET_CASH_ADJ = CASH - OP_RESERVE - DIV_PAID_OCT - sum(DEBT.values()) - PROVISION   # 无杠杆口径，−134.95
 NON_OPERATING = 0.0       # 联营（中材叶片 20.01% 等，账面 17.35）收益已含在利润「其他」中，不另加
 INT_AT = 1.9              # 税后净利息/年：2026 前三季度利息支出 1.97 − 利息收入 0.33，年化 ×(1−15%)
+
+# ---------------------------------------------------------------- 1b. 有杠杆口径：有息负债滚动、扣税后利息现值
+DERIV = DEBT["衍生金融负债（贵金属期权）"]    # 非计息，作其他调整项全额扣除
+DEBT_IB = sum(DEBT.values()) - DERIV          # 9 月末有息负债 146.68 亿元，按现规模滚动
+OTHER_ADJ = CASH - OP_RESERVE - DIV_PAID_OCT - PROVISION - DERIV   # 现金与其他调整项（同无杠杆口径），11.73
+INT_EXP_9M = 1.968        # 2026 前三季度利息费用 196,776,149.98 元（2026Q3_report 第8页）
+INT_CAP_H1 = 0.103        # 2026 上半年利息资本化 10,265,038.39 元（2026H1_report 第103页）；三季度未披露，按 0
+DEBT_YE2025 = 146.25      # 2025 年末：短借 44.27 + 长借 54.27 + 债券 20.27 + 超短融 24.14 + 集团拆借 3.04 + 租赁 0.25（年报第174页）
+DEBT_H1 = 145.90          # 2026-06-30：短借 41.32 + 长借 54.06 + 债券 20.20 + 超短融 27.12 + 集团拆借 3.00 + 租赁 0.20（H1 第107–114页）
+AVG_RATE = (INT_EXP_9M + INT_CAP_H1) * 4 / 3 / ((DEBT_YE2025 + DEBT_H1 + DEBT_IB) / 3)   # 实际平均利率约 1.89%
+RATE_2025 = (3.087 + 0.135) / ((149.76 + 146.25) / 2)   # 2025 年利息支出 3.087 + 资本化 0.135（年报第147、169页），约 2.18%，作敏感性
 
 # ---------------------------------------------------------------- 2. 单位经济（校准见第 3 节）
 TAX = 0.15
@@ -175,41 +194,56 @@ def project(s):
     return out
 
 
-def value(s, k=COE, net_cash=None, oe_override=None):
-    net_cash = NET_CASH_ADJ if net_cash is None else net_cash
+def int_debt_at(rate=None):
+    """有息负债税后利息/年（按现规模滚动）。"""
+    return DEBT_IB * (AVG_RATE if rate is None else rate) * (1 - TAX)
+
+
+def pv_interest(k=COE, rate=None):
+    """有息负债税后利息现值：与所有者收益同一时间网格（2026Q4、2027–2031 年中、2031 年末起永续）。"""
+    i = int_debt_at(rate)
+    return i / 4 / (1 + k) ** T_Q4 + sum(i / (1 + k) ** T[y] for y in YEARS) + i / k / (1 + k) ** T_TV
+
+
+def equity_adjustment(k=COE, levered=True, rate=None):
+    """现值之外的权益调整：有杠杆 = 现金与其他调整项 − 利息现值；无杠杆 = 经调整净现金。"""
+    return OTHER_ADJ - pv_interest(k, rate) if levered else NET_CASH_ADJ
+
+
+def value(s, k=COE, levered=True, rate=None, oe_override=None):
     pr = project(s) if oe_override is None else oe_override
     pv = pr["2026Q4"]["oe"] / (1 + k) ** T_Q4
     for y in YEARS:
         pv += pr[y]["oe"] / (1 + k) ** T[y]
     tv = pr["oe_terminal"] / (k - s["g"])
     pv_tv = tv / (1 + k) ** T_TV
-    eq = pv + pv_tv + net_cash
+    eq = pv + pv_tv + equity_adjustment(k, levered, rate)
     return dict(v=eq / SHARES, equity=eq, pv_explicit=pv, pv_tv=pv_tv, tv_share=pv_tv / (pv + pv_tv))
 
 
-def weighted(k=COE, scen=None):
+def weighted(k=COE, scen=None, levered=True, rate=None):
     scen = SCEN if scen is None else scen
-    return sum(sc["p"] * value(sc, k)["v"] for sc in scen.values())
+    return sum(sc["p"] * value(sc, k, levered, rate)["v"] for sc in scen.values())
 
 
-def implied_irr(s):
-    """基准所有者收益流（含终值与净现金）使现值等于现价的折现率。"""
+def implied_irr(s, levered=True):
+    """基准所有者收益流（含终值、现金调整；有杠杆口径另扣同率折现的税后利息）使每股价值等于现价的折现率。"""
     lo, hi = s["g"] + 0.002, 0.30
     for _ in range(200):
         mid = (lo + hi) / 2
-        if value(s, mid)["equity"] > MKT_CAP:
+        if value(s, mid, levered)["equity"] > MKT_CAP_V:
             lo = mid
         else:
             hi = mid
     return (lo + hi) / 2
 
 
-def reverse_dcf():
+def reverse_dcf(levered=True):
     """(a) 现价隐含：自 2026 年正常化所有者收益起步，10 年复合增速 g10（之后 2.5% 永续）；
     (b) 保留基准 2026Q4–2031 现金流，隐含 2032 年正常化归母净利。"""
     base = SCEN["base"]
     oe0 = (normalized_2026(base) + INT_AT) * (1 - base["g"] / base["roic"])
-    target = MKT_CAP - NET_CASH_ADJ
+    target = MKT_CAP_V - equity_adjustment(COE, levered)   # 需由经营所有者收益现值覆盖的金额
     lo, hi = -0.10, 0.50
     for _ in range(200):
         g10 = (lo + hi) / 2
@@ -235,30 +269,31 @@ def reverse_dcf():
 
 
 # ---------------------------------------------------------------- 5. 证伪情景（触发后的独立 V）
-def falsifier_values():
+def falsifier_values(levered=True):
     b = SCEN["base"]
     res = {}
     # F1 景气延长：2028H1 7628 主流价仍 ≥ 10 元/米 → 2028–2030 实现价按牛市路径，中枢仍取基准
     s = dict(b, R={2027: 13.0, 2028: 12.0, 2029: 9.0, 2030: 6.0, 2031: 4.6})
     res["F1"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.10), "base": dict(s, p=0.55),
-                               "bull": dict(SCEN["bull"], p=0.35)})
+                               "bull": dict(SCEN["bull"], p=0.35)}, levered=levered)
     # F2 提前回落：2027-06-30 前 7628 主流价跌破 8 元/米或 2027Q2 归母 < 22 亿 → 2027–2028 按熊市路径
     s2 = dict(b, R={2027: 9.0, 2028: 5.2, 2029: 4.6, 2030: 4.6, 2031: 4.6})
     res["F2"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.40), "base": dict(s2, p=0.50),
-                               "bull": dict(SCEN["bull"], p=0.10)})
+                               "bull": dict(SCEN["bull"], p=0.10)}, levered=levered)
     # F3 粗纱中枢下移：2400tex 缠绕直接纱连续两季 < 3,300 元/吨或粗纱吨净利 < 650 元
     #    → 基准中枢 650 元/吨、牛市中枢 1,000 元/吨，概率 35/45/20
     s3 = dict(b, pr={2027: 800, 2028: 650, 2029: 650, 2030: 650, 2031: 650}, pr_mid=650, p=0.45)
     bull3 = dict(SCEN["bull"], pr={2027: 950, 2028: 1000, 2029: 1000, 2030: 1000, 2031: 1000}, pr_mid=1000, p=0.20)
-    res["F3"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.35), "base": s3, "bull": bull3})
+    res["F3"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.35), "base": s3, "bull": bull3}, levered=levered)
     # F4 电子布中枢下移：2029 年 7628 连续两季 ≤ 4.0 元/米 → 基准中枢 3.9、牛市中枢 4.8，概率 35/45/20
     s4 = dict(b, R={2027: 12.0, 2028: 8.5, 2029: 4.4, 2030: 3.9, 2031: 3.9}, r_mid=3.9, p=0.45)
     bull4 = dict(SCEN["bull"], R={2027: 14.0, 2028: 13.0, 2029: 9.0, 2030: 5.5, 2031: 4.8}, r_mid=4.8, p=0.20)
-    res["F4"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.35), "base": s4, "bull": bull4})
+    res["F4"] = weighted(scen={"bear": dict(SCEN["bear"], p=0.35), "base": s4, "bull": bull4}, levered=levered)
     # F5 资本配置：2027 年购建长期资产 > 100 亿或新增粗纱扩产 ≥ 40 万吨 → 增量 30 亿资本开支、回报 6%
     s5 = dict(b, growth={2027: 78, 2028: 40, 2029: 12, 2030: 12, 2031: 12}, other=b["other"] + 0.6)
     res["F5"] = weighted(scen={"bear": dict(SCEN["bear"], growth={2027: 65, 2028: 30, 2029: 8, 2030: 8, 2031: 8}),
-                               "base": s5, "bull": dict(SCEN["bull"], growth=s5["growth"], other=1.4 + 0.6)})
+                               "base": s5, "bull": dict(SCEN["bull"], growth=s5["growth"], other=1.4 + 0.6)},
+                         levered=levered)
     return res
 
 
@@ -316,19 +351,34 @@ def decomposition():
                 structural=(npm_norm - npm_hist) * rev_norm)
 
 
-def results():
-    out = {"net_cash_adj": NET_CASH_ADJ, "debt": sum(DEBT.values())}
+def results_one(levered):
+    out = {}
     for name, s in SCEN.items():
-        v = value(s)
+        v = value(s, COE, levered)
         out[name] = dict(v=v["v"], p=s["p"], tv_share=v["tv_share"], np_norm_2026=normalized_2026(s),
-                         v8=value(s, 0.08)["v"], v10=value(s, 0.10)["v"], proj=project(s))
-    out["v_w"] = weighted()
+                         v8=value(s, 0.08, levered)["v"], v10=value(s, 0.10, levered)["v"], proj=project(s))
+    out["v_w"] = weighted(levered=levered)
     out["pv"] = PRICE / out["v_w"]
-    out["v8"] = weighted(0.08)
-    out["v10"] = weighted(0.10)
-    out["irr"] = implied_irr(SCEN["base"])
-    out["rev"] = reverse_dcf()
-    out["fals"] = falsifier_values()
+    out["v8"] = weighted(0.08, levered=levered)
+    out["v10"] = weighted(0.10, levered=levered)
+    out["irr"] = implied_irr(SCEN["base"], levered)
+    out["rev"] = reverse_dcf(levered)
+    out["fals"] = falsifier_values(levered)
+    return out
+
+
+def results():
+    """主口径为有杠杆口径；无杠杆口径放在 r["unlev"]。"""
+    out = results_one(True)
+    out["unlev"] = results_one(False)
+    out["net_cash_adj"] = NET_CASH_ADJ
+    out["debt"] = sum(DEBT.values())
+    out["lev"] = dict(debt_ib=DEBT_IB, rate=AVG_RATE, int_at=int_debt_at(), pv_int=pv_interest(),
+                      pv_int8=pv_interest(0.08), pv_int10=pv_interest(0.10), other_adj=OTHER_ADJ,
+                      v_w_rate2025=weighted(rate=RATE_2025), rate2025=RATE_2025,
+                      v_w_total_shares=weighted() * SHARES / SHARES_TOTAL,
+                      v_w_unlev_total_shares=out["unlev"]["v_w"] * SHARES / SHARES_TOTAL,
+                      k_bull_eq_price=implied_irr(SCEN["bull"], True))
     return out
 
 
@@ -344,9 +394,18 @@ def band(pv):
 
 def main():
     r = results()
-    print("== 中国巨石 600176 独立估值（价格日 2026-10-19，现价 %.2f，股本 %.4f 亿股，市值 %.1f 亿）==" % (PRICE, SHARES, MKT_CAP))
-    print("\n[1] 调整后净现金：现金 %.2f − 经营备付 %.1f − 10月已付中期分红 %.2f − 有息负债 %.2f − 预计负债 %.2f = %.2f 亿元（%.2f 元/股）"
+    u = r["unlev"]
+    lv = r["lev"]
+    print("== 中国巨石 600176 独立估值（价格日 2026-10-19，现价 %.2f；总股本 %.4f 亿股、市值 %.1f 亿；每股价值股本 %.4f 亿股）=="
+          % (PRICE, SHARES_TOTAL, MKT_CAP, SHARES))
+    print("\n[1] 经调整净现金（无杠杆口径，登记 net_cash_adj_yi）：现金 %.2f − 经营备付 %.1f − 10月已付中期分红 %.2f − 有息负债及衍生负债 %.2f − 预计负债 %.2f = %.2f 亿元（%.2f 元/股）"
           % (CASH, OP_RESERVE, DIV_PAID_OCT, r["debt"], PROVISION, NET_CASH_ADJ, NET_CASH_ADJ / SHARES))
+    print("    有杠杆口径（主口径）：有息负债 %.2f 亿元按现规模滚动；实际平均利率 %.2f%%（2026 前三季度利息费用 %.3f + 上半年资本化 %.3f，年化 ÷ 平均有息负债 %.2f）；"
+          "税后利息 %.2f 亿元/年，现值 %.1f 亿元（9%%；8%% 为 %.1f、10%% 为 %.1f）；现金与其他调整项 %.2f 亿元（现金 − 备付 − 已付分红 − 预计负债 − 衍生负债 %.2f）"
+          % (DEBT_IB, AVG_RATE * 100, INT_EXP_9M, INT_CAP_H1, (DEBT_YE2025 + DEBT_H1 + DEBT_IB) / 3, lv["int_at"],
+             lv["pv_int"], lv["pv_int8"], lv["pv_int10"], OTHER_ADJ, DERIV))
+    print("    两口径权益差 = 有息负债 %.2f − 利息现值 %.1f = %.1f 亿元（%.2f 元/股）"
+          % (DEBT_IB, lv["pv_int"], DEBT_IB - lv["pv_int"], (DEBT_IB - lv["pv_int"]) / SHARES))
     print("\n[2] 校准（电子布单米全成本 %.2f 元/米）：" % C_E)
     for q, np_, rov, e_np, pe, rr, lam in calibration():
         print("  %s 扣非 %.2f = 粗纱 %.2f + 电子布/纱 %.2f；隐含单米净利 %.2f 元，隐含实现价 %.2f 元/米（为市场均价的 %.0f%%）"
@@ -380,22 +439,25 @@ def main():
     print("  基准逐年：收入 " + "，".join("%d %.0f" % (y, pjb[y]["rev"]) for y in YEARS)
           + "；资本开支 " + "，".join("%d %.0f" % (y, pjb[y]["capex"]) for y in YEARS)
           + "；营运资本增量 " + "，".join("%d %.1f" % (y, pjb[y]["dnwc"]) for y in YEARS))
-    print("\n[5] 独立 V（股权成本 9%）：")
-    for name in ("bear", "base", "bull"):
-        print("  %-4s V = %.2f 元/股（概率 %.0f%%，终值占比 %.0f%%；8%% → %.2f，10%% → %.2f）"
-              % (name, r[name]["v"], r[name]["p"] * 100, r[name]["tv_share"] * 100, r[name]["v8"], r[name]["v10"]))
-    print("  加权 V = %.2f 元/股；P/V = %.2f → %s" % (r["v_w"], r["pv"], band(r["pv"])))
-    print("  股权成本敏感性：8%% → 加权 V %.2f（P/V %.2f）；10%% → 加权 V %.2f（P/V %.2f）"
-          % (r["v8"], PRICE / r["v8"], r["v10"], PRICE / r["v10"]))
-    print("  V 不变时进入各档的价格：明显低估 ≤ %.2f；温和低估 %.2f–%.2f；大致合理 %.2f–%.2f；偏贵 > %.2f"
-          % (0.75 * r["v_w"], 0.75 * r["v_w"], 0.90 * r["v_w"], 0.90 * r["v_w"], 1.10 * r["v_w"], 1.10 * r["v_w"]))
-    print("\n[6] 现价隐含回报（基准现金流含终值与净现金）：%.2f%%" % (r["irr"] * 100))
-    rv = r["rev"]
-    print("[7] 反向 DCF：自 2026 正常化所有者收益 %.1f 亿起步，现价隐含 10 年复合增速 %.1f%%（之后 2.5%%）；"
-          % (rv["oe0"], rv["g10"] * 100))
-    print("    保留基准 2026Q4–2031 现金流，现价隐含 2032 年正常化归母净利 %.0f 亿元（基准 %.0f 亿元）；稳态口径隐含归母净利 %.0f 亿元"
-          % (rv["np_2032_implied"], rv["np_2032_base"], rv["np_steady"]))
-    print("\n[8] 证伪触发后的加权 V：" + "；".join("%s %.2f" % (k_, v_) for k_, v_ in r["fals"].items()))
+    for tag, rr in (("有杠杆口径（主口径）", r), ("无杠杆口径（对照）", u)):
+        print("\n[5] 独立 V — %s，股权成本 9%%：" % tag)
+        for name in ("bear", "base", "bull"):
+            print("  %-4s V = %.2f 元/股（概率 %.0f%%，终值占经营现值 %.0f%%；8%% → %.2f，10%% → %.2f）"
+                  % (name, rr[name]["v"], rr[name]["p"] * 100, rr[name]["tv_share"] * 100, rr[name]["v8"], rr[name]["v10"]))
+        print("  加权 V = %.2f 元/股；P/V = %.2f → %s" % (rr["v_w"], rr["pv"], band(rr["pv"])))
+        print("  股权成本敏感性：8%% → 加权 V %.2f（P/V %.2f）；10%% → 加权 V %.2f（P/V %.2f）"
+              % (rr["v8"], PRICE / rr["v8"], rr["v10"], PRICE / rr["v10"]))
+        print("  V 不变时进入各档的价格：明显低估 ≤ %.2f；温和低估 %.2f–%.2f；大致合理 %.2f–%.2f；偏贵 > %.2f"
+              % (0.75 * rr["v_w"], 0.75 * rr["v_w"], 0.90 * rr["v_w"], 0.90 * rr["v_w"], 1.10 * rr["v_w"], 1.10 * rr["v_w"]))
+        print("  [6] 现价隐含回报（基准现金流含终值与现金调整）：%.2f%%" % (rr["irr"] * 100))
+        rv = rr["rev"]
+        print("  [7] 反向 DCF：自 2026 正常化所有者收益 %.1f 亿起步，现价隐含 10 年复合增速 %.1f%%（之后 2.5%%）；"
+              "保留基准 2026Q4–2031 现金流，现价隐含 2032 年正常化归母净利 %.0f 亿元（基准 %.0f 亿元）；稳态口径隐含 %.0f 亿元"
+              % (rv["oe0"], rv["g10"] * 100, rv["np_2032_implied"], rv["np_2032_base"], rv["np_steady"]))
+        print("  [8] 证伪触发后的加权 V：" + "；".join("%s %.2f" % (k_, v_) for k_, v_ in rr["fals"].items()))
+    print("\n  牛市情景（有杠杆）V 等于现价时的股权成本：%.2f%%" % (lv["k_bull_eq_price"] * 100))
+    print("  对照：利率取 2025 年全年 %.2f%% 时有杠杆加权 V %.2f；按 brief 总股本 %.4f 亿股（不扣拟注销回购股）计，有杠杆加权 V %.2f、无杠杆 %.2f"
+          % (lv["rate2025"] * 100, lv["v_w_rate2025"], SHARES_TOTAL, lv["v_w_total_shares"], lv["v_w_unlev_total_shares"]))
     c = cross_checks(r)
     print("\n[9] 交叉验证：PE(TTM) %.1f，PB %.2f，PE(2026E 基准 %.1f 亿) %.1f，PE(2026 正常化) %.1f；"
           % (c["pe_ttm"], c["pb"], r["base"]["proj"]["np_2026"], c["pe_2026e"], c["pe_norm"]))
@@ -405,13 +467,18 @@ def main():
     print("    EV %.0f 亿：EV/EBIT(TTM) %.1f，EV/EBIT(正常化) %.1f；股息率 TTM %.2f%%，2026E（45%% 派息）%.2f%%；无回购"
           % (c["ev"], c["ev_ebit_ttm"], c["ev_ebit_norm"], c["dy_ttm"] * 100, c["dy_2026e"] * 100))
     if "--json" in sys.argv:
+        def summary(rr):
+            return {
+                "v_bear": round(rr["bear"]["v"], 2), "v_base": round(rr["base"]["v"], 2), "v_bull": round(rr["bull"]["v"], 2),
+                "v_weighted": round(rr["v_w"], 2), "pv": round(rr["pv"], 2),
+                "v_at_coe_8": round(rr["v8"], 2), "v_at_coe_10": round(rr["v10"], 2), "implied_irr": round(rr["irr"], 4),
+                "falsifiers": {k_: round(v_, 2) for k_, v_ in rr["fals"].items()},
+            }
         print(json.dumps({
-            "v_bear": round(r["bear"]["v"], 2), "v_base": round(r["base"]["v"], 2), "v_bull": round(r["bull"]["v"], 2),
-            "v_weighted": round(r["v_w"], 2), "pv": round(r["pv"], 2),
-            "v_at_coe_8": round(r["v8"], 2), "v_at_coe_10": round(r["v10"], 2), "implied_irr": round(r["irr"], 4),
+            "levered": summary(r), "unlevered": summary(u),
             "np_norm_2026": {k_: round(r[k_]["np_norm_2026"], 1) for k_ in ("bear", "base", "bull")},
-            "net_cash_adj_yi": round(NET_CASH_ADJ, 2),
-            "falsifiers": {k_: round(v_, 2) for k_, v_ in r["fals"].items()},
+            "net_cash_adj_yi": round(NET_CASH_ADJ, 2), "debt_ib_yi": round(DEBT_IB, 2), "avg_rate": round(AVG_RATE, 4),
+            "pv_interest_yi": round(lv["pv_int"], 2), "other_adj_yi": round(OTHER_ADJ, 2), "shares_v_yi": round(SHARES, 4),
         }, ensure_ascii=False, indent=1))
 
 
