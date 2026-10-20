@@ -1,0 +1,13 @@
+{
+ "security_code": "000333",
+ "security_name": "美的集团",
+ "review_id": "iv20261019_pool_b02:000333",
+ "evidence_date": "2026-10-19",
+ "parent_yi": {
+  "bear": 402.2,
+  "base": 438.3,
+  "bull": 447.1
+ },
+ "falsifier": "2026 年报核心经营利润率（毛利−税金−销售/管理/研发费用＋其他收益−经营性减值＋联营）< 9.0%（基准 9.75%）（2027-04-30 前）；2026Q3 营收同比 < −3% 且单季核心经营利润率 < 10.0%（2025Q3 为 11.07%）（2026-10-31 前）；2027H1 国内收入同比 < −5%（以旧换新退坡后）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b02/companies/000333_美的集团.md）"
+}
