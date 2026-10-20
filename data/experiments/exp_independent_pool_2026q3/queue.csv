@@ -10,7 +10,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 600519,贵州茅台,L1,ROIC·增长,iv20261020_pool_b06:600519,2026-10-21,2026-10-31 预约,done_pre_q3,b06,,,
 600660,福耀玻璃,L1,ROIC·增长,iv20261020_pool_b08:600660,2026-10-21,2026-10-21 已披露,done,b08,,,
 600809,山西汾酒,L1,ROIC·增长,iv20261005_oi259:600809,2026-10-05,2026-10-29 预约,recheck_after_q3,,,,
-600862,中航高科,L1,ROIC·增长,,,2026-10-29 预约,pending,,,,
+600862,中航高科,L1,ROIC·增长,,,2026-10-29 预约,pending,b10,,A,2026-10-21 04:52
 600900,长江电力,L1,ROIC·增长,,,2026-10-31 预约,pending,,,,
 601088,中国神华,L1,ROIC·增长,,,2026-10-24 预约,pending,,,,
 603505,金石资源,L1,ROIC·增长,,,2026-10-29 预约,pending,,,,
@@ -37,7 +37,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 001232,嘉立创,L2,ROIC·增长,,,2026-10-27 预约,pending,,,,
 002001,新和成,L2,ROIC·增长,iv20261005_oi259:002001,2026-10-05,2026-10-28 预约,recheck_after_q3,,,,
 002003,伟星股份,L2,ROIC·增长,iv20261020_pool_b08:002003,2026-10-21,2026-10-28 预约,done_pre_q3,b08,,,
-002027,分众传媒,L2,ROIC·增长,,,2026-10-28 预约,pending,,,,
+002027,分众传媒,L2,ROIC·增长,,,2026-10-28 预约,pending,b10,,A,2026-10-21 04:52
 002032,苏泊尔,L2,ROIC·增长,,,2026-10-23 预约,pending,,,,
 002050,三花智控,L2,ROIC·增长,,,2026-10-29 预约,pending,,,,
 002128,电投能源,L2,ROIC·增长,,,2026-10-23 预约,pending,,,,
@@ -66,7 +66,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 002916,深南电路,L2,ROIC·增长,,,2026-10-23 预约,pending,,,,
 002920,德赛西威,L2,ROIC·增长,iv20261005_oi259:002920,2026-10-05,2026-10-27 预约,recheck_after_q3,,,,
 002938,鹏鼎控股,L2,ROIC·增长,,,2026-10-30 预约,pending,,,,
-300015,爱尔眼科,L2,ROIC·增长,,,2026-10-30 预约,pending,,,,
+300015,爱尔眼科,L2,ROIC·增长,,,2026-10-30 预约,pending,b10,,A,2026-10-21 04:52
 300033,同花顺,L2,ROIC·增长,,,2026-10-23 预约,pending,,,,
 300054,鼎龙股份,L2,ROIC·增长,,,2026-10-28 预约,pending,,,,
 300059,东方财富,L2,权益退路,,,2026-10-24 预约,pending,,,,
@@ -107,7 +107,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 600276,恒瑞医药,L2,ROIC·增长,,,2026-10-28 预约,pending,,,,
 600285,羚锐制药,L2,ROIC·增长,iv20261019_pool_b04:600285,2026-10-20,2026-10-30 预约,done_pre_q3,b04,,,
 600298,安琪酵母,L2,ROIC·增长,,,2026-10-30 预约,pending,,,,
-600309,万华化学,L2,ROIC·增长,,,2026-10-27 预约,pending,,,,
+600309,万华化学,L2,ROIC·增长,,,2026-10-27 预约,pending,b10,,A,2026-10-21 04:52
 600426,华鲁恒升,L2,ROIC·增长,iv20261019_pool_b04r2:600426,2026-10-20,2026-10-30 预约,done_pre_q3,b04,,,
 600486,扬农化工,L2,ROIC·增长,iv20261019_pool_b02:600486,2026-10-20,2026-10-27 预约,done_pre_q3,b02,,,
 600563,法拉电子,L2,ROIC·增长,iv20261019_pool_b05:600563,2026-10-20,2026-10-31 预约,done_pre_q3,b05,,,
@@ -116,7 +116,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 600690,海尔智家,L2,ROIC·增长,iv20261007_top10:600690,2026-10-07,2026-10-30 预约,recheck_after_q3,,,,
 600750,华润江中,L2,ROIC·增长,,,2026-10-24 预约,pending,,,,
 600803,新奥股份,L2,ROIC·增长,iv20261020_pool_b08:600803,2026-10-21,2026-10-31 预约,done_pre_q3,b08,,,
-600885,宏发股份,L2,ROIC·增长,,,2026-10-30 预约,pending,,,,
+600885,宏发股份,L2,ROIC·增长,,,2026-10-30 预约,pending,b10,,A,2026-10-21 04:52
 600887,伊利股份,L2,ROIC·增长,iv20261020_pool_b08:600887,2026-10-21,2026-10-30 预约,done_pre_q3,b08,,,
 600938,中国海油,L2,ROIC·增长,iv20261005_oi259:600938,2026-10-05,2026-10-31 预约,recheck_after_q3,,,,
 600970,中材国际,L2,ROIC·增长,iv20261012_sinoma:600970,2026-10-12,2026-10-22 预约,recheck_after_q3,,,,
@@ -135,7 +135,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 603195,公牛集团,L2,ROIC·增长,iv20261019_pool_b03:603195,2026-10-20,2026-10-30 预约,done_pre_q3,b03,,,
 603259,药明康德,L2,ROIC·增长,,,2026-10-27 预约,pending,,,,
 603279,景津装备,L2,ROIC·增长,iv20261005_oi259:603279,2026-10-05,2026-10-29 预约,recheck_after_q3,,,,
-603288,海天味业,L2,ROIC·增长,,,2026-10-30 预约,pending,,,,
+603288,海天味业,L2,ROIC·增长,,,2026-10-30 预约,pending,b10,,A,2026-10-21 04:52
 603338,浙江鼎力,L2,ROIC·增长,iv20261019_pool_b01:603338,2026-10-20,2026-10-30 预约,done_pre_q3,b01,,,
 603369,今世缘,L2,ROIC·增长,iv20261005_oi259:603369,2026-10-05,2026-10-31 预约,recheck_after_q3,,,,
 603501,豪威集团,L2,ROIC·增长,,,2026-10-29 预约,pending,,,,
@@ -154,7 +154,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 688041,海光信息,L2,ROIC·增长,iv20261019_pool_b01:688041,2026-10-20,2026-10-20 已披露,done,b01,,,
 688072,拓荆科技,L2,ROIC·增长,,,2026-10-29 预约,pending,,,,
 688082,盛美上海,L2,ROIC·增长,,,2026-10-29 预约,pending,,,,
-688188,柏楚电子,L2,ROIC·增长,,,2026-10-27 预约,pending,,,,
+688188,柏楚电子,L2,ROIC·增长,,,2026-10-27 预约,pending,b10,,A,2026-10-21 04:52
 688190,云路股份,L2,ROIC·增长,iv20261019_pool_b04:688190,2026-10-20,2026-10-31 预约,done_pre_q3,b04,,,
 688200,华峰测控,L2,ROIC·增长,,,2026-10-29 预约,pending,,,,
 688208,道通科技,L2,ROIC·增长,iv20261019_pool_b04:688208,2026-10-20,2026-10-30 预约,done_pre_q3,b04,,,
@@ -177,7 +177,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 601717,中创智领,L3,ROIC·增长,iv20261007_top10:601717,2026-10-07,2026-10-30 预约,recheck_after_q3,,,,
 601939,建设银行,L3,银行/保险·股利折现,iv20261019_pool_b03:601939,2026-10-20,2026-10-31 预约,done_pre_q3,b03,,,
 603156,养元饮品,L3,ROIC·增长,,,2026-10-23 预约,pending,,,,
-603606,东方电缆,L3,ROIC·增长,,,2026-10-29 预约,pending,,,,
+603606,东方电缆,L3,ROIC·增长,,,2026-10-29 预约,pending,b10,,A,2026-10-21 04:52
 688281,华秦科技,L3,ROIC·增长,,,2026-10-23 预约,pending,,,,
 688777,中控技术,L3,ROIC·增长,,,2026-10-31 预约,pending,,,,
 688981,中芯国际,L3,ROIC·增长,,,2026-11-13 预约,pending,,,,
