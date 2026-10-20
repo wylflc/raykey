@@ -41,18 +41,24 @@ def q3_schedule(codes: list[str]) -> dict[str, str]:
     return out
 
 
-def refresh_queue(schedule: dict[str, str]) -> None:
-    raw = QUEUE.read_bytes().decode('utf-8')
-    rows = list(csv.DictReader(io.StringIO(raw)))
-    fields = list(rows[0].keys())
-    for r in rows:
-        if r['security_code'] in schedule:
-            r['q3_notice_date'] = schedule[r['security_code']]
+def load_queue() -> list[dict]:
+    return list(csv.DictReader(io.StringIO(QUEUE.read_bytes().decode('utf-8'))))
+
+
+def save_queue(rows: list[dict]) -> None:
     out = io.StringIO(newline='')
-    w = csv.DictWriter(out, fieldnames=fields, lineterminator='\n')
+    w = csv.DictWriter(out, fieldnames=list(rows[0].keys()), lineterminator='\n')
     w.writeheader()
     w.writerows(rows)
     QUEUE.write_text(out.getvalue(), encoding='utf-8')
+
+
+def refresh_queue(schedule: dict[str, str]) -> None:
+    rows = load_queue()
+    for r in rows:
+        if r['security_code'] in schedule:
+            r['q3_notice_date'] = schedule[r['security_code']]
+    save_queue(rows)
 
 
 def main() -> None:

@@ -13,8 +13,17 @@
   1. 三季报已披露、尚未审计或待复核的公司；
   2. 三季报预约日在 10-27 及以后、尚未审计的公司，按最近一次扫描的模型 `P/V` 升序（主会话排序用，代理不读）；预约日更早的等披露后归入第 1 条；
   3. 银行与保险单独成批（股利折现框架）。
-- 一次一批：本批登记、裁定、提交后再派下一批。是否开始下一批，在本批的裁定提问里一并问用户。
+- 每个账户一次一批：本批登记、裁定、提交后再派下一批。是否开始下一批，在本批的裁定提问里一并问用户。
 - 量级：海康单家约 1 小时 40 分、193 轮、读入约 4,600 万 token（多为缓存读取）。
+
+## 认领
+
+两个账户可以同时各做一批。`queue.csv` 的 `claimed_by`、`claimed_at` 记正在分析的公司：账户标签与认领时间（北京时间），登记或放弃后清空。账户标签：`CLAUDE_CONFIG_DIR` 未设置的会话为 A，已设置的为 B，`tools/next_batch.py` 自动判断。
+
+- 选定一批后先认领，再取材料：`python3 tools/next_batch.py --claim <代码,代码> --batch <批次>`，立即只提交 `queue.csv`。批次号用工具列出的空闲批次号；三季报后更新的公司不给 `--batch`。
+- 已认领的公司另一账户不选、不改。`next_batch.py` 把它们列为「进行中」，排除出候选。另一账户认领的公司，用户同意接手后才用 `--claim <代码> --takeover` 转到本账户。
+- 登记后先改 `status`，再用 `--release <代码>` 清除认领。放弃未登记的公司用 `--release <代码> --abandon`，未审公司退回候选。
+- 提交只用 `git commit -m <信息> -- <路径>`，列出本批改动的文件。第 5 步登记前先看 `git status`：登记表、档案、决策日志、池文档或汇总报告有另一会话未提交的改动时，等它提交后再登记。
 
 ## 目录
 
@@ -22,15 +31,15 @@
 | --- | --- |
 | `framework.md` | 统一任务框架、独立性约束与交付字段 |
 | `agent_prompt.md` | 代理任务说明模板 |
-| `queue.csv` | 全池队列（三季报日期、状态、批次） |
-| `tools/` | 主会话工具：`next_batch.py`（下一批候选）、`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`page_grep.py`（按页抽查原文）、`register_batch.py`、`register_research.py`、`apply_rulings.py` |
+| `queue.csv` | 全池队列（三季报日期、状态、批次、认领） |
+| `tools/` | 主会话工具：`next_batch.py`（下一批候选、认领与释放）、`build_kit.py`（批次材料）、`pdf_text.py`、`write_brief.py`、`check_delivery.py`、`page_grep.py`（按页抽查原文）、`register_batch.py`、`register_research.py`、`apply_rulings.py` |
 | `<批次>/brief.md`、`packs/`、`companies/`、`calc/<代码>/` | 批次快照、数据包、审计全文与 `.json`、估值脚本（入库） |
 | `research/<代码>.json` | 档案研究数登记输入 |
 | `data/scratch/experiments/exp_independent_pool_2026q3/<批次>/raw/`、`work/` | 原始数据、公告 PDF 与文本、代理草稿（不入库，14 天未改动即被清理） |
 
 ## 每批步骤
 
-1. 材料：`sbatch --account=tes21035 --export=ALL,BATCH=<批次>,PRICE_DATE=<收盘日>,CODES=<代码+代码> scripts/slurm/oi291_kit.sbatch`（8 家约 10～20 分钟）。
+1. 材料：按「认领」认领本批后，`sbatch --account=tes21035 --export=ALL,BATCH=<批次>,PRICE_DATE=<收盘日>,CODES=<代码+代码> scripts/slurm/oi291_kit.sbatch`（8 家约 10～20 分钟）。
 2. 快照：`python3 tools/write_brief.py <批次> --price-date <收盘日>` 写 `<批次>/brief.md`。
 3. 派代理：每家一个，任务说明按 [`agent_prompt.md`](agent_prompt.md) 填写，同批同时派出。
 4. 核对：`python3 tools/check_delivery.py <批次>` 校验字段、分档、加权、脚本复现与报表数。主会话再抽查 `spot_checks` 与 `web_facts` 的一手来源；公告原文用 `python3 -I tools/page_grep.py <批次> <代码> <文件名> <正则>` 按页查。核对结果与更正写在审计全文末尾「## 主会话核对（日期）」一节。
@@ -44,11 +53,12 @@
    - 提问用提问工具，逐家一问，推荐项放首位并标「（推荐）」。
    - 提问写明生产带 V、独立 V 与研究口径 V。研究口径 V 的取法：先写草稿裁定，加 `--dry-run` 跑下面的命令读出。
    - 裁定写成 `<批次>/rulings.json`，`python3 tools/apply_rulings.py <批次>/rulings.json --day <裁定日> --review-batch <批次>` 写档案差距复核字段与决策日志（发布时段规则同第 5 步）。
-8. 更新 `queue.csv` 的 `status`／`batch`，提交。
+8. 更新 `queue.csv` 的 `status`、`current_review_id`、`current_review_date`，按「认领」清除认领，提交。
 
 ## 中断与接手
 
-- 进度：看汇总报告的进度表与 `queue.csv`。`tools/next_batch.py` 会把已派出、未登记的公司单独列出。
+- 进度：看汇总报告的进度表与 `queue.csv`。`tools/next_batch.py` 列出进行中的公司，以及认领的账户与时间。
+- 只接手本账户认领的公司；另一账户的，按「认领」经用户同意后转到本账户。
 - 代理不能跨会话续跑。接手已派出的批次时，先跑 `check_delivery.py <批次>`：
   - 通过的公司，从第 4 步接着做；
   - 报缺文件或不通过的，按第 3 步重新派出。
