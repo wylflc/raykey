@@ -1,0 +1,13 @@
+{
+ "security_code": "300308",
+ "security_name": "中际旭创",
+ "review_id": "iv20261020_pool_b13:300308",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 181.0,
+  "base": 238.0,
+  "bull": 284.0
+ },
+ "falsifier": "2026Q3 归母扣非 < 70 亿元（Q2 为 73.74），或单季毛利率 < 43%（2026-10-30 前）；2027H1 营收同比 < 20%（2027-08-31 前）；美国通过立法或行政令，禁止中国企业光模块进入商用数据中心（联邦采购之外）（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/300308_中际旭创.md）"
+}

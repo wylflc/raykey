@@ -1,0 +1,13 @@
+{
+ "security_code": "688122",
+ "security_name": "西部超导",
+ "review_id": "iv20261020_pool_b13:688122",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 2.71,
+  "base": 4.15,
+  "bull": 5.75
+ },
+ "falsifier": "2026 年报扣非归母 < 3.0 亿元，且钛合金全年毛利率 < 32%（2027-04-30 前）；2026 三季报前三季度扣非归母 < 2.2 亿元（Q3 单季 < 0.65 亿；奕材公允价值损失不计）（2026-10-30 前）；2027 中报钛合金收入同比 ≥ +20%、毛利率 ≥ 38%，且扣非归母 ≥ 3.5 亿元（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/688122_西部超导.md）"
+}

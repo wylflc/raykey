@@ -1,0 +1,13 @@
+{
+ "security_code": "300776",
+ "security_name": "帝尔激光",
+ "review_id": "iv20261020_pool_b13:300776",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 3.41,
+  "base": 4.94,
+  "bull": 5.79
+ },
+ "falsifier": "2026 年营业收入 < 18.0 亿（员工持股计划首期 20.5 亿目标明显落空）（2027-04-30 前）；2026-12-31 合同负债 < 8.0 亿且发出商品余额 < 9.0 亿（在手订单代理指标继续萎缩）（2027-04-30 前）；2026 年信用+资产减值 > 1.6 亿，或 2 年以上应收账款余额 > 5.0 亿（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/300776_帝尔激光.md）"
+}

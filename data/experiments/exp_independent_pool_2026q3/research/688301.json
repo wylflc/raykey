@@ -1,0 +1,13 @@
+{
+ "security_code": "688301",
+ "security_name": "奕瑞科技",
+ "review_id": "iv20261020_pool_b13:688301",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 6.44,
+  "base": 8.2,
+  "bull": 9.22
+ },
+ "falsifier": "背板 2026 全年收入 < 7.0 亿，或 2027Q1 单季 < 1.8 亿，或背板毛利率 < 28%（背板三情景均转熊）（2027-04-30 前）；X 线业务（总收入减背板）2026 全年同比 < +12%，或 2027H1 探测器毛利率 < 57%（X 线三情景均转熊）（2027-08-31 前）；向上：2027H1 背板收入 ≥ 7 亿，且披露视涯以外的背板客户，或视涯关联交易年度预计 ≥ 15 亿（背板三情景均转牛）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/688301_奕瑞科技.md）"
+}

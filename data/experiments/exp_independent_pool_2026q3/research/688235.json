@@ -1,0 +1,13 @@
+{
+ "security_code": "688235",
+ "security_name": "百济神州",
+ "review_id": "iv20261020_pool_b13:688235",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 60.7,
+  "base": 65.4,
+  "bull": 69.5
+ },
+ "falsifier": "2027Q2 百悦泽全球单季收入美元同比增速低于 10%，或公司披露美国 CLL 新患份额跌破 40%（2027-08-31 前）；GUARD／MFN 定稿或立法覆盖联邦医保 D 部分，百悦泽美国净价下降 15% 以上（以季报毛转净披露为准）（2027-12-31 前）；CELESTIAL-301 的 PFS 未达主要终点，且 tacabrutideg 对匹妥布替尼的 3 期失败（2028-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/688235_百济神州.md）"
+}

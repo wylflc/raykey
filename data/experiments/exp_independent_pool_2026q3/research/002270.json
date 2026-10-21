@@ -1,0 +1,13 @@
+{
+ "security_code": "002270",
+ "security_name": "华明装备",
+ "review_id": "iv20261020_pool_b13:002270",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 6.74,
+  "base": 7.86,
+  "bull": 8.43
+ },
+ "falsifier": "2026 年报电力设备直接＋间接出口收入增速 < 25%，且 2027 中报同比 < 10%（2027-08-31 前）；2026 年报或 2027 中报电力设备毛利率 < 57%（2027-08-31 前）；2026 三季报单季扣非归母 < 1.9 亿（2025Q3 为 2.05 亿）（2026-10-27 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/002270_华明装备.md）"
+}

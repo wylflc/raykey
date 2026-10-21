@@ -1,0 +1,13 @@
+{
+ "security_code": "002463",
+ "security_name": "沪电股份",
+ "review_id": "iv20261020_pool_b13:002463",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 46.0,
+  "base": 65.0,
+  "bull": 80.0
+ },
+ "falsifier": "2026 三季报单季扣非归母低于 25.0 亿元或单季毛利率低于 40%（基准正常化降至 60 亿）（2026-10-31 前）；2027 年任一单季营收同比下降或单季毛利率低于 35%（情景权重改为 0.5/0.4/0.1）（2027-10-31 前）；2027 年报归母不低于 115 亿元、全年毛利率不低于 42%、经营现金流不低于归母的 0.8 倍（权重改为 0.1/0.4/0.5）（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b13/companies/002463_沪电股份.md）"
+}

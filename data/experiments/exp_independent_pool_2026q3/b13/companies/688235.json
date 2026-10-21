@@ -1,0 +1,184 @@
+{
+  "security_code": "688235",
+  "security_name": "百济神州",
+  "price_date": "2026-10-20",
+  "price": 262.0,
+  "shares_yi": 15.4229,
+  "latest_report": "2026H1",
+  "evidence_cutoff": "2026 中报（A 股半年报 2026-08-27、港股中期报告 2026-09-11）、2026-08-05/08-06 业绩说明会记录、公告目录至 2026-10-08；网络事实核至 2026-10-21",
+  "q3_report_date": "2026-11-10 预约",
+  "coe": 0.09,
+  "scenarios": {
+    "bear": {
+      "v": 67.06,
+      "p": 0.25,
+      "assumptions": "百悦泽 2027 年 +8%，2029 年见顶 56 亿美元后下滑（匹妥布替尼一线与固定疗程分流加上美国价格压力），2037 年起美国仿制药；其他业务 2036 年 33 亿美元；GAAP 经营利润率峰值 22%、终值 18%；g 2.0%；2026 年经营利润 10 亿美元"
+    },
+    "base": {
+      "v": 128.65,
+      "p": 0.5,
+      "assumptions": "百悦泽 2027 年 +17%、2028 年 +11%，2032–2033 年见顶 77 亿美元；2034 年中国、2036 年欧洲、2037-06 美国失去独占；其他业务 2036 年 65 亿美元（索托克拉、tacabrutideg、百泽安、实体瘤风险调整）；利润率峰值 31%、终值 25%；g 2.5%；2026 年经营利润 10.8 亿美元"
+    },
+    "bull": {
+      "v": 192.66,
+      "p": 0.25,
+      "assumptions": "百悦泽 2027 年 +21%，2033 年见顶 96 亿美元（DoT 延长加 MANGROVE 一线 MCL）；tacabrutideg 承接 BTK 线，失去独占后降幅较小；其他业务 2036 年 91 亿美元；利润率峰值 36%、终值 30%；g 2.5%"
+    }
+  },
+  "v_weighted": 129.25,
+  "pv": 2.027,
+  "verdict": "偏贵或价值陷阱风险高",
+  "confidence": "中",
+  "v_at_coe_8": 145.52,
+  "v_at_coe_10": 116.88,
+  "implied_irr": 0.0497,
+  "reverse_dcf": "以 2026 正常化所有者收益 6.75 亿美元为基数、9% 折现：A 股价 262 元隐含 2027–2036 年所有者收益年增 24.9% 后接 2.5% 永续（或从 2027 年起永续增长 7.68%）；ADS 折算价 190.83 元隐含 20.2%（永续 7.15%）。基准情景 2026–2036 年复合约 17%，且 2037 年失去美国独占后回落。",
+  "normalized_parent_np_2026_yi": {
+    "bear": 60.7,
+    "base": 65.4,
+    "bull": 69.5
+  },
+  "reported": {
+    "period_latest": "2026-06-30",
+    "revenue_2025_yi": 382.25,
+    "parent_np_2025_yi": 14.61,
+    "parent_np_ttm_yi": 42.82,
+    "parent_equity_latest_yi": 354.27
+  },
+  "net_cash_adj_yi": 235.9,
+  "non_operating_assets_yi": 4.4,
+  "growth_path": {
+    "metric": "所有者收益",
+    "years": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "growth": [
+      0.538,
+      0.426,
+      0.273,
+      0.207,
+      0.161
+    ],
+    "terminal_growth": 0.025,
+    "reinvestment_rate": 0.072,
+    "incremental_return": 0.16,
+    "note": "基准情景。高增长来自 GAAP 经营利润率从 15%（2026）修复到 29.5%（2031），收入 2026–2031 年复合约 11%。再投资率为有形口径（资本开支净额加营运资金占 NOPAT，2027–2031）。增量回报取含研发口径：2026→2031 年 ΔNOPAT 除以 2026–2030 年税后研发与有形再投资之和，为 16%；只算有形再投资为 265%。研发全额费用化、已在利润率内，是真正的再投资。2037 年起美国失去独占，所有者收益回落，终值以其他业务按 2.5% 永续，百悦泽残余按每年 -25% 衰减。"
+  },
+  "method": "无杠杆所有者收益 DCF：2026H2–2040 年显式，百悦泽分段计 2034、2036、2037 年失去独占，其他业务按风险调整增长，2040 年后按 g 永续，百悦泽残余单独衰减；加经调整净现金与非经营资产。股份支付作费用。已售给 Royalty Pharma 的特许权使用费收入与实际利率法利息同时剔除，其负债不扣。三情景概率加权。经调整净现金为正，不适用有杠杆口径。另以反向 DCF、PE、EV/EBIT 与 ADS 价格交叉验证。",
+  "basis": "2026 年经营收入 66.7 亿美元（不含特许权使用费），GAAP 经营利润 10.8 亿美元（剔除特许权使用费后 10.0）；产品毛利率 89%；经营利润率基准峰值 31%（2033–2035）、终值 25%（熊 22%／18%，牛 36%／30%）；税率 13% 升到 18%；无少数股东；再投资 = 收入增量 × 15%；经调整净现金 35.09 亿美元 = 235.9 亿元（现金 50.98 − 经营备付 4.10 − 借款 10.73 − 租赁 0.70 − 税务等 0.36，单位亿美元；受限现金 1.83 亿美元不计）；特许权使用费出售负债 9.06 亿美元不扣（无追索，以特许权使用费偿付）；非经营资产 4.4 亿元；终值占 EV：熊 20.6%、基准 28.4%、牛 32.4%；USD/CNY 6.722；股本 15.4229 亿股（含预留 0.717 亿股），剔除预留股后 V 135.55。",
+  "conclusion": "百济神州已转为盈利：2026 年指引收入 66–68 亿美元、GAAP 经营利润 10–11 亿美元。百悦泽占收入 73% 且仍在高增（H1 +34.5%，美国 CLL/SLL 新患份额超过 50%），经调整净现金 236 亿元，诉讼已结案。估值要面对三件事：百悦泽美国独占只到 2037-06-15（MSN 和解），化合物专利 2034-04 到期；一线 CLL 竞争加剧，匹妥布替尼 2026-10-02 获批；美国 GUARD、MFN 等定价政策未定。基准情景已给管线较充分的信用（2036 年其他业务约 65 亿美元，利润率峰值 31%），9% 股权成本下 V 为 128.65 元，三情景加权 129.25 元，A 股 P/V 2.03，偏贵；按 ADS 折算价 190.83 元，P/V 1.48，同样偏贵。A 股较 ADS 溢价 37%，属于市场分割，不是基本面差异。现价隐含回报 A 股 4.97%、ADS 6.24%，都低于股权成本；8% 股权成本下 V 为 145.52，仍远低于现价。操作含义：不按现价买入 A 股。V 不变时，A 股价格 ≤142.2 元进入大致合理，≤116.3 元温和低估，≤96.9 元明显低估。上行证伪（2027 年营收 ≥85 亿美元且 GAAP 经营利润率 ≥22%）触发后 V 约 160.65 元，仍低于现价。",
+  "key_events": "已发生：2026-02-26 FY2025 业绩不及预期（ADS -8.5%）；2026-05-06 Q1 上调收入指引；2026-05-13 索托克拉获 FDA 加速批准（R/R MCL）；2026-06-30 MANGROVE 阳性；2026-07-23 霍普韦尔追加 3 亿美元；2026-08-05 Q2 超预期、指引上调至 66–68 亿美元、CELESTIAL-301 uMRD 未达优效；2026-08-25 百泽安＋百赫安一线 HER2+ 胃食管腺癌获 FDA 批准；2026-08-31 MFN 与 232 关税豁免协议；2026 年 9–10 月王晓东出售 ADS 约 3,560 万美元；2026-10-02 匹妥布替尼获批一线 CLL。待发生：2026-11-10 三季报（A 股预约）；2026Q4 tacabrutideg 加速批准申请、GPC3×4-1BB 与 B7-H4 ADC 3 期启动；2027 年 2 月 2027 年指引；CELESTIAL-301 PFS（时间未披露）；GUARD 定稿（拟 2027-01-01 起）；协议撤销日 2029-01-20；美国仿制药最早 2037-06-15。",
+  "key_metrics": "百悦泽全球季度收入：2026Q2 约 12.4 亿美元，同比 +31%，门槛为同比不低于 10%。美国 CLL/SLL 新患份额：超过 50%，门槛 40%。平均 DoT：约 42 个月。GAAP 经营利润率：2026H1 17.9%，2027 年下行门槛 15%、上行门槛 22%。产品毛利率：89.2%。2026 年经营费用指引：48–50 亿美元。股份支付占收入：8.1%。流通股年增：约 3%。经调整净现金：35.1 亿美元。A 股相对 ADS 溢价：37%。",
+  "risks": "单品与单一市场集中：百悦泽占 73%，美国占 53%。一线 CLL 竞争：匹妥布替尼、含维奈克拉的固定疗程、BTK 降解剂。美国定价：GUARD／MFN 扩至联邦医保，或 IRA 孤儿药豁免被修改。专利：化合物专利 2034 年到期；2037 年和解日期有加速条款。管线失败：CELESTIAL-301、tacabrutideg、实体瘤 3 期。费用纪律与股份支付稀释。人民币升值压低人民币计价的价值。中美关系与关税：协议可撤销。A 股相对 ADS 溢价收敛。",
+  "falsifiers": [
+    {
+      "condition": "2027Q2 百悦泽全球单季收入美元同比增速低于 10%，或公司披露美国 CLL 新患份额跌破 40%",
+      "deadline": "2027-08-31",
+      "v_if_triggered": 97.85
+    },
+    {
+      "condition": "GUARD／MFN 定稿或立法覆盖联邦医保 D 部分，百悦泽美国净价下降 15% 以上（以季报毛转净披露为准）",
+      "deadline": "2027-12-31",
+      "v_if_triggered": 113.79
+    },
+    {
+      "condition": "CELESTIAL-301 的 PFS 未达主要终点，且 tacabrutideg 对匹妥布替尼的 3 期失败",
+      "deadline": "2028-12-31",
+      "v_if_triggered": 103.72
+    },
+    {
+      "condition": "2027 年 GAAP 经营利润率低于 15%",
+      "deadline": "2028-04-30",
+      "v_if_triggered": 116.33
+    },
+    {
+      "condition": "上行：2027 年营收不低于 85 亿美元且 GAAP 经营利润率不低于 22%",
+      "deadline": "2028-04-30",
+      "v_if_triggered": 160.65
+    }
+  ],
+  "next_check": "2026-11-10 三季报（A 股预约；美股业绩约 11 月初，具体日期未查到）。核对 Q3 收入不低于 17 亿美元（基准 17.3 亿美元，约 116.5 亿元）、百悦泽不低于 12.5 亿美元、GAAP 经营利润不低于 2.2 亿美元、CAS 归母约 14.5 亿元、全年指引维持或上调。2027 年 2 月核对全年业绩与 2027 年指引（经营费用增速、利润率）。",
+  "spot_checks": [
+    {
+      "claim": "2026 年指引：收入 66–68 亿美元、经营费用 48–50 亿美元、GAAP 经营利润 10–11 亿美元、非 GAAP 经营利润 17–18 亿美元；2027 年费用增速与过去两年相当",
+      "source": "IR_20260807_750674 第 8–9 页"
+    },
+    {
+      "claim": "未来特许权使用费出售负债 9.063 亿美元（即期 0.893＋非即期 8.170），无追索，不涉及对非限制性现金的索偿权，偿付期至少到 2041 年",
+      "source": "2026H1_report 第 26、29、88–89 页"
+    },
+    {
+      "claim": "现金及现金等价物 50.98 亿美元，借款 10.73 亿美元（短期 1.909＋长期 8.822），受限现金 1.83 亿美元",
+      "source": "2026H1_report 第 88–89、92 页"
+    },
+    {
+      "claim": "已发行 1,540,975,898 股、流通 1,469,278,815 股、子公司预留 71,697,083 股；1 ADS = 13 股",
+      "source": "2026H1_report 第 89–90 页；2025_annual_report 第 6 页"
+    },
+    {
+      "claim": "其他非流动负债 2025 年末 63.0 亿元，其中特许权使用费转让递延价款（合同负债）60.72 亿元，美国不确定税务状况 1.27 亿元",
+      "source": "2025_annual_report 第 227、233 页"
+    },
+    {
+      "claim": "美国仿制药不早于 2037-06-15（MSN 和解），化合物专利 2034-04",
+      "source": "https://ir.beigene.com/news/beigene-announces-settlement-of-litigation-against-generic-filer-of-brukinsa/dab29bac-73b6-46e4-b531-01d811d75b69"
+    }
+  ],
+  "web_facts": [
+    {
+      "fact": "与 MSN 和解：美国仿制药泽布替尼不早于 2037-06-15 上市，另有惯常加速条款；化合物专利 2034-04 到期",
+      "url": "https://ir.beigene.com/news/beigene-announces-settlement-of-litigation-against-generic-filer-of-brukinsa/dab29bac-73b6-46e4-b531-01d811d75b69",
+      "date": "2024-11-19"
+    },
+    {
+      "fact": "ORPHAN Cures Act（并入 OBBBA）后，Health Affairs 附表把百悦泽列为不再适用联邦医保药价谈判（多项孤儿药资格）",
+      "url": "https://www.healthaffairs.org/do/10.1377/forefront.20250827.726892/full/media/martin_exhibit1.pdf",
+      "date": "2025-08-27"
+    },
+    {
+      "fact": "BeOne 与美国政府签订自愿协议：加入医疗补助 GENEROUS 模式、新药上市定价与发达市场一致、豁免 232 医药关税、与霍普韦尔 3 亿美元投资挂钩；报道未涉及百悦泽联邦医保或商业价格",
+      "url": "https://www.managedhealthcareexecutive.com/view/beone-medicines-reaches-voluntary-agreement-with-u-s-government-to-expand-cancer-drug-access",
+      "date": "2026-09-01"
+    },
+    {
+      "fact": "该协议日期 2026-08-31，Global Trade Alert 标注撤销日 2029-01-20",
+      "url": "https://globaltradealert.org/state-act/100265-united-states-of-america-agreement-with-beone-medicines-on-most-favoured-nation-drug-pricing-and-tariff-exemption",
+      "date": "2026-09"
+    },
+    {
+      "fact": "FDA 2026-10-02 批准匹妥布替尼用于无 17p 缺失的初治 CLL/SLL（BRUIN CLL-313 对 BR 的 HR 0.20）",
+      "url": "https://www.ons.org/publications-research/voice/news-views/10-2026/fda-approves-pirtobrutinib-previously-untreated-chronic-lymphocytic-leukemia-or-small-lymphocytic",
+      "date": "2026-10"
+    },
+    {
+      "fact": "ONC（ADS）2026-10-16 收盘 369.06 美元（10-20 收盘未查到）",
+      "url": "https://finance.yahoo.com/quote/ONC/analysis/",
+      "date": "2026-10-16"
+    },
+    {
+      "fact": "人民币对美元中间价 6.7220",
+      "url": "https://cj.sina.com.cn/articles/view/1663612603/6328b6bb0200248kg",
+      "date": "2026-10-16"
+    },
+    {
+      "fact": "FY2025 业绩不及预期，ADS 当日 -8.5% 至约 322 美元",
+      "url": "https://www.yicaiglobal.com/news/chinas-beone-medicines-falls-after-2025-earnings-miss-despite-turning-a-profit",
+      "date": "2026-02-26"
+    },
+    {
+      "fact": "Q2 业绩超预期；CELESTIAL-301（索托克拉＋泽布替尼对 VO）uMRD 未达优效",
+      "url": "https://www.marketbeat.com/instant-alerts/beone-medicines-nasdaqonc-posts-earnings-results-beats-estimates-by-065-eps-2026-08-05/",
+      "date": "2026-08-05"
+    },
+    {
+      "fact": "百悦泽晶型专利到 2037-08-15",
+      "url": "https://pharsight.greyb.com/drug/brukinsa-patent-expiration",
+      "date": "未标注"
+    }
+  ],
+  "web_calls": 12
+}
