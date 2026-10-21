@@ -82,13 +82,14 @@ def table_row(j: dict, model_v: float | None, path: str, spec: dict | None) -> s
     d = register_research.dossier_state(j['security_code'])
     c, gap = r['conv'], r['gap']
     adopted = d['conclusion'] == '采用研究数'
-    # §7.3：生产所用的锚高于另一数时冻结。采用研究数的行生产用档案现有研究数（新数不覆盖），故按现有数判。
-    in_use = float(d['research']) if adopted and d['research'] else c['base']
+    # §7.3：生产所用的锚高于另一数时冻结。采用研究数的行新数不覆盖档案，扫描仍按档案现有数判断，裁定改用前不因新数入队。
     flag = ''
-    if gap > 0.30 + 1e-9:
-        flag = '，入队' + ('，冻结新增买入' if (in_use > r['model_yi'] if adopted else c['base'] < r['model_yi']) else '')
+    if gap > 0.30 + 1e-9 and not adopted:
+        flag = '，入队' + ('，冻结新增买入' if c['base'] < r['model_yi'] else '')
     if adopted:
-        state = f"已采用研究数 {d['research']}（{d['date']}），新数不覆盖，待裁定"
+        chg = c['base'] / float(d['research']) - 1 if d['research'] else 0.0
+        state = (f"已采用研究数 {d['research']}（{d['date']}），新数不覆盖，待裁定；新旧差 {chg:+.1%}"
+                 + ('，改用即按 §7.3 重新复核' if abs(chg) > 0.10 + 1e-9 else '，未到 §7.3 的 10%'))
     elif d['research']:
         state = f"替换旧研究数 {d['research']}（{d['date']}）"
     else:
