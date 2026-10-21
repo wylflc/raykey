@@ -1,0 +1,13 @@
+{
+ "security_code": "688200",
+ "security_name": "华峰测控",
+ "review_id": "iv20261020_pool_b15:688200",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 3.88,
+  "base": 5.33,
+  "bull": 6.7
+ },
+ "falsifier": "2026 年报营收 < 16 亿元，或扣非归母 < 5.3 亿元（周期提前见顶；情景概率改为熊 0.5、基准 0.4、牛 0.1）（2027-04-30 前）；联讯仪器（688808）在限售解除前收盘价 ≤ 800 元（送转后口径）（2027-04-24 前）；上行：2027 年报营收 ≥ 30 亿元，且核心经营利润率 ≥ 38%（SoC 放量；情景概率改为熊 0.1、基准 0.4、牛 0.5）（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/688200_华峰测控.md）"
+}

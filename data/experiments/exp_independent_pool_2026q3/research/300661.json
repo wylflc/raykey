@@ -1,0 +1,13 @@
+{
+ "security_code": "300661",
+ "security_name": "圣邦股份",
+ "review_id": "iv20261020_pool_b15:300661",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 5.41,
+  "base": 8.5,
+  "bull": 11.19
+ },
+ "falsifier": "2026 年三季度单季营收 < 14.0 亿元，或单季毛利率 < 49%（上行周期提前见顶）（2026-10-30 前）；2027 年营收同比下滑，或全年毛利率 < 48%（重演 2023 年）（2028-04-30 前）；2026 年或 2027 年存货跌价计提超过营收的 6%，或存货周转超过 300 天（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/300661_圣邦股份.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "300811",
+ "security_name": "铂科新材",
+ "review_id": "iv20261020_pool_b15:300811",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 4.95,
+  "base": 5.3,
+  "bull": 5.6
+ },
+ "falsifier": "2026Q3 营收低于 6.3 亿元或归母低于 1.15 亿元（2026-10-28 前）；2026 全年营收低于 23 亿元，或年报／业绩会披露芯片电感收入低于 9 亿元（2027-04-30 前）；2027H1 综合毛利率连续两个季度低于 35%，或电感收入同比增速低于 30%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/300811_铂科新材.md）"
+}

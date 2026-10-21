@@ -1,0 +1,13 @@
+{
+ "security_code": "300054",
+ "security_name": "鼎龙股份",
+ "review_id": "iv20261020_pool_b15:300054",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.3,
+  "base": 11.0,
+  "bull": 12.2
+ },
+ "falsifier": "2026 三季报单季扣非归母 < 2.8 亿元（预告推算区间 2.95～3.15 亿）（2026-10-28 前）；抛光垫单季收入同比连续两季 < 10%，或半导体材料毛利率 < 65%（2027-08-31 前）；2027 年扣非归母 ≥ 15.5 亿元且半导体材料毛利率 ≥ 70%（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/300054_鼎龙股份.md）"
+}

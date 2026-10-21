@@ -1,0 +1,13 @@
+{
+ "security_code": "002938",
+ "security_name": "鹏鼎控股",
+ "review_id": "iv20261020_pool_b15:002938",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 37.85,
+  "base": 40.53,
+  "bull": 43.1
+ },
+ "falsifier": "2026 三季报单季正常化归母净利（扣非＋税后汇兑损失加回）< 10 亿，或 2026 全年正常化 < 37 亿（2027-04-30 前）；2027 年汽车/服务器用板收入 ≥ 150 亿且分部毛利率 ≥ 30%（向上证伪）（2028-04-30 前）；2027H1 或之后任一半年度汽车/服务器用板毛利率 < 25%，或 HDI 产能利用率 < 75%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/002938_鹏鼎控股.md）"
+}

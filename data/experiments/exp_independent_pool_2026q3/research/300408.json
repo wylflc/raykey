@@ -1,0 +1,13 @@
+{
+ "security_code": "300408",
+ "security_name": "三环集团",
+ "review_id": "iv20261020_pool_b15:300408",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 33.3,
+  "base": 39.8,
+  "bull": 43.8
+ },
+ "falsifier": "2026 三季报单季营收低于 35 亿元，或单季毛利率低于 42%（情景概率改为 50%／40%／10%）（2026-10-29 前）；2026 年报扣非归母净利低于 38 亿元，或全年经营现金流与净利之比低于 0.6（概率改为 40%／50%／10%）（2027-04-30 前）；2027 年中报营收同比增长低于 5%，且毛利率低于 41%（MLCC 下行兑现，取熊市）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b15/companies/300408_三环集团.md）"
+}
