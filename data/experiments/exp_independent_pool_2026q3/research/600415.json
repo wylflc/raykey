@@ -1,0 +1,13 @@
+{
+ "security_code": "600415",
+ "security_name": "小商品城",
+ "review_id": "iv20261021_pool_b19:600415",
+ "evidence_date": "2026-10-22",
+ "parent_yi": {
+  "bear": 25.5,
+  "base": 28.0,
+  "bull": 31.0
+ },
+ "falsifier": "2026 年经营现金流 ≥ 35 亿，且年末（合同负债 + 其他非流动负债）≥ 105 亿（预收不回转、续约收款持续）（2027-04-30 前）；2027 年上半年市场经营分部对外收入 < 26.5 亿（较 2026H1 的 25.79 亿增长不足 3%）（2027-08-31 前）；文商旅综合体总投资上调 > 10%（> 106 亿），或新增拿地 > 20 亿（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b19/companies/600415_小商品城.md）"
+}
