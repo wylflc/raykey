@@ -1,0 +1,13 @@
+{
+ "security_code": "600276",
+ "security_name": "恒瑞医药",
+ "review_id": "iv20261020_pool_b11:600276",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 54.2,
+  "base": 71.4,
+  "bull": 92.2
+ },
+ "falsifier": "2026 年创新药收入 < 180 亿元（同比 < +10%），或 2027H1 创新药同比 < +10%（按熊情景增长重算）（2027-03-31 前）；2027 年内没有首付款 ≥ 1 亿美元的新对外授权，或美国财政部对外投资规则把生物技术授权纳入审查（授权按熊情景）（2027-12-31 前）；2027 年销售加管理费用合计 ≥ 产品收入的 41%，经营杠杆未兑现（费用率按熊情景）（2028-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b11/companies/600276_恒瑞医药.md）"
+}

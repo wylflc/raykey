@@ -1,0 +1,13 @@
+{
+ "security_code": "688271",
+ "security_name": "联影医疗",
+ "review_id": "iv20261020_pool_b11:688271",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 16.26,
+  "base": 19.09,
+  "bull": 21.35
+ },
+ "falsifier": "2026Q3 单季营收同比 < +5%（< 29.85 亿），或 2026 全年营收 < 152 亿（2027-04-30 前）；2026 年末账龄 1 年以上应收占应收余额 > 30%，且 2026 年经营现金流 < 归母净利 70%（2027-04-30 前）；2027 年营收 ≥ 186 亿（2026 激励计划 2027 年触发值），且扣非归母净利率 ≥ 13.5%（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b11/companies/688271_联影医疗.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "603259",
+ "security_name": "药明康德",
+ "review_id": "iv20261020_pool_b11:603259",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 203.3,
+  "base": 209.9,
+  "bull": 215.7
+ },
+ "falsifier": "2026Q3 收入低于 140 亿元，或 9 月末持续经营在手订单同比增速低于 15%（2026-10-27 前）；1260H 认定被上诉法院恢复，或国防部以新依据重新列入，或 OMB 首批 BCC 名单列入药明康德（2026-12-31 前）；2027 年持续经营收入指引增速低于 10%（2027-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b11/companies/603259_药明康德.md）"
+}

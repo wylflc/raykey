@@ -1,0 +1,13 @@
+{
+ "security_code": "600436",
+ "security_name": "片仔癀",
+ "review_id": "iv20261020_pool_b11:600436",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 15.28,
+  "base": 19.92,
+  "bull": 23.15
+ },
+ "falsifier": "2026 年报医药制造业收入 < 37.8 亿元（下半年 < 13.3 亿；先行指标 Q3 合并营收 < 16.5 亿），收入路径转熊（2027-04-30 前）；2027 年报肝病用药毛利率 < 63.5%（原料降价未带来修复或出厂价让利）（2028-04-30 前）；天然牛黄市价（康美中药网等口径）2027 年内连续两个季度 ≥ 100 万元/kg（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b11/companies/600436_片仔癀.md）"
+}
