@@ -169,7 +169,7 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 688708,佳驰科技,L2,ROIC·增长,iv20261020_pool_b09:688708,2026-10-21,2026-10-30 预约,done_pre_q3,b09,,,
 920394,民士达,L2,ROIC·增长,iv20261019_pool_b01:920394,2026-10-20,2026-10-16 已披露,done,b01,,,
 920599,同力股份,L2,ROIC·增长,iv20261007_top10:920599,2026-10-07,2026-10-28 预约,recheck_after_q3,,,,
-000725,京东方A,L3,ROIC·零增长,,,2026-10-31 预约,pending,,,,
+000725,京东方A,L3,ROIC·零增长,,,2026-10-31 预约,pending,b18,,A,2026-10-21 15:37
 300395,菲利华,L3,ROIC·增长,,,2026-10-27 预约,pending,b17,,B,2026-10-21 15:21
 300759,康龙化成,L3,ROIC·增长,iv20261020_pool_b15:300759,2026-10-21,2026-10-28 预约,done_pre_q3,b15,,,
 601288,农业银行,L3,银行/保险·股利折现,iv20261019_pool_b03:601288,2026-10-20,2026-10-31 预约,done_pre_q3,b03,,,
@@ -180,4 +180,4 @@ security_code,security_name,quality_tier,valuation_path,current_review_id,curren
 603606,东方电缆,L3,ROIC·增长,iv20261020_pool_b10:603606,2026-10-21,2026-10-29 预约,done_pre_q3,b10,,,
 688281,华秦科技,L3,ROIC·增长,,,2026-10-23 预约,pending,,,,
 688777,中控技术,L3,ROIC·增长,iv20261020_pool_b14:688777,2026-10-21,2026-10-31 预约,done_pre_q3,b14,,,
-688981,中芯国际,L3,ROIC·增长,,,2026-11-13 预约,pending,,,,
+688981,中芯国际,L3,ROIC·增长,,,2026-11-13 预约,pending,b18,,A,2026-10-21 15:37
