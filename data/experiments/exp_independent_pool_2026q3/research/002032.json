@@ -1,0 +1,13 @@
+{
+ "security_code": "002032",
+ "security_name": "苏泊尔",
+ "review_id": "iv20261021_pool_b22:002032",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 17.04,
+  "base": 19.76,
+  "bull": 21.19
+ },
+ "falsifier": "2026 年归母净利 < 18.0 亿（H2 < 9.3 亿，同比约 −19%）；三季报 Q3 归母 < 3.5 亿为预警（2027-04-30 前）；2026 年 SEB 关联销售 < 62 亿（2025 年 68.10 亿），或 2027 年度日常关联交易预计 < 65 亿（2027-04-30 前）；2026 年出口代工毛利率 < 15.0%（2025 年 17.19%）且 2027H1 未回到 16%，即 18% 成本加成条款被实质下调（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b22/companies/002032_苏泊尔.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "000975",
+ "security_name": "山金国际",
+ "review_id": "iv20261021_pool_b22:000975",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 18.97,
+  "base": 30.36,
+  "bull": 44.19
+ },
+ "falsifier": "2027 年伦敦金年均价 ≥ 4,600 美元/盎司（约 1,010 元/克），长期价随之上调到 4,600（2027-12-31 前）；2027 年伦敦金年均价 ≤ 3,200 美元/盎司（2027-12-31 前）；2027 年半年报国内矿产金 ≤ 3.0 吨，全年 ≤ 6.0 吨且此后继续下滑（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b22/companies/000975_山金国际.md）"
+}

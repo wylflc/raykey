@@ -1,0 +1,13 @@
+{
+ "security_code": "603156",
+ "security_name": "养元饮品",
+ "review_id": "iv20261021_pool_b22:603156",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 10.9,
+  "base": 13.4,
+  "bull": 14.89
+ },
+ "falsifier": "长存控股 2027-06-30 前未获证监会注册，或终止审核（按 0.6 万亿元、3 年后变现）（2027-06-30 前）；上行：长存控股上市后 60 个交易日平均市值不低于 4 万亿元（按 4 万亿元、1.5 年后变现折算；触发后 P/V 约 1.15）（2027-12-31 前）；2026 年核桃乳收入低于 46 亿元，或 2027H1 核桃乳收入低于 24 亿元（主业按熊市）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b22/companies/603156_养元饮品.md）"
+}

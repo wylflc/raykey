@@ -1,0 +1,13 @@
+{
+ "security_code": "601088",
+ "security_name": "中国神华",
+ "review_id": "iv20261021_pool_b22:601088",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 455.4,
+  "base": 533.3,
+  "bull": 609.0
+ },
+ "falsifier": "2027 年秦皇岛 5500 年均价 ≥900 元/吨且 NCEI 长协年均 ≥720 元/吨（向上证伪，基准现货改 850）（2028-01-31 前）；2027 年电煤长协基准价下调，或 NCEI 长协年均 <660 元/吨（基准现货改 650）（2027-12-31 前）；2027 年资本开支计划 >650 亿元，或 2026 年度现金分红 <中国准则归母的 65%（再投资率改 40%）（2027-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b22/companies/601088_中国神华.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "300627",
+ "security_name": "华测导航",
+ "review_id": "iv20261021_pool_b22:300627",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 5.0,
+  "base": 6.42,
+  "bull": 7.26
+ },
+ "falsifier": "2026 年报营收同比 < +5%（即下半年 < +4.8%），或海外收入同比 < +12%（2027-04-30 前）；2026Q4 或 2027 年任一季度毛利率 < 58.5%（存储涨价或价格战）（2027-10-31 前）；2026 年末应收账款净额 > 15.5 亿，或 2026 年信用+资产减值合计 > 1.6 亿（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b22/companies/300627_华测导航.md）"
+}
