@@ -1,0 +1,13 @@
+{
+ "security_code": "002466",
+ "security_name": "天齐锂业",
+ "review_id": "iv20261021_pool_b21:002466",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 11.0,
+  "base": 31.5,
+  "bull": 60.7
+ },
+ "falsifier": "SMM 电池级碳酸锂 2027 年上半年均价 ≤ 8.0 万元/吨（SC6 CIF ≤ 900 美元/吨），情景权重改为 50/40/10（2027-07-31 前）；SMM 电池级碳酸锂 2027 年二、三季度均价 ≥ 15.0 万元/吨且 SC6 CIF ≥ 2,000 美元/吨，情景权重改为 10/50/40（2027-10-31 前）；格林布什 FY2027（2026-07～2027-06）产量 < 1,500 千吨或现金成本 > 460 澳元/吨（IGO 季报）（2027-07-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b21/companies/002466_天齐锂业.md）"
+}

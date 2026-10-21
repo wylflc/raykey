@@ -1,0 +1,13 @@
+{
+ "security_code": "603993",
+ "security_name": "洛阳钼业",
+ "review_id": "iv20261021_pool_b21:603993",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 112.6,
+  "base": 241.6,
+  "bull": 373.5
+ },
+ "falsifier": "LME 铜 2027 年全年均价 < 9,500 美元/吨（情景权重改为熊 0.5/基 0.5）（2027-12-31 前）；2026 年报钴销量 < 2.0 万吨，或公司 2027 年钴出口配额 < 2.5 万吨，或 2027 上半年标准级钴均价 < 14 美元/磅（2027-08-31 前）；KFM 二期 2027-12-31 前未投产或 2027 年铜产量 < 80 万吨（Odin 首金推迟到 2030 年后）（2028-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b21/companies/603993_洛阳钼业.md）"
+}

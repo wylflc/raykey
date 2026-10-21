@@ -1,0 +1,13 @@
+{
+ "security_code": "600989",
+ "security_name": "宝丰能源",
+ "review_id": "iv20261021_pool_b21:600989",
+ "evidence_date": "2026-10-22",
+ "parent_yi": {
+  "bear": 93.14,
+  "base": 136.28,
+  "bull": 178.86
+ },
+ "falsifier": "2027年度主要经营数据算出的全年K（PE/PP/EVA加权不含税均价−4.2×气化原料煤−0.85×动力煤不含税采购均价）<3,900元/吨（2028-03-31 前）；2027年上半年气化原料煤不含税采购均价≥600元/吨（动力煤≥430）且PE/PP/EVA加权均价≤6,700元/吨（K≈3,814）（2027-08-31 前）；2027年上半年K≥4,300元/吨而扣非归母<65亿元（基准成本下约75亿，即非煤单位成本高出假设400元/吨以上）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b21/companies/600989_宝丰能源.md）"
+}

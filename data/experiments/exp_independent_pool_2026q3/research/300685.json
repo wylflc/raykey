@@ -1,0 +1,13 @@
+{
+ "security_code": "300685",
+ "security_name": "艾德生物",
+ "review_id": "iv20261021_pool_b21:300685",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 3.43,
+  "base": 3.71,
+  "bull": 3.97
+ },
+ "falsifier": "2026 年营收 < 11.40 亿，或「扣非归母净利 + 汇兑损失 ×（1 − 12%）」< 3.50 亿（基准约 11.74 亿、3.72 亿）（2027-04-30 前）；任一省级或省际联盟带量采购把 PCR/NGS 肿瘤基因检测试剂或肿瘤基因检测服务纳入并执行，公司主力产品中选价较原价降幅 ≥ 30%（2027-12-31 前）；2027 年中报「国内销售」（经营管理口径）同比 ≤ −5%，即连续第二年下滑（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b21/companies/300685_艾德生物.md）"
+}
