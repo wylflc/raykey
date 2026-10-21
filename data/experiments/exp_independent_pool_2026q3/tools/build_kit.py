@@ -460,7 +460,8 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
              f"交易性金融资产 {yi(f(bL.get('TRADE_FINASSET_NOTFVTPL')) + f(bL.get('TRADE_FINASSET')))}；"
              f"衍生金融资产 {yi(f(bL.get('DERIVE_FINASSET')))} → 现金类合计 **{yi(cl)}**")
     L.append("- 其他可能含金融资产的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_FIN).items()) or "无"))
-    L.append("- 有息及类金融负债：" + ("；".join(f"{k} {yi(v)}" for k, v in dbt.items()) or "无") + f" → 合计 **{yi(sum(dbt.values()))}**")
+    L.append("- 有息及类金融负债：" + ("；".join(f"{k} {yi(v)}" for k, v in dbt.items()) or "无") + f" → 合计 **{yi(sum(dbt.values()))}**"
+             + (f"（其中租赁负债 {yi(dbt['LEASE_LIAB'])}，扣不扣按 framework.md「统一框架」第 2 条）" if 'LEASE_LIAB' in dbt else ''))
     L.append("- 其他可能含有息负债或类债务的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_DEBT).items()) or "无"))
     L.append(f"- 现金类 − 有息负债 = **{yi(cl - sum(dbt.values()))}**（未计其他金融资产；受限资金、客户存款等须看附注）")
     L.append("- 经营性负债：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_LIAB).items())
