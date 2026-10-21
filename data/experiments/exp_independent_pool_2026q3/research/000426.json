@@ -1,0 +1,13 @@
+{
+ "security_code": "000426",
+ "security_name": "兴业银锡",
+ "review_id": "iv20261020_pool_b14:000426",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 6.32,
+  "base": 17.63,
+  "bull": 33.11
+ },
+ "falsifier": "COMEX 白银 2027 年均价 ≥ 65 美元/盎司且 LME 锡 2027 年均价 ≥ 48,000 美元/吨（正常化价上移）（2028-01-31 前）；COMEX 白银 2027 年均价 < 42 美元/盎司且 LME 锡 2027 年均价 < 36,000 美元/吨（2028-01-31 前）；银漫采区 2026-12-31 前仍未复产，或 2027 年内主力矿山（银漫、宇邦、乾金达）再发生停产 ≥ 30 天的事故（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b14/companies/000426_兴业银锡.md）"
+}

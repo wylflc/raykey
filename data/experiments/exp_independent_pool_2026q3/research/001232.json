@@ -1,0 +1,13 @@
+{
+ "security_code": "001232",
+ "security_name": "嘉立创",
+ "review_id": "iv20261020_pool_b14:001232",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 15.91,
+  "base": 19.75,
+  "bull": 23.96
+ },
+ "falsifier": "2026 三季报单季扣非归母 < 6.0 亿元（预告下限隐含约 6.15 亿元），景气提前见顶（2026-10-27 前）；2026 年报 PCB 毛利率 < 26%（2025 年 28.09%、2026H1 27.53%），成本传导失效或竞争加剧（2027-04-30 前）；2027 半年报元器件营收同比 < +5%，或综合毛利率 < 26%，元器件周期反转（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b14/companies/001232_嘉立创.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "002138",
+ "security_name": "顺络电子",
+ "review_id": "iv20261020_pool_b14:002138",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.6,
+  "base": 11.0,
+  "bull": 12.0
+ },
+ "falsifier": "2026 三季报单季毛利率低于 33.5%，或单季归母净利低于 2.6 亿（成本转嫁失败）（2026-10-30 前）；2026 年扣非归母净利低于 9.3 亿，或经营活动现金流低于 12 亿（2027-04-30 前）；2027 中报营收同比低于 8% 且毛利率低于 34%，伦敦银 2027 上半年均价高于 80 美元/盎司时尤甚（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b14/companies/002138_顺络电子.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "002371",
+ "security_name": "北方华创",
+ "review_id": "iv20261020_pool_b14:002371",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 53.9,
+  "base": 67.0,
+  "bull": 74.9
+ },
+ "falsifier": "三季报单季营收 < 120 亿元（同比 < +7.5%）或单季归母 < 15 亿元（2026-10-31 前）；2026 年报归母 < 60 亿元且全年毛利率 < 39%，或研发资本化率 > 40%（2027-04-30 前）；SEMI 公布大陆 2026 年设备支出 < 450 亿美元，或对 2027 年大陆支出的预测同比下降超过 10%（2027-07-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b14/companies/002371_北方华创.md）"
+}

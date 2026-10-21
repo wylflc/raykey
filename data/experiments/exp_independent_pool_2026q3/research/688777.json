@@ -1,0 +1,13 @@
+{
+ "security_code": "688777",
+ "security_name": "中控技术",
+ "review_id": "iv20261020_pool_b14:688777",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 1.5,
+  "base": 3.5,
+  "bull": 5.68
+ },
+ "falsifier": "2026 年报工业AI 收入 < 8.0 亿（激励触发值），或全年营收 < 74 亿（2027-04-30 前）；三季报 Q3 单季营收 < 16.4 亿（同比 −10%），或 Q3 单季归母为亏损（2026-10-31 前）；2026 年末一年以上账龄应收 > 17 亿（6-30 为 15.92 亿），或 2026 全年信用加资产减值 > 2.5 亿（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b14/companies/688777_中控技术.md）"
+}
