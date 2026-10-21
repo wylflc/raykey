@@ -1,0 +1,13 @@
+{
+ "security_code": "300487",
+ "security_name": "蓝晓科技",
+ "review_id": "iv20261020_pool_b12:300487",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.05,
+  "base": 10.02,
+  "bull": 10.65
+ },
+ "falsifier": "2027 年中报扣除汇兑后归母 ≥ 6.1 亿（较 2026H1 扣汇兑约 4.90 亿 +25%），且吸附材料收入同比 ≥ +20%（兑现一致预期增速）（2027-08-31 前）；2026 年报、2027 年一季报或中报中任一期吸附材料收入同比 < +5%（2027-08-31 前）；2026 年全年或 2027H1 综合毛利率 < 50%（2025 年 51.5%，2026H1 53.3%）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/300487_蓝晓科技.md）"
+}

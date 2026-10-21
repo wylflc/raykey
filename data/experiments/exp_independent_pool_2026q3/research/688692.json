@@ -1,0 +1,13 @@
+{
+ "security_code": "688692",
+ "security_name": "达梦数据",
+ "review_id": "iv20261020_pool_b12:688692",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 4.6,
+  "base": 5.58,
+  "bull": 6.46
+ },
+ "falsifier": "2026Q3 单季营收同比转负（< 3.07 亿元）（2026-10-31 前）；2026 年营收 < 15.3 亿元，或公司披露的扣除股份支付影响后的净利润 < 6.0 亿元（基准估 6.56、熊市 5.68）（2027-04-30 前）；2027 上半年营收同比 < 0（< 7.13 亿元），信创需求提前断档（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/688692_达梦数据.md）"
+}

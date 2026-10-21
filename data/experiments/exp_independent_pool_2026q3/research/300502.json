@@ -1,0 +1,13 @@
+{
+ "security_code": "300502",
+ "security_name": "新易盛",
+ "review_id": "iv20261020_pool_b12:300502",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 85.2,
+  "base": 125.6,
+  "bull": 163.1
+ },
+ "falsifier": "2026 三季报单季营收 <125 亿（环比下降）或单季毛利率 <44%（年报 Q4 同口径）（2026-10-30 前）；FCC 或国会措施生效，按公司国籍（含泰国子公司）覆盖新易盛 1.6T/3.2T 新型号光模块（2027-06-30 前）；2027 年营收 <650 亿或归母净利率 <28%（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/300502_新易盛.md）"
+}

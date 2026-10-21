@@ -1,0 +1,13 @@
+{
+ "security_code": "600298",
+ "security_name": "安琪酵母",
+ "review_id": "iv20261020_pool_b12:600298",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 15.0,
+  "base": 16.7,
+  "bull": 18.2
+ },
+ "falsifier": "2026 年报扣非低于 14.8 亿元，或 2026 三季报单季毛利率不高于 24.4%（糖蜜红利未兑现）（2027-04-30 前）；2027 年报扣非不低于 19.5 亿元，且全年汇兑损失不超过 0.5 亿元，经营现金流减购建长期资产为正（2028-04-30 前）；2028 年合并税后投入资本回报（NOPAT ÷ 权益、少数股东与净有息负债之和）低于 8.5%，或可转债募投、白洋二期披露的实现效益低于承诺的 70%（2029-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/600298_安琪酵母.md）"
+}

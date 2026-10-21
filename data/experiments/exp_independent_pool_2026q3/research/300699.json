@@ -1,0 +1,13 @@
+{
+ "security_code": "300699",
+ "security_name": "光威复材",
+ "review_id": "iv20261020_pool_b12:300699",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 4.84,
+  "base": 5.82,
+  "bull": 6.72
+ },
+ "falsifier": "2026 年报扣非归母低于 4.5 亿元，且碳纤维及织物毛利率低于 48%（2027-04-30 前）；客户 A 新一期（2028 年起）合同年化金额低于 12 亿元，或公司披露审价降幅不低于 15%（2028-06-30 前）；内蒙古光威 2026 年净亏损不低于 1.5 亿元，或民用 T700 级报价跌回 2026 年 8 月提价前（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/300699_光威复材.md）"
+}

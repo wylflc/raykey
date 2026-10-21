@@ -1,0 +1,13 @@
+{
+ "security_code": "002568",
+ "security_name": "百润股份",
+ "review_id": "iv20261020_pool_b12:002568",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 6.85,
+  "base": 7.3,
+  "bull": 7.65
+ },
+ "falsifier": "2026 年报扣非归母 < 6.9 亿元，或 2027 年中报酒类收入同比为负（核心转入熊市路径）（2027-08-31 前）；2027 年烈酒销量 < 15 万箱，或自制半成品首次计提跌价准备 ≥ 1 亿元（威士忌转入熊市路径）（2028-04-30 前）；2027 年烈酒销量 ≥ 30 万箱、2028 年 ≥ 45 万箱且烈酒板块盈亏平衡（威士忌达到牛市路径，偏贵结论被证伪）（2029-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/002568_百润股份.md）"
+}

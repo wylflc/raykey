@@ -1,0 +1,13 @@
+{
+ "security_code": "688019",
+ "security_name": "安集科技",
+ "review_id": "iv20261020_pool_b12:688019",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.09,
+  "base": 9.54,
+  "bull": 10.0
+ },
+ "falsifier": "三季报单季营收 <7.8 亿元（同比 <+16%），或剔除汇兑后的扣非净利率 <24%（权重改为熊 50/基准 40/牛 10）（2026-10-31 前）；2026 年报 CMP 抛光液毛利率 <52%（2026H1 为 55.6%），即价格战进入主业（终局经营净利率改为熊 20%/基准 24%/牛 27%）（2027-04-30 前）；2027 中报营收同比 <+12%（权重改为 60/40/0）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/688019_安集科技.md）"
+}

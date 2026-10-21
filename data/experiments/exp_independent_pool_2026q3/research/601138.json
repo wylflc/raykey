@@ -1,0 +1,13 @@
+{
+ "security_code": "601138",
+ "security_name": "工业富联",
+ "review_id": "iv20261020_pool_b12:601138",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 353.1,
+  "base": 509.7,
+  "bull": 579.6
+ },
+ "falsifier": "2026Q3 单季毛利率 < 6.5%，或 2026 年扣非归母 < 500 亿（中枢利润率较假设低 0.3pp）（2027-04-30 前）；2026 年末存货 > 2,300 亿且全年经营现金流 < 0（增量营运资金占用升至 18%）（2027-04-30 前）；四大云厂商 2027 年资本开支指引合计低于 2026 年实际（概率改为熊 50／基准 40／牛 10）（2027-02-28 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b12/companies/601138_工业富联.md）"
+}
