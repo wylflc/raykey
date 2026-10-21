@@ -1,0 +1,13 @@
+{
+ "security_code": "000725",
+ "security_name": "京东方Ａ",
+ "review_id": "iv20261021_pool_b18:000725",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 11.2,
+  "base": 54.5,
+  "bull": 84.4
+ },
+ "falsifier": "2027 年 EBITDA 率（营业利润 − 投资收益 − 公允价值变动 + 财务费用 + 折旧摊销 − 计入非经常性损益的政府补助，÷ 营收）< 19.5%（2028-04-30 前）；2027 年购建长期资产现金支出 > 300 亿（基准 262），或公告单一 ≥ 200 亿元新产线（2028-04-30 前）；2026～2027 年少数股东损益合计 ≥ +15 亿（2024～2025 年合计 −20.1 亿），或以每元注册资本 ≥ 1.2 元回购少数股权（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b18/companies/000725_京东方Ａ.md）"
+}

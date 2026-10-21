@@ -1,0 +1,13 @@
+{
+ "security_code": "688981",
+ "security_name": "中芯国际",
+ "review_id": "iv20261021_pool_b18:688981",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 36.8,
+  "base": 50.7,
+  "bull": 63.7
+ },
+ "falsifier": "2027 年报 EBITDA 利润率 ≤52%（或 2027 年任两个季度毛利率 <20%）（2028-03-31 前）；2027 年资本开支 ≥75 亿美元而 2027 年末月产能（折合 8 英寸）较 2026 年末增幅 <6%（κ≈6.5）（2028-02-28 前）；2026 年报少数股东损益占经常性净利 >40%（归母份额降到 58%）（2027-03-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b18/companies/688981_中芯国际.md）"
+}
