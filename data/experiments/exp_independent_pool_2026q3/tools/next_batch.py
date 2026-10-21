@@ -27,7 +27,6 @@ import write_brief  # noqa: E402
 
 POOL = ROOT / 'data/processed/a_share_core_valuation_pool.csv'
 BANDS = ROOT / 'data/processed/a_share_pool_model_bands_adopted.csv'
-LATE = '2026-10-27'
 FINANCIAL = '银行/保险'
 OPEN = ('pending', 'recheck_after_q3')
 
@@ -156,10 +155,10 @@ def main() -> None:
     disclosed = [r for r in queue if r['q3_notice_date'].endswith('已披露')]
     open_rows = [r for r in queue if r['status'] in OPEN and not busy(r) and FINANCIAL not in r['valuation_path']]
     show('1. 三季报已披露、未审计或待复核', [r for r in open_rows if r in disclosed], args.n)
-    show(f'2. 未审计、三季报预约 {LATE} 及以后（按模型 P/V 升序）',
-         [r for r in open_rows if r['status'] == 'pending' and r not in disclosed and r['q3_notice_date'][:10] >= LATE], args.n)
-    waiting = [r for r in open_rows if r not in disclosed and not (r['status'] == 'pending' and r['q3_notice_date'][:10] >= LATE)]
-    print(f'等三季报披露后归入第 1 组：{len(waiting)} 家')
+    show('2. 未审计、三季报未披露（按模型 P/V 升序）',
+         [r for r in open_rows if r['status'] == 'pending' and r not in disclosed], args.n)
+    waiting = [r for r in open_rows if r not in disclosed and r['status'] != 'pending']
+    print(f'待复核、等三季报披露后归入第 1 组：{len(waiting)} 家')
     show('3. 银行与保险（单独成批）', [r for r in queue if r['status'] in OPEN and not busy(r)
                                        and FINANCIAL in r['valuation_path']], args.n)
     show('三季报后更新（done_pre_q3，三季报已披露）',
