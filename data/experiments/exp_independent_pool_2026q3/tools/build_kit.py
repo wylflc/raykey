@@ -690,7 +690,13 @@ def main() -> None:
         summary.append(dict(code=code, **info, docs=len(docs), failed=failed, periodic=periodic))
         print(f"{code} {name} 价 {info['price']:.2f}（{info['price_src']}）市值 {info['mcap_yi']:,.1f} 亿 最新期 {info['latest']} "
               f"定期报告 {periodic} 失败 {failed}", flush=True)
-    (SCRATCH / args.batch / 'kit_summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding='utf-8')
+    # 只重取部分公司时并入原有摘要，write_brief.py 才会列出全批
+    path = SCRATCH / args.batch / 'kit_summary.json'
+    if path.exists():
+        fresh = {s['code']: s for s in summary}
+        old = json.loads(path.read_text(encoding='utf-8'))
+        summary = [fresh.pop(s['code'], s) for s in old] + list(fresh.values())
+    path.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding='utf-8')
 
 
 if __name__ == '__main__':
