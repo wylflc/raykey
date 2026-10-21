@@ -428,6 +428,11 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
              f"（流通 {float_shares / 1e8:,.4f} 亿股）；资产负债表股本（{latest}）{sc_latest / 1e8:,.4f} 亿股")
     L.append(f"- A 股价 × 总股本 = **{mcap / 1e8:,.2f} 亿元**（腾讯行情字段：总市值 {q[45] if len(q) > 45 else '—'} 亿、PB {q[46] if len(q) > 46 else '—'}、"
              f"PE(TTM) {q[39] if len(q) > 39 else '—'}）。有 H 股或其他类别股份的，按各自价格另计。")
+    sc_gap = sc_latest / total_shares - 1 if total_shares and sc_latest else 0.0
+    sc_note = (f"资产负债表股本与行情总股本相差 {sc_gap:+.1%}（可能是反向购买、面值不是 1 元或期后股本变动）：按资产负债表股本算的每股数、市值与 PE、PB 不可用，先按公告核实总股本。"
+               if abs(sc_gap) > 0.05 else '')
+    if sc_note:
+        L.append(f"- **{sc_note}**")
     days = [(r[0], f(r[2])) for r in (d.get('tx_day') or []) if len(r) > 2]
     if days:
         hi, lo = max(days, key=lambda x: x[1]), min(days, key=lambda x: x[1])
@@ -577,7 +582,7 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
         np_, eq = f(r.get('PARENT_NETPROFIT')), f(b.get('TOTAL_PARENT_EQUITY'))
         L.append(f"| {yy} | {ye_close[yy]:.2f} | {sh / 1e8:,.4f} | {yi(mc)} | {mc / np_:.1f} | {mc / eq:.2f} |" if np_ > 0 and eq > 0
                  else f"| {yy} | {ye_close[yy]:.2f} | {sh / 1e8:,.4f} | {yi(mc)} | 亏损 | — |")
-    L.append("\n注：未复权价格；送转与拆股年份以年末股本与收盘同口径即可比。")
+    L.append("\n注：未复权价格；送转与拆股年份以年末股本与收盘同口径即可比。" + (f"{sc_note}" if sc_note else ''))
     L += peer_section(d.get('peers') or {})
     L.append(f"\n## 十、公告原文（PDF 与逐页文本在 `{raw_rel}/pdf/`、`{raw_rel}/txt/`；页码指 PDF 物理页，即文本中的「=== 第 N 页 ===」）\n")
     L.append("| 文件 | 类别 | 公告日 | 标题 | 页数 |")
