@@ -1,0 +1,13 @@
+{
+ "security_code": "688012",
+ "security_name": "中微公司",
+ "review_id": "iv20261020_pool_b16:688012",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 20.3,
+  "base": 23.3,
+  "bull": 26.1
+ },
+ "falsifier": "2026 年收入 < 155 亿元，或 2027Q1 收入同比 < 10%（大陆扩产消化提前）（2027-04-30 前）；2026 年报经济口径营业利润率（报表核心 EBIT − 资本化研发 + 开发技术摊销）/收入 < 3%，或研发资本化比例 > 40%（2027-04-30 前）；2026 年或 2027H1 综合毛利率 < 37%（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b16/companies/688012_中微公司.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "688120",
+ "security_name": "华海清科",
+ "review_id": "iv20261020_pool_b16:688120",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 9.66,
+  "base": 11.8,
+  "bull": 13.36
+ },
+ "falsifier": "2026 年营收低于 54.0 亿元（激励计划营收下限），或 2027 上半年营收同比低于 +5%（低于 27.75 亿元），或年末在手订单低于 2026-05 末的 79.1 亿元（2027-08-31 前）；2027 年（或 2027 上半年）综合毛利率低于 38%，或核心 EBIT 利润率低于 17%（2028-04-30 前）；芯嵛 2026 年审计营收低于 3.4 亿元（业绩承诺），且计提商誉减值 2 亿元及以上（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b16/companies/688120_华海清科.md）"
+}
