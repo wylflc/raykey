@@ -1,0 +1,13 @@
+{
+ "security_code": "603288",
+ "security_name": "海天味业",
+ "review_id": "iv20261020_pool_b10:603288",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 73.68,
+  "base": 79.35,
+  "bull": 83.5
+ },
+ "falsifier": "2027 年中报核心营业利润率（营业利润 − 利息收入 − 理财公允价值和投资收益 + 汇兑损失）< 26.5%，或国产三等大豆现货连续两季 > 5,400 元/吨（2027-08-31 前）；2026 年营收 < 300 亿元（即下半年同比 < +1.5%），且 2027Q1 营收同比 < +2%（2027-04-30 前）；主要子公司的高新资格被取消，或单年补税、调整 ≥ 5 亿元，使经营税率升到约 21%（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b10/companies/603288_海天味业.md）"
+}

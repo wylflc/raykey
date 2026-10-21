@@ -338,8 +338,10 @@ def by_date(rows: list) -> dict:
 
 # 拆出资金计入现金类：财务公司把吸收的存款拆给同业，负债端的吸收存款及同业存放已计入 DEBT
 CASH_KEYS = ['MONETARYFUNDS', 'LEND_FUND', 'TRADE_FINASSET_NOTFVTPL', 'TRADE_FINASSET', 'DERIVE_FINASSET']
+# 其他非流动资产可能含一年以上的定期存款与大额存单（如海天味业 2026-06-30 的 62.43 亿）
 OTHER_FIN = ['OTHER_CURRENT_ASSET', 'NONCURRENT_ASSET_1YEAR', 'CREDITOR_INVEST', 'OTHER_CREDITOR_INVEST', 'OTHER_NONCURRENT_FINASSET',
-             'OTHER_EQUITY_INVEST', 'AVAILABLE_SALE_FINASSET', 'HOLD_MATURITY_INVEST', 'BUY_RESALE_FINASSET', 'LOAN_ADVANCE', 'LONG_EQUITY_INVEST']
+             'OTHER_EQUITY_INVEST', 'AVAILABLE_SALE_FINASSET', 'HOLD_MATURITY_INVEST', 'BUY_RESALE_FINASSET', 'LOAN_ADVANCE', 'LONG_EQUITY_INVEST',
+             'OTHER_NONCURRENT_ASSET']
 DEBT = ['SHORT_LOAN', 'LONG_LOAN', 'BOND_PAYABLE', 'NONCURRENT_LIAB_1YEAR', 'LEASE_LIAB', 'TRADE_FINLIAB_NOTFVTPL', 'TRADE_FINLIAB',
         'DERIVE_FINLIAB', 'ACCEPT_DEPOSIT_INTERBANK', 'BORROW_FUND', 'SELL_REPO_FINASSET', 'LOAN_PBC', 'SHORT_BOND_PAYABLE']
 # 未计入 DEBT、但可能含借款或类债务的科目（如长期应付款里的关联方借款、融资租赁款），列出供代理结合附注判断
@@ -349,7 +351,7 @@ OP_LIAB = ['NOTE_PAYABLE', 'ACCOUNTS_PAYABLE', 'NOTE_ACCOUNTS_PAYABLE', 'ADVANCE
            'TOTAL_OTHER_PAYABLE', 'STAFF_SALARY_PAYABLE', 'TAX_PAYABLE', 'PREDICT_LIAB', 'DEFER_INCOME']
 OP_ASSETS = ['NOTE_RECE', 'ACCOUNTS_RECE', 'NOTE_ACCOUNTS_RECE', 'FINANCE_RECE', 'PREPAYMENT', 'TOTAL_OTHER_RECE', 'INVENTORY',
              'CONTRACT_ASSET', 'LONG_RECE', 'FIXED_ASSET', 'CIP', 'INTANGIBLE_ASSET', 'GOODWILL', 'USERIGHT_ASSET', 'INVEST_REALESTATE',
-             'DEVELOP_EXPENSE', 'LONG_PREPAID_EXPENSE', 'DEFER_TAX_ASSET', 'OTHER_NONCURRENT_ASSET']
+             'DEVELOP_EXPENSE', 'LONG_PREPAID_EXPENSE', 'DEFER_TAX_ASSET']
 
 
 def pick(b: dict, keys: list) -> dict:
@@ -456,7 +458,8 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
     L.append("- 有息及类金融负债：" + ("；".join(f"{k} {yi(v)}" for k, v in dbt.items()) or "无") + f" → 合计 **{yi(sum(dbt.values()))}**")
     L.append("- 其他可能含有息负债或类债务的科目（须结合附注判断）：" + ("；".join(f"{k} {yi(v)}" for k, v in pick(bL, OTHER_DEBT).items()) or "无"))
     L.append(f"- 现金类 − 有息负债 = **{yi(cl - sum(dbt.values()))}**（未计其他金融资产；受限资金、客户存款等须看附注）")
-    L.append("- 经营性负债：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_LIAB).items()))
+    L.append("- 经营性负债：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_LIAB).items())
+             + "（应付票据列入定期报告「筹资活动产生的各项负债变动情况」表的部分属融资性质，须结合附注判断）")
     L.append("- 经营性资产：" + "；".join(f"{k} {yi(v)}" for k, v in pick(bL, OP_ASSETS).items()))
     L.append(f"- 总资产 {yi(f(bL.get('TOTAL_ASSETS')))}；总负债 {yi(f(bL.get('TOTAL_LIABILITIES')))}；归母权益 {yi(peq)}；"
              f"少数股东权益 {yi(f(bL.get('MINORITY_EQUITY')))}；库存股 {yi(f(bL.get('TREASURY_SHARES')))}")

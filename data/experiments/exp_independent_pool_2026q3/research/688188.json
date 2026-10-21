@@ -1,0 +1,13 @@
+{
+ "security_code": "688188",
+ "security_name": "柏楚电子",
+ "review_id": "iv20261020_pool_b10:688188",
+ "evidence_date": "2026-10-20",
+ "parent_yi": {
+  "bear": 10.61,
+  "base": 11.37,
+  "bull": 11.95
+ },
+ "falsifier": "2026 年报核心 EBIT（剔除利息、理财、非经常补助与一次性项目）≥ 13.0 亿，且四季度单季营收同比 ≥ 18%（2027-04-30 前）；2027 年半年报平面解决方案收入同比 ≥ 15%，且综合毛利率 ≥ 74%（2027-08-31 前）；三季度单季营收同比 < 8%（< 5.57 亿），或 2026 年核心 EBIT < 11.6 亿（较 2025 年 11.44 亿基本不增长）（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b10/companies/688188_柏楚电子.md）"
+}
