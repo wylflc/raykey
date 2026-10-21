@@ -1,0 +1,13 @@
+{
+ "security_code": "600750",
+ "security_name": "华润江中",
+ "review_id": "iv20261021_pool_b20:600750",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 7.7,
+  "base": 8.0,
+  "bull": 8.3
+ },
+ "falsifier": "2026 年报扣非归母净利 < 7.8 亿（即下半年扣非 < 3.1 亿，同比 −12%）（2027-04-30 前）；2027 中报非处方药收入同比 ≤ −8% 或非处方药毛利率 < 74%（集采价格外溢兑现）（2027-08-31 前）；2027 中报销售费用率 > 32% 且营收同比为负（费用压缩反转）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b20/companies/600750_华润江中.md）"
+}

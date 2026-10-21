@@ -1,0 +1,13 @@
+{
+ "security_code": "000423",
+ "security_name": "东阿阿胶",
+ "review_id": "iv20261021_pool_b20:000423",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 17.05,
+  "base": 17.96,
+  "bull": 18.38
+ },
+ "falsifier": "2026 年末应收账款净额 > 3.0 亿元，或 2026 年经营现金流净额 < 13 亿元（授信未清零，按旧模式回潮处理）（2027-04-30 前）；2027 年中报收入同比 < -5%（< 29.97 亿元），渠道去库存兑现（2027-08-31 前）；综合毛利率连续两个季度 < 70%（驴皮成本或结构下移）（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b20/companies/000423_东阿阿胶.md）"
+}

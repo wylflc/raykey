@@ -1,0 +1,13 @@
+{
+ "security_code": "002287",
+ "security_name": "奇正藏药",
+ "review_id": "iv20261021_pool_b20:002287",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 4.89,
+  "base": 6.36,
+  "bull": 7.47
+ },
+ "falsifier": "三季报 Q3 单季营收 < 3.0 亿，或前三季度销售费用率 ≥ 40%（基准约 38%）（2026-10-31 前）；2026 年营收 < 20.3 亿且核心 EBIT（不含补助与金融收益）< 5.3 亿（2027-04-30 前）；消痛贴膏纳入国家或省际联盟中成药集采，院内降价 ≥ 30%（2027-12-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b20/companies/002287_奇正藏药.md）"
+}
