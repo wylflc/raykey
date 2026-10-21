@@ -1,0 +1,13 @@
+{
+ "security_code": "002222",
+ "security_name": "福晶科技",
+ "review_id": "iv20261021_pool_b17:002222",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 3.1,
+  "base": 3.55,
+  "bull": 3.78
+ },
+ "falsifier": "三季度单季扣非归母低于 0.86 亿（不及 2025Q3），或 9 月末合同负债低于 0.40 亿（6 月末 0.93 亿）（2026-10-27 前）；2026 年扣非归母低于 3.00 亿（下半年低于 1.35 亿、同比下降，周期见顶）（2027-04-30 前）；2027 年营收低于 17.5 亿，而 2026-2027 年累计购建长期资产超过 13 亿（扩产回报不足，RONIC ≤ 12%）（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b17/companies/002222_福晶科技.md）"
+}

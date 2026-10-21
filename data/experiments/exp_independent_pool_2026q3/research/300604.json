@@ -1,0 +1,13 @@
+{
+ "security_code": "300604",
+ "security_name": "长川科技",
+ "review_id": "iv20261021_pool_b17:300604",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 13.55,
+  "base": 18.24,
+  "bull": 20.96
+ },
+ "falsifier": "2026Q3 单季收入 < 19 亿（同比 < +18%）或归母 < 5.0 亿（概率改为熊 45%／基准 45%／牛 10%）（2026-10-27 前）；2026 年报存货 > 55 亿且全年经营现金流 < 6 亿（概率改为 50%／50%／0）（2027-04-30 前）；2027H1 收入同比为负，即 < 34.6 亿（概率改为 60%／40%／0）（2027-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b17/companies/300604_长川科技.md）"
+}

@@ -1,0 +1,13 @@
+{
+ "security_code": "002409",
+ "security_name": "雅克科技",
+ "review_id": "iv20261021_pool_b17:002409",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 8.6,
+  "base": 9.7,
+  "bull": 10.7
+ },
+ "falsifier": "2026 年报扣非归母净利 < 9.0 亿元（基准正常化 9.7 亿元）（2027-04-30 前）；2027 年中报归母净利 ≥ 7.0 亿元，且半导体化学材料、光刻胶及配套试剂收入同比 ≥ 30%（2027-08-31 前）；2026 年报化工行业（LNG 板材+阻燃剂）毛利率 < 20%，且期末合同负债 < 2.0 亿元（2027-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b17/companies/002409_雅克科技.md）"
+}

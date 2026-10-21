@@ -3,7 +3,7 @@
 
 每家公司抓取：
 - 东财 F10 全部报告期三表（一般企业口径，银行、保险另存专用口径）、主营构成、分红明细、日 K（不复权）与月 K（前复权）；
-- 腾讯月线（不复权、后复权）、近一年日线与报价；
+- 腾讯月线（不复权、后复权）、近一年日线（不复权、前复权）与报价；
 - 东财同业比较（估值、成长、杜邦）；
 - 2025-01-01 至价格日的公告目录，按标题规则选取定期报告全文与重要公告，下载 PDF 并抽成逐页文本；
 - 近 6 个月东财资讯标题。
@@ -140,11 +140,13 @@ def fetch_tencent(code: str, price_date: str, d: dict) -> None:
             d[key] = data.get('hfqmonth' if fq else 'month') or data.get('month') or []
         except Exception:
             d[key] = []
-    try:
-        data = json.loads(http(f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={sym},day,{begin},{price_date},400,", headers=H_TX))['data'][sym]
-        d['tx_day'] = data.get('day') or []
-    except Exception:
-        d['tx_day'] = []
+    # 日线取不复权与前复权两份：前复权以价格日为基准，区间与回撤和现价同口径（送转、拆股、分红都已调整）
+    for fq, key in (('', 'tx_day'), ('qfq', 'tx_qfqday')):
+        try:
+            data = json.loads(http(f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param={sym},day,{begin},{price_date},400,{fq}", headers=H_TX))['data'][sym]
+            d[key] = data.get(f'{fq}day' if fq else 'day') or []
+        except Exception:
+            d[key] = []
     quote = http(f"https://qt.gtimg.cn/q={sym}", headers=H_TX, enc='gbk')
     d['tx_quote'] = quote.split('"')[1].split('~') if '"' in quote else []
 
@@ -434,9 +436,22 @@ def build_pack(code: str, d: dict, price_date: str, docs: list[dict], news: list
     if sc_note:
         L.append(f"- **{sc_note}**")
     days = [(r[0], f(r[2])) for r in (d.get('tx_day') or []) if len(r) > 2]
+    qdays = [(r[0], f(r[2])) for r in (d.get('tx_qfqday') or []) if len(r) > 2]
     if days:
         hi, lo = max(days, key=lambda x: x[1]), min(days, key=lambda x: x[1])
-        L.append(f"- 近一年（{days[0][0]}→{days[-1][0]}）收盘区间 {lo[1]:.2f}（{lo[0]}）～{hi[1]:.2f}（{hi[0]}），区间涨跌 {(days[-1][1] / days[0][1] - 1) * 100:+.1f}%（未复权，未含分红）")
+        raw_range = f"{lo[1]:.2f}（{lo[0]}）～{hi[1]:.2f}（{hi[0]}）"
+        if qdays:
+            if qdays[-1][0] < days[-1][0]:
+                qdays.append(days[-1])  # 前复权日线收盘后稍晚才更新当天；前复权以最新价为基准，价格日收盘与不复权相同
+            qhi, qlo = max(qdays, key=lambda x: x[1]), min(qdays, key=lambda x: x[1])
+            L.append(f"- 近一年（{qdays[0][0]}→{qdays[-1][0]}）前复权收盘区间 {qlo[1]:.2f}（{qlo[0]}）～{qhi[1]:.2f}（{qhi[0]}），"
+                     f"区间涨跌 {(qdays[-1][1] / qdays[0][1] - 1) * 100:+.1f}%，现价较区间高点 {(qdays[-1][1] / qhi[1] - 1) * 100:+.1f}%"
+                     f"（前复权，与现价同口径；未复权区间 {raw_range}）")
+            if hi[1] > qhi[1] * 1.10:
+                L.append("- **近一年内有送转、拆股或大额分红：未复权价格与现价不可直接比较，回撤与涨跌用上一行的前复权数。**")
+        else:
+            L.append(f"- 近一年（{days[0][0]}→{days[-1][0]}）收盘区间 {raw_range}，区间涨跌 {(days[-1][1] / days[0][1] - 1) * 100:+.1f}%"
+                     f"（未复权，未含分红；前复权日线未取到，有送转的须先复权再比较）")
 
     def ttm(key, src):
         if not latest:

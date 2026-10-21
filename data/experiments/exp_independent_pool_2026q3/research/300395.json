@@ -1,0 +1,13 @@
+{
+ "security_code": "300395",
+ "security_name": "菲利华",
+ "review_id": "iv20261021_pool_b17:300395",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 5.6,
+  "base": 6.57,
+  "bull": 7.3
+ },
+ "falsifier": "2026 三季报单季归母净利 < 1.55 亿元（预告下限），或前三季度经营现金流 < 2.5 亿元（2026-10-27 前）；2027 年中报石英电子布半年收入 < 2.5 亿元，或中益新材半年净利 < 0.8 亿元（2027-08-31 前）；2027 年报营收同比 < +10% 且综合毛利率 < 44%（2028-04-30 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b17/companies/300395_菲利华.md）"
+}

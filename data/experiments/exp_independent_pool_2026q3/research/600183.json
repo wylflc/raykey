@@ -1,0 +1,13 @@
+{
+ "security_code": "600183",
+ "security_name": "生益科技",
+ "review_id": "iv20261021_pool_b17:600183",
+ "evidence_date": "2026-10-21",
+ "parent_yi": {
+  "bear": 31.0,
+  "base": 46.7,
+  "bull": 64.4
+ },
+ "falsifier": "景气提前结束：2027-06-30 前任一季度扣非归母 ≤ 18 亿元（回到 2026Q2 水平），或 7628 电子布报价 ≤ 8 元/米（2027-08-31 前）；景气延续：2027 年 Q2、Q3 单季扣非归母均 ≥ 32 亿元（2027-10-31 前）；结构性获证实：2028 年中报覆铜板分部年化净利率 ≥ 16%，且同期 7628 电子布报价 ≤ 8 元/米（2028-08-31 前）",
+ "source": "OI-291 池内独立审计（docs/reports/independent_pool_2026q3.zh.md，data/experiments/exp_independent_pool_2026q3/b17/companies/600183_生益科技.md）"
+}
