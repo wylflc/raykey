@@ -1,0 +1,143 @@
+{
+ "signal_date": "2026-10-16",
+ "execution_date": "2026-10-20",
+ "reported_at_utc": "2026-10-22T05:26:00+00:00",
+ "source": "user_reported",
+ "workflow_version": "a-share-selection-operation-v4.255",
+ "user_report": "10 月 20 卖出爱玛科技 15200@22.5, 14000@22.456, 买入格力电器 14800@38.55, 先不管当前总资产净资产之类的, 等盘后补充",
+ "holdings_before": [
+  {
+   "security_code": "000651",
+   "security_name": "格力电器",
+   "current_shares": "108000",
+   "cost_basis": "38.6984",
+   "entry_stop_price": "37.24"
+  },
+  {
+   "security_code": "603529",
+   "security_name": "爱玛科技",
+   "current_shares": "29200",
+   "cost_basis": "21.2292",
+   "entry_stop_price": "20.3750"
+  }
+ ],
+ "holdings_after": [
+  {
+   "security_code": "000651",
+   "security_name": "格力电器",
+   "current_shares": "122800",
+   "cost_basis": "38.6805",
+   "entry_stop_price": "37.24"
+  }
+ ],
+ "original_buy_plan": [],
+ "original_sell_plan": [],
+ "original_plan_as_of": "2026-10-16",
+ "original_signal_tranche_cny": "138671.2600",
+ "signal_reference_note": "最近一次发布的清单是 10-16 信号日（执行日 10-19），为空；10-19 信号日未扫描。三笔均为清单外成交；冷却登记沿用 10-16 档位作记账参照，不表示原计划存在这些订单。",
+ "trades": [
+  {
+   "security_code": "603529",
+   "security_name": "爱玛科技",
+   "side": "sell",
+   "rule": "user_full_exit",
+   "rule_note": "10-16 持仓侧 P/V 0.8388，在买入线内，走势满足加仓条件但处于 §7.5 临时冻结（只挡加仓）；10-16 清单为空。用户自行清仓，不属涨幅减持、出名单或换仓，不登记卖侧比例冷却（同 10-08、09-29 先例）。",
+   "shares": 15200,
+   "price": "22.5",
+   "remaining_shares": 14000,
+   "plan_alignment": "user_unplanned_full_exit",
+   "cost_basis_after": "21.2292",
+   "entry_stop_price_after": "20.3750",
+   "price_source": "user_confirmed",
+   "amount_cny": "342000.00",
+   "valuation": {
+    "as_of": "2026-10-20",
+    "security_code": "603529",
+    "security_name": "爱玛科技",
+    "price": 22.5,
+    "candidate": {
+     "intrinsic_value": "26.3479",
+     "pv": 0.8539580004478535,
+     "source": "模型带·2026-06-30"
+    },
+    "hold": {
+     "intrinsic_value": "26.3479",
+     "pv": 0.8539580004478535,
+     "source": "模型带·2026-06-30"
+    },
+    "hold_fallback_to_candidate": false
+   }
+  },
+  {
+   "security_code": "603529",
+   "security_name": "爱玛科技",
+   "side": "sell",
+   "rule": "user_full_exit",
+   "rule_note": "10-16 持仓侧 P/V 0.8388，在买入线内，走势满足加仓条件但处于 §7.5 临时冻结（只挡加仓）；10-16 清单为空。用户自行清仓，不属涨幅减持、出名单或换仓，不登记卖侧比例冷却（同 10-08、09-29 先例）。",
+   "shares": 14000,
+   "price": "22.456",
+   "remaining_shares": 0,
+   "plan_alignment": "user_unplanned_full_exit",
+   "cost_basis_after": "",
+   "entry_stop_price_after": "",
+   "price_source": "user_confirmed",
+   "amount_cny": "314384.00",
+   "valuation": {
+    "as_of": "2026-10-20",
+    "security_code": "603529",
+    "security_name": "爱玛科技",
+    "price": 22.456,
+    "candidate": {
+     "intrinsic_value": "26.3479",
+     "pv": 0.8522880381358666,
+     "source": "模型带·2026-06-30"
+    },
+    "hold": {
+     "intrinsic_value": "26.3479",
+     "pv": 0.8522880381358666,
+     "source": "模型带·2026-06-30"
+    },
+    "hold_fallback_to_candidate": false
+   }
+  },
+  {
+   "security_code": "000651",
+   "security_name": "格力电器",
+   "side": "buy",
+   "rule": "user_buy",
+   "rule_note": "10-16 格力占净资产 153.78%，已超 60% 单票上限，MA20 低于 MA60，清单不加仓；清单外加仓 14,800 股，按 10-08 先例登记冷却凭据（一手金额未超一档，跳过次数为 0）。",
+   "shares": 14800,
+   "price": "38.55",
+   "remaining_shares": 122800,
+   "plan_alignment": "user_unplanned_addition_above_position_cap",
+   "cost_basis_after": "38.6805",
+   "entry_stop_price_after": "37.24",
+   "price_source": "user_confirmed",
+   "amount_cny": "570540.00",
+   "valuation": {
+    "as_of": "2026-10-20",
+    "security_code": "000651",
+    "security_name": "格力电器",
+    "price": 38.55,
+    "candidate": {
+     "intrinsic_value": "73.3828",
+     "pv": 0.5253274609308993,
+     "source": "模型带·2026-06-30"
+    },
+    "hold": {
+     "intrinsic_value": "78.4595",
+     "pv": 0.4913362945213772,
+     "source": "模型带·2026-06-30"
+    },
+    "hold_fallback_to_candidate": false
+   }
+  }
+ ],
+ "account": null,
+ "account_note": "用户未回报 10-20 账户读数，说明盘后补充；成交金额、负债变动与净资产待用户回报后核对。",
+ "sell_amount_cny": "656384.00",
+ "buy_amount_cny": "570540.00",
+ "holdings_sha256": "123e58211bf1fe53bcb2a42816c232792c1be10809644e1bd4a253e6df619be6",
+ "cooldown_note": "格力一笔登记冷却凭据 actual-20261020-000651-buy-1（一手 3,855 元未超 10-16 一档 138,671.26 元，跳过次数 0）；爱玛两笔清仓不登记。",
+ "recorded_at_utc": "2026-10-22T05:36:17+00:00"
+}
