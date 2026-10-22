@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-10-21",
-  "generated_at_utc": "2026-10-22T05:50:29.727313+00:00",
-  "sha256": "e11fba68271385d9be59de4ebaa37df63e7c2917040fbc6eab82d47f28dfd7db",
+  "as_of": "2026-10-22",
+  "generated_at_utc": "2026-10-22T09:08:30.211025+00:00",
+  "sha256": "481d20b8c6cb1e58e9ac0a584e7c04a7b4f2dd89454a24830f0672c2900bfeef",
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv": "41163b8cd656e5e8fec4f952f4e607de11370b8c5d28a2d33d20e8b3ccc67750",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv": "1d84ce80adeae26ebde158db03357d716c3aff75480162f063498d94d1b2c1b1",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_earnings_forecasts.csv": "ba31a6876c2549cfc525d9c6d9079142bbe48297ce9ca540d5016b84b1506528",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_report_disclosures.csv": "132409b592bbdeb767db3b35f898b26bb6a45b705f3eac3766b67516ee0a800f",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_attention_triage.csv": "d6f7534e48b1dd473d09d3d0e6c1f2cb0de16400ca2b50cce2b5efe6b102fa5a",
     "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_watchlist_quality_tiers.csv": "e82d301f0b2adffda4d66a22e8c640d083cfc95f8cdcd98c77a3f99b6c382d1a",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_core_valuation_pool.csv": "396feeb12477e4fd862f51cdd5172afc18aa49282ed264beb5652067db7a5141",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_valuation_dossiers.csv": "033d93d89109555525f69c876b189170355e9f12e82e8d2f0734a4b246fa2702",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "bc2ec6806c02c932bf4f71910ec6097acfd20120a515f58137f5cd2f7cce277f",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/structural_growth_review.csv": "b73e091613fe33bbfe1e8a22519d8fd95c759d7f051b2c9659e86ca87f4a51b2",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/trough_anchor_review.csv": "b9a5747e937ce4e071aa0d86f3f349d4b9318f07a902acb9ddec805d8e754435",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/review_holds.csv": "369c0664ed3b87f25686973698b413cf6bd6e4f9a872a273b82609bc9084a07f",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/pool_event_reviews.csv": "f02750315e728b2f52e60916dbe16180ec19fce934c1eee5607cccb9cf670fcb",
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_forecast_unregistered.csv": "d8faafcc401190065fc7b554e19f7a6d92e742fa241f7c9db3050bba98d1a2c0"
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_core_valuation_pool.csv": "bd1ebce7dd0b131be638965014c6db6f9fdfe6d03c3be9e3f48ff93ebdf31052",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_valuation_dossiers.csv": "ea98f866c079c3b23dc5e1017824633468b985a9cd8a196b1251308f0962d9fc",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/processed/a_share_pool_model_bands_adopted.csv": "7f16ab772342de0d9bc13611d8e1214d99d6f0f385d7fb47f802d08ceaac6e04",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/structural_growth_review.csv": "3718b68e5b3e9648cf241ed99a32a4a7090521f7e7769e7951bfd741436b364e",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/trough_anchor_review.csv": "7151caee0ae0b0d6536f01fae3d44da5ab1eb0b1cab500c5a9331264c65f09e8",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/review_holds.csv": "7736c69266cad6b8bef2b4d028d68e22d1ce805bd1992e106d0b9fd477f2ac05",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/pool_event_reviews.csv": "f1382e91d29de8b59c011ddc1150fff4cc3963e3004b59f231589ed6bcccb18f",
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/interim/a_share_forecast_unregistered.csv": "065ba90b505f2c88f48d60cfa956bdd72b738c26c3d58ce5c5fe824c868475eb"
   }
 }

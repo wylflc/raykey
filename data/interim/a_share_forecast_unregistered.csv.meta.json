@@ -1,8 +1,8 @@
 {
-  "as_of": "2026-10-21",
-  "generated_at_utc": "2026-10-22T05:36:14.749455+00:00",
-  "sha256": "d8faafcc401190065fc7b554e19f7a6d92e742fa241f7c9db3050bba98d1a2c0",
+  "as_of": "2026-10-22",
+  "generated_at_utc": "2026-10-22T07:03:31.308088+00:00",
+  "sha256": "065ba90b505f2c88f48d60cfa956bdd72b738c26c3d58ce5c5fe824c868475eb",
   "inputs": {
-    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/forecast_supplements.csv": "6ce8a263e1ecc5085cfb3c5dbc33d9bbeb0d319794146dbbed913df8d5f6f3c4"
+    "/gpfs/work1/0/qt15419/zwang/mm_quant/raykey/data/reference/forecast_supplements.csv": "d99ad27384cd1b2315d3d5312818a94f18a8ee093fe721e6c23c8e253494bc19"
   }
 }
